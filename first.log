@@ -1,0 +1,18 @@
+//2018年 08月 08日 星期三 08:50:04 CST
+create bare repository at tokyo host.
+clients get this repository by run "git clone tokyo:easti.git"(prepare your own .git/config)
+git clients now only dell laptop.
+make .gitignore,readme
+make a sketch of express site.
+
+//2018年 08月 08日 星期三 09:03:45 CST
+npm i --save express ron pug formidable
+
+//2018年 08月 08日 星期三 09:06:46 CST
+npm i --dev-save bootstrap@3
+npm i --dev-save jquery
+
+
+//2018年 08月 08日 星期三 15:54:47 CST
+coffee bin/staticify-jq-bt.coffee
+it will copy bootstrap and jquery,bootstrap must version 3,because its font support.

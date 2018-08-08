@@ -1,0 +1,29 @@
+doctype html
+html 
+  meta(name="viewport" content="width=device-width;initial-scale=1.0")
+  meta(name="keywords" content="fake to project check eviroment")
+  head
+    link(rel="stylesheet" href="/bootstrap/css/bootstrap.min.css")/
+    script(src="/jquery.min.js")
+    script(src="/bootstrap/js/bootstrap.min.js")
+    title site-for-project
+  body
+    div.jumbotron
+      h1 below 3 paras,first is text-right,second is text-center
+      p and the Third is text-left
+      p for bootstrap include test
+    p.text-right the 1st para is text-right
+    p.text-center the second para is text-center
+    p.text-left the 3rd para is text-left
+    footer
+      h1 foot of this page
+      p below button will trigger jq-event -- alert mouse's x,y
+      button#itisbutton click to check jquery enviroment
+    script.
+      $(document).ready(function(){
+        $('#itisbutton').on('click',function(evt){
+          info = evt.pageX + ',' + evt.pageY 
+          alert('mouse focus at(x,y):(' + info + ')' );
+        });
+      });
+      

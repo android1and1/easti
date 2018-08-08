@@ -1,0 +1,10 @@
+temp/
+tmp
+.temp
+.tmp
+node_modules/
+package-lock*
+lock-log*
+credients/
+*.data
+configs/

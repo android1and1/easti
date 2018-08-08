@@ -1,0 +1,18 @@
+this project easti means east of hailing island,it is belong to GuangDong.YangJiang.
+its purpose is do an airbnb like site:provides some holiday-room's info,price,clients can order 1 room,then get transation's info,review.on-line provide password for door-lock,display useful manu of the room.
+--- created at 2018-8-8 ,alan dershowitz.
+
+#####################
+#####################
+  init project
+#####################
+#####################
+git clone 
+  git clone tokyo:easti.git(then cd easti)
+npm install
+  run 'npm install'
+staticify jq and boot
+  run "coffee bin/staticify-jq-bt.coffee",under public/ they all created. 
+test simple site
+  coffee coffees/envCheck.coffee (running at port 8888)
+

@@ -1,0 +1,26 @@
+{
+  "name": "easti",
+  "version": "1.0.0",
+  "description": "airbnb rent electic-commercise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "tokyo:easti.git"
+  },
+  "keywords": [
+    "holiday-house"
+  ],
+  "author": "circle cyrus",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "express": "^4.16.3",
+    "formidable": "^1.2.1",
+    "jquery": "^3.3.1",
+    "pug": "^2.0.3",
+    "ron": "0.0.8"
+  }
+}
