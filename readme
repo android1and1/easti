@@ -11,8 +11,10 @@ git clone
   git clone tokyo:easti.git(then cd easti)
 npm install
   run 'npm install'
-staticify jq and boot
+*staticify jq and boot
   run "coffee bin/staticify-jq-bt.coffee",under public/ they all created. 
 test simple site
   coffee coffees/envCheck.coffee (running at port 8888)
 
+
+* only the 1st client need run this.
