@@ -1,6 +1,6 @@
 doctype html
 html 
-  meta(name="viewport" content="width=device-width;initial-scale=1.0")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
   meta(name="keywords" content="fake to project check eviroment")
   head
     link(rel="stylesheet" href="/bootstrap/css/bootstrap.min.css")/
@@ -18,12 +18,6 @@ html
     footer
       h1 foot of this page
       p below button will trigger jq-event -- alert mouse's x,y
-      button#itisbutton click to check jquery enviroment
-    script.
-      $(document).ready(function(){
-        $('#itisbutton').on('click',function(evt){
-          info = evt.pageX + ',' + evt.pageY 
-          alert('mouse focus at(x,y):(' + info + ')' );
-        });
-      });
+      button#itisme click to check jquery enviroment
+    script(src="/pagejs/pagejs-listeners.js")
       

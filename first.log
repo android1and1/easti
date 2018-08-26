@@ -16,3 +16,12 @@ npm i --dev-save jquery
 //2018年 08月 08日 星期三 15:54:47 CST
 coffee bin/staticify-jq-bt.coffee
 it will copy bootstrap and jquery,bootstrap must version 3,because its font support.
+
+//Sat Aug 25 14:44:51 CST 2018
+ubuntu16.04LTS upgrade to 18.04.
+now the ubuntu18.04LTS-Hp-Desktop-PC joined.
+
+//Sat Aug 25 20:03:28 CST 2018
+views/index.pug,normalize ./app.js,run at development mode.
+make views/layouts directory.
+run test(initial),good.

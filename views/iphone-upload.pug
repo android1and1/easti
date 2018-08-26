@@ -1,0 +1,13 @@
+extends layouts/main
+block content 
+  h1 here is uploading photo(video) page
+  h2 help text: choices one or multiple files from your iphone,then click upload button
+  form
+    .form-group
+      label(class="control-label" for="inputfield") Uploading file(s)
+      input(type="file" class="form-control" name="fileshere" id="inputfield" multiple="multiple") 
+    .checkbox
+      label
+        input(type="checkbox") 
+        |  need encrypt
+    button(type="submit" class="btn btn-primary") Sign in
