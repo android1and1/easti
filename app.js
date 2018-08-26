@@ -19,7 +19,10 @@
   app.use(express.static(static_root));
 
   app.get('/', function(req, res) {
-    return res.render('index');
+    return res.render('index', {
+      title: 'I see you',
+      name: 'wang!'
+    });
   });
 
   app.get('/show-widget', function(req, res) {

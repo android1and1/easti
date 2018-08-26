@@ -8,6 +8,9 @@ static_root = path.join project_root,'public'
 app.use express.static static_root 
 app.get '/',(req,res)->
   res.render 'index'
+    ,
+    title:'I see you'
+    name:'wang!'
 app.get '/show-widget',(req,res)->
   res.render 'widgets/show-widget'
 app.get '/iphone-upload',(req,res)->

@@ -29,3 +29,6 @@ now the ubuntu18.04LTS-Hp-Desktop-PC joined.
 views/index.pug,normalize ./app.js,run at development mode.
 make views/layouts directory.
 run test(initial),good.
+
+//Sun Aug 26 18:41:04 CST 2018
+initial level 2,target is 'mocha + tdd'
