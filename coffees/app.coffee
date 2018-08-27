@@ -22,6 +22,9 @@ app.use (err,req,res,next)->
   res.type 'text/plain'
   res.status 500
   res.send '500 - Server Error!'
-server = http.Server app 
-server.listen 3003,->
-  console.log 'server running at port 3003;press Ctrl-C to terminate.'
+if require.main is module
+  server = http.Server app 
+  server.listen 3003,->
+    console.log 'server running at port 3003;press Ctrl-C to terminate.'
+else
+  module.exports = app 

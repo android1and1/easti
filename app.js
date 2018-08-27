@@ -44,10 +44,13 @@
     return res.send('500 - Server Error!');
   });
 
-  server = http.Server(app);
-
-  server.listen(3003, function() {
-    return console.log('server running at port 3003;press Ctrl-C to terminate.');
-  });
+  if (require.main === module) {
+    server = http.Server(app);
+    server.listen(3003, function() {
+      return console.log('server running at port 3003;press Ctrl-C to terminate.');
+    });
+  } else {
+    module.exports = app;
+  }
 
 }).call(this);

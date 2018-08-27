@@ -1,6 +1,10 @@
 # just test zombie + mocha enviroment
+http = require 'http'
+app = require '../app.js' 
+server = http.Server app
+server.listen 3004,'localhost'
 Browser = require 'zombie'
-Browser.localhost 'example.com',3003 #3003 is development specail port
+Browser.localhost 'example.com',3004 #3003 is development specail port
 browser = new Browser
 describe 'access site index page is easy::',->
   before (done)->
