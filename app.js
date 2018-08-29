@@ -20,7 +20,7 @@
 
   app.get('/', function(req, res) {
     return res.render('index', {
-      title: 'I see you',
+      title: 'I see You',
       name: 'wang!'
     });
   });

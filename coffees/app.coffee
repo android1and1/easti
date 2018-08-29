@@ -9,7 +9,7 @@ app.use express.static static_root
 app.get '/',(req,res)->
   res.render 'index'
     ,
-    title:'I see you'
+    title:'I see You'
     name:'wang!'
 app.get '/show-widget',(req,res)->
   res.render 'widgets/show-widget'

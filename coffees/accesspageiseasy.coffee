@@ -1,15 +1,21 @@
-# just test zombie + mocha enviroment
-http = require 'http'
-app = require '../app.js' 
-server = http.Server app
-server.listen 3004,'localhost'
 Browser = require 'zombie'
-Browser.localhost 'example.com',3004 #3003 is development specail port
+Browser.localhost 'example.com',4140
 browser = new Browser
-describe 'access site index page is easy::',->
-  before (done)->
-    browser.visit 'example.com',done
-  it 'should access page successfully::',->
-    browser.assert.success()
-  it 'page title is "you see you"::',->
-    browser.assert.text 'title','I see you' 
+app = require '../app'
+http = require 'http'
+http.Server app
+app.listen 4140
+# sometimes it will help(below line)
+#browser.waitDuration = '30s'
+describe 'zombie ability display::',->
+  describe 'access index page should success::',->
+    before ->
+      browser.visit 'http://example.com'
+    it 'should access page successfully::',->
+      browser.assert.success()
+      #No Need This Time
+      #console.log browser.html()
+    it 'should has 2 h4 tags::',->
+      browser.assert.elements 'h4',2
+    it 'page title is "I see You"::',->
+      browser.assert.text 'title','I see You' 

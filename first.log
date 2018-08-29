@@ -32,3 +32,29 @@ run test(initial),good.
 
 //Sun Aug 26 18:41:04 CST 2018
 initial level 2,target is 'mocha + tdd'
+
+//Wed Aug 29 16:11:52 CST 2018
+found what happen 'zombie6.x + mocha',no matter about each one,in fact,after i 'browser.html()' to see all output(it said '404 No Found'), i realized that,the route:'example.com' not correctly,instead it,shouldbe 'http://example.com/' or 'http://example.com',.
+now zombie is work well.
+
+
+affix original codes::
+(from accesspageiseasy.coffee)
+Browser = require 'zombie'
+Browser.localhost 'example.com',3003 
+browser = new Browser
+# sometimes it will help(below line)
+browser.waitDuration = '30s'
+describe 'zombie ability display::',->
+  describe 'access index page should success::',->
+    before ->
+      # !!NOT "browser.visit 'example.com'"  !!
+      browser.visit 'http://example.com'
+    it 'should access page successfully::',->
+      browser.assert.success()
+      console.log browser.html()
+    it 'should has 2 h4 tags::',->
+      browser.assert.elements 'h4',2
+    it 'page title is "you see you"::',->
+      browser.assert.text 'title','you see you' 
+
