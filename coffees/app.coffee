@@ -6,6 +6,10 @@ project_root = process.env.HOME + '/easti'
 app.set 'view engine','pug'
 static_root = path.join project_root,'public'
 app.use express.static static_root 
+# include all customise router
+tools = require './routes/route-tools.js'
+app.use '/tools',tools 
+
 app.get '/',(req,res)->
   res.render 'index'
     ,
