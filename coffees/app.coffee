@@ -7,8 +7,10 @@ app.set 'view engine','pug'
 static_root = path.join project_root,'public'
 app.use express.static static_root 
 # include all customise router
+# 1 router:tools - api
 tools = require './routes/route-tools.js'
 app.use '/tools',tools 
+# 2 router:vip 
 
 app.get '/',(req,res)->
   res.render 'index'
