@@ -62,3 +62,6 @@ describe 'zombie ability display::',->
 zuo men de shi fu lai J602 xiu men,hao le.
 refine the func-test case,add server.close() in after case.
 crreate a new alpha router.
+
+	//Fri Aug 31 12:08:08 CST 2018
+alpha router is good,but now need more:compress page content.
