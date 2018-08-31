@@ -58,3 +58,7 @@ describe 'zombie ability display::',->
     it 'page title is "you see you"::',->
       browser.assert.text 'title','you see you' 
 
+//Fri Aug 31 10:23:47 CST 2018
+zuo men de shi fu lai J602 xiu men,hao le.
+refine the func-test case,add server.close() in after case.
+crreate a new alpha router.

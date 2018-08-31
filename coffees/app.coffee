@@ -9,7 +9,9 @@ app.use express.static static_root
 # include all customise router
 # 1 router:tools - api
 tools = require './routes/route-tools.js'
+alpha = require './routes/route-alpha.js'
 app.use '/tools',tools 
+app.use '/alpha',alpha 
 # 2 router:vip 
 
 app.get '/',(req,res)->
@@ -22,6 +24,7 @@ app.get '/show-widget',(req,res)->
 app.get '/iphone-upload',(req,res)->
   res.render 'iphone-upload'
 app.use (req,res)->
+  res.status 404
   res.render '404'
 app.use (err,req,res,next)->
   console.error err.stack
