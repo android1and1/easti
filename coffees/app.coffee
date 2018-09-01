@@ -7,12 +7,12 @@ app.set 'view engine','pug'
 static_root = path.join project_root,'public'
 app.use express.static static_root 
 # include all customise router
-# 1 router:tools - api
 tools = require './routes/route-tools.js'
 alpha = require './routes/route-alpha.js'
+uploading = require './routes/route-uploading.js'
 app.use '/tools',tools 
 app.use '/alpha',alpha 
-# 2 router:vip 
+app.use '/uploading',uploading
 
 app.get '/',(req,res)->
   res.render 'index'
@@ -21,8 +21,6 @@ app.get '/',(req,res)->
     name:'wang!'
 app.get '/show-widget',(req,res)->
   res.render 'widgets/show-widget'
-app.get '/iphone-upload',(req,res)->
-  res.render 'iphone-upload'
 app.use (req,res)->
   res.status 404
   res.render '404'
