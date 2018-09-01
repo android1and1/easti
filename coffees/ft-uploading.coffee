@@ -20,3 +20,13 @@ describe 'route - "/uploading"::',->
       browser.assert.status 200
       #No Need This Time
       #console.log browser.html()
+    it 'all input fields  has its name attribute::',->
+      browser.assert.elements 'input[name]',2
+      browser.assert.attribute 'input','name',/\w+/
+    describe 'submits form::',->
+      before -> 
+        browser.pressButton 'Upload Now' 
+      it 'while fields full submit will cause redirect to new url::',->
+        browser.assert.redirected()
+      it 'new title "iphone-uploading-success" will occurs::',->
+        browser.assert.text 'title','iphone-uploading-success' 

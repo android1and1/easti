@@ -65,3 +65,17 @@ crreate a new alpha router.
 
 	//Fri Aug 31 12:08:08 CST 2018
 alpha router is good,but now need more:compress page content.
+
+//Sat Sep  1 11:31:15 CST 2018
+be careful of zombie browser.assert.attribute codes.
+even html element(s) has no attribue - name,the test will pass,no problem.
+if your target is check :
+1)elements(e.g. input elements)all have [name=] attrbute;
+2)and,[name=] not empty.
+
+actually,there are 2 task not 1,you first check 1) via:
+browser.assert.elements 'input[name]',2  # example,your form only 2 input fields
+be aware,not 'input' ,it is 'input[name]',to disable no name input field(s).
+
+then,do 2) via:
+browser.assert.attribute 'input','name',/\w+/

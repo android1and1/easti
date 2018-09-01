@@ -15,7 +15,9 @@
   });
 
   router.get('/successfully', function(req, res, next) {
-    return res.render('uploading/successfully');
+    return res.render('uploading/successfully', {
+      title: 'iphone-uploading-success'
+    });
   });
 
   module.exports = router;

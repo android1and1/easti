@@ -30,14 +30,28 @@
       before(function() {
         return browser.visit('http://example.com/uploading/iphone-uploading');
       });
-      return it('should access page successfully::', function() {
+      it('should access page successfully::', function() {
         browser.assert.success();
         return browser.assert.status(200);
       });
+      //No Need This Time
+      //console.log browser.html()
+      it('all input fields  has its name attribute::', function() {
+        browser.assert.elements('input[name]', 2);
+        return browser.assert.attribute('input', 'name', /\w+/);
+      });
+      return describe('submits form::', function() {
+        before(function() {
+          return browser.pressButton('Upload Now');
+        });
+        it('while fields full submit will cause redirect to new url::', function() {
+          return browser.assert.redirected();
+        });
+        return it('new title "iphone-uploading-success" will occurs::', function() {
+          return browser.assert.text('title', 'iphone-uploading-success');
+        });
+      });
     });
   });
-
-  //No Need This Time
-//console.log browser.html()
 
 }).call(this);
