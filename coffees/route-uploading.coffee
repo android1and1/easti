@@ -13,7 +13,7 @@ router.post  '/iphone-uploading',(req,res,next)->
       ifred = true
     console.log 'field name',name,':',value
   form.on 'file',(name,value)->
-    console.log 'field name',name,':',value
+    console.log 'FILE name',name,':',value
   form.parse req,->
     if ifred 
       res.redirect 302,'/uploading/successfully' # 302 is default code.

@@ -42,7 +42,7 @@
       });
       return describe('submits form::', function() {
         before(function() {
-          browser.fill('input[type="text"]', 'any thing here');
+          browser.attach('input[type="file"]', '/home/qianhui/easti/package.json');
           browser.check('input[name="ifenc"]');
           return browser.pressButton('Upload Now');
         });

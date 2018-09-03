@@ -23,7 +23,7 @@
       return console.log('field name', name, ':', value);
     });
     form.on('file', function(name, value) {
-      return console.log('field name', name, ':', value);
+      return console.log('FILE name', name, ':', value);
     });
     return form.parse(req, function() {
       if (ifred) {

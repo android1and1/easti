@@ -25,7 +25,7 @@ describe 'route - "/uploading"::',->
       browser.assert.attribute 'input','name',/\w+/
     describe 'submits form::',->
       before ()-> 
-        browser.fill('input[type="text"]','any thing here')
+        browser.attach 'input[type="file"]','/home/qianhui/easti/package.json'
         browser.check('input[name="ifenc"]')
         return browser.pressButton('Upload Now')
       it 'while fields full submit will cause redirect to new url::',->
