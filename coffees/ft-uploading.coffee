@@ -24,8 +24,10 @@ describe 'route - "/uploading"::',->
       browser.assert.elements 'input[name]',2
       browser.assert.attribute 'input','name',/\w+/
     describe 'submits form::',->
-      before -> 
-        browser.pressButton 'Upload Now' 
+      before ()-> 
+        browser.fill('input[type="text"]','any thing here')
+        browser.check('input[name="ifenc"]')
+        return browser.pressButton('Upload Now')
       it 'while fields full submit will cause redirect to new url::',->
         browser.assert.redirected()
       it 'new title "iphone-uploading-success" will occurs::',->

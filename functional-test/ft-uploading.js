@@ -42,6 +42,8 @@
       });
       return describe('submits form::', function() {
         before(function() {
+          browser.fill('input[type="text"]', 'any thing here');
+          browser.check('input[name="ifenc"]');
           return browser.pressButton('Upload Now');
         });
         it('while fields full submit will cause redirect to new url::', function() {
