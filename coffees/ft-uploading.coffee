@@ -8,9 +8,11 @@ server = http.Server app
 server.listen 4140
 server.on 'error',(err)->console.error err
 
-# sometimes it will help(below line)
-#browser.waitDuration = '30s'
+# sometimes it will help(below line),especially beaglebone and raspi
+browser.waitDuration = '30s'
 describe 'route - "/uploading"::',->
+  # need by raspberry pi,even version 2
+  @timeout 9140
   after ->
     server.close()
   describe 'iphone-uploading sub router::',->
