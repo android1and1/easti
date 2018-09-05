@@ -20,14 +20,13 @@ router.post  '/iphone-uploading',(req,res,next)->
     fs.rename file.path,abs,(err)-> 
       if err
         throw new Error 'rename event occurs error.' 
-      console.log '-------'
-      console.log 'move path:"%s" to "%s".',file.path,abs
-      console.log '-------'
   form.parse req,(err)->
     if err
       res.render 'uploading/error.pug'
     else
-      res.redirect 302,'/uploading/successfully' # 302 is default code.
+      # 302 is default code.
+      res.locals.bytesize = '10m'
+      res.redirect 302,'/uploading/successfully'
 router.get '/successfully',(req,res,next)->
   res.render 'uploading/successfully',{title:'iphone-uploading-success'}
 module.exports = router
