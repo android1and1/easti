@@ -22,8 +22,12 @@
       }
       return console.log('field name', name, ':', value);
     });
-    form.on('file', function(name, value) {
-      return console.log('FILE name', name, ':', value);
+    form.on('file', function(name, fileobj) {
+      return console.log('FILE name', name, ':', {
+        'filename': fileobj.name,
+        'filepath': fileobj.path,
+        'filesize': fileobj.size
+      });
     });
     return form.parse(req, function() {
       if (ifred) {

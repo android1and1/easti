@@ -6,8 +6,11 @@ block content
   h2 help text: choices one or multiple files from your iphone,then click upload button
   form(enctype="multipart/form-data" action="/uploading/iphone-uploading" method="post" id="leyou")
     .form-group
-      label(class="control-label" for="inputfield") Uploading file(s)
-      input(type="file" class="form-control" name="itisfiles" id="inputfield" multiple="multiple") 
+      label(class="control-label" for="choicefiles") Choice Uploading file(s)
+      input(type="file" class="form-control hide" name="choicefiles" id="choicefiles" multiple="multiple") 
+    .form-group
+      label(class="control-label" for="specof") Spec Of Photo(es) 
+      textarea(class="form-control" name="specof" id="specof" rows="3" cols="10" wrap="soft") 
     .checkbox
       label
         input(type="checkbox" name="ifenc") 
