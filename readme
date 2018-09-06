@@ -18,3 +18,33 @@ test simple site
 
 
 * only the 1st client need run this.
+
+
+#####################
+#####################
+  formidable
+#####################
+#####################
+formidable module has very important widget - 'IncomingForm' class.
+useage:
+form = new formidable.IncomingForm
+form.parse req,(err,fileds,files)->
+  # fileds
+form.on 'file',(name,value)->
+  # name is client html page's type="file",name="XXX"
+  # value is a File object list,each File can retrieved via:"for file in value"(then,file.name,file.path in the scope) 
+form.on 'field',(name,value)->
+  # name is as like as client page's "input(type="text" name="XXX"...)"
+  # value is field's value,type as client page defined,e.g.Number,String,...
+
+
+debug level:
+if something wrong occurs,follow the oredered list:
+1,form action attr?
+2,form method?
+3,fields has its name?
+4,form enctype attr?
+5,input(type="file") has multiple attr?
+6,server codes include "form.parse()"?
+7,server uploadDir setup?
+8,jquery xhr constructor set "data-parse"?

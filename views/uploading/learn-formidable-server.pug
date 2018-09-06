@@ -1,0 +1,7 @@
+extend ../layouts/main
+block content
+  if info
+    each v,i in info
+      h2 filed name is #{i},its value is: <small><u>#{v}.</u></small>
+  else
+    h2 no parseing data can show. 
