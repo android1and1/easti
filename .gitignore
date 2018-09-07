@@ -8,3 +8,6 @@ lock-log*
 credients/
 *.data
 configs/
+public/uploads
+!public/uploads/sample*.jpg
+!public/uploads/sample*.jpeg
