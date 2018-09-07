@@ -9,5 +9,5 @@ credients/
 *.data
 configs/
 public/uploads
-!public/uploads/sample*.jpg
-!public/uploads/sample*.jpeg
+! public/uploads/sample*.jpg
+! public/uploads/sample*.jpeg
