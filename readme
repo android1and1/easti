@@ -48,3 +48,16 @@ if something wrong occurs,follow the oredered list:
 6,server codes include "form.parse()"?
 7,server uploadDir setup?
 8,jquery xhr constructor set "data-parse"?
+
+###
+Mac Air Book
+###
+its nodejs installed by nodejs.xxx.tar via nodejs.org,64bit version(latest),just choice nodejs lib place,i choiced the //usr/local/node-v8.12.0-darwin-x64/bin/node
+and make a link to binary file:
+ /usr/local/bin/node -> /usr/local/node-v8.12.0-darwin-x64/bin/node
+
+redis-server as nodejs,from office-site download .tar file,unextract and put its content to favirote place - ' /usr/local/redis-4.0.10'
+then make 2 soft links for redis-server and redis-cli.
+run server: "redis-server &",note that no need sudo
+run client:"redis-cli"
+a tip,in client'shell,run "shutdown save" can affect server to close and save key-value before really disconnect.
