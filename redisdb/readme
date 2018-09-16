@@ -1,0 +1,10 @@
+the project run redis-server like below:
+
+(within PROJECT-ROOT)
+   "redis-server ./redisdb/redis.conf"
+
+in this file - "redis.conf",said:
+
+  dir ./redisdb/
+  dbfilename "easti.dump.rdb"
+  appendfilename "easti.appendonly.aof"

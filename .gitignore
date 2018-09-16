@@ -2,6 +2,8 @@ temp/
 tmp
 .temp
 .tmp
+redisdb/*.rdb
+redisdb/*.aof
 node_modules/
 package-lock*
 lock-log*
