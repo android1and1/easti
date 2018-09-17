@@ -1,0 +1,17 @@
+* Note that:this file for notify todo thing,just notify,if want do memo of development,write in 'readme'
+//2018年 9月16日 星期日 12时26分59秒 CST
+//Inch13Early2015Air
+  
+
+
+
+Inch13Early2015Air
+2018年 9月16日 星期日 12时27分39秒 CST
+make a route - "tricks"
+sub include /tricks/write,/tricks/read/1(or n)
+for short of them,currently no conside 'del' or 'update'
+
+template,views
+views/tricks/  -- root directory of route - tricks
+
+

@@ -10,9 +10,11 @@ app.use express.static static_root
 tools = require './routes/route-tools.js'
 alpha = require './routes/route-alpha.js'
 uploading = require './routes/route-uploading.js'
+tricks = require './routes/route-tricks.js'
 app.use '/tools',tools 
 app.use '/alpha',alpha 
 app.use '/uploading',uploading
+app.use '/tricks',tricks
 
 app.get '/',(req,res)->
   res.render 'index'
