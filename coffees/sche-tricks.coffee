@@ -1,5 +1,6 @@
 nohm = (require 'nohm').Nohm
-module.exports = nohm.model 'tricks',
+
+dear = nohm.model 'tricks',
   idGenerator:'increment'
   properties:
     about:
@@ -9,7 +10,7 @@ module.exports = nohm.model 'tricks',
           name:'length'
           options:
             min:6
-            max:16
+            max:26
         ]
     
     visits:
@@ -20,5 +21,9 @@ module.exports = nohm.model 'tricks',
       type:'string'
       defaultValue:''
     moment:
-      type:'timestamp'
+      type:'integer'
+      defaultValue: Date.parse new Date
     
+dear.prefix = 'tricks'
+
+module.exports  = dear
