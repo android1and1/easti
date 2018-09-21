@@ -14,7 +14,7 @@ redis.on 'connect',->
   for i in [10..1]
     item = await nohm.factory 'tricks'
     item.property
-      about:'eskoo is e' + i
+      about:'eskoo##' + i
       content:'try4:eskoo-'+i+'step1....then\nstep2....\nstep3.....\n....end'
       visits:100 
     reply = await item.save()

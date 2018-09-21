@@ -21,8 +21,8 @@ dear = nohm.model 'tricks',
       type:'string'
       defaultValue:''
     moment:
-      type:'integer'
-      defaultValue: Date.parse new Date
+      type:'timestamp'
+      defaultValue: 0 
     
 dear.prefix = 'tricks'
 
