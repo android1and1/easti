@@ -6,6 +6,7 @@ formidable = require 'formidable'
 Redis = require 'redis'
 nohm = (require 'nohm').Nohm
 schema = require '../modules/sche-tricks.js'
+PREFIX = 'EastI'
 
 # the first time,express working with nohm - redis orm library
 router.get  '/',(req,res,next)->
@@ -14,7 +15,7 @@ router.get  '/',(req,res,next)->
     console.log 'debug info::route-tricks::',err.message
   redis.on 'connect',->
     nohm.setClient redis
-    nohm.setPrefix schema.prefix
+    nohm.setPrefix PREFIX
     ids = await schema.find() 
     items = []
     if ids.length > 0
@@ -24,4 +25,16 @@ router.get  '/',(req,res,next)->
       res.render 'tricks/index.pug',{length:items.length,items:items}
     else
       res.render 'tricks/index.pug',{idle:true}
+router.get '/add1',(req,res,next)->
+  redis = Redis.createClient()
+  redis.on 'error',(err)->
+    console.log 'debug info::route-tricks::',err.message
+  redis.on 'connect',->
+    nohm.setClient redis
+    nohm.setPrefix PREFIX
+    ids = await schema.find() 
+  res.render 'tricks/add1.pug'
+router.post '/add1',(req,res,next)->
+  res.render 'tricks/successfully.pug',{title:'tricks-successfully',status:'ok'}
+
 module.exports = router

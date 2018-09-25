@@ -1,0 +1,17 @@
+extend ../layouts/main
+block content
+  form.form-horizontal(action="" enctype="multipart/form-data" method="POST")
+    p.help-block here is a help block,can remarkable with helpful infomations.
+    .form-group
+      label(class="control-label col-xs-4" for="idFieldAbout") About
+      .col-xs-8
+        input(type="text" class="form-control" id="idFieldAbout" name="about" placeholder="about..")
+    .form-group
+      label(class="control-labels col-xs-3" for="idFieldContent") Content
+      .col-xs-9
+        textarea(class="form-control" id="idFieldContent" name="content" rows="5" placeholder="content..")
+    .form-group
+      label(class="control-label col-xs-4" for="idFieldVisits") Visits
+      .col-xs-8
+        input(type="number" class="form-control" id="idFieldVisits" name="visits")
+    button(class="btn btn-default" type="submit") Submit!
