@@ -1,8 +1,21 @@
+# first check if redis-server is running,if at macbook air,it is not running as a service
+# we should manually start it,
+# in this standalone test,we can run "redis-server ./redisdb/redis.conf && mocha <this-test-script.js>"
+{ spawn } = require 'child_process'
+pgrep = spawn '/usr/bin/pgrep',['redis-server','-l']
+pgrep.on 'close',(code)->
+  if code isnt 0
+    console.log 'should start redis-server ./redisdb/redis.conf first(special for apple macbook air user).'
+    console.log 'alternatively,can run this:'
+    console.log '\t\t"redis-server ./redisdb/redis.conf && mocha <this-test-script.js>"'
+    process.exit 1
+
 assert = require 'assert'
 redis = require 'redis'
 .createClient()
 nohm = require 'nohm'
 .Nohm
+
 schema = nohm.model 'trythem'
   ,
     idGenerator:'increment'
