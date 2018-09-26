@@ -75,3 +75,4 @@ detail infoes read from ./redisdb/readme.
 
 at one situation:the standalone module test (usually in <project>/test directory),http server no running,just module-app imported into the mocha-test-js,so,due to app script's logic,the 'redis-server' no running,we can do this:
 "redis-server ./redisdb/redis.conf && mocha <the-test-js>"
+today goes to Island of 'liang zi' Lake,with parents.
