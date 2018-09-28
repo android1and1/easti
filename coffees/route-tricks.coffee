@@ -33,8 +33,11 @@ router.get '/add1',(req,res,next)->
     nohm.setClient redis
     nohm.setPrefix PREFIX
     ids = await schema.find() 
-  res.render 'tricks/add1.pug'
+    # TODO
+  res.render 'tricks/add1.pug',{order:0}
 router.post '/add1',(req,res,next)->
   res.render 'tricks/successfully.pug',{title:'tricks-successfully',status:'ok'}
+router.post '/snippet-form',(req,res,next)->
+  res.render 'tricks/snippet-form'
 
 module.exports = router

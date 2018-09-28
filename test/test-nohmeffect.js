@@ -66,7 +66,7 @@
     });
     after(function() {
       // clean all,via node-redis
-      return redis.keys('*', function(err, keylist) {
+      return redis.keys('tryNohm*', function(err, keylist) {
         var i, key, len, results;
         results = [];
         for (i = 0, len = keylist.length; i < len; i++) {
@@ -83,16 +83,41 @@
       ids = (await db.find());
       return assert.equal(ids.length, 1);
     });
-    return it('should correct attribute of saved object::', async function() {
+    it('should correct attribute of saved object::', async function() {
       var db;
       db = (await nohm.factory('trythem'));
       return db.load(1).then(function(something) {
         return assert.equal(something.tryvisits, 2222);
       });
     });
+    // or
+    //assert.equal db.allProperties().tryvisits,2222
+    it('should create 2nd item::', function() {
+      var db;
+      db = new schema;
+      db.property({
+        tryabout: 'story2',
+        trycontent: 'same story,from\nlong long ago...\n',
+        tryvisits: 1200
+      });
+      return db.save().then(function() {
+        return db.find().then(function(list) {
+          return assert.equal(list.length, 2);
+        });
+      });
+    });
+    return it('should find story2 item::', async function() {
+      var db, idlist, obj, theid;
+      db = (await nohm.factory('trythem'));
+      idlist = (await db.find({
+        tryvisits: {
+          max: 2000
+        }
+      }));
+      theid = idlist[0];
+      obj = (await db.load(theid));
+      return assert.equal(obj.tryabout, 'story2');
+    });
   });
-
-  // or
-//assert.equal db.allProperties().tryvisits,2222
 
 }).call(this);

@@ -51,7 +51,7 @@ describe 'custom function try test::',->
       return Promise.resolved 'be catched:::' + error
   after ->
     # clean all,via node-redis
-    redis.keys '*',(err,keylist)->redis.del key for key in keylist 
+    redis.keys 'tryNohm*',(err,keylist)->redis.del key for key in keylist 
   it 'should create 1 item::',->
     # find() will list all items.
     db = await nohm.factory 'trythem' 
@@ -64,3 +64,20 @@ describe 'custom function try test::',->
       assert.equal something.tryvisits,2222
       # or
       #assert.equal db.allProperties().tryvisits,2222
+  it 'should create 2nd item::',->
+    db = new schema
+    db.property 
+      tryabout:'story2'
+      trycontent:'same story,from\nlong long ago...\n'
+      tryvisits:1200
+ 
+    db.save().then ->
+      db.find().then (list)->
+        assert.equal list.length,2
+  it 'should find story2 item::',->
+    db = await nohm.factory 'trythem'
+    idlist = await db.find {tryvisits:{max:2000}}
+    theid = idlist[0]
+    obj = await db.load theid
+    assert.equal obj.tryabout,'story2'
+    

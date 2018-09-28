@@ -1,11 +1,12 @@
 extend ../layouts/main
+block pagejs
+  script(src="/pagejs/tricks/pagejs-tricks-onemoreform.js")
 block content
-  form.form-horizontal(action="" enctype="multipart/form-data" method="POST")
-    p.help-block here is a help block,can remarkable with helpful infomations.
+  //-
     .form-group
-      label(class="control-label col-xs-4" for="idFieldAbout") About
+      label(class="control-label col-xs-4" for= "fieldAbout-" + order) About
       .col-xs-8
-        input(type="text" class="form-control" id="idFieldAbout" name="about" placeholder="about..")
+        input(type="text" class="form-control" id= "fieldAbout-" + order name="about" placeholder="about..")
     .form-group
       label(class="control-labels col-xs-3" for="idFieldContent") Content
       .col-xs-9
@@ -14,4 +15,10 @@ block content
       label(class="control-label col-xs-4" for="idFieldVisits") Visits
       .col-xs-8
         input(type="number" class="form-control" id="idFieldVisits" name="visits")
+  form.form-horizontal(action="" enctype="multipart/form-data" method="POST")
+    p.help-block here is a help block,can remarkable with helpful infomations.
+    include ./snippet-form.pug
+     
     button(class="btn btn-default" type="submit") Submit!
+  p copyright and else thing need to display
+  button#onemore click-to-be-altered
