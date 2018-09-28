@@ -1,12 +1,23 @@
 # tricks is route for 'saving/updating/deleting/finding' tricks-db (a nohm-like database)
-Redis = require 'redis'
-redis = Redis.createClient()
 
-redis.on 'connect',->
-  # tell how many items about '*:hash:tricks:*'
-  redis.keys '*:hash:tricks:*',(err,list)->
-    for item in list
-      console.log item
+# first check if redis-server is running,if at macbook air,it is not running as a service
+# we should manually start it,
+# in this standalone test,we can run "redis-server ./redisdb/redis.conf && mocha <this-test-script.js>"
+checkifredisserverisrunning = ->
+  { spawn } = require 'child_process'
+  return new Promise (resolve)->
+    pgrep = spawn '/usr/bin/pgrep',['redis-server','-l']
+    pgrep.on 'close',(code)->
+      if code isnt 0
+        resolve true 
+      else
+        resolve false
+tellAndExit = ->#
+  console.log 'should start redis-server ./redisdb/redis.conf first(special for apple macbook air user).'
+  console.log 'alternatively,can run this:'
+  console.log '\t\t"redis-server ./redisdb/redis.conf && mocha <this-test-script.js>"'
+  process.exit 1
+
 Browser = require 'zombie'
 Browser.localhost 'www.fellow5.cn',4140
 browser = new Browser
@@ -15,18 +26,20 @@ app = require '../app.js'
 server = (require 'http').Server app
 
 server.on 'error',(err)->
-  console.error 'start debug error info::'
+  console.log '///////'
   console.error err
-  console.error 'debug error info end::'
+  console.log '///////'
 
 server.listen 4140
 
 describe 'it will be successfully while accessing /tricks/add1::',->
-  before (done)->
-    browser.visit 'http://www.fellow5.cn/tricks/add1',done 
+  before ()->
+    bool = await checkifredisserverisrunning()
+    if bool
+      tellAndExit() 
+    browser.visit 'http://www.fellow5.cn/tricks/add1'
   after ->
     server.close()
-    redis.quit() # close db connection
   it 'it will be success while accessing route - /tricks/add1::',->
     browser.assert.success()
     browser.assert.status 200
@@ -46,4 +59,3 @@ describe 'it will be successfully while accessing /tricks/add1::',->
       browser.assert.success()
       browser.assert.text 'title','tricks-successfully'
     it 'should add 1 item::',->
-      
