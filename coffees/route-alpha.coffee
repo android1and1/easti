@@ -6,6 +6,9 @@ router = express.Router()
 # test for initial level
 router.get '/alpha-1',(req,res,next)->
   res.send 'hi,i am alpha No.1'
+router.get '/indexeddb',(req,res,next)->
+  # see safari or firefox window.indexeddb attribute
+  res.render 'alpha/indexeddb.pug'
 
 router.get  '/*',(req,res,next)->
   abs = path.join((path.dirname __dirname),'views',req.path)

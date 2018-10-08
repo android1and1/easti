@@ -27,3 +27,13 @@ cyrus-Latitude-E7470
 Inch13Early2015Air
 2018年 9月18日 星期二 15时21分12秒 CST
   learn find,load,loadMany,update?,exists.
+
+Inch13Early2015Air
+2018年10月 8日 星期一 16时12分49秒 CST
+  ajax method -- $.ajax {options}
+  the {options} attribute -- data,useful for collection of form-datas,via $('<somespecial>').serialize()  -- no arguments in serialize() method.
+  at the server side,(app.js) has snippet:
+  app.use express.urlencoded {extends:fasle}   # no need include bodyParser again(example:bodyParser = require 'bodyParser').
+  Note that:
+    if one form has same attribute name,in case,we say 'visits',first element is <input type="number" name="visits".....>,then dynimactlly include another element -- <input type="number" name="visits"....>
+    at last,the server gets body.visits = ['value-one','value-two']

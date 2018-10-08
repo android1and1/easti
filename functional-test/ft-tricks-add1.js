@@ -73,9 +73,12 @@
       browser.assert.attribute('form', 'action', '');
       return browser.assert.attribute('form', 'method', 'POST');
     });
+    it('has a "onemore" button::', function() {
+      return browser.assert.element('button#onemore');
+    });
     return describe('submit form::', function() {
       before(function() {
-        browser.fill('textarea', 'there was a game between county a and country b,\nlong long ago..');
+        browser.fill('[name=content]', 'there was a game between county a and country b,\nlong long ago..');
         browser.fill('[name=about]', 'aboutone');
         browser.fill('[type=number]', '1111');
         return browser.pressButton('button');

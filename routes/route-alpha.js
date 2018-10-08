@@ -15,6 +15,11 @@
     return res.send('hi,i am alpha No.1');
   });
 
+  router.get('/indexeddb', function(req, res, next) {
+    // see safari or firefox window.indexeddb attribute
+    return res.render('alpha/indexeddb.pug');
+  });
+
   router.get('/*', function(req, res, next) {
     var abs, extname;
     abs = path.join(path.dirname(__dirname), 'views', req.path);

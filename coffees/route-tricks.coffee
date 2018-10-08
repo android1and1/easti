@@ -1,4 +1,5 @@
 fs = require 'fs'
+pug = require 'pug'
 path = require 'path'
 express = require 'express'
 router = express.Router()
@@ -35,9 +36,19 @@ router.get '/add1',(req,res,next)->
     ids = await schema.find() 
     # TODO
   res.render 'tricks/add1.pug',{order:0}
+
 router.post '/add1',(req,res,next)->
-  res.render 'tricks/successfully.pug',{title:'tricks-successfully',status:'ok'}
-router.post '/snippet-form',(req,res,next)->
-  res.render 'tricks/snippet-form'
+  #dummy
+  #res.render 'tricks/successfully.pug',{title:'tricks-successfully',status:'still ok'}
+  console.dir req.body
+  resp = {} 
+  for i,v of req.body
+    resp[i] = v
+  res.json resp
+    
+
+router.post '/onemore',(req,res,next)->
+  #note that,pug.renderFile retrieves .pug path,not same as pug.render(from root directory:<project>/views
+  res.send pug.renderFile 'views/tricks/snippet-form.pug'
 
 module.exports = router

@@ -48,10 +48,12 @@ describe 'it will be successfully while accessing /tricks/add1::',->
   it 'The form action is same url.href and method is POST::',->
     browser.assert.attribute 'form','action',''
     browser.assert.attribute 'form','method','POST'
+  it 'has a "onemore" button::',->
+    browser.assert.element 'button#onemore' 
 
   describe 'submit form::',->
     before -> 
-      browser.fill 'textarea','there was a game between county a and country b,\nlong long ago..'
+      browser.fill '[name=content]','there was a game between county a and country b,\nlong long ago..'
       browser.fill '[name=about]','aboutone'
       browser.fill '[type=number]','1111'
       browser.pressButton 'button' 

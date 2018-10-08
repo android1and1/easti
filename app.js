@@ -16,11 +16,17 @@
 
   app.set('view engine', 'pug');
 
+  //static root directory setup
   static_root = path.join(PROJECT_ROOT, 'public');
 
   app.use(express.static(static_root));
 
   
+  //bodyParser as
+  app.use(express.urlencoded({
+    extended: false
+  }));
+
   // include all customise router
   tools = require('./routes/route-tools.js');
 
