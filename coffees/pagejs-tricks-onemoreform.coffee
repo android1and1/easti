@@ -26,7 +26,7 @@ jQuery document
       data:{itemno:4}
       type:'POST'
     .done (text)->
-      $('div.extends').append $(text)
+      $('button#onemore').before($(text)) 
     .fail (xhr,status,code)->
       console.log status
       console.log code 

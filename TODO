@@ -37,3 +37,7 @@ Inch13Early2015Air
   Note that:
     if one form has same attribute name,in case,we say 'visits',first element is <input type="number" name="visits".....>,then dynimactlly include another element -- <input type="number" name="visits"....>
     at last,the server gets body.visits = ['value-one','value-two']
+
+jp-stretch-pi-2
+Mon Oct  8 16:49:34 CST 2018
+  button now near the down side of page ,add1 button now looks better.

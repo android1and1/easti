@@ -30,7 +30,7 @@
         },
         type: 'POST'
       }).done(function(text) {
-        return $('div.extends').append($(text));
+        return $('button#onemore').before($(text));
       }).fail(function(xhr, status, code) {
         console.log(status);
         return console.log(code);
