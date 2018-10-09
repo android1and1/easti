@@ -1,16 +1,14 @@
 .form-group
   - field_about_id="Group-" + order + "-Field-About"
-  label(class="control-label col-sm-4" for=field_about_id) About
-  .col-xs-8
-    input(type="text" class="form-control" id=field_about_id name="about" placeholder="about..")
+  label(class="control-label" for=field_about_id) About
+  input(type="text" class="form-control" id=field_about_id name="about" placeholder="about..")
 .form-group
   - field_content_id="Group-" + order + "-Field-Content"
-  label(class="control-labels col-xs-3" for=field_content_id) Content
-  .col-xs-9
-    textarea(class="form-control" id=field_content_id name="content" rows="5" placeholder="content..")
+  label(class="control-labels" for=field_content_id) Content
+  textarea(class="form-control" id=field_content_id name="content" rows="5" placeholder="content..")
 .form-group
   - field_visits_id="Group-" + order + "-Field-Visits"
-  label(class="control-label col-xs-4" for=field_visits_id) Visits
-  .col-xs-8
-    input(type="number" class="form-control" id= field_visits_id name="visits")
-span.idefined
+  label(class="control-label" for=field_visits_id) Visits
+  input(type="number" class="form-control" id= field_visits_id name="visits")
+button(type="button" class="onemore btn btn-primary") Add 1
+.shinning

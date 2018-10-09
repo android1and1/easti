@@ -1,10 +1,17 @@
 extend ../layouts/main
+block pagecss
+  style(type="text/css").
+    .shinning { 
+      padding:2em;
+      margin:4em;
+      height:2%;
+      background-color:purple;
+    }
 block pagejs
   script(src="/pagejs/tricks/pagejs-tricks-onemoreform.js")
 block content
-  form.form-horizontal(action="" enctype="multipart/form-data" method="POST")
+  form(action="" enctype="multipart/form-data" method="POST")
     p.help-block here is a help block,can remarkable with helpful infomations.
     include ./snippet-form.pug
     div.extends
-      button#onemore.btn.btn-default Add 1
     button#submit(class="btn btn-default" type="submit") Submit!

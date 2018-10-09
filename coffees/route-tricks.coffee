@@ -8,6 +8,9 @@ Redis = require 'redis'
 nohm = (require 'nohm').Nohm
 schema = require '../modules/sche-tricks.js'
 PREFIX = 'EastI'
+ 
+#counter
+counter = 1
 
 # the first time,express working with nohm - redis orm library
 router.get  '/',(req,res,next)->
@@ -38,9 +41,7 @@ router.get '/add1',(req,res,next)->
   res.render 'tricks/add1.pug',{order:0}
 
 router.post '/add1',(req,res,next)->
-  #dummy
-  #res.render 'tricks/successfully.pug',{title:'tricks-successfully',status:'still ok'}
-  console.dir req.body
+  # this route for client page - /tricks/add1,ajax request
   resp = {} 
   for i,v of req.body
     resp[i] = v
@@ -48,7 +49,8 @@ router.post '/add1',(req,res,next)->
     
 
 router.post '/onemore',(req,res,next)->
-  #note that,pug.renderFile retrieves .pug path,not same as pug.render(from root directory:<project>/views
-  res.send pug.renderFile 'views/tricks/snippet-form.pug'
+  #note that,"pug.renderFile" retrieves .pug path,not same as "res.render"
+  # res.render works from root directory - "<project>/views"
+  res.send pug.renderFile 'views/tricks/snippet-form.pug',{order:counter++}
 
 module.exports = router
