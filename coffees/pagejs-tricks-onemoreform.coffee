@@ -13,7 +13,6 @@ jQuery document
       data:$('form').serialize() 
       type:'POST'
     .done (json)->
-      #$('div.extends').append $('<p/>',{text:typeof json})
       for i,v of json
         $('div.extends').append $('<p/>',{text:i + ':' + v})
     .fail (xhr,status,code)->
@@ -26,7 +25,6 @@ jQuery document
     $.ajax 
       url:'/tricks/onemore'
       dataType:'text'
-      data:{itemno:4}
       type:'POST'
     .done (text)->
       # first, change button class from .onemore to .onemoredone
