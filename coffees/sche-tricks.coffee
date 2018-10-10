@@ -23,5 +23,5 @@ dear = nohm.model 'tricks',
     moment:
       type:'timestamp'
       defaultValue: 0 
-    
+dear.prefix = 'tricks'    
 module.exports  = dear

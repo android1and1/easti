@@ -7,7 +7,6 @@ jQuery document
 .ready ->
   $ 'button#submit'
   .on 'click',(evt1)->
-    alert $('form').serialize() + '&order=1'
     $.ajax
       url:''
       dataType:'json'

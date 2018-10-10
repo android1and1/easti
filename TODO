@@ -41,3 +41,9 @@ Inch13Early2015Air
 jp-stretch-pi-2
 Mon Oct  8 16:49:34 CST 2018
   button now near the down side of page ,add1 button now looks better.
+
+Inch13Early2015Air
+2018年10月10日 星期三 09时39分16秒 CST
+  from here start to think about module event,task.
+  after submitting data(fields),server start to parsing them ,populated to correctly table(in redis,say "key-value",hash key).
+  single form occurs 
