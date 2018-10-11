@@ -66,6 +66,9 @@ a tip,in client'shell,run "shutdown save" can affect server to close and save ke
 ###
 redis-server
 ###
+redis-server commended to be a manually start program,after "apt install",redis-server always be a system-manager,and boot-with program,
+there is 1 drawback:user always forget use their customer db file,at <project>/redisdb/easti.dump.rdb,and their customer config file at <project>/redisdb/redis.conf.
+so,start redis-server is app's task.in app.js,will find some "spawn" codes about check-start redis-server.
 redis-server run from project rootdirectory,run:
 redis-server ./redisdb/redis.conf  (redisdb collect all redis-like things together)
 redis-server use db filename is ./redisdb/easti.dump.rdb (in .gitignore file,it is be ignores,so each client use itself)
