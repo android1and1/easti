@@ -50,6 +50,7 @@ router.post '/add1',(req,res,next)->
     valid = await trick.validate(undefined,false)
     console.log 'valid==',valid
     if not valid
+      console.dir trick.errors
       res.json {errors:trick.errors,debuginfo:'debug info - wrong!'}
     else
       trick.save().then ->
