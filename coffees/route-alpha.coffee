@@ -22,7 +22,16 @@ router.post '/ajax-redirect',(req,res,next)->
     res.json {command:'redirect',state:'ok'}
   else
     res.json {state:'not good!'}
-
+# this route coplay with client-ajax,'json' to client.
+router.post '/server-side-data/:num',(req,res,next)->
+  pathname = path.join((path.dirname __dirname),'share','da' + req.params.num + '.json')
+  fs.readFile pathname,'utf-8',(e,da)->
+    #if e then res.json JSON.stringify {state:'wrong'} else res.json da
+    if e
+      msg =  'can not find ' + pathname + ' .'
+      next msg 
+    else
+      res.json da
 router.get '/succ',(req,res,next)->
   res.render 'alpha/succ'
 

@@ -40,26 +40,48 @@ router.post '/add1',(req,res,next)->
   redis.on 'connect',->
     nohm.setClient redis
     nohm.setPrefix DB_PREFIX
-    trick = await nohm.factory TABLE_PREFIX
-    # the first time,we handle the easiest case:one form
-    #console.dir req.body
-    trick.property
-      about:req.body.about
-      content:req.body.content
-      visits:req.body.visits
-    valid = await trick.validate(undefined,false)
-    console.log 'valid==',valid
-    if not valid
-      console.dir trick.errors
-      res.json {errors:trick.errors,debuginfo:'debug info - wrong!'}
+    if req.body.sign is '1'
+      check = await handSingle req.body
+      if check.error  # has error
+        return res.json {state:'Error'}
+      else
+        return res.json {state:'Saved'}
     else
-      trick.save().then ->
-        res.json
-          'state':'saved'
+      #res.json 'state':'you has given ' + req.body.sign + ' forms,wait our resolving.'
+      return res.json 'meiyou':'shi qing!'
+      #handArray res,req.body
 
 router.post '/onemore',(req,res,next)->
   #note that,"pug.renderFile" retrieves .pug path,not same as "res.render"
   # res.render works from root directory - "<project>/views"
   res.send pug.renderFile 'views/tricks/snippet-form.pug',{order:counter++}
 
+###
+help methods
+###
+
+handSingle = (body)->
+  trick = await nohm.factory TABLE_PREFIX 
+  trick.property
+    about:body.about
+    content:body.content
+    visits:body.visits
+  valid = await trick.validate(undefined,false)
+  console.log 'inner help func::handSingle',valid
+  if not valid 
+    console.dir trick.errors
+    # return a promise
+    #return Promise.resovle {errors:trick.errors,debuginfo:'debug info - wrong!'}
+    return Promise.resovle {error:true}
+  else
+    trick.save().then ->
+      return Promise.resolve {error:false}
+
+handArray = (length,body)->
+  for i in [0...length]
+    handSingle res
+      ,
+      about:body[i]["about"] 
+      content:body[i]["content"]
+      visits:body[i]["visits"]
 module.exports = router

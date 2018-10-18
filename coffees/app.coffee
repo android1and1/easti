@@ -32,7 +32,7 @@ app.use (req,res)->
   res.status 404
   res.render '404'
 app.use (err,req,res,next)->
-  console.error err.stack
+  console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
   res.type 'text/plain'
   res.status 500
   res.send '500 - Server Error!'

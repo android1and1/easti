@@ -7,6 +7,8 @@ jQuery document
 .ready ->
   $ 'button#submit'
   .on 'click',(evt1)->
+    # debug info
+    alert $('form').serialize()
     $.ajax
       url:''
       dataType:'json'
@@ -22,6 +24,9 @@ jQuery document
 
   $ 'form'
   .on 'click','button.onemore',(evt2)->
+    # sign = 1 + N 
+    original = parseInt $('input#behidden').val()
+    $('input#behidden').val (original + 1 )
     $.ajax 
       url:'/tricks/onemore'
       dataType:'text'

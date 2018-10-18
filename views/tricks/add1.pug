@@ -5,13 +5,14 @@ block pagecss
       padding:2em;
       margin:4em;
       height:2%;
-      background-color:purple;
+      background-color:yellow;
     }
 block pagejs
   script(src="/pagejs/tricks/pagejs-tricks-onemoreform.js")
 block content
   a.comeback(type="button" role="button" class="btn btn-primary btn-lg" href="/" alt="come back to front page of whole site") come back
   form(action="" enctype="multipart/form-data" method="POST")
+    input(type="text" value='1' class="hide" id="behidden" name="sign")
     p.help-block here is a help block,can remarkable with helpful infomations.
     include ./snippet-form.pug
     div.extends
