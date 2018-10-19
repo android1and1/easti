@@ -8,35 +8,22 @@
       promises = urls.map(function(url) {
         return getJSON(url);
       });
-      thelastone = Promise.all(promises);
-      return thelastone.then(function(jsons) {
-        var dd, dt, err, i, j, json, len, obj, results, v;
+      //thelastone = Promise.all promises
+      thelastone = Promise.race(promises);
+      return thelastone.then(function(json) {
+        var dd, dt, i, obj, results, v;
+        obj = JSON.parse(json);
         results = [];
-        for (j = 0, len = jsons.length; j < len; j++) {
-          json = jsons[j];
-          try {
-            obj = JSON.parse(json);
-            results.push((function() {
-              var results1;
-              results1 = [];
-              for (i in obj) {
-                v = obj[i];
-                dt = $('<dt/>', {
-                  text: i
-                });
-                dd = $('<dd/>', {
-                  text: ' ' + v
-                });
-                $('dl#one').append(dt);
-                results1.push($('dl#one').append(dd));
-              }
-              return results1;
-            })());
-          } catch (error1) {
-            err = error1;
-            console.dir(json);
-            results.push(console.error(err.msg));
-          }
+        for (i in obj) {
+          v = obj[i];
+          dt = $('<dt/>', {
+            text: i
+          });
+          dd = $('<dd/>', {
+            text: ' ' + v
+          });
+          $('dl#one').append(dt);
+          results.push($('dl#one').append(dd));
         }
         return results;
       }).catch(function(err) {
@@ -62,14 +49,7 @@
       return promise; //getJSON() define end.
     };
     return $('#ajaxbutton').on('click', function(evt) {
-      return get4jsons([
-        '/alpha/server-side-data/1',
-        '/alpha/server-side-data/2',
-        '/alpha/server-side-data/3',
-        
-        // below is not exists - "da5.json"
-        '/alpha/server-side-data/5'
-      ]);
+      return get4jsons(['/alpha/server-side-data/4', '/alpha/server-side-data/1', '/alpha/server-side-data/2', '/alpha/server-side-data/3']);
     });
   });
 
