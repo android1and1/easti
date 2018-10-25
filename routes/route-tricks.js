@@ -24,9 +24,9 @@
 
   schema = require('../modules/sche-tricks.js');
 
-  DB_PREFIX = 'EastI';
+  DB_PREFIX = schema.prefixes[0];
 
-  TABLE_PREFIX = schema.prefix;
+  TABLE_PREFIX = schema.prefixes[1];
 
   
   //counter
@@ -121,8 +121,7 @@
     if (!valid) {
       console.dir(trick.errors);
       // return a promise
-      //return Promise.resovle {errors:trick.errors,debuginfo:'debug info - wrong!'}
-      return Promise.resovle({
+      return Promise.resolve({
         error: true
       });
     } else {

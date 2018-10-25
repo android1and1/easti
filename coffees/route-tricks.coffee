@@ -7,8 +7,8 @@ formidable = require 'formidable'
 Redis = require 'redis'
 nohm = (require 'nohm').Nohm
 schema = require '../modules/sche-tricks.js'
-DB_PREFIX = 'EastI'
-TABLE_PREFIX = schema.prefix
+DB_PREFIX = schema.prefixes[0] 
+TABLE_PREFIX = schema.prefixes[1]
  
 #counter
 counter = 0
@@ -71,8 +71,7 @@ handSingle = (body)->
   if not valid 
     console.dir trick.errors
     # return a promise
-    #return Promise.resovle {errors:trick.errors,debuginfo:'debug info - wrong!'}
-    return Promise.resovle {error:true}
+    return Promise.resolve {error:true}
   else
     trick.save().then ->
       return Promise.resolve {error:false}

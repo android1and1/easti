@@ -9,7 +9,7 @@ dear = nohm.model 'tricks',
       validations: [
           name:'length'
           options:
-            min:6
+            min:4
             max:26
         ]
     
@@ -23,5 +23,8 @@ dear = nohm.model 'tricks',
     moment:
       type:'timestamp'
       defaultValue: 0 
-dear.prefix = 'tricks'    
+dear.prefixes = [
+    'EastI'    # it is db name - prefixes[0]
+    'tricks'   # it is table name  -prefixes[1] 
+  ]
 module.exports  = dear
