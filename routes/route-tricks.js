@@ -76,7 +76,13 @@
       return console.log('debug info::route-tricks::', err.message);
     });
     return redis.on('connect', async function() {
-      var check;
+      /* 
+      return res.json 
+        'warining':'We Have Not Supports Array-Save Currently.'
+        'form-number':req.body.sign
+        'body.structure': JSON.stringify req.body
+      */
+      var check, response;
       nohm.setClient(redis);
       nohm.setPrefix(DB_PREFIX);
       if (req.body.sign === '1') {
@@ -91,15 +97,15 @@
           });
         }
       } else {
-        //res.json 'state':'you has given ' + req.body.sign + ' forms,wait our resolving.'
-        return res.json({
-          'meiyou': 'shi qing!'
-        });
+        response = (await handArray(parseInt(req.body.sign), req.body));
+        console.log('//////');
+        console.log(response);
+        console.log('//////');
+        return res.send(response.join(''));
       }
     });
   });
 
-  //handArray res,req.body
   router.post('/onemore', function(req, res, next) {
     //note that,"pug.renderFile" retrieves .pug path,not same as "res.render"
     // res.render works from root directory - "<project>/views"
@@ -109,7 +115,7 @@
   });
 
   handSingle = async function(body) {
-    var trick, valid;
+    var showtitle, trick, valid;
     trick = (await nohm.factory(TABLE_PREFIX));
     trick.property({
       about: body.about,
@@ -117,33 +123,36 @@
       visits: body.visits
     });
     valid = (await trick.validate(void 0, false));
-    console.log('inner help func::handSingle', valid);
     if (!valid) {
-      console.dir(trick.errors);
+      
+      //console.dir trick.errors
       // return a promise
+      showtitle = 'handle item about "' + body.about + '"';
       return Promise.resolve({
-        error: true
+        showtitle: 'failure due database suit'
       });
     } else {
       return trick.save().then(function() {
-        return Promise.resolve({
-          error: false
-        });
+        showtitle = 'handle item "' + trick.id + ' " completed.';
+        return Promise.resolve(showtitle);
       });
     }
   };
 
   handArray = function(length, body) {
-    var i, j, ref, results;
-    results = [];
-    for (i = j = 0, ref = length; (0 <= ref ? j < ref : j > ref); i = 0 <= ref ? ++j : --j) {
-      results.push(handSingle(res, {
-        about: body[i]["about"],
-        content: body[i]["content"],
-        visits: body[i]["visits"]
-      }));
-    }
-    return results;
+    var allthings;
+    allthings = (function() {
+      var results = [];
+      for (var j = 0; 0 <= length ? j < length : j > length; 0 <= length ? j++ : j--){ results.push(j); }
+      return results;
+    }).apply(this).map(function(i) {
+      return handSingle({
+        about: body["about"][i],
+        content: body["content"][i],
+        visits: body["visits"][i]
+      });
+    });
+    return Promise.all(allthings);
   };
 
   module.exports = router;

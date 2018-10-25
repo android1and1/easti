@@ -47,9 +47,17 @@ router.post '/add1',(req,res,next)->
       else
         return res.json {state:'Saved'}
     else
-      #res.json 'state':'you has given ' + req.body.sign + ' forms,wait our resolving.'
-      return res.json 'meiyou':'shi qing!'
-      #handArray res,req.body
+      ### 
+      return res.json 
+        'warining':'We Have Not Supports Array-Save Currently.'
+        'form-number':req.body.sign
+        'body.structure': JSON.stringify req.body
+      ###
+      response = await handArray parseInt(req.body.sign),req.body
+      console.log '//////'
+      console.log response
+      console.log '//////'
+      return res.send response.join ''
 
 router.post '/onemore',(req,res,next)->
   #note that,"pug.renderFile" retrieves .pug path,not same as "res.render"
@@ -67,20 +75,21 @@ handSingle = (body)->
     content:body.content
     visits:body.visits
   valid = await trick.validate(undefined,false)
-  console.log 'inner help func::handSingle',valid
   if not valid 
-    console.dir trick.errors
+    #console.dir trick.errors
     # return a promise
-    return Promise.resolve {error:true}
+    showtitle = 'handle item about "' + body.about + '"'
+    return Promise.resolve showtitle:'failure due database suit' 
   else
     trick.save().then ->
-      return Promise.resolve {error:false}
+      showtitle = 'handle item "' + trick.id + ' " completed.'
+      return Promise.resolve showtitle
 
 handArray = (length,body)->
-  for i in [0...length]
-    handSingle res
-      ,
-      about:body[i]["about"] 
-      content:body[i]["content"]
-      visits:body[i]["visits"]
+  allthings = [0...length].map (i)->
+    handSingle 
+      about:body["about"][i] 
+      content:body["content"][i]
+      visits:body["visits"][i]
+  Promise.all allthings
 module.exports = router
