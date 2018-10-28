@@ -47,12 +47,6 @@ router.post '/add1',(req,res,next)->
       else
         return res.json {state:'Saved'}
     else
-      ### 
-      return res.json 
-        'warining':'We Have Not Supports Array-Save Currently.'
-        'form-number':req.body.sign
-        'body.structure': JSON.stringify req.body
-      ###
       response = await handArray parseInt(req.body.sign),req.body
       console.log '//////'
       console.log response
@@ -79,7 +73,9 @@ handSingle = (body)->
     #console.dir trick.errors
     # return a promise
     showtitle = 'handle item about "' + body.about + '"'
-    return Promise.resolve showtitle:'failure due database suit' 
+    return Promise.resolve 
+      showtitle:'failure due to database suit'
+      errors: trick.errors 
   else
     trick.save().then ->
       showtitle = 'handle item "' + trick.id + ' " completed.'
