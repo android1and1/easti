@@ -41,17 +41,11 @@ router.post '/add1',(req,res,next)->
     nohm.setClient redis
     nohm.setPrefix DB_PREFIX
     if req.body.sign is '1'
-      check = await handSingle req.body
-      if check.error  # has error
-        return res.json {state:'Error'}
-      else
-        return res.json {state:'Saved'}
+      response = await handSingle req.body
+      return res.json response 
     else
       response = await handArray parseInt(req.body.sign),req.body
-      console.log '//////'
-      console.log response
-      console.log '//////'
-      return res.send response.join ''
+      return res.json response
 
 router.post '/onemore',(req,res,next)->
   #note that,"pug.renderFile" retrieves .pug path,not same as "res.render"
@@ -68,6 +62,7 @@ handSingle = (body)->
     about:body.about
     content:body.content
     visits:body.visits
+    moment:Date.parse new Date()
   valid = await trick.validate(undefined,false)
   if not valid 
     #console.dir trick.errors

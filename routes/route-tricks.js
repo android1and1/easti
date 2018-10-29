@@ -76,32 +76,15 @@
       return console.log('debug info::route-tricks::', err.message);
     });
     return redis.on('connect', async function() {
-      /* 
-      return res.json 
-        'warining':'We Have Not Supports Array-Save Currently.'
-        'form-number':req.body.sign
-        'body.structure': JSON.stringify req.body
-      */
-      var check, response;
+      var response;
       nohm.setClient(redis);
       nohm.setPrefix(DB_PREFIX);
       if (req.body.sign === '1') {
-        check = (await handSingle(req.body));
-        if (check.error) { // has error
-          return res.json({
-            state: 'Error'
-          });
-        } else {
-          return res.json({
-            state: 'Saved'
-          });
-        }
+        response = (await handSingle(req.body));
+        return res.json(response);
       } else {
         response = (await handArray(parseInt(req.body.sign), req.body));
-        console.log('//////');
-        console.log(response);
-        console.log('//////');
-        return res.send(response.join(''));
+        return res.json(response);
       }
     });
   });
@@ -120,7 +103,8 @@
     trick.property({
       about: body.about,
       content: body.content,
-      visits: body.visits
+      visits: body.visits,
+      moment: Date.parse(new Date())
     });
     valid = (await trick.validate(void 0, false));
     if (!valid) {
@@ -129,7 +113,8 @@
       // return a promise
       showtitle = 'handle item about "' + body.about + '"';
       return Promise.resolve({
-        showtitle: 'failure due database suit'
+        showtitle: 'failure due to database suit',
+        errors: trick.errors
       });
     } else {
       return trick.save().then(function() {

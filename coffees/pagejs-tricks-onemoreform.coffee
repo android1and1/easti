@@ -11,12 +11,11 @@ jQuery document
     alert $('form').serialize()
     $.ajax
       url:''
-      dataType:'json'
+      dataType:'text'
       data:$('form').serialize() 
       type:'POST'
-    .done (json)->
-      for i,v of json
-        $('div.extends').append $('<p/>',{text:i + ':' + v})
+    .done (jsontext)->
+      $('div.extends').append $('<p/>',{text:jsontext})
     .fail (xhr,status,code)->
       console.log status
       console.log code 

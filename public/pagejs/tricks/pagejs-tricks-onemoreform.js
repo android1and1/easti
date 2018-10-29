@@ -11,19 +11,13 @@
       alert($('form').serialize());
       $.ajax({
         url: '',
-        dataType: 'json',
+        dataType: 'text',
         data: $('form').serialize(),
         type: 'POST'
-      }).done(function(json) {
-        var i, results, v;
-        results = [];
-        for (i in json) {
-          v = json[i];
-          results.push($('div.extends').append($('<p/>', {
-            text: i + ':' + v
-          })));
-        }
-        return results;
+      }).done(function(jsontext) {
+        return $('div.extends').append($('<p/>', {
+          text: jsontext
+        }));
       }).fail(function(xhr, status, code) {
         console.log(status);
         return console.log(code);
