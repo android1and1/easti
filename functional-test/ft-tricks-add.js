@@ -5,30 +5,9 @@
   // first check if redis-server is running,if at macbook air,it is not running as a service
   // we should manually start it,
   // in this standalone test,we can run "redis-server ./redisdb/redis.conf && mocha <this-test-script.js>"
-  var Browser, app, browser, checkifredisserverisrunning, server, tellAndExit;
+  var Browser, app, assert, browser, pgrep, server, spawn, tellAndExit;
 
-  checkifredisserverisrunning = function() {
-    var spawn;
-    ({spawn} = require('child_process'));
-    return new Promise(function(resolve) {
-      var pgrep;
-      pgrep = spawn('/usr/bin/pgrep', ['redis-server', '-l']);
-      return pgrep.on('close', function(code) {
-        if (code !== 0) {
-          return resolve(true);
-        } else {
-          return resolve(false);
-        }
-      });
-    });
-  };
-
-  tellAndExit = function() { 
-    console.log('should start redis-server ./redisdb/redis.conf first(special for apple macbook air user).');
-    console.log('alternatively,can run this:');
-    console.log('\t\t"redis-server ./redisdb/redis.conf && mocha <this-test-script.js>"');
-    return process.exit(1);
-  };
+  assert = require('assert');
 
   Browser = require('zombie');
 
@@ -42,6 +21,24 @@
 
   server = (require('http')).Server(app);
 
+  ({spawn} = require('child_process'));
+
+  pgrep = spawn('/usr/bin/pgrep', ['redis-server', '-l']);
+
+  pgrep.on('close', function(code) {
+    //console.log 'pgrep inspect redis-server process is:',code
+    if (code !== 0) {
+      return tellAndExit();
+    }
+  });
+
+  tellAndExit = function() {
+    console.log('You MUST start redis-server ./redisdb/redis.conf first(special for apple macbook air user).');
+    console.log('alternatively,can run this:');
+    console.log('\t\t"redis-server ./redisdb/redis.conf && mocha <this-test-script.js>"');
+    return process.exit(1);
+  };
+
   server.on('error', function(err) {
     console.log('///////');
     console.error(err);
@@ -50,19 +47,14 @@
 
   server.listen(4140);
 
-  describe('it will be successfully while accessing /tricks/add1::', function() {
-    before(async function() {
-      var bool;
-      bool = (await checkifredisserverisrunning());
-      if (bool) {
-        tellAndExit();
-      }
-      return browser.visit('http://www.fellow5.cn/tricks/add1');
+  describe('it will be successfully while accessing /tricks/add::', function() {
+    before(function() {
+      return browser.visit('http://www.fellow5.cn/tricks/add');
     });
     after(function() {
       return server.close();
     });
-    it('it will be success while accessing route - /tricks/add1::', function() {
+    it('it will be success while accessing route - /tricks/add::', function() {
       browser.assert.success();
       return browser.assert.status(200);
     });
@@ -73,8 +65,10 @@
       browser.assert.attribute('form', 'action', '');
       return browser.assert.attribute('form', 'method', 'POST');
     });
-    it('has a "onemore" button::', function() {
-      return browser.assert.element('button#onemore');
+    it('has more than one "+1" button::', function() {
+      return browser.assert.elements('button.onemore', {
+        morethan: 1
+      });
     });
     return describe('submit form::', function() {
       before(function() {

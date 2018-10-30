@@ -60,6 +60,7 @@ redis-server as nodejs,from office-site download .tar file,unextract and put its
 then make 2 soft links for redis-server and redis-cli.
 run server: "redis-server &",note that no need sudo
 run client:"redis-cli"
+in 'app.js',defines check and lauch redis-server,after http server closing,the redis-server still alive,but in some os(machine),it will close too.why.i have checked the /usr/local/bin/redis-server its attribute,id=root,group=wheel,and other privilage is 'r-x'(can execute).i will see other machines env.
 a tip,in client'shell,run "shutdown save" can affect server to close and save key-value before really disconnect.
 
 

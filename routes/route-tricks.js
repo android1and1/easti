@@ -63,13 +63,13 @@
     });
   });
 
-  router.get('/add1', function(req, res, next) {
-    return res.render('tricks/add1.pug', {
+  router.get('/add', function(req, res, next) {
+    return res.render('tricks/add.pug', {
       order: counter++
     });
   });
 
-  router.post('/add1', function(req, res, next) {
+  router.post('/add', function(req, res, next) {
     var redis;
     redis = Redis.createClient();
     redis.on('error', function(err) {

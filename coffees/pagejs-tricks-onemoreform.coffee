@@ -1,6 +1,6 @@
 ###
   target: public/pagejs/tricks/pagejs-tricks-onemoreform.js
-  work with route - ./tricks/add1
+  work with route - ./tricks/add
   work with view - ./views/tricks/snippet-form.pug
 ###
 jQuery document

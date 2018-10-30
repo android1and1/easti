@@ -30,10 +30,10 @@ router.get  '/',(req,res,next)->
       res.render 'tricks/index.pug',{length:items.length,items:items}
     else
       res.render 'tricks/index.pug',{idle:true}
-router.get '/add1',(req,res,next)->
-  res.render 'tricks/add1.pug',{order:counter++}
+router.get '/add',(req,res,next)->
+  res.render 'tricks/add.pug',{order:counter++}
 
-router.post '/add1',(req,res,next)->
+router.post '/add',(req,res,next)->
   redis = Redis.createClient()
   redis.on 'error',(err)->
     console.log 'debug info::route-tricks::',err.message
