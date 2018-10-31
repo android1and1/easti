@@ -1,11 +1,14 @@
 extends ../layouts/main
+block pagejs
+  script(src="/pagejs/tricks/pagejs-tricks-index.js")
 block footer
+  h1 all tricks list
   h1 currently item list 
   if items
     h2 * total #{length} item(s).
     div.list-group
     each item in items
-      - url = '/tricks/:' + item.id
+      - url = '/tricks/' + item.id
       a(href=url alt="it is a item id" class="list-group-item") #{item.id} :  #{item.about} 
   else if idle
     h2 there are no items currently

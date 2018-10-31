@@ -52,6 +52,18 @@ router.post '/onemore',(req,res,next)->
   # res.render works from root directory - "<project>/views"
   res.send pug.renderFile 'views/tricks/snippet-form.pug',{order:counter++}
 
+router.post '/:id',(req,res,next)->
+  # page index will ajax to this route,response via 'json'
+  id = req.params.id
+  redis = Redis.createClient()
+  redis.on 'error',(err)->
+    console.log 'debug info::route-tricks::',err.message
+  redis.on 'connect',->
+    nohm.setClient redis
+    nohm.setPrefix DB_PREFIX
+    trick = await schema.load id
+    res.json trick.allProperties()
+
 ###
 help methods
 ###
