@@ -98,7 +98,7 @@
   });
 
   handSingle = async function(body) {
-    var showtitle, trick, valid;
+    var trick, valid;
     trick = (await nohm.factory(TABLE_PREFIX));
     trick.property({
       about: body.about,
@@ -111,15 +111,17 @@
       
       //console.dir trick.errors
       // return a promise
-      showtitle = 'handle item about "' + body.about + '"';
       return Promise.resolve({
-        showtitle: 'failure due to database suit',
+        status: 'error',
+        title: 'failure due to database suit',
         errors: trick.errors
       });
     } else {
       return trick.save().then(function() {
-        showtitle = 'handle item "' + trick.id + ' " completed.';
-        return Promise.resolve(showtitle);
+        return Promise.resolve({
+          status: 'successfully',
+          content: trick.allProperties()
+        });
       });
     }
   };

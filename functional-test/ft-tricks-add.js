@@ -13,7 +13,7 @@
 
   Browser.localhost('www.fellow5.cn', 4140);
 
-  browser = new Browser;
+  browser = new Browser();
 
   browser.waitDuration = '30s';
 
@@ -58,6 +58,9 @@
       browser.assert.success();
       return browser.assert.status(200);
     });
+    it('page has a div its id is deadline::', function() {
+      return browser.assert.element('div#deadline');
+    });
     it('The 3 fields  all have its name attribute::', function() {
       return browser.assert.elements('.form-control[name]', 3);
     });
@@ -65,9 +68,13 @@
       browser.assert.attribute('form', 'action', '');
       return browser.assert.attribute('form', 'method', 'POST');
     });
-    it('has more than one "+1" button::', function() {
-      return browser.assert.elements('button.onemore', {
-        morethan: 1
+    it('at first time there just one "+1" button::', function() {
+      return browser.assert.elements('button.onemore', 1);
+    });
+    it.skip('click +1 button one time,the button.onemore elements has 2::', function(done) {
+      return browser.pressButton('+ 1', function() {
+        browser.assert.elements('button.onemore', 2);
+        return done();
       });
     });
     return describe('submit form::', function() {
@@ -77,11 +84,9 @@
         browser.fill('[type=number]', '1111');
         return browser.pressButton('button');
       });
-      it('should be redircted to /tricks/successfully page::', function() {
-        browser.assert.success();
-        return browser.assert.text('title', 'tricks-successfully');
+      return it('should ajax get new element - "div.alert.alert-info"::', function() {
+        return browser.assert.element('div.alert.alert.alert-info');
       });
-      return it('should add 1 item::', function() {});
     });
   });
 

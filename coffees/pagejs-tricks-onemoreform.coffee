@@ -5,17 +5,20 @@
 ###
 jQuery document
 .ready ->
+  # help func
+  makealertbox = (info)->
+    return $('<div class="alert alert-info"><button class="close" type="button" data-dismiss="alert"><span> &times </span></button><h3>' + info + '</h3></div>')
   $ 'button#submit'
   .on 'click',(evt1)->
     # debug info
-    alert $('form').serialize()
+    #alert $('form').serialize()
     $.ajax
       url:''
       dataType:'text'
       data:$('form').serialize() 
       type:'POST'
     .done (jsontext)->
-      $('div.extends').append $('<p/>',{text:jsontext})
+      $('div#deadline').append makealertbox(jsontext) 
     .fail (xhr,status,code)->
       console.log status
       console.log code 
@@ -33,7 +36,7 @@ jQuery document
     .done (text)->
       # first, change button class from .onemore to .onemoredone
       $('button.onemore').attr 'disabled','disabled'
-      $('button#submit').before($(text))
+      $('div#deadline').append makealertbox(text)
       
     .fail (xhr,status,code)->
       console.log status

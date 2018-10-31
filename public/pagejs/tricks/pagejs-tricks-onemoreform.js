@@ -2,22 +2,25 @@
 (function() {
   /*
     target: public/pagejs/tricks/pagejs-tricks-onemoreform.js
-    work with route - ./tricks/add1
+    work with route - ./tricks/add
     work with view - ./views/tricks/snippet-form.pug
   */
   jQuery(document).ready(function() {
+    var makealertbox;
+    // help func
+    makealertbox = function(info) {
+      return $('<div class="alert alert-info"><button class="close" type="button" data-dismiss="alert"><span> &times </span></button><h3>' + info + '</h3></div>');
+    };
     $('button#submit').on('click', function(evt1) {
       // debug info
-      alert($('form').serialize());
+      //alert $('form').serialize()
       $.ajax({
         url: '',
         dataType: 'text',
         data: $('form').serialize(),
         type: 'POST'
       }).done(function(jsontext) {
-        return $('div.extends').append($('<p/>', {
-          text: jsontext
-        }));
+        return $('div#deadline').append(makealertbox(jsontext));
       }).fail(function(xhr, status, code) {
         console.log(status);
         return console.log(code);
@@ -36,7 +39,7 @@
       }).done(function(text) {
         // first, change button class from .onemore to .onemoredone
         $('button.onemore').attr('disabled', 'disabled');
-        return $('button#submit').before($(text));
+        return $('div#deadline').append(makealertbox(text));
       }).fail(function(xhr, status, code) {
         console.log(status);
         return console.log(code);

@@ -67,14 +67,13 @@ handSingle = (body)->
   if not valid 
     #console.dir trick.errors
     # return a promise
-    showtitle = 'handle item about "' + body.about + '"'
     return Promise.resolve 
-      showtitle:'failure due to database suit'
+      status:'error'
+      title:'failure due to database suit'
       errors: trick.errors 
   else
     trick.save().then ->
-      showtitle = 'handle item "' + trick.id + ' " completed.'
-      return Promise.resolve showtitle
+      return Promise.resolve {status:'successfully',content:trick.allProperties()}
 
 handArray = (length,body)->
   allthings = [0...length].map (i)->

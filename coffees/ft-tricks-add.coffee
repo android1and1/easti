@@ -7,7 +7,7 @@
 assert = require 'assert'
 Browser = require 'zombie'
 Browser.localhost 'www.fellow5.cn',4140
-browser = new Browser
+browser = new Browser()
 browser.waitDuration = '30s'
 app = require '../app.js'
 server = (require 'http').Server app
@@ -38,13 +38,19 @@ describe 'it will be successfully while accessing /tricks/add::',->
   it 'it will be success while accessing route - /tricks/add::',->
     browser.assert.success()
     browser.assert.status 200
+  it 'page has a div its id is deadline::',->
+    browser.assert.element 'div#deadline'
   it 'The 3 fields  all have its name attribute::',->
     browser.assert.elements '.form-control[name]',3
   it 'The form action is same url.href and method is POST::',->
     browser.assert.attribute 'form','action',''
     browser.assert.attribute 'form','method','POST'
-  it 'has more than one "+1" button::',->
-    browser.assert.elements 'button.onemore',{morethan:1} 
+  it 'at first time there just one "+1" button::',->
+    browser.assert.elements 'button.onemore',1 
+  it.skip 'click +1 button one time,the button.onemore elements has 2::',(done)->
+    browser.pressButton '+ 1',->
+      browser.assert.elements 'button.onemore',2
+      done()
 
   describe 'submit form::',->
     before -> 
@@ -52,7 +58,5 @@ describe 'it will be successfully while accessing /tricks/add::',->
       browser.fill '[name=about]','aboutone'
       browser.fill '[type=number]','1111'
       browser.pressButton 'button' 
-    it 'should be redircted to /tricks/successfully page::',->
-      browser.assert.success()
-      browser.assert.text 'title','tricks-successfully'
-    it 'should add 1 item::',->
+    it 'should ajax get new element - "div.alert.alert-info"::',->
+      browser.assert.element 'div.alert.alert.alert-info'
