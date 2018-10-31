@@ -8,6 +8,7 @@ redisdb/*.aof
 node_modules/
 package-lock*
 lock-log*
+*.log
 credients/
 *.data
 configs/

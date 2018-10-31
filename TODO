@@ -63,3 +63,10 @@ Inch13Early2015Air
 cyrus-Latitude-E7470
 2018年 10月 31日 星期三 10:13:32 CST
   give a route '/tricks/list' as index page
+
+Inch13Early2015Air
+2018年10月31日 星期三 22时53分21秒 CST
+  route : /tricks
+  client visit index page at /tricks,they can see an accordion design,the top 10 or something list as panel:has title has scalable panel body,click any one triggers collapse else thing which now is spanding.
+  if the content is long,just first 10 lines be displayed,at the panel body's end has '...' sybol,means can continue click to get full text.
+  so,index page have not many ajax events,server-side provides almost all,if client click '...'(button),redirect to detail page of this item.
