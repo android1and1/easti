@@ -42,7 +42,13 @@ if require.main is module
   pgrep.on 'close',(code1)->
     if (parseInt code1) isnt 0  #means no found
       console.log 'start redis-server.'
-      redisservice = spawn 'redis-server',['./redisdb/redis.conf','--loglevel','verbose']
+      if process.platform is 'linux'
+        conf = './redisdb/linux.redis.conf'
+      else if process.platform is 'darwin'
+        conf = './redisdb/darwin.redis.conf'
+      else
+        conf = ''
+      redisservice = spawn 'redis-server',[conf,'--loglevel','verbose']
       redisservice.on 'error',(err)->
         console.error 'debug info::: ' + err.message
         process.exit 1
@@ -50,9 +56,6 @@ if require.main is module
         console.log 'spawn output:'
         console.log da.toString 'utf-8'
 
-      redisservice.on 'close',(code2)->
-        console.log 'Site Stop Due To Database Service Exit(with code:%s).',code2
-        process.exit 1
       process.nextTick ->
         server = http.Server app
         server.listen 3003,->
