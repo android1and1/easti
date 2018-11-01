@@ -1,0 +1,16 @@
+// server side gives {length:xxx,items:xxxx}
+// the main-view -- "views/tricks/index.pug" have to check if server gives is enough(items length,and some conditions what are nesssary)
+div(class="panel-group" id="accordion" role="tablist" aria-multiselectable="true")
+  div(class="panel panel-default")
+    div(class="panel-heading" role="tab" id="heading" + firstitem.id)
+      h4(class="panel-title")
+        a(role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse" + firstitem.id)= firstitem.about
+    div(id="collapse" + firstitem.id,class="panel-collapse collapse in" role="tabpanel")
+      div(class="panel-body")= firstitem.content
+  each item in restitems 
+    div(class="panel panel-default")
+      div(class="panel-heading" role="tab" id="heading" + item.id)
+        h4(class="panel-title")
+          a(class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse" + item.id)= item.about
+      div(id="collapse" + item.id,class="panel-collapse collapse" role="tabpanel")
+        div(class="panel-body")= item.content

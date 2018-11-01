@@ -70,3 +70,12 @@ Inch13Early2015Air
   client visit index page at /tricks,they can see an accordion design,the top 10 or something list as panel:has title has scalable panel body,click any one triggers collapse else thing which now is spanding.
   if the content is long,just first 10 lines be displayed,at the panel body's end has '...' sybol,means can continue click to get full text.
   so,index page have not many ajax events,server-side provides almost all,if client click '...'(button),redirect to detail page of this item.
+
+Inch13Early2015Air
+2018年10月31日 星期三 23时13分02秒 CST
+  refine the model-accordion view,let is driven by for ... each structure.
+  find().lessthan(20)
+  the first article(panel) sprand.
+  delete non nessary,cause fusing files.
+
+  need a place do practices about nohm.find(),try...catch await...these things.

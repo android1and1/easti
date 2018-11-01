@@ -1,15 +1,19 @@
 extends ../layouts/main
-block pagejs
-  script(src="/pagejs/tricks/pagejs-tricks-index.js")
-block footer
+block content 
   h1 all tricks list
   h1 currently item list 
-  if items
+  //
+    from server-side ,give this view {items:XXX,length:XXXX}
+    so,'items' and 'length' is available.
+  -
+    if(items && length && length>1){
+      var firstitem = items[0];
+      var restitems = items.slice(1);
+      var flag = true;
+    }else{
+      var message="no need slice anything.";
+    }
+  if flag 
     h2 * total #{length} item(s).
-    div.list-group
-    each item in items
-      - url = '/tricks/' + item.id
-      a(href=url alt="it is a item id" class="list-group-item") #{item.id} :  #{item.about} 
-  else if idle
-    h2 there are no items currently
-    
+    //- include directory from this view's view,means 
+    include accordion-for-tricks.pug 

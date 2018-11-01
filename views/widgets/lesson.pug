@@ -1,0 +1,19 @@
+//- serverside will give an object named "top10",it is a list,elements are item(object).
+-
+  var fixes = "....then love,love,love.....Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, 这些都是毛大庆说的，不是我说的，你们不要录我的脸，可以录我的声音配上毛大庆的脸。 aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS."
+  var thefirst = {title:"num1",content:fixes}
+  var top10 = [{title:"num2",content:fixes},{title:"num3",content:fixes},{title:"num4",content:fixes}]
+div(class="panel-group" id="accordion" role="tablist")
+  div(class="panel panel-default")
+    div(class="panel-heading" role="tab" id="heading" + thefirst.title)
+      h4(class="panel-title")
+        a(role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse" + thefirst.title)= thefirst.title
+    div(id="collapse" + thefirst.title class="panel-collapse collapse in" role="tabpanel")
+      div(class="panel-body")= "我就像一获披着羊皮的狼女人好好想好吧像这这样 "
+  each item in top10
+    div(class="panel panel-default")
+      div(class="panel-heading" role="tab" id="heading" + item.title)
+        h4(class="panel-title")
+          a(class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse" + item.title)= item.title
+      div(id="collapse" + item.title class="panel-collapse collapse" role="tabpanel")
+        div(class="panel-body")= item.content
