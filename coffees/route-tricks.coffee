@@ -21,7 +21,7 @@ router.get  '/',(req,res,next)->
   redis.on 'connect',->
     nohm.setClient redis
     nohm.setPrefix DB_PREFIX
-    ids = await schema.find() 
+    ids = await schema.sort({field:'about',direction:'DESC',limit:[0,10]}) 
     items = []
     if ids.length > 0
       for i in ids
