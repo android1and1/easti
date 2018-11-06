@@ -2,15 +2,17 @@ nohm = require 'nohm'
 .Nohm
 redis = (require 'redis').createClient() # default 6379 port redis-cli
 # include our Model
-sche = require '../modules/sche-tricks'
-DBPREFIX = sche.prefixes[0]
-HASHPREFIX = sche.prefixes[1]
-nohm.on 'error',(err)->
+schema = require '../modules/sche-tricks'
+DBPREFIX = schema.prefixes[0]
+HASHPREFIX = schema.prefixes[1]
+console.log schema.prefixes
+redis.on 'error',(err)->
   console.error err.message
 
-nohm.on 'connection',->
+redis.on 'connect',->
   nohm.setClient redis
   nohm.setPrefix DBPREFIX
   
-  ins = await nohm.factory HASHPREFIX
-  
+  ins = await schema.load 1
+  ins.property 'about','more time'
+  console.log 'ok',ins.allProperties()

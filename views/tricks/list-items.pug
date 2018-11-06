@@ -1,0 +1,14 @@
+extends ../layouts/main
+block content 
+  -
+    if(items && total && total>=1){
+      var firstitem = items[0];
+      var restitems = items.slice(1);
+      var flag = true;
+    }
+  if flag 
+    h2 tricks-list &nbsp;&nbsp;#{retrieved} / #{total}
+    //- include directory from this view's view,means 
+    include accordion-for-tricks.pug 
+  else
+    h2 zero item

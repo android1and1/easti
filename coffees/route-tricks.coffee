@@ -14,22 +14,37 @@ TABLE_PREFIX = schema.prefixes[1]
 counter = 0
 
 # the first time,express working with nohm - redis orm library
+
 router.get  '/',(req,res,next)->
+  # default index page display 10 items -- top10
+  res.redirect 302,'/tricks/head10'
+router.get  '/head:number',(req,res,next)->
+  number = req.params.number
   redis = Redis.createClient()
   redis.on 'error',(err)->
     console.log 'debug info::route-tricks::',err.message
   redis.on 'connect',->
     nohm.setClient redis
     nohm.setPrefix DB_PREFIX
-    ids = await schema.sort({field:'about',direction:'DESC',limit:[0,10]}) 
+    #ids = await schema.sort({field:'about',direction:'DESC',limit:[0,10]}) 
+    ids = await schema.find()
+    total_items_length = ids.length
+    ids = ids.slice -1 * number
+    ids = ids.reverse()
     items = []
     if ids.length > 0
-      for i in ids
-        item = await schema.load i
-        items.push item.allProperties()
-      res.render 'tricks/index.pug',{length:items.length,items:items}
+      for id in ids
+        ins = await schema.load id
+        items.push ins.allProperties()
+      res.render 'tricks/list-items.pug',{retrieved:ids.length,total:total_items_length,items:items}
     else
-      res.render 'tricks/index.pug',{idle:true}
+      res.render 'tricks/list-items.pug',{idle:true}
+
+router.get  '/detail/:number',(req,res,next)->
+  # item's detail page
+  id = req.params.number
+  res.send 'your quest is item#' + id
+  
 router.get '/add',(req,res,next)->
   res.render 'tricks/add.pug',{order:counter++}
 

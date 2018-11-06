@@ -34,37 +34,51 @@
 
   // the first time,express working with nohm - redis orm library
   router.get('/', function(req, res, next) {
-    var redis;
+    // default index page display 10 items -- top10
+    return res.redirect(302, '/tricks/head10');
+  });
+
+  router.get('/head:number', function(req, res, next) {
+    var number, redis;
+    number = req.params.number;
     redis = Redis.createClient();
     redis.on('error', function(err) {
       return console.log('debug info::route-tricks::', err.message);
     });
     return redis.on('connect', async function() {
-      var i, ids, item, items, j, len;
+      var id, ids, ins, items, j, len, total_items_length;
       nohm.setClient(redis);
       nohm.setPrefix(DB_PREFIX);
-      ids = (await schema.sort({
-        field: 'about',
-        direction: 'DESC',
-        limit: [0, 10]
-      }));
+      //ids = await schema.sort({field:'about',direction:'DESC',limit:[0,10]}) 
+      ids = (await schema.find());
+      total_items_length = ids.length;
+      ids = ids.slice(-1 * number);
+      ids = ids.reverse();
       items = [];
       if (ids.length > 0) {
         for (j = 0, len = ids.length; j < len; j++) {
-          i = ids[j];
-          item = (await schema.load(i));
-          items.push(item.allProperties());
+          id = ids[j];
+          ins = (await schema.load(id));
+          items.push(ins.allProperties());
         }
-        return res.render('tricks/index.pug', {
-          length: items.length,
+        return res.render('tricks/list-items.pug', {
+          retrieved: ids.length,
+          total: total_items_length,
           items: items
         });
       } else {
-        return res.render('tricks/index.pug', {
+        return res.render('tricks/list-items.pug', {
           idle: true
         });
       }
     });
+  });
+
+  router.get('/detail/:number', function(req, res, next) {
+    var id;
+    // item's detail page
+    id = req.params.number;
+    return res.send('your quest is item#' + id);
   });
 
   router.get('/add', function(req, res, next) {
