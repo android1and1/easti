@@ -26,3 +26,16 @@ pgrep.on 'close',(code)->
       nohm.setPrefix DBPREFIX
   
       # really 
+      try
+        ins = await nohm.factory schema.prefixes[1]
+        ins.property 
+          about:'how-to make love'
+          content:'about make love,from famous site of sex top10.'
+          visits:1000
+        iferrors = await ins.save()
+        
+        console.log typeof iferrors
+        console.log iferrors 
+      catch error
+        # till here,ins is undefined,because error in try block.
+        console.log '::DEBUG::',error

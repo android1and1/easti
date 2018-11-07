@@ -7,10 +7,17 @@ dear = nohm.model 'tricks',
       type:'string'
       unique:true
       validations: [
+        {
           name:'length'
           options:
             min:4
             max:26
+        }
+        ,
+        # promise minus(-) and single quote(') be blocked. 
+        (value,options)->
+          return not /['-]/.test value 
+
         ]
     
     visits:

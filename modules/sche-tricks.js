@@ -17,6 +17,11 @@
               min: 4,
               max: 26
             }
+          },
+          // promise minus(-) and single quote(') be blocked. 
+          function(value,
+          options) {
+            return !/['-]/.test(value);
           }
         ]
       },

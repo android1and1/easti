@@ -26,3 +26,14 @@ pgrep.on 'close',(code)->
       nohm.setPrefix DBPREFIX
   
       # really 
+      trick = await nohm.factory 'tricks' 
+
+      ids = await trick.sort
+        field:'about'
+        direction:'DESC'
+        limit:[17]
+      console.log 'desc sort:',ids.length,ids
+      ids = await trick.sort
+        field:'visits'
+        limit:[17]
+      console.log 'alpha sort:',ids.length,ids

@@ -1,0 +1,12 @@
+extends ../layouts/main
+block content 
+  //- 
+    scope : ['about','visits','content'(details),'id']
+  -
+    bool = (about && visits && content && id)
+  if bool
+    h2 title
+    h1= about 
+    div.parseing!= content
+    h3= 'visits:' + visits
+  oasisy system co..

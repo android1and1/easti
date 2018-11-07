@@ -1,0 +1,26 @@
+doctype html
+html(lang="en") 
+  meta(charset="utf-8")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  meta(name="keywords" content="fake to project check eviroment")
+  meta(name="description" content="site skills contains ajax socketio auto-route")
+  
+  head
+    link(href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon")
+    link(rel="stylesheet" href="/bootstrap/css/bootstrap.min.css")
+    link(rel="apple-touch-icon" href="//mindmup.s3.amazonaws.com/lib/img/apple-touch-icon.png") 
+    link(rel="shortcut icon" href="http://mindmup.s3.amazonaws.com/lib/img/favicon.ico" )
+    link(href="/bootstrap-wysiwyg/external/google-code-prettify/prettify.css" rel="stylesheet")
+    link(href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet")
+    link(href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet")
+    script(src="/jquery.min.js")
+    script(src="/bootstrap/js/bootstrap.min.js")
+    script(src="/bootstrap-wysiwyg/external/jquery.hotkeys.js")
+    script(src="/bootstrap-wysiwyg/external/google-code-prettify/prettify.js")
+    script(src="/bootstrap-wysiwyg/bootstrap-wysiwyg.js")
+    title= title || "template title"
+    block pagecss
+  body
+    block content
+    block footer
+    block pagejs

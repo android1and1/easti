@@ -26,3 +26,8 @@ pgrep.on 'close',(code)->
       nohm.setPrefix DBPREFIX
   
       # really 
+      trick = await nohm.factory 'tricks' 
+
+      ids = trick.find 
+        visits:4
+      ids.then (val)->console.log 'found',val,'id.'

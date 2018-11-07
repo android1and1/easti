@@ -43,8 +43,16 @@ router.get  '/head:number',(req,res,next)->
 router.get  '/detail/:number',(req,res,next)->
   # item's detail page
   id = req.params.number
-  res.send 'your quest is item#' + id
-  
+  redis = Redis.createClient()
+  redis.on 'error',(err)->
+    console.log 'debug info::route-tricks::',err.message
+  redis.on 'connect',->
+    nohm.setClient redis
+    nohm.setPrefix DB_PREFIX
+    obj = await schema.load id
+    {about,content,visits} = obj.allProperties()
+    res.render 'tricks/detail-page',{id:id,about:about,visits:visits,content:content} 
+     
 router.get '/add',(req,res,next)->
   res.render 'tricks/add.pug',{order:counter++}
 

@@ -79,3 +79,15 @@ Inch13Early2015Air
   delete non nessary,cause fusing files.
 
   need a place do practices about nohm.find(),try...catch await...these things.
+
+Inch13Early2015Air
+2018年11月 7日 星期三 07时31分28秒 CST
+  details page provides html parse ability.say,before put in db,writter can use html tag,like '<p>','<h1>'...,db store them,retrieved html page --- detail page ---- can render them as before.
+  before it,detail page really render filed content's content.
+
+Inch13Early2015Air
+2018年11月 7日 星期三 10时37分12秒 CST
+  filter input
+  how-to,default has :db's html input(type='s and.. but content field can not block '|>| -|,|!...
+  learn and try ---- LAT ,no! it is really really be -- "TAL"(try and lean).
+  inner .js let user know which is dennny.

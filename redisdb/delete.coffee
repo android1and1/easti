@@ -26,3 +26,13 @@ pgrep.on 'close',(code)->
       nohm.setPrefix DBPREFIX
   
       # really 
+      # now remove #38
+      trick = await nohm.factory schema.prefixes[1]
+      try
+        await trick.load 38
+        console.log trick.allProperties()
+      catch error
+        console.log 'has db error.load failure.'
+      trick.remove().then (err,val)->
+        console.log err
+        console.log val 
