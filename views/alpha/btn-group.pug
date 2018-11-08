@@ -1,5 +1,54 @@
-extends ../layouts/main.pug
+extends ../layouts/alt.pug
 block content
+  h2 part1: first part,one btn-group,contains single buttons.
+  div.btn-group(role="group" aria-label="...")
+    button(type="button" class="btn btn-default") Left
+    button(type="button" class="btn btn-default" ) Middle 
+    button(type="button" class="btn btn-default" ) right 
+  h2  part2: one div.btn-toolbar contains serviral
+  div.btn-toolbar(role="toolbar" aria-label="button-group-toolbar")
+    div.btn-group(role="group" aria-label="...")
+      button(type="button" class="btn btn-default") Left
+      button(type="button" class="btn btn-default" ) Middle 
+      button(type="button" class="btn btn-default" ) right 
+    div.btn-group(role="group" aria-label="...")
+      button(type="button" class="btn btn-default") Left
+      button(type="button" class="btn btn-default" ) Middle 
+      button(type="button" class="btn btn-default" ) right 
+    div.btn-group(role="group" aria-label="...")
+      button(type="button" class="btn btn-default") Left
+      button(type="button" class="btn btn-default" ) Middle 
+      button(type="button" class="btn btn-default" ) right 
+  // make a bigger btn-toolbar
+  h2  part2-2: (bigger)one div.btn-toolbar contains serviral
+  div.btn-toolbar(role="toolbar" aria-label="button-group-toolbar")
+    div.btn-group.btn-group-lg(role="group" aria-label="...")
+      button(type="button" class="btn btn-default") Left
+      button(type="button" class="btn btn-default" ) Middle 
+      button(type="button" class="btn btn-default" ) right 
+    div.btn-group.btn-group-lg(role="group" aria-label="...")
+      button(type="button" class="btn btn-default") Left
+      button(type="button" class="btn btn-default" ) Middle 
+      button(type="button" class="btn btn-default" ) right 
+    div.btn-group.btn-group-md(role="group" aria-label="...")
+      button(type="button" class="btn btn-default") Left
+      button(type="button" class="btn btn-default" ) Middle 
+      button(type="button" class="btn btn-default" ) right 
+  //- part3
+  h2 part3: push one group into another group.dropdown menu like.
+  div.btn-group.btn-group-md(role="group" aria-label="buttons-group")
+    button(type="button" class="btn btn-default" ) one button menu
+    button(type="button" class="btn btn-default" ) one button menu
+    div.btn-group.btn-group-md(role="group" aria-label="inner-group")
+      button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+        | drop down menus
+        span(class="caret")
+      ul(class="dropdown-menu")
+        li
+          a(href="#") dropdown link
+        li
+          a(href="#") dropdown link
+
   h4 head type:4
   div(class="btn-group")
     button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
@@ -7,11 +56,11 @@ block content
       span(class="caret")
   ul(class="dropdown-menu")
     li
-       a(href="#") Action
+      a(href="#") Action
     li
-       a(href="#") Another action
-    <li><a href="#">Something else here</a></li>
-    <li role="separator" class="divider"></li>
-    <li><a href="#">Separated link</a></li>
-  </ul>
-</div>
+      a(href="#") Another action
+    li
+      a(href="#") Something else here
+    li(role="separator" class="divider")
+    li
+      a(href="#") Separated link

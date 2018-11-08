@@ -1,0 +1,17 @@
+extends ../layouts/alt.pug
+block content
+  //-- Single button -->
+  div(class="btn-group")
+    button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+      |Action  
+      span.caret 
+    ul(class="dropdown-menu")
+      li
+        a(href="#") Action
+      li
+        a(href="#") Another Action
+      li
+        a(href="#") Something else here
+      li(role="separator" class="divider")
+      li
+        a(href="#") Separated link

@@ -1,0 +1,34 @@
+extends ../layouts/alt.pug
+block content
+  //- group
+  div.btn-group-vertical.btn-group-lg(role="group")
+    button(type="button" class="btn btn-primary") one thing
+    button(type="button" class="btn btn-primary") one thing
+    button(type="button" class="btn btn-primary") one thing
+    div.btn-group.btn-group-sm(role="group")
+      button(type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle")
+        | pop up sub items
+        span.caret
+      ul(class="dropdown-menu")
+        li
+          a(href="#") dropdown link
+        li
+          a(href="#") dropdown link
+  //- toolbar
+  h2 part3: push one group into another group.dropdown menu like.
+  div.btn-toolbar(role="toolbar" aria-label="toolbar")
+    div.btn-group.btn-group-md(role="group" aria-label="buttons-group")
+      button(type="button" class="btn btn-default" ) one button menu
+      button(type="button" class="btn btn-default" ) one button menu
+      div.btn-group.btn-group-md(role="group" aria-label="inner-group")
+        button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+          | drop down menus
+          span(class="caret")
+        ul(class="dropdown-menu")
+          li
+            a(href="#") dropdown link
+          li
+            a(href="#") dropdown link
+    div.btn-group.btn-group-md(role="group" aria-label="buttons-group")
+      button(type="button" class="btn btn-default" ) one button menu
+      button(type="button" class="btn btn-default" ) one button menu

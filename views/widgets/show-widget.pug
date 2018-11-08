@@ -1,4 +1,5 @@
-extends ../layouts/main
+extends ../layouts/main.pug
 block content
-block footer
-  include lesson.pug
+  include model-navbar-static-top.pug
+  - for(var i=0;i<=5;i++) 
+    include model-media
