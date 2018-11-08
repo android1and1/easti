@@ -4,15 +4,21 @@ html(lang="en")
   meta(name="viewport" content="width=device-width,initial-scale=1.0")
   meta(name="keywords" content="fake to project check eviroment")
   meta(name="description" content="site skills contains ajax socketio auto-route")
-  
   head
     link(href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon")
     link(rel="stylesheet" href="/bootstrap/css/bootstrap.min.css")
     script(src="/jquery.min.js")
     script(src="/bootstrap/js/bootstrap.min.js")
-    title= title || "template title"
-    block pagecss
+    title= title || "document.execCommand"
+
   body
-    block content
-    block footer
-    block pagejs
+    div#one
+     
+    p 点击复制后在右边textarea CTRL+V看一下
+    div(data-greeting="wearefriends")#two
+    input(type="text" id="inputText" value="测试文本")
+    input(type="button" id="btn" value="复制")
+    textarea(rows="4")
+    div#three
+
+    script(src="/pagejs/alpha/pagejs-listeners.js")
