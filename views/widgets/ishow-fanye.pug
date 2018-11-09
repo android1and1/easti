@@ -1,0 +1,14 @@
+extend ../layouts/alt
+block footer
+  //-- Tab panes -->
+  h2 start
+  div(class="tab-content")
+    div(role="tabpanel" class="tab-pane" id="home") home...
+    div(role="tabpanel" class="tab-pane" id="profiles") profiles...
+    div(role="tabpanel" class="tab-pane" id="messages") messages...
+    div(role="tabpanel" class="tab-pane" id="settings") settings...
+  h3 end
+  include nav-type/center-previous-next
+  br/
+  br/
+  include nav-type/justify-previous-next
