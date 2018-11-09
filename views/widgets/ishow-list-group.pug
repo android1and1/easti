@@ -1,0 +1,13 @@
+extend ../layouts/alt.pug
+block content
+  include list-group-type/basic-list-group.pug
+  
+  - aaaaa = [7,8,9,100000]
+  each anyelse in aaaaa
+    span.glyphicon.glyphicon-ok-circle
+  
+  include list-group-type/list-group-with-labels.pug
+  - aaaaa = [7,8,9,100000]
+  each anyelse in aaaaa
+    span.glyphicon.glyphicon-ok-circle
+  include list-group-type/list-group-with-links.pug

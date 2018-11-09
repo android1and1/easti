@@ -1,0 +1,10 @@
+extends ../layouts/alt
+block footer
+  include media-type/media-right-bottom
+  //- give 10 glasses.
+  - for(var i=0;i<10;i++)
+    span.glyphicon.glyphicon-glass
+    | 
+    span.glyphicon.glyphicon-pushpin
+    |  
+  include media-type/media-left-top.pug

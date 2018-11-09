@@ -1,0 +1,28 @@
+//- nav-tabs
+ul(class="nav nav-tabs" role="tablist")
+  li(role="presentation" class="active") <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a>
+  li(role="presentation") <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>
+  li(role="presentation") <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
+  li(role="presentation") <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
+
+  //- Tab panes
+div(class="tab-content")
+  div(role="tabpanel" class="tab-pane active" id="home")
+    .media
+      .media-body
+        h3.media-heading here is title of this media article
+        p now say something to reader.now say som
+        p now say something to reader.now say som
+        p now say something to reader.now say som
+        p now say something to reader.now say som
+      .media-right
+        a(href="/what/ever/you/go") 
+          img.media-object(src="/images/dot64x64.png" alt="whoknow")
+
+  div(role="tabpanel" class="tab-pane" id="profile") ...
+    include ../media-type/media-left-top
+  div(role="tabpanel" class="tab-pane" id="messages") ...
+    include ../media-type/media-left-top
+  div(role="tabpanel" class="tab-pane" id="settings") ...
+    include ../media-type/media-right-bottom
+    span.glyphicon.glyphicon-check
