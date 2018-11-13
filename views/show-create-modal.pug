@@ -30,7 +30,7 @@ block footer
       $('#yijia').on('click',function(evt){
         $.ajax({url:'/tricks/gethappy',data:{id:123},type:'GET',dataType:'json'})
         .done(function(json){
-            $('<h1>').text(json).appendTo('body');
+            $('<h1>').text(json.received).appendTo('body');
           }) 
       });
  

@@ -57,8 +57,7 @@ router.get '/add',(req,res,next)->
   res.render 'tricks/add.pug',{order:counter++}
 
 router.get '/gethappy',(req,res,next)->
-  console.dir req.params
-  res.json {'received':'something from client.'}
+  res.json {'received':req.query.id}
 
 router.post '/add',(req,res,next)->
   redis = Redis.createClient()
