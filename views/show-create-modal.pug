@@ -8,9 +8,31 @@ block footer
   script.
     $(function(){
       //- need create it first.     
-      createModal($('body'),{titleText:'i love xiuxiu',bodyText:'long long ago..'});
+      //createModal($('body'),{titleText:'i love xiuxiu',bodyText:'long long ago..'});
+      createModal(
+        $('body'),{
+            titleText:'i love xiuxiu',
+            bodyText:'long long ago..',
+            modalID: 'modal47',
+            funcButton: $(
+              '<button/>',
+              {
+                'id':"yijia",
+                'class':"btn btn-md btn-success",
+                //'role':'button',
+                'text':"Save",
+                'data-dismiss':'modal',
+              }
+            )//funcButton:$(..)
+          }
+      );
       //  then javascript code trigger this component.
+      $('#yijia').on('click',function(evt){
+        $.ajax({url:'/tricks/gethappy',data:{id:123},type:'GET',dataType:'json'})
+        .done(function(json){
+            $('<h1>').text(json).appendTo('body');
+          }) 
+      });
+ 
       $('#myModal').modal();
     });
-
-  

@@ -2,6 +2,8 @@
 window.createModal = (parent,options)->
   titleText = options?.titleText or 'Default Title Of Modal Dialog'
   bodyText = options?.bodyText or 'Default content text.'
+  # funcButton sample : $('<button />',{id:'hereisid',text:'here is label',type:'button',
+  #   class='btn btn-default btn-md',data-dismiss='modal'})
   funcButton = options?.funcButton or undefined 
 
   # container>dialog>content
@@ -43,7 +45,7 @@ window.createModal = (parent,options)->
 
   
   # body of dialog
-  body = $('<div/>',{'class':'modal-body','text':bodytext})
+  body = $('<div/>',{'class':'modal-body','text':bodyText})
 
 
   # footer of dialog contains:1) close button 2)dismissable,at last assembly them.
@@ -57,7 +59,7 @@ window.createModal = (parent,options)->
       'text':'Close'
     )
   footer.append closeButton
-  if funcButton isnt undefined and funcButton?.attr 'type' is 'button'
+  if (funcButton isnt undefined ) and (funcButton[0].tagName is 'BUTTON') and (funcButton?.data) and (funcButton.data('dismiss') is 'modal')
     footer.append funcButton
  
   # at last, assemble all components.

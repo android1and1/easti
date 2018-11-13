@@ -22,7 +22,8 @@
     "formidable": "^1.2.1",
     "jquery": "^3.3.1",
     "nohm": "^2.2.0",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "thunkify": "^2.1.2"
   },
   "devDependencies": {
     "zombie": "^6.1.3"
