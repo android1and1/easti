@@ -6,9 +6,28 @@ block content
       var restitems = items.slice(1);
       var flag = true;
     }
-  if flag 
-    h2 tricks-list &nbsp;&nbsp;#{retrieved} / #{total}
-    //- include directory from this view's view,means 
-    include accordion-for-tricks.pug 
-  else
+  if !flag 
     h2 zero item
+  else
+    h2 tricks-list &nbsp;&nbsp;#{retrieved} / #{total}
+    // below all in 1 is bootstrap' js suit - accordion.js
+    div(class="panel-group" id="accordion" role="tablist" aria-multiselectable="true")
+      div(class="panel panel-default")
+        div(class="panel-heading" role="tab" id="heading" + firstitem.id)
+          h4(class="panel-title")
+            a(role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse" + firstitem.id)= firstitem.id + '#  ' + firstitem.about + '  '
+              span(class="badge")=  firstitem.visits
+        div(id="collapse" + firstitem.id,class="panel-collapse collapse in" role="tabpanel")
+          div(class="panel-body")!= firstitem.content
+            p
+            a(role="button" class="spread btn btn-default btn-lg" alt="detail page link" href="/tricks/detail/" + firstitem.id ) Details
+      each item in restitems 
+        div(class="panel panel-default")
+          div(class="panel-heading" role="tab" id="heading" + item.id)
+            h4(class="panel-title")
+              a(class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse" + item.id)= item.id + '#  ' + item.about + '  '
+                span(class="badge")= item.visits
+          div(id="collapse" + item.id,class="panel-collapse collapse" role="tabpanel")
+            div(class="panel-body")!= item.content
+              p
+              a(role="button" class="spread btn btn-lg btn-default" alt="detail page link" href="/tricks/detail/" + item.id) Details

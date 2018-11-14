@@ -1,0 +1,7 @@
+extend ../layouts/main
+block content
+  if error
+    
+    h2 delete #{itemid} failure! cause "#{error}"
+  else
+    h2 #{itemid} was deleted!

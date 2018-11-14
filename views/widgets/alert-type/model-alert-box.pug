@@ -1,6 +1,16 @@
-// .alert-warning will display box-background as light yellow,you can use .alert-success .alert-danger .alert-info...
-div.alert.alert-warning
+//-
+  variables:
+  1, 'alertStyle'
+  2, 'alertContent
+  retrieved from server's route codes. 
+  
+  ****
+  skills-1
+  if var1 or var2 is not given,use default value in this template.
+  via "alertStyle 
+- var as_alertStyle = alertStyle || 'alert-info'
+div(class="alert " + as_alertStyle)
   button(type="button" class="close" data-dismiss="alert" aria-label="Close")
     span(aria-hidden="true") &times;
-  H3 Here Is Where Your Alert Message Goes! 
+  h3 #{alertContent||'All Is Default,Includes Alert Type(Colour).'}
 

@@ -95,3 +95,8 @@ Inch13Early2015Air
 hp505B
 Tue Nov 13 10:31:18 CST 2018
   repair coffees/mine-createModal.coffee - /public/mine/mine-createModal.js
+
+cyrus-Latitude-E7470
+2018年 11月 14日 星期三 09:52:03 CST
+  add a route : /tricks/delete/:id
+  

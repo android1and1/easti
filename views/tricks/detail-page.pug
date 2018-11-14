@@ -2,11 +2,12 @@ extends ../layouts/main
 block content 
   //- 
     scope : ['about','visits','content'(details),'id']
-  -
-    bool = (about && visits && content && id)
-  if bool
+  if error
+    // means has error while retrieving.
+    h1 item-#{id} has problem with message: "#{error}".
+  else
     h2 title
     h1= about 
     div.parseing!= content
     h3= 'visits:' + visits
-  oasisy system co..
+  h4.text-center D.Y.J All Right Received @2016 
