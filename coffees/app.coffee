@@ -14,28 +14,31 @@ app.use express.urlencoded({extended:false})
 # include all customise router
 tools = require './routes/route-tools.js'
 alpha = require './routes/route-alpha.js'
-tricks = require './routes/route-tricks.js'
 uploading = require './routes/route-uploading.js'
 app.use '/tools',tools 
 app.use '/alpha',alpha 
 app.use '/uploading',uploading
-app.use '/tricks',tricks
 
-app.get '/',(req,res)->
-  res.render 'index'
-    ,
-    title:'I see You'
-    name:'wang!'
-app.get '/show-widget',(req,res)->
-  res.render 'widgets/show-widget'
-app.use (req,res)->
-  res.status 404
-  res.render '404'
-app.use (err,req,res,next)->
-  console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
-  res.type 'text/plain'
-  res.status 500
-  res.send '500 - Server Error!'
+# deferred 'use "/tricks",tricks
+#tricks = require './routes/route-tricks.js'
+#app.use '/tricks',tricks
+#app.get '/',(req,res)->
+#  res.render 'index'
+#    ,
+#    title:'I see You'
+#    name:'wang!'
+#app.get '/show-widget',(req,res)->
+#  res.render 'widgets/show-widget'
+
+#app.use (req,res)->
+#  res.status 404
+#  res.render '404'
+#app.use (err,req,res,next)->
+#  console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
+#  res.type 'text/plain'
+#  res.status 500
+#  res.send '500 - Server Error!'
+
 if require.main is module
   # it is main's responsible to starting redis-server
   pgrep = spawn 'pgrep',['redis-server']
@@ -55,8 +58,18 @@ if require.main is module
       redisservice.on 'data',(da)->
         console.log 'spawn output:'
         console.log da.toString 'utf-8'
-
-      process.nextTick ->
+      redisservice.on 'close',(code)->
+        #console.log 'Exit With Code:',code
+        tricks = require './routes/route-tricks.js'
+        app.use '/tricks',tricks
+        app.use (req,res)->
+          res.status 404
+          res.render '404'
+        app.use (err,req,res,next)->
+          console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
+          res.type 'text/plain'
+          res.status 500
+          res.send '500 - Server Error!'
         server = http.Server app
         server.listen 3003,->
           console.log 'server running at port 3003;press Ctrl-C to terminate.'
@@ -64,6 +77,16 @@ if require.main is module
     else
       # code1=0,means found progress of redis-server,no need restart.
       console.log 'redis-server started already.'
+      tricks = require './routes/route-tricks.js'
+      app.use '/tricks',tricks
+      app.use (req,res)->
+        res.status 404
+        res.render '404'
+      app.use (err,req,res,next)->
+        console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
+        res.type 'text/plain'
+        res.status 500
+        res.send '500 - Server Error!'
       server = http.Server app
       server.listen 3003,->
         console.log 'server running at port 3003;press Ctrl-C to terminate.'
