@@ -47,33 +47,56 @@ if require.main is module
       console.log 'start redis-server.'
       if process.platform is 'linux'
         conf = './redisdb/linux.redis.conf'
+        redisservice = spawn 'redis-server',[conf,'--loglevel','verbose']
+        redisservice.on 'error',(err)->
+          console.error 'debug info::: ' + err.message
+          process.exit 1
+        redisservice.stdout.on 'data',(da)->
+          console.log 'spawn output:'
+          console.log da.toString 'utf-8'
+        redisservice.on 'close',(code)->
+          #console.log 'Exit With Code:',code
+          tricks = require './routes/route-tricks.js'
+          app.use '/tricks',tricks
+          app.use (req,res)->
+            res.status 404
+            res.render '404'
+          app.use (err,req,res,next)->
+            console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
+            res.type 'text/plain'
+            res.status 500
+            res.send '500 - Server Error!'
+          server = http.Server app
+          server.listen 3003,->
+            console.log 'server running at port 3003;press Ctrl-C to terminate.'
+
       else if process.platform is 'darwin'
         conf = './redisdb/darwin.redis.conf'
+        redisservice = spawn 'redis-server',[conf,'--loglevel','verbose']
+        redisservice.on 'error',(err)->
+          console.error 'debug info from darwin platform::: ' + err.message
+          process.exit 1
+        #redisservice.stdout.on 'data',(da)->
+        #  console.log 'spawn output:'
+        #  console.log da.toString 'utf-8'
+        process.nextTick ->
+          tricks = require './routes/route-tricks.js'
+          app.use '/tricks',tricks
+          app.use (req,res)->
+            res.status 404
+            res.render '404'
+          app.use (err,req,res,next)->
+            console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
+            res.type 'text/plain'
+            res.status 500
+            res.send '500 - Server Error!'
+          server = http.Server app
+          server.listen 3003,->
+            console.log 'server running at port 3003;press Ctrl-C to terminate.'
+          
       else
-        conf = ''
-      redisservice = spawn 'redis-server',[conf,'--loglevel','verbose']
-      redisservice.on 'error',(err)->
-        console.error 'debug info::: ' + err.message
-        process.exit 1
-      redisservice.on 'data',(da)->
-        console.log 'spawn output:'
-        console.log da.toString 'utf-8'
-      redisservice.on 'close',(code)->
-        #console.log 'Exit With Code:',code
-        tricks = require './routes/route-tricks.js'
-        app.use '/tricks',tricks
-        app.use (req,res)->
-          res.status 404
-          res.render '404'
-        app.use (err,req,res,next)->
-          console.error 'occurs 500 error. [[ ' + err.stack + '  ]]'
-          res.type 'text/plain'
-          res.status 500
-          res.send '500 - Server Error!'
-        server = http.Server app
-        server.listen 3003,->
-          console.log 'server running at port 3003;press Ctrl-C to terminate.'
-        
+        console.log 'unknow platform,not support.'
+        process.exit 1 
     else
       # code1=0,means found progress of redis-server,no need restart.
       console.log 'redis-server started already.'
