@@ -11,7 +11,7 @@
   router = express.Router();
 
   router.get('/show-server-side-accordion-suit', function(req, res, next) {
-    return res.render('widgets/accordion-type/model-accordion.pug', {
+    return res.render('alpha/show-model-accordion.pug', {
       firstitem: {
         id: 44,
         content: 'you guess',

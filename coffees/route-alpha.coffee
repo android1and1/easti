@@ -4,7 +4,7 @@ express = require 'express'
 router = express.Router()
 
 router.get '/show-server-side-accordion-suit',(req,res,next)->
-  res.render 'widgets/accordion-type/model-accordion.pug',{firstitem:{id:44,content:'you guess',about:'engaing,right?',visits:44},restitems:[
+  res.render 'alpha/show-model-accordion.pug',{firstitem:{id:44,content:'you guess',about:'engaing,right?',visits:44},restitems:[
      id:23
      about:'you guess1'
      content: 'long long ago...'
