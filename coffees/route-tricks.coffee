@@ -20,6 +20,14 @@ redis.on 'connect',->
   nohm.setPrefix DB_PREFIX
 
  
+# need standlone redis client 
+addClient = Redis.createClient()
+addClient.on  'error',(err)->
+  console.log 'debug route-tricks::add',err.message
+addClient.on 'connect',->
+  nohm.setClient addClient 
+  nohm.setPrefix DB_PREFIX
+
 #counter
 counter = 0
 
@@ -53,7 +61,7 @@ router.get  '/delete/:id',(req,res,next)->
     res.render 'tricks/delete',{itemid:req.params.id,error:error.message}
 
 router.get  '/detail/:number',(req,res,next)->
-  # item's detail page
+  # the detail page always reference from /head:id,but its data is newly loaded from db.
   id = req.params.number
   try
     obj = await schema.load id
@@ -63,7 +71,7 @@ router.get  '/detail/:number',(req,res,next)->
     res.render 'tricks/detail-page',{id:id,error:error.message}
     
 router.get '/add',(req,res,next)->
-  res.render 'tricks/add.pug',{order:counter++}
+   res.render 'tricks/add.pug',{order:counter++}
 
 router.get '/gethappy',(req,res,next)->
   res.json {'received':req.query.id}
@@ -80,18 +88,6 @@ router.post '/onemore',(req,res,next)->
   #note that,"pug.renderFile" retrieves .pug path,not same as "res.render"
   # res.render works from root directory - "<project>/views"
   res.send pug.renderFile 'views/tricks/snippet-form.pug',{order:counter++}
-
-router.post '/:id',(req,res,next)->
-  # page index will ajax to this route,response via 'json'
-  id = req.params.id
-  redis = Redis.createClient()
-  redis.on 'error',(err)->
-    console.log 'debug info::route-tricks::',err.message
-  redis.on 'connect',->
-    nohm.setClient redis
-    nohm.setPrefix DB_PREFIX
-    trick = await schema.load id
-    res.json trick.allProperties()
 
 ###
 help methods

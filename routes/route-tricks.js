@@ -4,7 +4,7 @@
   /*
   help methods
   */
-  var DB_PREFIX, Redis, TABLE_PREFIX, counter, express, formidable, fs, handleArraySave, handleSingleSave, nohm, path, pug, redis, router, schema;
+  var DB_PREFIX, Redis, TABLE_PREFIX, addClient, counter, express, formidable, fs, handleArraySave, handleSingleSave, nohm, path, pug, redis, router, schema;
 
   fs = require('fs');
 
@@ -40,6 +40,18 @@
   });
 
   
+  // need standlone redis client 
+  addClient = Redis.createClient();
+
+  addClient.on('error', function(err) {
+    return console.log('debug route-tricks::add', err.message);
+  });
+
+  addClient.on('connect', function() {
+    nohm.setClient(addClient);
+    return nohm.setPrefix(DB_PREFIX);
+  });
+
   //counter
   counter = 0;
 
@@ -97,7 +109,7 @@
 
   router.get('/detail/:number', async function(req, res, next) {
     var about, content, error, id, obj, visits;
-    // item's detail page
+    // the detail page always reference from /head:id,but its data is newly loaded from db.
     id = req.params.number;
     try {
       obj = (await schema.load(id));
@@ -146,23 +158,6 @@
     return res.send(pug.renderFile('views/tricks/snippet-form.pug', {
       order: counter++
     }));
-  });
-
-  router.post('/:id', function(req, res, next) {
-    var id;
-    // page index will ajax to this route,response via 'json'
-    id = req.params.id;
-    redis = Redis.createClient();
-    redis.on('error', function(err) {
-      return console.log('debug info::route-tricks::', err.message);
-    });
-    return redis.on('connect', async function() {
-      var trick;
-      nohm.setClient(redis);
-      nohm.setPrefix(DB_PREFIX);
-      trick = (await schema.load(id));
-      return res.json(trick.allProperties());
-    });
   });
 
   handleSingleSave = async function(body) {
