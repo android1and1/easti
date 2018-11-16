@@ -9,24 +9,17 @@ schema = require '../modules/sche-tricks.js'
 DB_PREFIX = schema.prefixes[0] 
 TABLE_PREFIX = schema.prefixes[1]
 
-nohm = (require 'nohm').Nohm
-
-Redis = require 'redis'
-redis= Redis.createClient()
-redis.on 'error',(err)->
-  console.log 'debug info::route-tricks::',err.message
-redis.on 'connect',->
-  nohm.setClient redis
-  nohm.setPrefix DB_PREFIX
-
- 
-# need standlone redis client 
-addClient = Redis.createClient()
-addClient.on  'error',(err)->
-  console.log 'debug route-tricks::add',err.message
-addClient.on 'connect',->
-  nohm.setClient addClient 
-  nohm.setPrefix DB_PREFIX
+Nohm = require 'nohm'
+[nohm,nohm2] = [Nohm.Nohm,Nohm.Nohm]
+[nohm,nohm2].forEach (itisnohm)->
+  # now we have 2 redis clients.
+  Redis = require 'redis'
+  redis= Redis.createClient()
+  redis.on 'error',(err)->
+    console.log 'debug info::route-tricks::',err.message
+  redis.on 'connect',->
+    itisnohm.setClient redis
+    itisnohm.setPrefix DB_PREFIX
 
 #counter
 counter = 0
@@ -94,7 +87,8 @@ help methods
 ###
 
 handleSingleSave = (body)->
-  trick = await nohm.factory TABLE_PREFIX 
+  # save event via standlone redis client - 'nohm2'
+  trick = await nohm2.factory TABLE_PREFIX 
   trick.property
     about:body.about
     content:body.content
