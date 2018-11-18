@@ -14,7 +14,7 @@ dear = nohm.model 'tricks',
             max:26
         }
         ,
-        # promise minus(-) and single quote(') be blocked. 
+        # minus(-) and single quote(') be blocked. 
         (value,options)->
           return not /['-]/.test value 
 

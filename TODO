@@ -109,3 +109,14 @@ Inch13Early2015Air
   a new instance/delte old id/save new one??
   sounds more completule.complex.sounds more complexer.
   lokk look for anmanual.hand book.
+
+Inch13Early2015Air
+2018年11月18日 星期日 10时24分41秒 CST
+  admin class,use test/
+  this admin class has members:
+  1,flag will migrates to 'version'
+  2,currently <Array>,use admin.register 'one class' will put the 'one class' into this array.
+  mothods:
+  1,mod2view
+  2,help func for mod2view.this help func will parse one object(opts),into a single bootstrap form element.i think it is the beginning of all class' methods whether it is member func or static class func.
+  the first test file at ./test/test-mod2view.js
