@@ -88,3 +88,10 @@ OSX platform:
 Linux Platform:
 1) child process will return 'close' event soon after child process be created(spawn).
 2) after app.js exit,redis-server as its child process will exit.
+
+###
+nohm model
+###
+step1,write coffees/md-<nohm-model>.coffee 
+step2,compile its result .js file into "./modules/" directory
+step3,"md-admin.js" will read this nohm model's definitions,dynamiclly load each attribute for views and other things.

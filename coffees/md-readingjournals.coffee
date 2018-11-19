@@ -1,7 +1,4 @@
-Nohm = require 'nohm'
-nohm = Nohm.Nohm
-NohmModel  = Nohm.NohmModel
-  
+NohmModel = (require 'nohm').NohmModel
 class ReadingJournals extends NohmModel
   @getDefinitions = ()=>
     @definitions
@@ -39,4 +36,4 @@ class ReadingJournals extends NohmModel
     }
   }
 
-module.exports = nohm.register ReadingJournals
+module.exports = ReadingJournals

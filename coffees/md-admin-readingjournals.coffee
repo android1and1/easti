@@ -1,7 +1,13 @@
+# md-admin-readingjournals
+
 pug = require 'pug'
+nohm = (require 'nohm').Nohm
+ReadingJournals = require './md-readingjournals.js'
+
+
 class Admin
-  @version = '1.0' 
-  @mod2view = (modelClass)->
+  @version = '1.0'
+  @mod2snippet = (modelClass)->
     abc= '''
     form.form-horizontal
       .form-group
@@ -13,12 +19,8 @@ class Admin
     definitions = modelClass.getDefinitions() 
     firstkey = Object.keys(definitions)[0]
     console.log pug.render abc,{field_label:firstkey,field_type:definitions.title.type}
-    pug.render abc,{field_label:firstkey,field_type:definitions.title.type}
+    return pug.render abc,{field_label:firstkey,field_type:definitions.title.type}
     
-# a help func - _parse
-_parse = (definition)->
-  # quantete the format of 'definition' object
-  # we need output like this format:
-  #   [{type:'string',TODO
-  null
+# dont forget,at last we need add module class
+#nohm.register ReadingJournals
 module.exports = Admin
