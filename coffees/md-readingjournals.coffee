@@ -5,23 +5,27 @@ class ReadingJournals extends NohmModel
   @version = '1.0' 
   # below method - mod2snippet is as 'Admin Class'
   @mod2snippet = ()=>
-    abc= '''
-      -
-        if(field_type === 'string')
-          field_type='text';
-        else if(field_type === 'integer')
-          field_type='number'
-        else if(field_type === 'timestamp')
-          field_type='time'
-        else
-          field_type='unknown-type'
-
-      .form-group
-        label(for= 'id' + field_label)= field_label 
-        input(type=field_type id= 'id' + field_label class="form-control" placeholder="you know..")
-    ''' 
-    firstkey = (Object.keys @definitions)[0]
-    pug.render abc,{field_label:firstkey,field_type:@definitions.title.type}
+    form = '''
+      form.form-horizontal
+      - for(attr in opts){
+          .form-group
+            label(for= 'id' + attr)= attr
+            - var type=opts[attr].type
+            - 
+              if(type==='string')
+                type='text'
+              else if(type==='integer')
+                type='number'
+              else if(type==='timestamp')
+                type='datetime'
+              else
+                type='unkown'
+            input(class="form-control",id= 'id' + attr,name= label,type= type )
+      - }
+        .form-group  
+          button(class="btn btn-lg btn-default") Submit!  
+    '''
+    form 
 
   @getDefinitions = ()=>
     @definitions
@@ -36,6 +40,7 @@ class ReadingJournals extends NohmModel
       unique:true
       validations:[
         'notEmpty'
+        {'name':'length',options:{'min':4,'max':228}}
       ]
     visits:
       type:'integer'
@@ -47,19 +52,25 @@ class ReadingJournals extends NohmModel
       validations:[
         'notEmpty'
       ]
+    tag:
+      type:'integer'
+      defaultValue:33
+      index:true
        
     timestamp:
       type:'timestamp'
       defaultValue:0
 
-    revision_info:
-      type:'string'
-      
     journal:{
       type:'string'
       validations:[
         'notEmpty'
       ]
+    }
+    
+    reading_history:{
+      type:'string'
+      defaultValue:''
     }
   }
 

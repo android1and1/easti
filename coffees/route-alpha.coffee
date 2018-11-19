@@ -2,6 +2,9 @@ path = require 'path'
 fs = require 'fs'
 express = require 'express'
 router = express.Router()
+# for test md
+RT = require '../modules/md-readingjournals' 
+pug = require 'pug'
 
 router.get '/show-server-side-accordion-suit',(req,res,next)->
   res.render 'alpha/show-model-accordion.pug',{firstitem:{id:44,content:'you guess',about:'engaing,right?',visits:44},restitems:[
@@ -26,6 +29,12 @@ router.get '/show-server-side-alert-box',(req,res,next)->
   # between 'alert' and 'alert-danger'). It is client's responsibillity for guarantee keep one space as 'alert' 's postfix.
   res.render 'shows/show-server-side-alert-box',{alertContent:"Be Carefull While You Climbing.",alertStyle:"alert-danger"}
   #res.render 'shows/show-server-side-alert-box'
+
+router.get '/htmlform',(req,res,next)->
+  # from static method get pug codes 
+  snippet = pug.render RT.mod2snippet(),{opts:RT.definitions}
+  res.render 'tianna',{snippet:snippet}
+
 router.get '/indexeddb',(req,res,next)->
   # see safari or firefox window.indexeddb attribute
   res.render 'alpha/indexeddb.pug'

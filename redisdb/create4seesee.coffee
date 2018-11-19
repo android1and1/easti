@@ -5,18 +5,18 @@ client = (require 'redis').createClient()
 client.on 'connect',->
   nohm.setPrefix 'seesee'
   nohm.setClient @
-  # because practices all after db be purged,so unique limit is satisfy
-  await nohm.purgeDb()
+  # if nessary,purge db 'seesee' 
+  #await nohm.purgeDb()
   # really.
   rj = nohm.register RJ 
   for i in [1..4]
     ins = new rj
     ins.property
-      title: 'book#' + i
-      author: 'Mark Twins' 
-      timestamp: '2018-11-20 8:00:00'
-      journal:'it is funny#' + i
-      revision_info:'no public'
+      title: 'history topic#' + i
+      author: 'James Johnny'
+      timestamp: '2004-9-4 21:20:22'
+      reading_history:'2014-10-1,am'
+      journal:'it is funny,fnufunny #' + i
     try
       await ins.save()
       console.log 'saved.'
@@ -29,20 +29,3 @@ client.on 'connect',->
       client.quit()
     ,
     1500
-  ###
-  xrj = new rj
-  xrj.property
-    name:'huang huang'
-    age:40
-    tt:Date.parse new Date()
-  try
-    await xrj.save silence:true
-  catch error
-    console.log 'error occurs during saving .'
-    console.error .errors
-  setTimeout ->client.quit()
-    ,
-    1500
-  ###
-_help = (defines)->
-  null
