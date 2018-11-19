@@ -1,27 +1,31 @@
-rj = require '../modules/md-reading-journals'
+RJ = require '../modules/md-readingjournals.js'
 nohm = (require 'nohm').Nohm
 client = (require 'redis').createClient()
 
 client.on 'connect',->
   nohm.setPrefix 'seesee'
   nohm.setClient @
+  # because practices all after db be purged,so unique limit is satisfy
   await nohm.purgeDb()
   # really.
+  rj = nohm.register RJ 
   for i in [1..4]
     ins = new rj
     ins.property
-      name: 'itisname#' + i
-      age: i*i
-      tt: '2018-11-20 8:00:00'
+      title: 'book#' + i
+      author: 'Mark Twins' 
+      timestamp: '2018-11-20 8:00:00'
+      journal:'it is funny#' + i
+      revision_info:'no public'
     try
       await ins.save()
       console.log 'saved.'
     catch error
       console.dir ins.errors
   console.log 'done.'
-  definitions = rj.getDefinitions()
+  definitions = RJ.getDefinitions()
   setTimeout ->
-      console.log definitions.name.defaultValue
+      console.dir definitions
       client.quit()
     ,
     1500

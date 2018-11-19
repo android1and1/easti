@@ -1,4 +1,5 @@
-# first of first ,check redis-server ether running.
+# after version
+RJ = require '../modules/md-readingjournals'
 {spawn} = require 'child_process'
 
 pgrep = spawn 'pgrep',['redis-server']
@@ -14,16 +15,16 @@ pgrep.on 'close',(code)->
   else
     nohm = (require 'nohm').Nohm
     redis = (require 'redis').createClient() # default 6379 port redis-cli
-    # include our Model
-    schema = require '../modules/sche-tricks'
-    DBPREFIX = schema.prefixes[0]
-    HASHPREFIX = schema.prefixes[1]
+    #schema = require '../modules/sche-tricks'
+    schema = nohm.register RJ
+ 
     redis.on 'error',(err)->
       console.error '::Redis Database Error::',err.message
 
     redis.on 'connect',->
       nohm.setClient redis
-      nohm.setPrefix DBPREFIX
-      nohm.purgeDb nohm.client,(err,one,two)->
-        console.log one,two
+      nohm.setPrefix 'seesee' 
+
+      nohm.purgeDb nohm.client
+      .then ->
         redis.quit ->console.log 'bye.'

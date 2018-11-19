@@ -1,4 +1,3 @@
-# first of first ,check redis-server ether running.
 {spawn} = require 'child_process'
 
 pgrep = spawn 'pgrep',['redis-server']
@@ -15,19 +14,23 @@ pgrep.on 'close',(code)->
     nohm = (require 'nohm').Nohm
     redis = (require 'redis').createClient() # default 6379 port redis-cli
     # include our Model
-    schema = require '../modules/sche-tricks'
-    DBPREFIX = schema.prefixes[0]
-    HASHPREFIX = schema.prefixes[1]
+    schema = nohm.register (require '../modules/md-readingjournals')
     redis.on 'error',(err)->
       console.error '::Redis Database Error::',err.message
 
     redis.on 'connect',->
       nohm.setClient redis
-      nohm.setPrefix DBPREFIX
+      nohm.setPrefix 'seesee' 
   
       # really 
-      trick = await nohm.factory 'tricks' 
+      journal = await nohm.factory 'readingjournals' 
 
-      ids = trick.find 
-        visits:4
-      ids.then (val)->console.log 'found',val,'id.'
+      ids = journal.find 
+        title:'book#a4'
+         
+      ids.then (val)->
+        if val.length is 0
+          console.log 'no found.'
+        else
+          console.log 'found info is:',val
+        redis.quit()

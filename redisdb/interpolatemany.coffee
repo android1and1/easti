@@ -1,9 +1,8 @@
-# first of first ,check redis-server ether running.
 {spawn} = require 'child_process'
 
 pgrep = spawn 'pgrep',['redis-server']
-pgrep.stdout.on 'data',(chunk)->
-  console.log '::PGREP::',chunk.toString 'utf-8'
+#pgrep.stdout.on 'data',(chunk)->
+#  console.log '::PGREP::',chunk.toString 'utf-8'
 pgrep.on 'error',(error)->
   console.log 'found error during child proces.'
   
@@ -15,19 +14,28 @@ pgrep.on 'close',(code)->
     nohm = (require 'nohm').Nohm
     redis = (require 'redis').createClient() # default 6379 port redis-cli
     # include our Model
-    schema = require '../modules/sche-tricks'
-    DBPREFIX = schema.prefixes[0]
-    HASHPREFIX = schema.prefixes[1]
+    rj = nohm.register (require '../modules/md-readingjournals.js')
     redis.on 'error',(err)->
       console.error '::Redis Database Error::',err.message
 
     redis.on 'connect',->
       nohm.setClient redis
-      nohm.setPrefix DBPREFIX
-      for i in [1..3]
-        ins = await nohm.factory HASHPREFIX
-        ins.property 'about','notallrightno' + i
-        ins.property 'content','long long ago..'
-        ins.property 'visits',44
-        ins.property 'moment',Date.parse(new Date)
-        ins.save().then (saved)->console.log saved
+      nohm.setPrefix 'seesee' 
+      # if nessary,purge all db.
+      #await nohm.purgeDb()
+      for i in [1..33]
+        ins = await nohm.factory 'readingjournals' 
+        ins.property 'author','writter#' + i
+        ins.property 'title','title#' + i
+        ins.property 'journal','long long ago..'
+        ins.property 'revision_info','public#' + i
+        ins.property 'timestamp',Date.parse(new Date)
+        try
+          await ins.save()
+        catch error
+          console.log error
+     
+      setTimeout ->redis.quit()
+        ,
+        1500
+        

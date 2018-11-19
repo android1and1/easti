@@ -1,10 +1,8 @@
-# md-admin-readingjournals
-
+# filename "md-admin-readingjournals"
+# rewrite from md-admin
 pug = require 'pug'
 nohm = (require 'nohm').Nohm
 ReadingJournals = require './md-readingjournals.js'
-
-
 class Admin
   @version = '1.0'
   @mod2snippet = (modelClass)->
@@ -21,6 +19,4 @@ class Admin
     console.log pug.render abc,{field_label:firstkey,field_type:definitions.title.type}
     return pug.render abc,{field_label:firstkey,field_type:definitions.title.type}
     
-# dont forget,at last we need add module class
-#nohm.register ReadingJournals
 module.exports = Admin

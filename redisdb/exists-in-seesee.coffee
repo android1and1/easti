@@ -17,20 +17,20 @@ pgrep.on 'close',(code)->
     nohm = (require 'nohm').Nohm
     redis = (require 'redis').createClient() # default 6379 port redis-cli
     # include our Model
-    schema = require '../modules/sche-tricks'
-    DBPREFIX = schema.prefixes[0]
-    HASHPREFIX = schema.prefixes[1]
+    RJ = require '../modules/md-readingjournals'
+    rj = nohm.register RJ
     redis.on 'error',(err)->
       console.error '::Redis Database Error::',err.message
 
     redis.on 'connect',->
       nohm.setClient redis
-      nohm.setPrefix DBPREFIX
+      nohm.setPrefix 'seesee' 
       # really
-      #definitions = await schema.getDefinitions()
-      trick = await schema.load 1
-      bool = await trick.exists 10000
-      if bool
-        console.log 'has id100'
-      else
-        console.log 'id100 is not exists.'
+      one = await rj.load 1
+      one.exists 1
+      .then (bool)->
+        if bool
+          console.log 'has #1'
+        else
+          console.log '#1 Not Exists.'
+        redis.quit()
