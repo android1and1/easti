@@ -2,8 +2,8 @@
 {spawn} = require 'child_process'
 
 pgrep = spawn 'pgrep',['redis-server']
-pgrep.stdout.on 'data',(chunk)->
-  console.log '::PGREP::',chunk.toString 'utf-8'
+#pgrep.stdout.on 'data',(chunk)->
+#  console.log '::PGREP::',chunk.toString 'utf-8'
 pgrep.on 'error',(error)->
   console.log 'found error during child proces.'
   
@@ -15,18 +15,25 @@ pgrep.on 'close',(code)->
     nohm = (require 'nohm').Nohm
     redis = (require 'redis').createClient() # default 6379 port redis-cli
     # include our Model
-    schema = require '../modules/sche-tricks'
-    DBPREFIX = schema.prefixes[0]
-    HASHPREFIX = schema.prefixes[1]
+    schema = nohm.register (require '../modules/md-readingjournals.js')
     redis.on 'error',(err)->
       console.error '::Redis Database Error::',err.message
 
     redis.on 'connect',->
       nohm.setClient redis
-      nohm.setPrefix DBPREFIX
+      nohm.setPrefix 'seesee' 
       # really 
-      id100 = await schema.load 100
-      id100.property 'about','are you?allright?'
-      await id100.save
-        silent:true
-      console.log id100.id,':Updated!' 
+      try
+        id1 = await schema.load 1
+        id1.property 'author','itisme!'
+        try
+          await id1.save
+            silence:true
+        catch error2
+          if error2 instanceof nohm.ValidationError
+            console.log 'validation error,because:',error2.errors
+          else
+            console.log 'Error While Saving.'
+      catch error1
+        console.log 'Catched:',error1.message
+      redis.quit()
