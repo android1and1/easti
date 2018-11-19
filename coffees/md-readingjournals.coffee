@@ -1,5 +1,20 @@
+pug = require 'pug'
 NohmModel = (require 'nohm').NohmModel
 class ReadingJournals extends NohmModel
+  @version = '1.0' 
+  @mod2snippet = ()=>
+    abc= '''
+      -
+        if(field_type === 'string')
+          field_type='text';
+
+      .form-group
+        label(for= 'id' + field_label)= field_label 
+        input(type=field_type id= 'id' + field_label class="form-control" placeholder="you know..")
+    ''' 
+    firstkey = (Object.keys @definitions)[0]
+    pug.render abc,{field_label:firstkey,field_type:@definitions.title.type}
+
   @getDefinitions = ()=>
     @definitions
 
