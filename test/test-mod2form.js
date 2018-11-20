@@ -11,12 +11,12 @@
       it('should be accessible::', function() {
         return assert.equal(RJ.version, '1.0');
       });
-      it('should has a function named "mod2snippet"::', function() {
-        return assert.ok(RJ.mod2snippet);
+      it('should has a function named "mod2form"::', function() {
+        return assert.ok(RJ.mod2form);
       });
-      return it('mod2snippet() should output something::', function() {
-        console.log(RJ.mod2snippet());
-        return assert.notEqual(RJ.mod2snippet().length, 0);
+      return it('mod2form() should output something::', function() {
+        console.log(RJ.mod2form());
+        return assert.notEqual(RJ.mod2form().length, 0);
       });
     });
   });

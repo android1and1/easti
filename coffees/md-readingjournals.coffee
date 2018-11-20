@@ -3,27 +3,28 @@ pug = require 'pug'
 NohmModel = (require 'nohm').NohmModel
 class ReadingJournals extends NohmModel
   @version = '1.0' 
-  # below method - mod2snippet is as 'Admin Class'
-  @mod2snippet = ()=>
+  # mod2form as 'Admin Class'
+  @mod2form = ->
+    # a dymatic pug codes output.in these codes,the only variable is opts
     form = '''
-      form.form-horizontal
-      - for(attr in opts){
-          .form-group
-            label(for= 'id' + attr)= attr
-            - var type=opts[attr].type
-            - 
-              if(type==='string')
-                type='text'
-              else if(type==='integer')
-                type='number'
-              else if(type==='timestamp')
-                type='datetime'
-              else
-                type='unkown'
-            input(class="form-control",id= 'id' + attr,name= label,type= type )
-      - }
-        .form-group  
-          button(class="btn btn-lg btn-default") Submit!  
+      form.form-horizontal(action=opts.url,method='GET')
+        - for(attr in opts){
+            .form-group
+              label(for= 'id' + attr)= attr
+              - if(opts[attr].widget==='textarea')
+                textarea(class="form-control",rows="5",name=attr,id= 'id' + attr) 
+              - else{
+                - if(opts[attr].type === 'integer') 
+                  - type='number'
+                - else if(opts[attr].type === 'timestamp')
+                    -  type='datetime'
+                - else
+                  - type='text'
+                input(class="form-control",id= 'id' + attr,name= attr,type= type )
+              - }
+        - }
+          .form-group  
+            button(class="idoido btn btn-lg btn-default") Submit!  
     '''
     form 
 
@@ -62,6 +63,7 @@ class ReadingJournals extends NohmModel
       defaultValue:0
 
     journal:{
+      widget:'textarea'
       type:'string'
       validations:[
         'notEmpty'

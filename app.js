@@ -40,17 +40,16 @@
 
   app.use('/uploading', uploading);
 
+  app.get('/', function(req, res) {
+    return res.render('index', {
+      title: 'I see You',
+      name: 'wang!'
+    });
+  });
+
   // deferred 'use "/tricks",tricks
   //tricks = require './routes/route-tricks.js'
   //app.use '/tricks',tricks
-  //app.get '/',(req,res)->
-  //  res.render 'index'
-  //    ,
-  //    title:'I see You'
-  //    name:'wang!'
-  //app.get '/show-widget',(req,res)->
-  //  res.render 'widgets/show-widget'
-
   //app.use (req,res)->
   //  res.status 404
   //  res.render '404'

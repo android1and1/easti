@@ -89,6 +89,9 @@ Linux Platform:
 1) child process will return 'close' event soon after child process be created(spawn).
 2) after app.js exit,redis-server as its child process will exit.
 
+* currently version app.js:
+at OSX platform,after 'node app.js' will output some debug error info soon,say connect 127.0.0.1:6379 failure,it is because OSX's subprocess mechemist,redis-server will try severial times,in common situation,it is not a core problem.
+
 ###
 nohm model
 ###
