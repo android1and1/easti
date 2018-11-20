@@ -102,6 +102,8 @@ if require.main is module
       console.log 'redis-server started already.'
       tricks = require './routes/route-tricks.js'
       app.use '/tricks',tricks
+      readingjournals = require './routes/route-readingjournals.js'
+      app.use '/reading-journals',readingjournals
       app.use (req,res)->
         res.status 404
         res.render '404'
