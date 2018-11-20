@@ -78,6 +78,10 @@
     }
   });
 
+  router.get('/sample-html2form', function(req, res, next) {
+    return res.send('ok');
+  });
+
   router.get('/delete/:id', async function(req, res, next) {
     var error, ins;
     try {

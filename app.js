@@ -107,9 +107,11 @@
           //  console.log 'spawn output:'
           //  console.log da.toString 'utf-8'
           return process.nextTick(function() {
-            var server, tricks;
+            var readingjournals, server, tricks;
             tricks = require('./routes/route-tricks.js');
             app.use('/tricks', tricks);
+            readingjournals = require('./routes/route-readingjournals.js');
+            app.use('/reading-journals', readingjournals);
             app.use(function(req, res) {
               res.status(404);
               return res.render('404');

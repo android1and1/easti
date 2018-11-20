@@ -45,6 +45,9 @@ router.get  '/head:number',(req,res,next)->
   else
     res.render 'tricks/list-items.pug',{idle:true}
 
+router.get  '/sample-html2form',(req,res,next)->
+  res.send 'ok'
+
 router.get  '/delete/:id',(req,res,next)->
   try
     ins = await schema.load req.params.id
