@@ -41,9 +41,9 @@ router.post '/delete/:id',(req,res,next)->
   try
     thisins = await schema.load thisid
     thisins.remove().then ->
-      res.json {status:'ok'}
+      res.json {status:'delete-ok'}
   catch error
-    res.json {status:'error',error:error.message}
+    res.json {status:'delete-error',error:error.message}
 
 router.get '/sample-mod2form',(req,res,next)->
   opts = RT.definitions

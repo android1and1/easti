@@ -2,8 +2,15 @@
 (function() {
   $(function() {
     return $('button.nohm-delete').on('click', function(evt) {
-      var ref;
-      return alert(((ref = evt.target) != null ? ref.tagName : void 0) || 'no this attribute - target.tagName');
+      return $.ajax({
+        url: '/reading-journals/delete/' + $(this).data('nohmid'),
+        type: 'POST',
+        dataType: 'json'
+      }).done(function(json) {
+        return alert(JSON.stringify(json));
+      }).fail(function(xhr, status, error) {
+        return alert(error.message);
+      });
     });
   });
 

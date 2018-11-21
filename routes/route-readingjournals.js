@@ -69,13 +69,13 @@
       thisins = (await schema.load(thisid));
       return thisins.remove().then(function() {
         return res.json({
-          status: 'ok'
+          status: 'delete-ok'
         });
       });
     } catch (error1) {
       error = error1;
       return res.json({
-        status: 'error',
+        status: 'delete-error',
         error: error.message
       });
     }
