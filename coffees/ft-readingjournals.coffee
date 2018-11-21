@@ -13,11 +13,9 @@ server.on 'error',(error)->
 
 server.listen 4140
 
-
 # start assertions.
 describe 'Router Functional Test -  /reading-journals::',->
-  describe 'basically::',->
-    before ->
-      browser.visit 'http://www.cinema.com/reading-journals/'
-    it 'should be accessible::',->
+  before (done)->
+    browser.visit 'http://www.cinema.com/reading-journals',done
+  it 'index page should be accessible::',->
       browser.assert.success()

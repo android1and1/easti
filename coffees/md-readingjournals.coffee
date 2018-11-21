@@ -5,9 +5,10 @@ class ReadingJournals extends NohmModel
   @version = '1.0' 
   # mod2form as 'Admin Class'
   @mod2form = ->
-    # a dymatic pug codes output.in these codes,the only variable is opts
+    # variables:['url','opts'] 
     form = '''
-      form.form-horizontal(action=opts.url,method='GET')
+      p
+      form(action= url,method='POST' id="bootform")
         - for(attr in opts){
             .form-group
               label(for= 'id' + attr)= attr
@@ -25,6 +26,7 @@ class ReadingJournals extends NohmModel
         - }
           .form-group  
             button(class="idoido btn btn-lg btn-default") Submit!  
+      p
     '''
     form 
 
@@ -55,12 +57,13 @@ class ReadingJournals extends NohmModel
       ]
     tag:
       type:'integer'
+      # type 1 is 'wenxue' 2 is 'zhentan',3 is 'kexue',4 is 'lishi'....
       defaultValue:33
       index:true
        
     timestamp:
       type:'timestamp'
-      defaultValue:0
+      defaultValue: 0 
 
     journal:{
       widget:'textarea'
@@ -72,7 +75,7 @@ class ReadingJournals extends NohmModel
     
     reading_history:{
       type:'string'
-      defaultValue:''
+      defaultValue:'empty'
     }
   }
 
