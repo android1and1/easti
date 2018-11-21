@@ -1,3 +1,22 @@
 extend ../layouts/main.pug
+block pagejs
+  script(src="/pagejs/readingjournals/pagejs-readingjournals-index.js")
 block content
-  h1 i am reading journals.
+  h1 all items.
+  if alljournals
+    .panel.panel-default
+      each journal in alljournals
+        .panel-heading= journal.title
+        .panel-body
+          ul.list-item-group
+            li.list-item= journal.author 
+            li.list-item= journal.journal 
+            li.list-item= journal.visits 
+            li.list-item= journal.tag 
+            li.list-item= journal.reading_history 
+            li.list-item= journal.timestamp 
+          button(class="btn btn-default nohm-delete" data-nohmid= journal.id) Delete It 
+      
+       
+  else
+    h2 zero items.
