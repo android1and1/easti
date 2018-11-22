@@ -3,7 +3,7 @@ pug = require 'pug'
 path = require 'path'
 express = require 'express'
 router = express.Router()
-formidable = require 'formidable'
+#formidable = require 'formidable'
 Redis = require 'redis'
 RT = require '../modules/md-readingjournals'
 
@@ -19,16 +19,13 @@ Nohm = require 'nohm'
     itisnohm.setPrefix 'seesee' 
 
 
-router.get  '/',(req,res,next)->
+router.get '/',(req,res,next)->
   # index page,list all items.
   schema = nohm1.register RT
   allids = await schema.sort {'field':'visits','direction':'DESC','limit':[0,11]} 
-  #console.log 'allids==',allids
   allins = await schema.loadMany allids
-  #console.log 'allins.length==',allins.length
   alljournals = []
   for ins in allins
-    #console.log 'one ins:',ins.allProperties() 
     alljournals.push ins.allProperties()
   
   res.render 'readingjournals/index',{title:'i am journals','alljournals':alljournals}

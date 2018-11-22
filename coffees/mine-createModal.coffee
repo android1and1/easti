@@ -1,4 +1,9 @@
 # dependies jq
+# Usage: user-page include it by <script src="/path/to/this/file.js"),then in page javascript
+# write: ... createModal $('body'),{options}
+# now we have a '#myModal',at last:
+# $('#myModal').show()
+# funcBuffton be includes in options.
 window.createModal = (parent,options)->
   titleText = options?.titleText or 'Default Title Of Modal Dialog'
   bodyText = options?.bodyText or 'Default content text.'

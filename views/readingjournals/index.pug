@@ -1,5 +1,7 @@
 extend ../layouts/main.pug
 block pagejs
+  script(src="/mine/mine-createModal.js")
+  script(src="/mine/mine-create-alert-box.js")
   script(src="/pagejs/readingjournals/pagejs-readingjournals-index.js")
 block content
   h1 all items.
@@ -15,8 +17,9 @@ block content
             li.list-item= journal.tag 
             li.list-item= journal.reading_history 
             li.list-item= journal.timestamp 
-          button(class="btn btn-default nohm-delete" data-nohmid= journal.id) Delete It 
-      
-       
+          button(data-itemid=journal.id,class="nohm-delete btn btn-default") Delete It 
+
   else
     h2 zero items.
+  div#modalBox
+  div#log

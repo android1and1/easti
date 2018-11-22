@@ -28,7 +28,8 @@ pgrep.on 'close',(code)->
         ins.property 'author','writter#' + i
         ins.property 'title','title#' + i
         ins.property 'journal','long long ago..'
-        ins.property 'revision_info','public#' + i
+        ins.property 'visits': i
+        ins.property 'reading_history':' have a early time,reading once.'
         ins.property 'timestamp',Date.parse(new Date)
         try
           await ins.save()
