@@ -1,4 +1,5 @@
 $ ->
+  # be compiled,then put into url: /pagejs/readingjournals/pagejs-readingjournals-index.js
   $('button.nohm-delete').on 'click',(evt)->
     deleteButton = $(@)
     itemid=$(evt.target).data('itemid')
@@ -24,5 +25,6 @@ $ ->
         $('#log').append $('<h4/>',{text:'Response of execute deleting of item id:' + itemid})
         $('#log').append $('<p/>',{text:k+':'+v}) for k,v of json 
         $('#log').append $('<br/>')
-        #console.log messages
         deleteButton.attr 'disabled','disabled'
+        deleteButton.button 'deleted'
+       

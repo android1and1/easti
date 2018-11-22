@@ -17,7 +17,7 @@ block content
             li.list-item= journal.tag 
             li.list-item= journal.reading_history 
             li.list-item= journal.timestamp 
-          button(data-itemid=journal.id,class="nohm-delete btn btn-default") Delete It 
+          button(type="button" data-deleted-text="this item was deleted." data-itemid=journal.id,class="nohm-delete btn btn-default") Delete It 
 
   else
     h2 zero items.
