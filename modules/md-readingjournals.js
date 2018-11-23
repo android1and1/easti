@@ -62,7 +62,8 @@
       },
       timestamp: {
         type: 'timestamp',
-        defaultValue: 0
+        validations: ['notEmpty'],
+        index: true
       },
       journal: {
         widget: 'textarea',

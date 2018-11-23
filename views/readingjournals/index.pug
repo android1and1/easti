@@ -4,11 +4,15 @@ block pagejs
   script(src="/mine/mine-create-alert-box.js")
   script(src="/pagejs/readingjournals/pagejs-readingjournals-index.js")
 block content
-  h1 all items.
+  h1 Top 10 
   if alljournals
     .panel.panel-default
       each journal in alljournals
-        .panel-heading= journal.title
+        .panel-heading 
+          h4
+            span(class="label label-warning")= 'id - ' + journal.id
+            |&nbsp;&nbsp;
+            = journal.title
         .panel-body
           ul.list-item-group
             li.list-item= journal.author 
@@ -17,7 +21,7 @@ block content
             li.list-item= journal.tag 
             li.list-item= journal.reading_history 
             li.list-item= journal.timestamp 
-          button(type="button" data-deleted-text="this item was deleted." data-itemid=journal.id,class="nohm-delete btn btn-default") Delete It 
+          button(type="button" data-deleted-text="this item was deleted." data-itemid=journal.id,class="nohm-delete btn btn-primary") Delete It 
 
   else
     h2 zero items.

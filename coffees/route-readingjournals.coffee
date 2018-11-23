@@ -20,9 +20,9 @@ Nohm = require 'nohm'
 
 
 router.get '/',(req,res,next)->
-  # index page,list all items.
+  # index page,list top10. 
   schema = nohm1.register RT
-  allids = await schema.sort {'field':'visits','direction':'DESC','limit':[0,11]} 
+  allids = await schema.sort {'field':'visits','direction':'DESC','limit':[0,10]} 
   allins = await schema.loadMany allids
   alljournals = []
   for ins in allins
@@ -31,6 +31,22 @@ router.get '/',(req,res,next)->
   res.render 'readingjournals/index',{title:'i am journals','alljournals':alljournals}
   
 
+router.get '/search-via-id/:id',(req,res,next)->
+  schema = nohm1.register RT
+  try
+    inss = await schema.findAndLoad
+      timestamp:1412121600000
+      visits:
+        min:1
+        max:'+inf'
+    resultArray = []
+    for ins in inss
+      resultArray.push ins.id + '#' + ins.property 'title'
+    res.json {results: resultArray} 
+  catch error
+    res.json {results:''}
+  
+  
 router.post '/delete/:id',(req,res,next)->
   # at a list page,each item has button named 'Delete It'
   thisid = req.params.id
@@ -73,7 +89,7 @@ router.all '/add',(req,res,next)->
       res.json {status:'ok'}
     catch error
       if error instanceof Nohm.ValidationError
-         console.log 'validation error during save().'
+         console.log 'validation error during save().,reason is',error.errors
       else
          console.log error.message
       res.json {status:'error',reason:'no save,check abouts.'}

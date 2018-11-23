@@ -1,5 +1,6 @@
 extends ../layouts/main.pug
 block content
+  include thumbnail-type/basic-thumbnail.pug
   include model-navbar-static-top.pug
   - for(var i=0;i<=5;i++) 
     include model-media
