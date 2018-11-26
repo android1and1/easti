@@ -98,3 +98,57 @@ nohm model
 step1,write coffees/md-<nohm-model>.coffee 
 step2,compile its result .js file into "./modules/" directory
 step3,"md-admin.js" will read this nohm model's definitions,dynamiclly load each attribute for views and other things.
+
+###
+bootstrap-wysiwyg
+###
+git clone this project,put into './public/,so run 'tree ./public/bootstrap-wysiwyg/' will output:
+public/bootstrap-wysiwyg
+├── bootstrap-wysiwyg.js
+├── external
+│   ├── google-code-prettify
+│   │   ├── lang-apollo.js
+│   │   ├── lang-basic.js
+│   │   ├── lang-clj.js
+│   │   ├── lang-css.js
+│   │   ├── lang-tex.js
+│   │   ├── .... 
+│   │   ├── lang-vb.js
+│   │   ├── lang-vhdl.js
+│   │   ├── prettify.css
+│   │   ├── prettify.js
+│   │   └── run_prettify.js
+│   └── jquery.hotkeys.js
+├── index.css
+├── index.html
+├── LICENSE
+├── promo-868x350.png
+├── README.md
+└── republish.sh
+
+step2 ,make it localist:
+"mkdir ./public/font-awesome/font -p"
+"mkdir ./public/font-awesome/css "
+copy net file :
+then,run 'tree ./public/font-awesome/' will output
+public/font-awesome
+└── 3.0.2
+    ├── css
+    │   ├── font-awesome.css
+    │   ├── font-awesome-ie7.min.css
+    │   └── font-awesome.min.css
+    └── font
+        ├── *fontawesome-webfont.eot
+        ├── fontawesome-webfont.svg
+        ├── *fontawesome-webfont.ttf
+        └── *fontawesome-webfont.woff
+add  '*' sign means it is not included office site git  resposity,but use 'hacking' from example html's 'resources'(development view).
+curl download it ,one by one.
+till here,we localize bootstrap-wysiwyg,and font-awesome.
+
+step3)
+modified 'index' page for our purpose:disable the AD contents,links..,keep it clean and simple.
+
+step4)
+add this suit to our project.
+ 
