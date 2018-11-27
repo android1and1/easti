@@ -144,3 +144,9 @@ cyrus-Latitude-E7470
 cyrus-Latitude-E7470
 2018年 11月 23日 星期五 10:22:20 CST
   the index page need a hero-block in toppest position,contains:title,label,logo,picture,be rendering text(half clearly).
+
+
+hp505B
+Tue Nov 27 15:50:00 CST 2018
+  run the first socket.io learning-target-server.
+  why io-client cannot received data from io-server news channel,.emit {item:xxx??
