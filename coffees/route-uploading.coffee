@@ -81,4 +81,8 @@ router.use '/learn-formidable',(req,res,next)->
   else
     res.send 'we dont handle request excepts "POST" and "GET".'
      
-module.exports = router
+uploadingFactory = (app)->
+  (pathname)->
+    app.use pathname,router
+#module.exports = router
+module.exports = uploadingFactory 

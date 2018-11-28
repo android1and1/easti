@@ -57,4 +57,12 @@ router.get  '/*',(req,res,next)->
       console.log extname
       res.send 'not clear mime type.' 
 
-module.exports = router
+router.for = '/alpha'
+alphaFactory = (whichapp)->
+  return (whichpath)->
+    whichapp.use whichpath,router 
+    null
+
+#module.exports = router
+# now ,each router's module currizm.2018-11-28
+module.exports = alphaFactory 
