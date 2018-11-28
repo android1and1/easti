@@ -45,7 +45,7 @@
     // it is main's responsible to starting redis-server
     pgrep = spawn('pgrep', ['redis-server']);
     pgrep.on('close', function(code1) {
-      var conf, readingjournals, redisservice, server;
+      var conf, redisservice, server;
       if ((parseInt(code1)) !== 0) { //means no found
         console.log('start redis-server.');
         if (process.platform === 'linux') {
@@ -60,12 +60,13 @@
             return console.log(da.toString('utf-8'));
           });
           return redisservice.on('close', function(code) {
-            var readingjournals, server;
+            var server;
             //console.log 'Exit With Code:',code
             //tricks = require './routes/route-tricks.js'
             //app.use '/tricks',tricks
-            readingjournals = require('./routes/route-readingjournals.js');
-            app.use('/reading-journals', readingjournals);
+            //readingjournals = require './routes/route-readingjournals.js'
+            //app.use '/reading-journals',readingjournals
+            (require('./routes/route-readingjournals'))(app)('/reading-journals');
             app.use(function(req, res) {
               res.status(404);
               return res.render('404');
@@ -92,11 +93,12 @@
           //  console.log 'spawn output:'
           //  console.log da.toString 'utf-8'
           return process.nextTick(function() {
-            var readingjournals, server;
+            var server;
             //tricks = require './routes/route-tricks.js'
             //app.use '/tricks',tricks
-            readingjournals = require('./routes/route-readingjournals.js');
-            app.use('/reading-journals', readingjournals);
+            (require('./routes/route-readingjournals'))(app)('/reading-journals');
+            //readingjournals = require './routes/route-readingjournals.js'
+            //app.use '/reading-journals',readingjournals
             app.use(function(req, res) {
               res.status(404);
               return res.render('404');
@@ -121,8 +123,9 @@
         console.log('redis-server started already.');
         //tricks = require './routes/route-tricks.js'
         //app.use '/tricks',tricks
-        readingjournals = require('./routes/route-readingjournals.js');
-        app.use('/reading-journals', readingjournals);
+        (require('./routes/route-readingjournals'))(app)('/reading-journals');
+        //readingjournals = require './routes/route-readingjournals.js'
+        //app.use '/reading-journals',readingjournals
         app.use(function(req, res) {
           res.status(404);
           return res.render('404');

@@ -42,8 +42,9 @@ if require.main is module
           #console.log 'Exit With Code:',code
           #tricks = require './routes/route-tricks.js'
           #app.use '/tricks',tricks
-          readingjournals = require './routes/route-readingjournals.js'
-          app.use '/reading-journals',readingjournals
+          #readingjournals = require './routes/route-readingjournals.js'
+          #app.use '/reading-journals',readingjournals
+          (require './routes/route-readingjournals')(app)('/reading-journals')
           app.use (req,res)->
             res.status 404
             res.render '404'
@@ -68,8 +69,9 @@ if require.main is module
         process.nextTick ->
           #tricks = require './routes/route-tricks.js'
           #app.use '/tricks',tricks
-          readingjournals = require './routes/route-readingjournals.js'
-          app.use '/reading-journals',readingjournals
+          (require './routes/route-readingjournals')(app)('/reading-journals')
+          #readingjournals = require './routes/route-readingjournals.js'
+          #app.use '/reading-journals',readingjournals
           app.use (req,res)->
             res.status 404
             res.render '404'
@@ -90,8 +92,9 @@ if require.main is module
       console.log 'redis-server started already.'
       #tricks = require './routes/route-tricks.js'
       #app.use '/tricks',tricks
-      readingjournals = require './routes/route-readingjournals.js'
-      app.use '/reading-journals',readingjournals
+      (require './routes/route-readingjournals')(app)('/reading-journals')
+      #readingjournals = require './routes/route-readingjournals.js'
+      #app.use '/reading-journals',readingjournals
       app.use (req,res)->
         res.status 404
         res.render '404'
