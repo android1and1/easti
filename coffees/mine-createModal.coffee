@@ -1,9 +1,12 @@
-# dependies jq
-# Usage: user-page include it by <script src="/path/to/this/file.js"),then in page javascript
-# write: ... createModal $('body'),{options}
-# now we have a '#myModal',at last:
-# $('#myModal').show()
-# funcBuffton be includes in options.
+# depends jQuery
+# Usage: user-html-page include it:
+#   (step1) "<script src="/path/to/this/file.js"></script>"
+# client html write: 
+#   (step2) ... createModal $('body'),{options}
+# notice that ,options example: {titleText:xxx,bodyText:xxxx,boxid:xxxx}
+# now we have a  modal box element,but it need awake.
+#   (step3) "$('#myModal').modal()"  # notice that,NOT .show() but .modal()!
+# funcBuffton is optional included in options.
 window.createModal = (parent,options)->
   titleText = options?.titleText or 'Default Title Of Modal Dialog'
   bodyText = options?.bodyText or 'Default content text.'
@@ -19,7 +22,7 @@ window.createModal = (parent,options)->
   container = $('<div/>'
     ,
       'class':'modal fade'
-      'id': 'myModal'
+      'id': options?.boxid or 'myModal'
       'tabindex':'-1'
       'role': 'dialog'
     )
