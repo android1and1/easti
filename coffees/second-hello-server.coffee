@@ -16,17 +16,18 @@ app.get '/',(req,res)->
     title:'the second hello:lesson2'
 server = http.Server app
 server.listen 2882,->console.log 'Express\+ScoketIO Running At Port:2882'
-
+counter = 0
 io = (require 'socket.io')(server)
-sockets = []
+io.engine.generateID = (req)->
+  return 'custom:id:' + counter++
 io.on 'connect',(socket)->
-  console.log 'new user id:',socket.id,'currently logging users is',sockets.length + 1
-  sockets.push socket
+  io.of '/'
+    .send  'new user,id==',socket.id 
 
   socket.on 'disconnect',->
-    console.log 'one leave.'
+    io.of '/'
+      .send 'one leave.'
   socket.on 'message',(msg)->
-    console.log 'received:',msg
-    for s in sockets
-      s.send msg
-    
+    console.log 'socketid==',socket.id,'says:',msg
+    io.of '/'
+      .send socket.id + ' says -- '+msg 
