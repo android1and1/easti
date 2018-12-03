@@ -1,0 +1,12 @@
+extends layouts/main
+block content
+  h1.text-center second hello:lesson2
+  h4 broadcast and websocket:send
+  form
+    textarea#message(rows="5",cols="88")
+    button(type="submit") submit!
+  div#messages
+    h4 (history..)
+block pagejs
+  script(src="/socket.io/socket.io.js")
+  script(src="/mine/io/mine-second-hello.js")
