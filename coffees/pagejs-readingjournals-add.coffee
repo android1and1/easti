@@ -1,3 +1,8 @@
 $ ->
   $('form').on 'submit',(evt)->
-    alert $('form').serialize()
+    # start validation.
+    if validated
+      return true
+    else
+      showalertbox reason
+      return false

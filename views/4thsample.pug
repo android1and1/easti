@@ -1,0 +1,21 @@
+extends layouts/withio.pug
+block content
+  h1 the 4th sample about socket.io
+  div.container
+    form#onlyform.form-horizontal
+      label(for="towho" class="control-label") To:
+      input(type="text" class="form-control" name="towho" id="towho" placeholder="user nickname..")
+      label(for="youtoo" class="control-label") Text
+      input(type="text" class="form-control" name="youguess" id="youtoo" placeholder="input..")
+      button(class="btn btn-default" type="submit") Submit
+      
+    div.row
+      .col-sm-6
+        button.room(class="btn btn-default" data-room="red room") join-red
+      .col-sm-6
+        button.room(data-room="green room" class="btn btn-default") join-green
+    div.row
+      ul#box
+
+block pagejs
+  script(src="/mine/io/mine-4thsample.js")

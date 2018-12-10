@@ -2,7 +2,13 @@
 (function() {
   $(function() {
     return $('form').on('submit', function(evt) {
-      return alert($('form').serialize());
+      // start validation.
+      if (validated) {
+        return true;
+      } else {
+        showalertbox(reason);
+        return false;
+      }
     });
   });
 
