@@ -3,6 +3,10 @@ temp/
 tmp
 .temp
 .tmp
+sqlitedb/*.db
+sqlitedb/*.sql
+sqlitedb/*.sqlite
+sqlitedb/*.sqlite3
 redisdb/*.rdb
 redisdb/*.aof
 node_modules/

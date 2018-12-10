@@ -49,9 +49,12 @@ if something wrong occurs,follow the oredered list:
 7,server uploadDir setup?
 8,jquery xhr constructor set "data-parse"?
 
-###
-Mac Air Book
-###
+######################
+######################
+  Mac Air Book
+######################
+######################
+
 its nodejs installed by nodejs.xxx.tar via nodejs.org,64bit version(latest),just choice nodejs lib place,i choiced the //usr/local/node-v8.12.0-darwin-x64/bin/node
 and make a link to binary file:
  /usr/local/bin/node -> /usr/local/node-v8.12.0-darwin-x64/bin/node
@@ -64,9 +67,12 @@ in 'app.js',defines check and lauch redis-server,after http server closing,the r
 a tip,in client'shell,run "shutdown save" can affect server to close and save key-value before really disconnect.
 
 
-###
-redis-server
-###
+######################
+######################
+  redis-server
+######################
+######################
+
 redis-server commended to be a manually start program,after "apt install",redis-server always be a system-manager,and boot-with program,
 there is 1 drawback:user always forget use their customer db file,at <project>/redisdb/easti.dump.rdb,and their customer config file at <project>/redisdb/redis.conf.
 so,start redis-server is app's task.in app.js,will find some "spawn" codes about check-start redis-server.
@@ -92,16 +98,22 @@ Linux Platform:
 * currently version app.js:
 at OSX platform,after 'node app.js' will output some debug error info soon,say connect 127.0.0.1:6379 failure,it is because OSX's subprocess mechemist,redis-server will try severial times,in common situation,it is not a core problem.
 
-###
-nohm model
-###
+#####################
+#####################
+  nohm model
+#####################
+#####################
+
 step1,write coffees/md-<nohm-model>.coffee 
 step2,compile its result .js file into "./modules/" directory
 step3,"md-admin.js" will read this nohm model's definitions,dynamiclly load each attribute for views and other things.
 
-###
-bootstrap-wysiwyg
-###
+#####################
+#####################
+  bootstrap-wysiwyg
+#####################
+#####################
+
 git clone this project,put into './public/,so run 'tree ./public/bootstrap-wysiwyg/' will output:
 public/bootstrap-wysiwyg
 ├── bootstrap-wysiwyg.js
@@ -151,4 +163,82 @@ modified 'index' page for our purpose:disable the AD contents,links..,keep it cl
 
 step4)
 add this suit to our project.
- 
+################## 
+################## 
+  browser
+################## 
+################## 
+
+create bare repository at tokyo host.
+clients get this repository by run "git clone tokyo:easti.git"(prepare your own .git/config)
+git clients now only dell laptop.
+make .gitignore,readme
+make a sketch of express site.
+
+
+
+coffee bin/staticify-jq-bt.coffee
+it will copy bootstrap and jquery,bootstrap must version 3,because its font support.
+
+//2018年 08月 08日 星期三 19:58:12 CST
+init level2,do:
+  try do a module-driven route,
+
+//Sat Aug 25 14:44:51 CST 2018
+ubuntu16.04LTS upgrade to 18.04.
+now the ubuntu18.04LTS-Hp-Desktop-PC joined.
+
+//Sat Aug 25 20:03:28 CST 2018
+views/index.pug,normalize ./app.js,run at development mode.
+make views/layouts directory.
+run test(initial),good.
+
+//Sun Aug 26 18:41:04 CST 2018
+initial level 2,target is 'mocha + tdd'
+
+//Wed Aug 29 16:11:52 CST 2018
+found what happen 'zombie6.x + mocha',no matter about each one,in fact,after i 'browser.html()' to see all output(it said '404 No Found'), i realized that,the route:'example.com' not correctly,instead it,shouldbe 'http://example.com/' or 'http://example.com',.
+now zombie is work well.
+
+
+affix original codes::
+(from accesspageiseasy.coffee)
+Browser = require 'zombie'
+Browser.localhost 'example.com',3003 
+browser = new Browser
+# sometimes it will help(below line)
+browser.waitDuration = '30s'
+describe 'zombie ability display::',->
+  describe 'access index page should success::',->
+    before ->
+      # !!NOT "browser.visit 'example.com'"  !!
+      browser.visit 'http://example.com'
+    it 'should access page successfully::',->
+      browser.assert.success()
+      console.log browser.html()
+    it 'should has 2 h4 tags::',->
+      browser.assert.elements 'h4',2
+    it 'page title is "you see you"::',->
+      browser.assert.text 'title','you see you' 
+
+//Fri Aug 31 10:23:47 CST 2018
+zuo men de shi fu lai J602 xiu men,hao le.
+refine the func-test case,add server.close() in after case.
+crreate a new alpha router.
+
+	//Fri Aug 31 12:08:08 CST 2018
+alpha router is good,but now need more:compress page content.
+
+//Sat Sep  1 11:31:15 CST 2018
+be careful of zombie browser.assert.attribute codes.
+even html element(s) has no attribue - name,the test will pass,no problem.
+if your target is check :
+1)elements(e.g. input elements)all have [name=] attrbute;
+2)and,[name=] not empty.
+
+actually,there are 2 task not 1,you first check 1) via:
+browser.assert.elements 'input[name]',2  # example,your form only 2 input fields
+be aware,not 'input' ,it is 'input[name]',to disable no name input field(s).
+
+then,do 2) via:
+browser.assert.attribute 'input','name',/\w+/

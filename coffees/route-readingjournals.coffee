@@ -9,23 +9,18 @@ RT = require '../modules/md-readingjournals'
 
 Nohm = require 'nohm'
 # client not to connect this time.
-[nohm1,nohm2] = [null,null]
-initnohm = (whichInstance)->
-  client = Redis.createClient() 
-  client.on 'error',(err)->
+[nohm1,nohm2] = [Nohm.Nohm,Nohm.Nohm]
+[nohm1,nohm2].forEach (itisnohm)->
+  # now we have 2 redis clients.
+  redis= Redis.createClient()
+  redis.on 'error',(err)->
     console.log 'debug info::route-readingjournals::',err.message
-  client.on 'connect',->
-    whichInstance.setClient client 
-    whichInstance.setPrefix 'seesee' 
-  null
+  redis.on 'connect',->
+    itisnohm.setClient redis
+    itisnohm.setPrefix 'seesee' 
 
 router.get '/',(req,res,next)->
-  if nohm1 is null
-    nohm1 = Nohm.Nohm
-    await initnohm(nohm1)
-   
   schema = nohm1.register RT
-
   # top10
   allids = await schema.sort {'field':'visits','direction':'DESC','limit':[0,10]} 
   allitems = await schema.loadMany allids
@@ -37,11 +32,7 @@ router.get '/',(req,res,next)->
   
 
 router.get '/search-via-id/:id',(req,res,next)->
-  if nohm1 is null
-    nohm1 = Nohm.Nohm
-    await initnohm(nohm1)
   schema = ins.register RT
-
   try
     items = await schema.findAndLoad
       timestamp:1412121600000
@@ -57,9 +48,6 @@ router.get '/search-via-id/:id',(req,res,next)->
   
   
 router.post '/delete/:id',(req,res,next)->
-  if nohm1 is null
-    nohm1 = Nohm.Nohm
-    await initnohm(nohm1)
   schema = nohm1.register RT
   # at a list page,each item has button named 'Delete It'
   thisid = req.params.id
@@ -78,11 +66,7 @@ router.get '/sample-mod2form',(req,res,next)->
 # add 
 router.all '/add',(req,res,next)->
   if req.method is 'POST'
-    if nohm2 is null
-      nohm2 = Nohm.Nohm
-      await initnohm(nohm2)
     schema = nohm2.register RT
-
     item = await nohm2.factory RT.modelName
     {title,author,visits,reading_history,tag,timestamp,journal} = req.body
     # TODO check if value == '',let is abey default value defined in schema.
@@ -121,4 +105,3 @@ rjFactory = (app)->
     app.use pathname,router
 #module.exports = router
 module.exports = rjFactory
-
