@@ -1,6 +1,7 @@
 $ ->
-  $('textarea').on 'click',(evt)->
+  $('textarea').one 'click',(evt)->
     $(this).val $(this).data('old')
+
   $('form').on 'submit',(evt)->
     evt.preventDefault()
     evt.stopPropagation()
