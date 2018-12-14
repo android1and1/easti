@@ -1,0 +1,24 @@
+extends ../layouts/main
+block content
+  if error
+    h1= error
+  else
+    h1 top 10
+    table.table
+      thead
+        tr
+          td= "id"
+          td= "term"
+          td= "about" 
+          td= "article" 
+          td= "visits" 
+          td= "last_visited" 
+      tbody
+        each item in top10
+          tr
+            td= item.id
+            td= item.term
+            td= item.about
+            td= item.article
+            td= item.visits
+            td= item.last_visited

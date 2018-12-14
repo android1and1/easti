@@ -22,12 +22,12 @@
   app.use(express.static(static_root));
 
   
-  //bodyParser as
+  // enable the variable - "req.body".like old express version's middware - "bodyParser"
   app.use(express.urlencoded({
     extended: false
   }));
 
-  routers = ['tools', 'alpha', 'uploading'];
+  routers = ['tools', 'alpha', 'uploading', 'glossary'];
 
   routers.forEach(function(name) {
     path = './routes/route-' + name;

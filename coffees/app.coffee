@@ -9,10 +9,10 @@ app.set 'view engine','pug'
 #static root directory setup
 static_root = path.join PROJECT_ROOT,'public'
 app.use express.static static_root 
-#bodyParser as
+# enable the variable - "req.body".like old express version's middware - "bodyParser"
 app.use express.urlencoded({extended:false})
 
-routers = ['tools','alpha','uploading']
+routers = ['tools','alpha','uploading','glossary']
 routers.forEach (name)->
   path = './routes/route-' + name
   (require path)(app)('/' + name)

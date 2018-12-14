@@ -150,3 +150,26 @@ hp505B
 Tue Nov 27 15:50:00 CST 2018
   run the first socket.io learning-target-server.
   why io-client cannot received data from io-server news channel,.emit {item:xxx??
+
+Inch13Early2015Air
+2018年12月10日 星期一 14时38分49秒 CST
+  review nohm
+  create a class file (module)
+  use this module,do initial about nohm,client
+  check insert 1,000 item how fast is it.
+  module name - 'idcards' keep staff's personal id number,inner-use.
+  filename: md-idcards.js,from coffees/md-idcards.coffee
+
+
+
+Inch13Early2015Air
+2018年12月12日 星期三 16时10分47秒 CST
+  sqlite3 is funny,easy,so,it is the time use it build one route,.....- --- "abbr",abbr is abbr,for us,one title(or key),references one full text ,content,we use do something or avoid something.
+  the route -- /abbr,the defined way call it "glossary"
+  decided:
+  route:/glossary
+  views:views/glossary.pug
+  pagejs:
+  minejs:
+  module:md-gloassary.
+  B.T.W,how sqlite treat module / schema as what? reqwuire 'sche-What',i see,'as a string.'defineition.
