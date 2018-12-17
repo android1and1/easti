@@ -173,3 +173,13 @@ Inch13Early2015Air
   minejs:
   module:md-gloassary.
   B.T.W,how sqlite treat module / schema as what? reqwuire 'sche-What',i see,'as a string.'defineition.
+
+cyrus-Latitude-E7470
+2018年 12月 17日 星期一 23:43:55 CST
+  now i knew module 'node-querystring' is not nessary import,because req.query can access this query obj,client ajax send 'q=ok&x=1',server's request object has attribute - query - {'q':'ok','x':'1'}.
+  need implement route glossary method (post) search.
+  view - index.pug
+  module - md-glossary.js
+  route - glossary/index 
+  index.pug has a search form,ajax form,while submit,trigger $.ajax {url:glossary/earch}
+  let server response query item of table glossary.then render this item to 'item.pug'

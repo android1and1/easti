@@ -2,11 +2,11 @@
 definitions = '''
   create table if not exists glossary (
     id INTEGER PRIMARY KEY NOT NULL,
-    term varchar(100) not null,
+    term varchar(100) unique,
     about varchar(100),
-    article text,
-    visits integer,
-    last_visited datetime
+    article text not null,
+    visits integer not null default 1,
+    last_visited datetime 
     )
 ''' 
 

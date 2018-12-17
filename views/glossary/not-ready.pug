@@ -1,6 +1,7 @@
 extends ../layouts/main
 block content
   h1 top 10
+  h2= error
   table.table
     thead
       tr
@@ -10,12 +11,3 @@ block content
         td= "article" 
         td= "visits" 
         td= "last_visited" 
-    tbody
-      each item in top10
-        tr
-          td= item.id
-          td= item.term
-          td= item.about
-          td= item.article
-          td= item.visits
-          td= item.last_visited

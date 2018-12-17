@@ -15,13 +15,13 @@ block content
             label(for= "id_" + field.field_name,class= "col-sm-2 control-label")= field.field_name
             
             .col-sm-10.col-sm-offset-2
-              textarea(rows="8",cols="100",name= field.field_name,id="id_" + field.field_name,data-old= item[field.field_name],placeholder= item[field.field_name])
+              textarea(class="required" rows="8",cols="100",name= field.field_name,id="id_" + field.field_name,data-old= item[field.field_name],placeholder= item[field.field_name])
           else
             label(for= "id_" + field.field_name,class= "col-sm-2 control-label")= field.field_name
             .col-sm-10
-              input(class="form-control",type= field.input_type,name= field.field_name,id="id_" + field.field_name,value= item[field.field_name]) 
+              input(class="form-control" type= field.input_type,name= field.field_name,id="id_" + field.field_name,value= item[field.field_name]) 
       br
       br
       .form-group
         .col-sm-offset-2.col-sm-10
-          button(class="btn btn-default btn-lg") Update
+          button(type="submit" class="btn btn-default btn-lg") Update
