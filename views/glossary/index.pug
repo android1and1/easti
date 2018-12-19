@@ -10,6 +10,7 @@ block content
         td= "article" 
         td= "visits" 
         td= "last_visited" 
+        td= "delete operator"
     tbody
       each item in top10
         tr
@@ -19,3 +20,14 @@ block content
           td= item.article
           td= item.visits
           td= item.last_visited
+          td 
+            button(data-id=item.id,class="glossary-delete btn btn-lg btn-warning") delete!
+  form#search.form-inline
+    .form-group
+      label(class="sr-only" for="keyword") keyword
+      input(type="text" name="term" placeholder="keyword" id="keyword")
+    button(type="submit") Search
+block pagejs
+  script(src="/pagejs/glossary/pagejs-glossary-index.js")
+block footer
+  div#delete-response

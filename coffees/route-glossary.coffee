@@ -18,13 +18,16 @@ router.get '/',(req,res,next)->
       else
         res.render 'glossary/index.pug',{title:'top10 list',top10:arr}
 
-#router.post '/search',(req,res,next)->
-router.get '/search',(req,res,next)->
-  # ajax-client post data 
-  # then parse it as field and value,look for db,retrieve item.
-  res.send 'query string: ' + JSON.stringify req.query 
+router.post '/search',(req,res,next)->
+  # client send ajax data {term:'keyword'}
+  keyword = req.body.term
+  # keyword should be validate,because client page js will check it already.
+  db.get 'select * from glossary where term = ?',keyword,(err,item)->
+    res.json {
+        'detail': item 
+        'servertime' : new Date
+      }
     
- 
 router.get '/response',(req,res,next)->
   res.render 'glossary/response.pug'
 
@@ -33,8 +36,14 @@ router.get '/add',(req,res,next)->
   fields = getFields()
   res.render 'glossary/add.pug',{fields:fields}
 
-router.get '/delete/:id',(req,res,next)->
-  db.exec 'delete from glossary where id=' + req.params.id
+router.post '/delete',(req,res,next)->
+  id = req.body.id
+  console.log 'id==',id
+  db.run 'delete from glossary where id= ?',id,(err)->
+    if err
+      res.json status:'delete failed.'
+    else
+      res.json status:'item(id=' + id + ') has deleted.'
 
 router.get '/update/:id',(req,res,next)->
   db.get 'select * from glossary where id = ?',req.params.id,(err,item)->
