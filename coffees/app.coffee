@@ -9,11 +9,14 @@ app.set 'view engine','pug'
 #static root directory setup
 static_root = path.join PROJECT_ROOT,'public'
 app.use express.static static_root 
-# enable the variable - "req.body".like old express version's middware - "bodyParser"
+# enable the variable - "req.body".like the old middware - "bodyParser"
 app.use express.urlencoded({extended:false})
 
-routers = ['tools','alpha','uploading','glossary']
-routers.forEach (name)->
+# below routers need redis-server
+routers1 = ['neighborCar','readingjournals']
+# below routers NO need redis-server
+routers2 = ['tools','alpha','uploading','glossary']
+routers2.forEach (name)->
   path = './routes/route-' + name
   (require path)(app)('/' + name)
 
@@ -39,12 +42,9 @@ if require.main is module
           console.log 'spawn output:'
           console.log da.toString 'utf-8'
         redisservice.on 'close',(code)->
-          #console.log 'Exit With Code:',code
-          #tricks = require './routes/route-tricks.js'
-          #app.use '/tricks',tricks
-          #readingjournals = require './routes/route-readingjournals.js'
-          #app.use '/reading-journals',readingjournals
-          (require './routes/route-readingjournals')(app)('/reading-journals')
+          routers1.forEach (name)->
+            path = './routes/route-' + name
+            (require path)(app)('/' + name)
           app.use (req,res)->
             res.status 404
             res.render '404'
@@ -63,15 +63,10 @@ if require.main is module
         redisservice.on 'error',(err)->
           console.error 'debug info from darwin platform::: ' + err.message
           process.exit 1
-        #redisservice.stdout.on 'data',(da)->
-        #  console.log 'spawn output:'
-        #  console.log da.toString 'utf-8'
         process.nextTick ->
-          #tricks = require './routes/route-tricks.js'
-          #app.use '/tricks',tricks
-          (require './routes/route-readingjournals')(app)('/reading-journals')
-          #readingjournals = require './routes/route-readingjournals.js'
-          #app.use '/reading-journals',readingjournals
+          routers1.forEach (name)->
+            path = './routes/route-' + name
+            (require path)(app)('/' + name)
           app.use (req,res)->
             res.status 404
             res.render '404'
@@ -90,11 +85,9 @@ if require.main is module
     else
       # code1=0,means found progress of redis-server,no need restart.
       console.log 'redis-server started already.'
-      #tricks = require './routes/route-tricks.js'
-      #app.use '/tricks',tricks
-      (require './routes/route-readingjournals')(app)('/reading-journals')
-      #readingjournals = require './routes/route-readingjournals.js'
-      #app.use '/reading-journals',readingjournals
+      routers1.forEach (name)->
+        path = './routes/route-' + name
+        (require path)(app)('/' + name)
       app.use (req,res)->
         res.status 404
         res.render '404'

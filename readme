@@ -242,3 +242,14 @@ be aware,not 'input' ,it is 'input[name]',to disable no name input field(s).
 
 then,do 2) via:
 browser.assert.attribute 'input','name',/\w+/
+################## 
+################## 
+  createForm 
+################## 
+################## 
+in app,always need reused form.the form always from route's module.
+currently,resolve this task by defines (a function) in module,then route can invoke it,
+"md.getForm();"
+then,render to client with {fields:fields},which fields is module's field.
+notice that,something in .pug (view),parse field variable,need some tricks,see pugjs.org tuterials about 'interpolation of tag text'.
+

@@ -6,6 +6,7 @@ router = express.Router()
 #formidable = require 'formidable'
 Redis = require 'redis'
 RT = require '../modules/md-readingjournals'
+# for debug target
 
 Nohm = require 'nohm'
 # client not to connect this time.
@@ -17,7 +18,7 @@ Nohm = require 'nohm'
     console.log 'debug info::route-readingjournals::',err.message
   redis.on 'connect',->
     itisnohm.setClient redis
-    itisnohm.setPrefix 'seesee' 
+    itisnohm.setPrefix 'wiki' 
 
 router.get '/',(req,res,next)->
   schema = nohm1.register RT
@@ -28,7 +29,7 @@ router.get '/',(req,res,next)->
   for item in allitems
     alljournals.push item.allProperties()
   
-  res.render 'readingjournals/index',{title:'i am journals','alljournals':alljournals}
+  res.render 'readingjournals/index',{title:'App Title','alljournals':alljournals}
   
 
 router.get '/search-via-id/:id',(req,res,next)->
@@ -103,5 +104,4 @@ router.all '/add',(req,res,next)->
 rjFactory = (app)->
   (pathname)->
     app.use pathname,router
-#module.exports = router
 module.exports = rjFactory
