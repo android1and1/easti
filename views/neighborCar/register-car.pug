@@ -1,5 +1,10 @@
 extends ../layouts/main
 block pagejs
+  //
+    mine-create-alert-box will bring the 'window.createAlertBox()',it accepts 2 args
+    first,it is "parent",notice that ,its type is jQuery Element,not Dom Element.
+    second,it is "content-need-display-to-user",text,string...
+  script(src="/mine/mine-create-alert-box.js")
   script(src="/pagejs/neighborCar/pagejs-neighborCar-register.js")
 block content
   h2.text-center Register Neighbor Car
@@ -27,7 +32,7 @@ block content
         label(class="radio-inline") blue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           input(type="radio" value="blue" name="color" ) 
     .form-group
-      label(for="where_seen" class="col-sm-2") Where Seen?
+      label(for="where_seen" class="col-sm-2") Where Have You Seen?
       .col-sm-10
         input(class="form-control" id="where_seen" type="text" name="where_seen")
     .form-group
@@ -48,3 +53,5 @@ block content
       .col-sm-10
         textarea(id="memo" name="memo" rows="7" placeholder="memo.." cols="88")
     button(class="btn btn-warning btn-default btn-block",type="submit") Submit!
+block footer
+  div#msgbox currently no message.

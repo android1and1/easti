@@ -1,0 +1,15 @@
+extends ../layouts/main.pug
+block content
+  h1 The Top10 List
+  if top10
+    each item in top10
+      label id: #{item.id}
+      ul
+        li item.licence_number #{item.licence_number}
+        li brand #{item.brand}
+        li color #{item.color}
+        li where_seen #{item.where_seen}
+        li vehicle_model #{item.vehicle_model}
+        li whatistime #{item.whatistime}
+        li checks #{item.checks}
+        li memo #{item.memo}

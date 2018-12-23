@@ -1,0 +1,17 @@
+extends ../layouts/main
+block content
+  //- hero of text. use bootstrap's suit -- jumbotron (or jumbtron?)
+  div.jumbotron.container
+    p an advise suguest is store your currently items in another way(file?sqlite?or pagers)
+    p the safe of data  is important.
+    h2 Purge All Items
+    p after this execution,all items in this database will persistenly deleted.
+    p if you sure,
+    p click below red button.
+    .row
+      .col-sm-offset-4.col-sm-4
+        button(class="btn btn-lg btn-danger") <span class="glyphicon glyphicon-remove"></span> Purge!
+block pagejs
+  script(src="/mine/mine-create-alert-box.js")
+  script(src="/mine/mine-createModal.js")
+  script(src="/pagejs/neighborCar/pagejs-neighborCar-purge.js")

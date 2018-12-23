@@ -39,12 +39,13 @@ class NeighborCar extends NohmModel
         ]
     whatistime:
       type: 'timestamp'
-      defaultValue: 'new Date()'
+      index: true
+      defaultValue: Date.now() 
+      validations:['notEmpty']
     memo:
-      defaultValue: {times:1}
+      type:'string'
+    checks:
+      defaultValue: 1 
       type: (newv,key,oldv)->
-        times=oldv.times
-        ts = new Date
-        oldv['memo' + times] = newv
-        times++
+        return parseInt(newv) + parseInt(oldv) 
 module.exports = NeighborCar

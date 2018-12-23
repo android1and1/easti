@@ -6,9 +6,20 @@
     module - modules/md-neighborCar.js
   */
   $(function() {
-    return $('.form-horizontal').on('submit', function(e) {
+    return $('.form-horizontal').on('submit', function(evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
       alert($(this).serialize());
-      return true;
+      return $.ajax({
+        url: '/neighborCar/register-car',
+        method: 'POST',
+        data: $(this).serialize(),
+        dataType: 'text'
+      }).done(function(responseText) {
+        var $parent;
+        $parent = $('#msgbox');
+        return createAlertBox($parent, responseText);
+      });
     });
   });
 

@@ -48,18 +48,17 @@
       },
       whatistime: {
         type: 'timestamp',
-        defaultValue: 'new Date()'
+        index: true,
+        defaultValue: Date.now(),
+        validations: ['notEmpty']
       },
       memo: {
-        defaultValue: {
-          times: 1
-        },
+        type: 'string'
+      },
+      checks: {
+        defaultValue: 1,
         type: function(newv, key, oldv) {
-          var times, ts;
-          times = oldv.times;
-          ts = new Date;
-          oldv['memo' + times] = newv;
-          return times++;
+          return parseInt(newv) + parseInt(oldv);
         }
       }
     };

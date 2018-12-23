@@ -32,7 +32,8 @@
     });
     return redis.on('connect', function() {
       itisnohm.setClient(redis);
-      return itisnohm.setPrefix('wiki');
+      // another route - /neighborCar use redis-server,so,they should in same name space:'gaikai'
+      return itisnohm.setPrefix('gaikai');
     });
   });
 

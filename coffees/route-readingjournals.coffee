@@ -18,7 +18,8 @@ Nohm = require 'nohm'
     console.log 'debug info::route-readingjournals::',err.message
   redis.on 'connect',->
     itisnohm.setClient redis
-    itisnohm.setPrefix 'wiki' 
+    # another route - /neighborCar use redis-server,so,they should in same name space:'gaikai'
+    itisnohm.setPrefix 'gaikai' 
 
 router.get '/',(req,res,next)->
   schema = nohm1.register RT
