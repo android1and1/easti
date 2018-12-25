@@ -195,3 +195,7 @@ Inch13Early2015Air
   用REDIS及NOHM，做一个MODULE，比之前REDIS应用更进一步的是，这个MODULE有一个方法----CREATEFORM（），可以被客户端显示代码（VIEW）重复利用，显示一个包含必要域的表单，以AJAX方式与后台交互。
   对已有数据检索的能力。
   检索时，关键词主要是两类，一类是号牌模糊搜索词如“A2?B”，另一类是厂牌，如：TOKYO。这是如何做到的呢？主要说模糊这类吧，纯REDIS-CLI，可以使用KEYS来匹配。NOHM没有。
+
+hp505B
+Tue Dec 25 16:45:01 CST 2018
+  share/behaviour.cofffee and share/mod2form.coffee not complete.

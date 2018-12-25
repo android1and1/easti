@@ -29,12 +29,13 @@ class TreeClass extends nohm.NohmModel
     whatistime:
       type:'json'
       dafaultValue : Date.now()
+      validations:['notEmpty']
 
 
-  @createHTML = ->
+  @createHTML : ->
     return pug.render @pugTags,{treeid:@id} 
 
-  @pugTags = '''
+  @pugTags : '''
     form(class="form-horizontal" action="" method="POST" enctype="multipart/form-data")
       .form-group
         label(for= treeid,class="col-sm-2 control-label") The Id Of This Tree
@@ -54,14 +55,9 @@ client.on 'connect',->
   try
     tree = await Nohm.factory 'hereistree',1
   catch error
-    console.log 'global scope debug info:'
-    console.log error
-    console.log '/ /'.repeat 44 
-
-    console.log 'item errors object said:'
-    console.log tree.errors
-    console.log '/ /'.repeat 44 
-  
+    throw new Error 'not found id==1'
+  # load html
+  console.log tree.pugTags 
   client.quit()
 
   # use pure node-redis api

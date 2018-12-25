@@ -29,6 +29,7 @@ class TreeClass extends nohm.NohmModel
     whatistime:
       type:'json'
       dafaultValue : Date.now()
+      validations:['notEmpty']
 
 
   @createHTML = ->
@@ -52,15 +53,20 @@ client.on 'connect',->
   treeModel = Nohm.register TreeClass
   # first of first,decide keep old data or not,if want delete datas,use tmp/deleteA.coffee.
   try
-    tree = await Nohm.factory 'hereistree',1
+    tree = await Nohm.factory 'hereistree'
+    tree.property 'append','give a strong arm.'
+    tree.property {
+        name:'hihillp'
+        latin_name:'hx2o'
+        whatistime: Date.now()      
+      }
+    await tree.save()
   catch error
-    console.log 'global scope debug info:'
-    console.log error
-    console.log '/ /'.repeat 44 
-
-    console.log 'item errors object said:'
     console.log tree.errors
     console.log '/ /'.repeat 44 
+    throw new Error 'Exit.'
+  for k,v of tree.allProperties()
+    console.log k,':',v
   
   client.quit()
 
