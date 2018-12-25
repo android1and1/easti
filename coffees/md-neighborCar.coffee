@@ -43,9 +43,13 @@ class NeighborCar extends NohmModel
       defaultValue: Date.now() 
       validations:['notEmpty']
     memo:
-      type:'string'
+      defaultValue:''
+      type: (newV,key,oldV)->
+        #@property('brand') + ' appended.'
+        @property 'checks',1
+        'checks field updated.'
     checks:
-      defaultValue: 1 
+      defaultValue: 0 
       type: (newv,key,oldv)->
         return parseInt(newv) + parseInt(oldv) 
 module.exports = NeighborCar

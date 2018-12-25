@@ -32,18 +32,17 @@
   });
 
   router.get('/list', async function(req, res, next) {
-    var all, allins, allitems, i, ins, len;
+    var all, allitems, i, ins, j, len;
     // top10 sorted by id number.
     all = (await schema.sort({
       field: 'whatistime',
+      direction: 'DESC',
       limit: [0, 10]
     }));
-    allins = (await schema.loadMany(all));
-    
-    // allitems == all instance properties()
     allitems = [];
-    for (i = 0, len = allins.length; i < len; i++) {
-      ins = allins[i];
+    for (j = 0, len = all.length; j < len; j++) {
+      i = all[j];
+      ins = (await nohm.factory('neighborCar', i));
       allitems.push(ins.allProperties());
     }
     return res.render('neighborCar/list.pug', {
@@ -97,7 +96,7 @@
     } catch (error1) {
       error = error1;
       console.log(ins.errors);
-      res.send('save failed.');
+      return res.send('save failed.');
     }
     return res.send('saved.');
   });

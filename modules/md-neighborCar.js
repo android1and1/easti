@@ -53,10 +53,15 @@
         validations: ['notEmpty']
       },
       memo: {
-        type: 'string'
+        defaultValue: '',
+        type: function(newV, key, oldV) {
+          //@property('brand') + ' appended.'
+          this.property('checks', 1);
+          return 'checks field updated.';
+        }
       },
       checks: {
-        defaultValue: 1,
+        defaultValue: 0,
         type: function(newv, key, oldv) {
           return parseInt(newv) + parseInt(oldv);
         }

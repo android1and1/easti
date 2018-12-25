@@ -20,11 +20,10 @@ router.get '/',(req,res,next)->
 
 router.get '/list',(req,res,next)->
   # top10 sorted by id number.
-  all = await schema.sort {field:'whatistime',limit:[0,10]} 
-  allins = await schema.loadMany all 
-  # allitems == all instance properties()
+  all = await schema.sort {field:'whatistime',direction:'DESC',limit:[0,10]} 
   allitems = []
-  for ins in allins
+  for i in all
+    ins = await nohm.factory 'neighborCar',i
     allitems.push ins.allProperties()
   res.render 'neighborCar/list.pug' ,{top10:allitems}
     
@@ -63,7 +62,7 @@ router.post '/register-car',(req,res,next)->
     await ins.save()
   catch error
     console.log ins.errors
-    res.send 'save failed.'
+    return res.send 'save failed.'
   res.send 'saved.'
   
    
