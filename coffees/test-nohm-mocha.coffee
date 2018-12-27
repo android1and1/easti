@@ -1,6 +1,5 @@
 assert = require 'assert'
-# mocha + nohm,for leaning,test,extending of npm-nohm api.
-nohm = (require 'nohm')
+nohm = require 'nohm'
 Nohm = nohm.Nohm
 NohmModel = nohm.NohmModel 
 db = undefined
@@ -46,7 +45,7 @@ describe 'Mocha + Nohm::',->
         assert.equal something.length,0
 
     it 'should store 1 item::',->
-      db.property 'for_what','mac system'
+      db.property 'for_what','Mac System'
       db.property 'pair_text','mac-user:chilemeiyou(chi le mei you)'
       db.property 'visits','Am I?'
       db.save().then (something)->
@@ -60,7 +59,7 @@ describe 'Mocha + Nohm::',->
     it 'above item updated then its visits will add 1::',->
       db.property 'visits','any'
       await db.save()
-      ids = await db.find {'for_what':'mac system'}
+      ids = await db.find {'for_what':'Mac System'}
       id = ids[0]
       item = await db.load id
       assert.equal item.visits,2
@@ -69,7 +68,15 @@ describe 'Mocha + Nohm::',->
       for i in [1..3]
         db.property 'visits',''
         await db.save()
-      ids = await db.find {'for_what':'mac system'}
+      ids = await db.find {'for_what':'Mac System'}
       id = ids[0]
       item = await db.load id
       assert.equal item.visits,5
+    it 'should valide fail because pair_text not given::',->
+      db2 = new Schema
+      db2.property 
+        for_what:'Jelly-Mac System'
+        pair_text:'root:123'
+        update_time:'2013-5-9 14:00:28'
+      db2.save().then (ins)->
+        assert.equal db2.id,2
