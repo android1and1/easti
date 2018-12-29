@@ -68,6 +68,7 @@ describe 'Link Behaviour Of Nohm API:',->
       #cdb == Comment DB,adb == Article DB
       cdb = await Nohm.factory 'comment'
       adb = await Nohm.factory 'article' 
+
       # before new test,clear the db.
       await Nohm.purgeDb @
 
@@ -98,26 +99,28 @@ describe 'Link Behaviour Of Nohm API:',->
   it 'comment id 1 should has correctly inf::',->
     properties = await cdb.load 1
     assert properties.title is 'comment about a delicate truth'
+    
+    properties = await adb.load 1
+    assert properties.title is 'a delicate truth'
 
-  it 'article link comment should success::',->
-    adb2 = new  ArticleModel
-    cdb2 = new CommentModel
-    adb2.property
-      title:'her name is New York'
-      intro:'adult lullaby'
-      content:'singer is Paloma Faith(British).'
-    cdb1 = await Nohm.factory 'comment',1 # this instance created at step1(test1).
-    cdb2.property
-      title:'comment of new york'
-      stars:4
-      reader: 'tony'
-      content:' Great Stroy,i like it.'
-    adb2.link cdb1
-    adb2.link cdb2
-    await adb2.save()
-    # now adb2 has 1 link which is instance of CommentModel
-    num = await adb2.numLinks 'CommentModel'
-    assert.equal num,0 
+  describe 'adb id1 link 2 comments should success::',->
+    before ->
+      adb = await Nohm.factory 'article',1 # this instance created at step1(test1).
+      cdb = await Nohm.factory 'comment',1 # this instance created at step1(test1).
+    it 'article id1 current has no links::',->
+      num = await adb.numLinks 'comment'
+      assert.equal num,0
 
-
-
+    it 'article id1 link comments id1 and id2 should success::',->
+      cdb2 = new CommentModel
+      cdb2.property
+        title:'comment of new york'
+        stars:4
+        reader: 'tony'
+        content:' Great Stroy,i like it.'
+      # cdb2 will be saved after adb save().
+      adb.link cdb
+      adb.link cdb2
+      await adb.save()
+      num = await adb.numLinks 'comment'
+      assert.equal num,2 
