@@ -23,6 +23,7 @@ class Password extends NohmModel
       defaultValue:0
       load_pure:true
       type:(newv,key,oldv)->
+        # nohm will treat 'oldv' and 'newv' as string,so need parseInt()
         parseInt(oldv) + 1
   }
 
@@ -30,6 +31,11 @@ class Password extends NohmModel
   
 describe 'Mocha + Nohm::',->
   client = (require 'redis').createClient()
+
+  client.on 'error',(err)->
+    console.log '\tPlease Check Redis Process,Api Said:\n"%s."\n',err.message 
+    process.exit 1
+
   client.on 'connect',->
     Nohm.setClient @
     Nohm.setPrefix 'laofu' # lao fu
