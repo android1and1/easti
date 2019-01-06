@@ -1,0 +1,56 @@
+extend ../layouts/main
+block pagejs
+  script.
+    $(function(){
+      if(document.cookie.length > 1)
+        console.log('document.cookie is:',document.cookie)
+      var setCookie = function(name,value,days){
+        var cookie = name + '='
+        cookie += decodeURIComponent(value);
+        if(typeof days === 'number')
+          cookie += ';max-age=' + days * 60 * 60 * 24
+        document.cookie = cookie;
+
+      };//defined func-setCookie
+
+    // invoke this function - setCookie()
+    //setCookie('hello','for world',2);
+    });//end of all.
+block content
+  div.panel.panel-default
+    .panel-heading
+      p setCookie() function,made by D.F
+    .panel-body
+      p in David Flannagan's tuotial EcmaScript 5th Version
+      p He said set cookie via these steps
+      ol
+        li var cookie = 'name='  # name is custom defined
+        li cookie += decodeURIComponent('what you want store') 
+        li cookie += ';anothername='
+        li cookie += decodeURIComponent('the else thing you want store')
+        li like above,add all name=value,then set 'max-age',its unit is sec.
+        li last:document.cookie= cookie
+  .container   
+    .row
+      div.list-group.col-sm-6
+        div.list-group-item
+          p setcookie() function really do
+        div.list-group-item
+          p i think it is easy and happy
+        div.list-group-item
+          p because my mac book(air) has full tools and clear view
+        div.list-group-item
+          p about debug safari resources,includes console,network,resources
+        div.list-group-item.list-group-item-info
+          p ...and cookie!
+      div.list-group.col-sm-6
+        div.list-group-item
+          p setcookie() function really do
+        div.list-group-item
+          p i think it is easy and happy
+        div.list-group-item
+          p because my mac book(air) has full tools and clear view
+        div.list-group-item
+          p about debug safari resources,includes console,network,resources
+        div.list-group-item
+          p ...and cookie!

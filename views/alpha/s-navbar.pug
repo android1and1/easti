@@ -1,0 +1,16 @@
+h2 first navbar
+nav.navbar.navbar-default
+  .container-fluid
+    .navbar-heading
+      a(type="button" class="navbar-left btn btn-default" data-toggle="collapse" href="#article1")
+        | read article#1
+      button(type="button" class="navbar-right btn btn-default" data-toggle="collapse" data-target="#article2")
+        | read article#2
+      // button(type="button" class="navbar-right btn btn-default" data-target="#article2" data-toggle="collapse")
+      form(class="navbar-form")
+        .form-group
+          input(type="text" placeholder="..input key word" id="kw" name="kw" class="form-control")
+          button(type="submit") Search
+h2 second navbar
+h2 a better one.
+include ./a-better-navbar

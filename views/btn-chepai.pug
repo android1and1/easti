@@ -1,0 +1,50 @@
+extend layouts/main
+block pagejs
+  script(src="/mine/mine-collect-chepai-buttons.js")
+block content
+  h1 用于录入车牌的控件
+
+  .btn-group.btn-group-justified
+    a(href="#" type="button" class="btn btn-default") link1
+    a(href="#" type="button" class="btn btn-default") link2
+    a(href="#" type="button" class="btn btn-default") link3
+    a(href="#" type="button" class="btn btn-default") link4
+    a(href="#" type="button" class="btn btn-default") link5
+    a(href="#" type="button" class="btn btn-default") link6
+  .btn-group.btn-group-justified
+    .btn-group
+      button(value="1" type="button" class="btn btn-default") 1
+    .btn-group
+      button(value="2" type="button" class="btn btn-default") 2
+    .btn-group
+      button(value="3" type="button" class="btn btn-default") 3
+    .btn-group
+      button(value="4" type="button" class="btn btn-default") 4
+    .btn-group
+      button(value="A" type="button" class="btn btn-default") A 
+    .btn-group
+      button(value="B" type="button" class="btn btn-default") B 
+    .btn-group
+      button(value="C" type="button" class="btn btn-default") C 
+    .btn-group
+      button(value="D" type="button" class="btn btn-default") D
+    .btn-group
+      button(type="button" class="yesido btn btn-default dropdown-toggle" data-toggle="dropdown" ) Actions <span class="caret"></span>
+      ul(class="dropdown-menu")
+        li action1
+        li action2
+        li action3
+        li action4
+        li(class="divider" role="seperator")
+        li action5
+
+  .dropdown
+    button(data-toggle="dropdown" class="yesido btn btn-lg btn-default dropdown-toggle" role="button") Actions <span class="caret"></span>
+    ul(class="dropdown-menu")
+      li Action-1
+      li Action-2
+      li Action-3
+      li(class="divider" role="seperator")
+      li Another Action1 
+      li Another Action2
+  

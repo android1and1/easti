@@ -1,0 +1,17 @@
+extend ../layouts/main
+block content
+  .media
+    .media-left
+      a(href="/")
+        img(class="media-object" src="/images/bn.png")
+    .media-body
+      p try to see cookie
+      p in another but same origin page.
+      p at last page we set cookie name=value
+      p example cookie="hello=for world"
+
+block pagejs
+  script.
+    $(function(){
+      alert('cookie::' + document.cookie);
+    });
