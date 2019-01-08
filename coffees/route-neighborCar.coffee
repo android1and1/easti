@@ -20,16 +20,59 @@ router.get '/',(req,res,next)->
 
 router.get '/list',(req,res,next)->
   # top10 sorted by id number.
-  all = await schema.sort {field:'whatistime',direction:'DESC',limit:[0,10]} 
+  allids = await schema.sort {field:'whatistime',direction:'DESC',limit:[0,10]} 
   allitems = []
-  for i in all
+  for i in allids
     ins = await nohm.factory 'neighborCar',i
     allitems.push ins.allProperties()
   res.render 'neighborCar/list.pug' ,{top10:allitems}
     
+router.post '/find-by-vehicle-model',(req,res,next)->
+  vehicle_model = req.body.keyword
+  info = []
+  try
+    items = await schema.findAndLoad {'vehicle_model':vehicle_model} 
+    for item in items 
+      info.push item.allProperties()
+  catch error
+    return res.json {'error':'No This Vehicle Model.'}
+  res.json info 
+
+router.post '/find-by-color',(req,res,next)->
+  color = req.body.keyword
+  info = []
+  try
+    items = await schema.findAndLoad {'color':color} 
+    for item in items 
+      info.push item.allProperties()
+  catch error
+    return res.json {'error':'No This Color.'}
+  res.json info 
+  
+router.post '/find-by-brand',(req,res,next)->
+  brand = req.body.keyword
+  list = []
+  try
+    items = await schema.findAndLoad {'brand':brand} 
+    for item in items 
+      item.property 'visits',''
+      await item.save()
+      list.push item.allProperties()
+  catch error
+    return res.json {'error':'No This Brand.'}
+  res.render 'neighborCar/results-list',{list:list}
+
 router.get '/register-car',(req,res,next)->
   res.render 'neighborCar/register-car.pug',{title:'Register Car(Neighbors)'}
 
+router.get '/update/:id',(req,res,next)->
+  id = req.param.id
+  try 
+    item = await nohm.factory 'neighborCar',id
+    properties = item.allProperties()
+    res.render 'neighborCar/base-item-form.pug',{title:'Update Car',properties:properties} 
+     
+    
 router.get '/purge-db',(req,res,next)->
   res.render 'neighborCar/purge-db.pug'
 
@@ -49,7 +92,7 @@ router.delete '/purge-db',(req,res,next)->
 router.post '/register-car',(req,res,next)->
   ins = await nohm.factory 'neighborCar'
   body = req.body
-  ins.property 'checks',1
+  ins.property 'visits',1
   ins.property 
     brand:body.brand 
     licence_number: body.licence_number

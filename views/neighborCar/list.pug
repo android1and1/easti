@@ -1,15 +1,59 @@
 extends ../layouts/main.pug
+block pagecss
+  style.
+    div.content {position:relative;top:4em;}
+block pagejs
+  script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
 block content
-  h1 The Top10 List
-  if top10
-    each item in top10
-      label id: #{item.id}
-      ul
-        li item.licence_number #{item.licence_number}
-        li brand #{item.brand}
-        li color #{item.color}
-        li where_seen #{item.where_seen}
-        li vehicle_model #{item.vehicle_model}
-        li whatistime #{item.whatistime}
-        li checks #{item.checks}
-        li memo #{item.memo}
+  nav.navbar.navbar-inverse.navbar-fixed-top
+    .container-fluid
+      .navbar-header
+        //- brand
+        a(class="navbar-brand" href="/")
+          img(src="/images/bn.png")
+        button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#links")
+          span(class="icon-bar")
+          span(class="icon-bar")
+          span(class="icon-bar")
+      div.collapse.navbar-collapse(id="links")
+        ul.nav.navbar-nav
+          li 
+            a(href="/neighborCar/register-car/") Register Car
+          li 
+            a(href="/neighborCar/purge-db/") Delete
+        form(id="search-form" class="navbar-form navbar-right" method="POST" action="/neighborCar/find-car-by-brand")
+          .form-group
+            input(type="text" name="keyword" class="form-control" placeholder="keyword")
+            span &nbsp;&nbsp;&emsp;
+            label(class="radio-inline") 
+              input(type="radio" name="keyword-for" value="find-by-brand")
+              | brand 
+            label(class="radio-inline") 
+              input(type="radio" name="keyword-for" value="find-by-color") 
+              | color 
+            label(class="radio-inline") 
+              input(type="radio" name="keyword-for" value="find-by-vehicle-model") 
+              | vehicle-model 
+     
+            span &emsp;&emsp;
+          button(type="submit" class="btn btn-info") Search!
+  if (top10.length > 0)
+    .content
+      h1 The Top10 List
+      each item in top10
+        div.panel.panel-default
+          .panel-heading id: #{item.id}
+          .panel-body
+            ul
+              li item.licence_number:<span>&emsp;</span> <em>#{item.licence_number}</em>
+              li brand:<span>&emsp;</span><em> #{item.brand}</em>
+              li color: <span>&emsp;</span><em>#{item.color}</em>
+              li where_seen:<span>&emsp;</span><em> #{item.where_seen}</em>
+              li vehicle_model:<span>&emsp;</span><em> #{item.vehicle_model}</em>
+              - var timedesc = (new Date(parseInt(item.whatistime))).toLocaleString()
+              li whatistime:<span>&emsp;</span> <em>#{timedesc} </em>
+              li visits:<span>&emsp;</span> <em> #{item.visits} </em>
+              li memo<span>&emsp;</span> <em>#{item.memo}</em>
+  else
+    .content
+      h1 these is no items currently.

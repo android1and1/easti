@@ -54,16 +54,13 @@
       },
       memo: {
         defaultValue: '',
-        type: function(newV, key, oldV) {
-          //@property('brand') + ' appended.'
-          this.property('checks', 1);
-          return 'checks field updated.';
-        }
+        type: 'string'
       },
-      checks: {
+      visits: {
         defaultValue: 0,
         type: function(newv, key, oldv) {
-          return parseInt(newv) + parseInt(oldv);
+          newv = 1 + parseInt(oldv);
+          return newv;
         }
       }
     };

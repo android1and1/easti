@@ -32,16 +32,16 @@
   });
 
   router.get('/list', async function(req, res, next) {
-    var all, allitems, i, ins, j, len;
+    var allids, allitems, i, ins, j, len;
     // top10 sorted by id number.
-    all = (await schema.sort({
+    allids = (await schema.sort({
       field: 'whatistime',
       direction: 'DESC',
       limit: [0, 10]
     }));
     allitems = [];
-    for (j = 0, len = all.length; j < len; j++) {
-      i = all[j];
+    for (j = 0, len = allids.length; j < len; j++) {
+      i = allids[j];
       ins = (await nohm.factory('neighborCar', i));
       allitems.push(ins.allProperties());
     }
@@ -50,10 +50,90 @@
     });
   });
 
+  router.post('/find-by-vehicle-model', async function(req, res, next) {
+    var error, info, item, items, j, len, vehicle_model;
+    vehicle_model = req.body.keyword;
+    info = [];
+    try {
+      items = (await schema.findAndLoad({
+        'vehicle_model': vehicle_model
+      }));
+      for (j = 0, len = items.length; j < len; j++) {
+        item = items[j];
+        info.push(item.allProperties());
+      }
+    } catch (error1) {
+      error = error1;
+      return res.json({
+        'error': 'No This Vehicle Model.'
+      });
+    }
+    return res.json(info);
+  });
+
+  router.post('/find-by-color', async function(req, res, next) {
+    var color, error, info, item, items, j, len;
+    color = req.body.keyword;
+    info = [];
+    try {
+      items = (await schema.findAndLoad({
+        'color': color
+      }));
+      for (j = 0, len = items.length; j < len; j++) {
+        item = items[j];
+        info.push(item.allProperties());
+      }
+    } catch (error1) {
+      error = error1;
+      return res.json({
+        'error': 'No This Color.'
+      });
+    }
+    return res.json(info);
+  });
+
+  router.post('/find-by-brand', async function(req, res, next) {
+    var brand, error, item, items, j, len, list;
+    brand = req.body.keyword;
+    list = [];
+    try {
+      items = (await schema.findAndLoad({
+        'brand': brand
+      }));
+      for (j = 0, len = items.length; j < len; j++) {
+        item = items[j];
+        item.property('visits', '');
+        await item.save();
+        list.push(item.allProperties());
+      }
+    } catch (error1) {
+      error = error1;
+      return res.json({
+        'error': 'No This Brand.'
+      });
+    }
+    return res.render('neighborCar/results-list', {
+      list: list
+    });
+  });
+
   router.get('/register-car', function(req, res, next) {
     return res.render('neighborCar/register-car.pug', {
       title: 'Register Car(Neighbors)'
     });
+  });
+
+  router.get('/update/:id', async function(req, res, next) {
+    var id, item, properties;
+    id = req.param.id;
+    try {
+      item = (await nohm.factory('neighborCar', id));
+      properties = item.allProperties();
+      return res.render('neighborCar/base-item-form.pug', {
+        title: 'Update Car',
+        properties: properties
+      });
+    } catch (error1) {}
   });
 
   router.get('/purge-db', function(req, res, next) {
@@ -81,7 +161,7 @@
     var body, error, ins;
     ins = (await nohm.factory('neighborCar'));
     body = req.body;
-    ins.property('checks', 1);
+    ins.property('visits', 1);
     ins.property({
       brand: body.brand,
       licence_number: body.licence_number,

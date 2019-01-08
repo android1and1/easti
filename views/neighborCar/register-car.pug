@@ -8,50 +8,11 @@ block pagejs
   script(src="/pagejs/neighborCar/pagejs-neighborCar-register.js")
 block content
   h2.text-center Register Neighbor Car
-  form(class="form-horizontal" action="" method="POST")
-    //- fields - licence_number,brand,color,where_seen,vehicle_model,whatistime,memo
-    .form-group
-      label(for="licence_number" class="col-sm-2") Licence Number
-      .col-sm-10
-        input(class="form-control" id="licence_number" type="text" name="licence_number")
-    .form-group
-      label(for="brand" class="col-sm-2") Brand 
-      .col-sm-10
-        input(class="form-control" id="brand" type="text" name="brand")
-    .form-group
-      label(for="color-options" class="col-sm-2") Colour Options
-      div#color-options.col-sm-10
-        label(class="radio-inline") white &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          input(type="radio" value="white" name="color")
-        label(class="radio-inline") black &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          input(type="radio" value="black" name="color") 
-        label(class="radio-inline") red &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          input(type="radio" value="red" name="color") 
-        label(class="radio-inline") brown  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          input(type="radio" value="brown" name="color") 
-        label(class="radio-inline") blue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          input(type="radio" value="blue" name="color" ) 
-    .form-group
-      label(for="where_seen" class="col-sm-2") Where Have You Seen?
-      .col-sm-10
-        input(class="form-control" id="where_seen" type="text" name="where_seen")
-    .form-group
-      label(for="vehicle_model" class="col-sm-2") vehicle_model 
-      .col-sm-10
-        select(id="vehicle_model" class="form-control" name="vehicle_model")
-          option jiayong
-          option shangwu
-          option yueye
-          option xiaoke
-          option xiaohuo
-          option dake
-          option zhongke
-          option paoche
-          option dahuo
-    .form-group
-      label(for="memo" class="col-sm-2") Memo 
-      .col-sm-10
-        textarea(id="memo" name="memo" rows="7" placeholder="memo.." cols="88")
-    button(class="btn btn-warning btn-default btn-block",type="submit") Submit!
+  include ./base-item-form
 block footer
-  div#msgbox currently no message.
+  ul.pager
+    li.previous
+      a(href="/neighborCar/list") <span> &larr; </span> back to list
+    li.next
+      a(id="reset" href="") reset<span> &rarr;</span>
+  div#msgbox

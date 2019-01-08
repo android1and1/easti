@@ -4,7 +4,7 @@
   module - modules/md-neighborCar.js
 ###
 $ ->
-  $('.form-horizontal').on 'submit',(evt)->
+  $('#register_form').on 'submit',(evt)->
     evt.preventDefault()
     evt.stopPropagation()
     alert $(@).serialize()
@@ -18,3 +18,5 @@ $ ->
       createAlertBox $parent,responseText
       
       
+  $('#reset').on 'click',(evt)->
+    $('#register_form').trigger 'reset'

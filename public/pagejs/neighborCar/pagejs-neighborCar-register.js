@@ -6,7 +6,7 @@
     module - modules/md-neighborCar.js
   */
   $(function() {
-    return $('.form-horizontal').on('submit', function(evt) {
+    $('#register_form').on('submit', function(evt) {
       evt.preventDefault();
       evt.stopPropagation();
       alert($(this).serialize());
@@ -20,6 +20,9 @@
         $parent = $('#msgbox');
         return createAlertBox($parent, responseText);
       });
+    });
+    return $('#reset').on('click', function(evt) {
+      return $('#register_form').trigger('reset');
     });
   });
 

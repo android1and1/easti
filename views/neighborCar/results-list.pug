@@ -1,0 +1,11 @@
+extends ../layouts/main.pug
+block pagecss
+  style.
+    div.content {position:relative;top:4em;}
+block pagejs
+  // script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
+block content
+  if list
+    h1= JSON.stringify(list)
+  else
+    h1 No Any Result.
