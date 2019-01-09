@@ -3,6 +3,7 @@ block pagecss
   style.
     div.content {position:relative;top:4em;}
 block pagejs
+  script(src="/mine/mine-create-alert-box.js")
   script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
 block content
   nav.navbar.navbar-inverse.navbar-fixed-top
@@ -44,6 +45,7 @@ block content
         div.panel.panel-default
           .panel-heading id: #{item.id}
           .panel-body
+            // display details
             ul
               li item.licence_number:<span>&emsp;</span> <em>#{item.licence_number}</em>
               li brand:<span>&emsp;</span><em> #{item.brand}</em>
@@ -54,6 +56,13 @@ block content
               li whatistime:<span>&emsp;</span> <em>#{timedesc} </em>
               li visits:<span>&emsp;</span> <em> #{item.visits} </em>
               li memo<span>&emsp;</span> <em>#{item.memo}</em>
+            // support buttons 
+            .btn-group.btn-group-lg.btn-group-vertical
+              button(class="btn btn-info edit" ) Edit  
+              button(class="btn btn-danger delete" data-delete-id= item.id) Delete  
   else
     .content
       h1 these is no items currently.
+  br
+  br
+  div#board

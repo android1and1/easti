@@ -76,6 +76,9 @@ router.get '/update/:id',(req,res,next)->
 router.get '/purge-db',(req,res,next)->
   res.render 'neighborCar/purge-db.pug'
 
+router.delete '/delete/:id',(req,res,next)->
+  # fake
+  res.json result:'delete ok.'
 router.delete '/purge-db',(req,res,next)->
   # quanteetee user from '/neighborCar/purge-db'(GET),click button.
   if req.xhr

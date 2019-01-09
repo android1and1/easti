@@ -242,6 +242,18 @@ be aware,not 'input' ,it is 'input[name]',to disable no name input field(s).
 
 then,do 2) via:
 browser.assert.attribute 'input','name',/\w+/
+
+#################### 
+#################### 
+  arm architecture 
+#################### 
+#################### 
+raspberry pi,and beaglebone is based on arm.
+initially,it has not 'sqlite3' software.if you run 'npm i --save sqlite3',node module(npm-sqlit3) will installed,but its sub directory './build/' will bare,no '.so' plugin.cause run app will failure.
+resolve way is first do 'sudo apt install sqlite3',then rerun 'npm i --save sqlite3'.
+after node-npy install sqlite3 module,check it: "require 'sqlite3'"
+
+
 ################## 
 ################## 
   createForm 
