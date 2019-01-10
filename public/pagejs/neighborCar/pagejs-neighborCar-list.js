@@ -47,12 +47,15 @@
     return $('#search-form').on('submit', function(evt) {
       var keyword;
       keyword = $('[name=keyword-for]:checked').val();
-      alert('your choice:' + keyword);
-      return $(this).attr('action', '/neighborCar/' + keyword);
+      if (keyword === '') {
+        return $(this).attr('action', '/neighborCar/' + 'find-by-license-plate-number');
+      } else {
+        return $(this).attr('action', '/neighborCar/' + keyword);
+      }
     });
   });
 
-  
+  // let html form do its default submmitting.so disabled below 2 lines. 
 // evt.preventDefault()
 // evt.stopPropagation()
 

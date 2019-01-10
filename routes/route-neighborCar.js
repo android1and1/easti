@@ -73,7 +73,7 @@
 
   router.post('/find-by-license-plate-number', async function(req, res, next) {
     var error, info, item, items, j, len, license_plate_number;
-    license_plate_number = req.body.license_plate_number;
+    license_plate_number = req.body.keyword;
     info = [];
     try {
       items = (await schema.findAndLoad({
@@ -86,7 +86,7 @@
     } catch (error1) {
       error = error1;
       return res.json({
-        'error': 'No This Color.'
+        'error': 'No This License Plate Number.'
       });
     }
     return res.json(info);

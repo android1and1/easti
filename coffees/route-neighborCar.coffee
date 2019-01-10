@@ -39,14 +39,14 @@ router.post '/find-by-vehicle-model',(req,res,next)->
   res.json info 
 
 router.post '/find-by-license-plate-number',(req,res,next)->
-  license_plate_number = req.body.license_plate_number
+  license_plate_number = req.body.keyword
   info = []
   try
     items = await schema.findAndLoad {'license_plate_number':license_plate_number} 
     for item in items 
       info.push item.allProperties()
   catch error
-    return res.json {'error':'No This Color.'}
+    return res.json {'error':'No This License Plate Number.'}
   res.json info 
   
 router.post '/find-by-color',(req,res,next)->
