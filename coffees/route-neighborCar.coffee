@@ -49,6 +49,16 @@ router.post '/find-by-color',(req,res,next)->
     return res.json {'error':'No This Color.'}
   res.json info 
   
+router.put '/vote/:id',(req,res,next)->
+  id = req.params.id
+  console.log 'id=',id
+  item = await nohm.factory 'neighborCar',id
+  console.log 'isLoaded is:',item.isLoaded
+  if item.isLoaded
+    res.json {status:'loaded'}
+  else
+    res.json {status:'not loaded'}
+  
 router.post '/find-by-brand',(req,res,next)->
   brand = req.body.keyword
   list = []
@@ -78,7 +88,9 @@ router.get '/purge-db',(req,res,next)->
 
 router.delete '/delete/:id',(req,res,next)->
   # fake
-  res.json result:'delete ok.'
+  id = req.params.id
+  console.log 'id==',id
+  res.json {result:'deleting target:id' + id}
 router.delete '/purge-db',(req,res,next)->
   # quanteetee user from '/neighborCar/purge-db'(GET),click button.
   if req.xhr

@@ -58,7 +58,8 @@ block content
               li memo<span>&emsp;</span> <em>#{item.memo}</em>
             // support buttons 
             .btn-group.btn-group-lg.btn-group-vertical
-              button(class="btn btn-info edit" ) Edit  
+              button(class="btn btn-info vote" data-vote-id= item.id) vote
+              button(class="btn btn-default edit" ) Edit  
               button(class="btn btn-danger delete" data-delete-id= item.id) Delete  
   else
     .content

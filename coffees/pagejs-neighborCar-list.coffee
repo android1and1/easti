@@ -4,8 +4,8 @@ $ ->
     # how do i know the id which item should delete?
     id  = $(@).data('delete-id')
     $.ajax {
-      method:'DELETE'
-      url:'/neighborCar/delete/:' + id
+      type:'DELETE'
+      url:'/neighborCar/delete/' + id
       # we expecting response type
       dataType:'json'
     }
@@ -14,8 +14,23 @@ $ ->
     .fail (reason)->
       alert reason
     .always ->
-      alert 'has trigger ajax.'
+      alert 'has trigger AJAX-DELETE.'
     
+  $('button.vote').on 'click',(e)-> 
+    # how do i know the id which item should vote?
+    id  = $(@).data('vote-id')
+    $.ajax
+      type:'PUT'
+      url:'/neighborCar/vote/' + id
+      dataType:'json'
+    .done (json)->
+     alert JSON.stringify json 
+    .fail (reason)->
+      alert reason
+    .always ->
+      alert 'has trigger AJAX-PUT.'
+       
+
   $('button.edit').on 'click',(e)->
     alert 'edit button be triggered.'
   $('#search-form').on 'submit',(evt)->
