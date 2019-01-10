@@ -71,13 +71,13 @@
     return res.json(info);
   });
 
-  router.post('/find-by-licence-number', async function(req, res, next) {
-    var error, info, item, items, j, len, licenceNumber;
-    licenceNumber = req.body.licenceNumber;
+  router.post('/find-by-license-plate-number', async function(req, res, next) {
+    var error, info, item, items, j, len, license_plate_number;
+    license_plate_number = req.body.license_plate_number;
     info = [];
     try {
       items = (await schema.findAndLoad({
-        'licence_number': licenceNumber
+        'license_plate_number': license_plate_number
       }));
       for (j = 0, len = items.length; j < len; j++) {
         item = items[j];
@@ -219,7 +219,7 @@
     ins.property('visits', 1);
     ins.property({
       brand: body.brand,
-      licence_number: body.licence_number,
+      license_plate_number: body.license_plate_number,
       color: body.color,
       vehicle_model: body.vehicle_model,
       whatistime: Date.parse(new Date),

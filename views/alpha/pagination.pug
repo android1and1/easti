@@ -1,0 +1,37 @@
+extend ../layouts/main
+block pagejs
+  script(src="/mine/for-pagination.js")
+block content
+  .jumbotron
+    h2 bootstrap component:pagination
+
+  .media
+     .media-body
+        p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1
+        p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1
+        p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1
+        p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1
+        p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1
+        p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1
+        p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1 p.text-center it is page1
+     .media-right.media-middle
+        img.media-object(src="/images/pix64x64.png")
+          
+  nav
+    ul.pagination
+      li.disabled
+        a(href="#" data-role="previous" )
+          span(aria-hidden="true") &laquo;
+      li.active
+        a(data-role="chapter" href="#") 1 
+      li
+        a(href="#" data-role="chapter") 2
+      li
+        a(href="#" data-role="chapter") 3
+      li
+        a(href="#" data-role="chapter") 4
+      li
+        a(href="#" data-role="chapter") 5
+      li
+        a(href="#" data-role="next")
+          span(aria-hidden="true") &raquo;

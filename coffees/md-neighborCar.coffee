@@ -12,8 +12,8 @@ class NeighborCar extends NohmModel
   @idGenerator = 'increment'
 
   @definitions =
-    # fields - licence_number,brand,color,where_seen,vehicle_model,whatistime,memo
-    licence_number:
+    # fields - license_plate_number,brand,color,where_seen,vehicle_model,whatistime,memo
+    license_plate_number:
       type:'string'
       unique:true
       validations: [

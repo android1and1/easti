@@ -38,11 +38,11 @@ router.post '/find-by-vehicle-model',(req,res,next)->
     return res.json {'error':'No This Vehicle Model.'}
   res.json info 
 
-router.post '/find-by-licence-number',(req,res,next)->
-  licenceNumber = req.body.licenceNumber
+router.post '/find-by-license-plate-number',(req,res,next)->
+  license_plate_number = req.body.license_plate_number
   info = []
   try
-    items = await schema.findAndLoad {'licence_number':licenceNumber} 
+    items = await schema.findAndLoad {'license_plate_number':license_plate_number} 
     for item in items 
       info.push item.allProperties()
   catch error
@@ -126,7 +126,7 @@ router.post '/register-car',(req,res,next)->
   ins.property 'visits',1
   ins.property 
     brand:body.brand 
-    licence_number: body.licence_number
+    license_plate_number: body.license_plate_number
     color: body.color
     vehicle_model: body.vehicle_model
     whatistime: Date.parse(new Date)
