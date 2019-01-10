@@ -71,6 +71,27 @@
     return res.json(info);
   });
 
+  router.post('/find-by-licence-number', async function(req, res, next) {
+    var error, info, item, items, j, len, licenceNumber;
+    licenceNumber = req.body.licenceNumber;
+    info = [];
+    try {
+      items = (await schema.findAndLoad({
+        'licence_number': licenceNumber
+      }));
+      for (j = 0, len = items.length; j < len; j++) {
+        item = items[j];
+        info.push(item.allProperties());
+      }
+    } catch (error1) {
+      error = error1;
+      return res.json({
+        'error': 'No This Color.'
+      });
+    }
+    return res.json(info);
+  });
+
   router.post('/find-by-color', async function(req, res, next) {
     var color, error, info, item, items, j, len;
     color = req.body.keyword;
@@ -157,14 +178,21 @@
     return res.render('neighborCar/purge-db.pug');
   });
 
-  router.delete('/delete/:id', function(req, res, next) {
-    var id;
-    // fake
+  router.delete('/delete/:id', async function(req, res, next) {
+    var error, id, item;
     id = req.params.id;
-    console.log('id==', id);
-    return res.json({
-      result: 'deleting target:id' + id
-    });
+    try {
+      item = (await nohm.factory('neighborCar', id));
+      item.remove();
+      return res.json({
+        status: 'item -#' + item.id + ' has deleted.'
+      });
+    } catch (error1) {
+      error = error1;
+      return res.json({
+        status: 'error about deleting.the item - ' + item.id + ' has NOT deleted.'
+      });
+    }
   });
 
   router.delete('/purge-db', async function(req, res, next) {

@@ -38,6 +38,17 @@ router.post '/find-by-vehicle-model',(req,res,next)->
     return res.json {'error':'No This Vehicle Model.'}
   res.json info 
 
+router.post '/find-by-licence-number',(req,res,next)->
+  licenceNumber = req.body.licenceNumber
+  info = []
+  try
+    items = await schema.findAndLoad {'licence_number':licenceNumber} 
+    for item in items 
+      info.push item.allProperties()
+  catch error
+    return res.json {'error':'No This Color.'}
+  res.json info 
+  
 router.post '/find-by-color',(req,res,next)->
   color = req.body.keyword
   info = []
@@ -87,10 +98,15 @@ router.get '/purge-db',(req,res,next)->
   res.render 'neighborCar/purge-db.pug'
 
 router.delete '/delete/:id',(req,res,next)->
-  # fake
   id = req.params.id
-  console.log 'id==',id
-  res.json {result:'deleting target:id' + id}
+  try
+    item = await nohm.factory 'neighborCar',id
+    item.remove()
+    res.json status:'item -#' + item.id + ' has deleted.'
+  catch error
+    res.json {status:'error about deleting.the item - ' + item.id + ' has NOT deleted.'} 
+  
+  
 router.delete '/purge-db',(req,res,next)->
   # quanteetee user from '/neighborCar/purge-db'(GET),click button.
   if req.xhr

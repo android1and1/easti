@@ -3,6 +3,8 @@ $ ->
   $('button.delete').on 'click',(e)->
     # how do i know the id which item should delete?
     id  = $(@).data('delete-id')
+    # keep @ value because async func will lost it.
+    $button = $(@)
     $.ajax {
       type:'DELETE'
       url:'/neighborCar/delete/' + id
@@ -10,11 +12,14 @@ $ ->
       dataType:'json'
     }
     .done (json)->
-      window.createAlertBox $('div#board'),json.result       
+      $button
+      .parents('.panel.panel-default')
+      .slideUp 'slow',->
+        window.createAlertBox $('#billboard'),json.status
     .fail (reason)->
       alert reason
-    .always ->
-      alert 'has trigger AJAX-DELETE.'
+    #.always ->
+    #  alert 'has trigger AJAX-DELETE.'
     
   $('button.vote').on 'click',(e)-> 
     # how do i know the id which item should vote?
@@ -24,7 +29,8 @@ $ ->
       url:'/neighborCar/vote/' + id
       dataType:'json'
     .done (json)->
-     alert JSON.stringify json 
+     #alert JSON.stringify json 
+     window.createAlertBox $('#billboard'),json.status
     .fail (reason)->
       alert reason
     .always ->

@@ -3,22 +3,26 @@
   // 2019-1-8/9
   $(function() {
     $('button.delete').on('click', function(e) {
-      var id;
+      var $button, id;
       // how do i know the id which item should delete?
       id = $(this).data('delete-id');
+      // keep @ value because async func will lost it.
+      $button = $(this);
       return $.ajax({
         type: 'DELETE',
         url: '/neighborCar/delete/' + id,
         // we expecting response type
         dataType: 'json'
       }).done(function(json) {
-        return window.createAlertBox($('div#board'), json.result);
+        return $button.parents('.panel.panel-default').slideUp('slow', function() {
+          return window.createAlertBox($('#billboard'), json.status);
+        });
       }).fail(function(reason) {
         return alert(reason);
-      }).always(function() {
-        return alert('has trigger AJAX-DELETE.');
       });
     });
+    //.always ->
+    //  alert 'has trigger AJAX-DELETE.'
     $('button.vote').on('click', function(e) {
       var id;
       
@@ -29,7 +33,8 @@
         url: '/neighborCar/vote/' + id,
         dataType: 'json'
       }).done(function(json) {
-        return alert(JSON.stringify(json));
+        //alert JSON.stringify json 
+        return window.createAlertBox($('#billboard'), json.status);
       }).fail(function(reason) {
         return alert(reason);
       }).always(function() {
