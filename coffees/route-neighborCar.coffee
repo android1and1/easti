@@ -36,7 +36,7 @@ router.post '/find-by-vehicle-model',(req,res,next)->
       info.push item.allProperties()
   catch error
     return res.json {'error':'No This Vehicle Model.'}
-  res.json info 
+  res.render 'neighborCar/results-list.pug',{list:info }
 
 router.post '/find-by-license-plate-number',(req,res,next)->
   license_plate_number = req.body.keyword

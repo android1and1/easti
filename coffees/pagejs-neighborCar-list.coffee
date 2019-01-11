@@ -39,12 +39,13 @@ $ ->
 
   $('button.edit').on 'click',(e)->
     alert 'edit button be triggered.'
+
   $('#search-form').on 'submit',(evt)->
-    keyword = $('[name=keyword-for]:checked').val()
-    if keyword is ''
-      $(@).attr 'action','/neighborCar/' + 'find-by-license-plate-number'
+    way = $('[name=keyword-for]:checked').val()
+    if way is undefined or way is null
+      $(@).attr 'action','/neighborCar/find-by-license-plate-number'
     else
-      $(@).attr 'action','/neighborCar/' + keyword
+      $(@).attr 'action','/neighborCar/' + way 
     # let html form do its default submmitting.so disabled below 2 lines. 
     # evt.preventDefault()
     # evt.stopPropagation()

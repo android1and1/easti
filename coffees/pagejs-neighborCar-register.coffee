@@ -7,7 +7,7 @@ $ ->
   $('#register_form').on 'submit',(evt)->
     evt.preventDefault()
     evt.stopPropagation()
-    alert $(@).serialize()
+    #alert $(@).serialize()
     $.ajax 
       url:'/neighborCar/register-car'
       method:'POST'
