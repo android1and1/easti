@@ -43,9 +43,10 @@ $ ->
   $('#search-form').on 'submit',(evt)->
     way = $('[name=keyword-for]:checked').val()
     if way is undefined or way is null
-      $(@).attr 'action','/neighborCar/find-by-license-plate-number'
+      $(@).attr 'action','/neighborCar/find-by/license_plate_number'
     else
-      $(@).attr 'action','/neighborCar/' + way 
+      $(@).attr 'action','/neighborCar/find-by/' + way 
+      
     # let html form do its default submmitting.so disabled below 2 lines. 
     # evt.preventDefault()
     # evt.stopPropagation()

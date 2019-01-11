@@ -48,9 +48,9 @@
       var way;
       way = $('[name=keyword-for]:checked').val();
       if (way === void 0 || way === null) {
-        return $(this).attr('action', '/neighborCar/find-by-license-plate-number');
+        return $(this).attr('action', '/neighborCar/find-by/license_plate_number');
       } else {
-        return $(this).attr('action', '/neighborCar/' + way);
+        return $(this).attr('action', '/neighborCar/find-by/' + way);
       }
     });
   });

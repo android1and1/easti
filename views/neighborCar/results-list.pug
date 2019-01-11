@@ -6,6 +6,10 @@ block pagejs
   // script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
 block content
   if list
-    h1= JSON.stringify(list)
+    each item in list
+      h1= 'id number#' + item.id 
+      ul
+        each v,k in item
+          li= k + ':' + v 
   else
     h1 No Any Result.

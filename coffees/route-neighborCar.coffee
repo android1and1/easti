@@ -27,38 +27,22 @@ router.get '/list',(req,res,next)->
     allitems.push ins.allProperties()
   res.render 'neighborCar/list.pug' ,{top10:allitems}
     
-router.post '/find-by-vehicle-model',(req,res,next)->
-  vehicle_model = req.body.keyword
+router.post '/find-by/:index',(req,res,next)->
+  # final,i need the architech like this:
+  # from client,give server formdata {method:'find-by-vehicle-type',keyword:'yueye'}
+  index = req.params.index
+  # we no need to check if index is undefined or null,because only our scripts can touch it.
+  keyword = req.body.keyword
+  opts = {}
+  opts[index] = keyword
   info = []
   try
-    items = await schema.findAndLoad {'vehicle_model':vehicle_model} 
+    items = await schema.findAndLoad opts 
     for item in items 
       info.push item.allProperties()
   catch error
-    return res.json {'error':'No This Vehicle Model.'}
+    return res.json {'error':'No This Index.'}
   res.render 'neighborCar/results-list.pug',{list:info }
-
-router.post '/find-by-license-plate-number',(req,res,next)->
-  license_plate_number = req.body.keyword
-  info = []
-  try
-    items = await schema.findAndLoad {'license_plate_number':license_plate_number} 
-    for item in items 
-      info.push item.allProperties()
-  catch error
-    return res.json {'error':'No This License Plate Number.'}
-  res.json info 
-  
-router.post '/find-by-color',(req,res,next)->
-  color = req.body.keyword
-  info = []
-  try
-    items = await schema.findAndLoad {'color':color} 
-    for item in items 
-      info.push item.allProperties()
-  catch error
-    return res.json {'error':'No This Color.'}
-  res.json info 
   
 router.put '/vote/:id',(req,res,next)->
   id = req.params.id

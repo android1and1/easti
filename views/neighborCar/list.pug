@@ -22,18 +22,19 @@ block content
             a(href="/neighborCar/register-car/") Register Car
           li 
             a(href="/neighborCar/purge-db/") Delete
+        // The Search Form
         form(id="search-form" class="navbar-form navbar-right" method="POST" action="")
           .form-group
             input(type="text" name="keyword" class="form-control" placeholder="keyword")
             span &nbsp;&nbsp;&emsp;
             label(class="radio-inline") 
-              input(type="radio" name="keyword-for" value="find-by-brand")
+              input(type="radio" name="keyword-for" value="brand")
               | brand 
             label(class="radio-inline") 
-              input(type="radio" name="keyword-for" value="find-by-color") 
+              input(type="radio" name="keyword-for" value="color") 
               | color 
             label(class="radio-inline") 
-              input(type="radio" name="keyword-for" value="find-by-vehicle-model") 
+              input(type="radio" name="keyword-for" value="vehicle_model") 
               | vehicle-model 
      
             span &emsp;&emsp;

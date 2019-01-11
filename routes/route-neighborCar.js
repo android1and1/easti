@@ -50,14 +50,18 @@
     });
   });
 
-  router.post('/find-by-vehicle-model', async function(req, res, next) {
-    var error, info, item, items, j, len, vehicle_model;
-    vehicle_model = req.body.keyword;
+  router.post('/find-by/:index', async function(req, res, next) {
+    var error, index, info, item, items, j, keyword, len, opts;
+    // final,i need the architech like this:
+    // from client,give server formdata {method:'find-by-vehicle-type',keyword:'yueye'}
+    index = req.params.index;
+    // we no need to check if index is undefined or null,because only our scripts can touch it.
+    keyword = req.body.keyword;
+    opts = {};
+    opts[index] = keyword;
     info = [];
     try {
-      items = (await schema.findAndLoad({
-        'vehicle_model': vehicle_model
-      }));
+      items = (await schema.findAndLoad(opts));
       for (j = 0, len = items.length; j < len; j++) {
         item = items[j];
         info.push(item.allProperties());
@@ -65,54 +69,12 @@
     } catch (error1) {
       error = error1;
       return res.json({
-        'error': 'No This Vehicle Model.'
+        'error': 'No This Index.'
       });
     }
     return res.render('neighborCar/results-list.pug', {
       list: info
     });
-  });
-
-  router.post('/find-by-license-plate-number', async function(req, res, next) {
-    var error, info, item, items, j, len, license_plate_number;
-    license_plate_number = req.body.keyword;
-    info = [];
-    try {
-      items = (await schema.findAndLoad({
-        'license_plate_number': license_plate_number
-      }));
-      for (j = 0, len = items.length; j < len; j++) {
-        item = items[j];
-        info.push(item.allProperties());
-      }
-    } catch (error1) {
-      error = error1;
-      return res.json({
-        'error': 'No This License Plate Number.'
-      });
-    }
-    return res.json(info);
-  });
-
-  router.post('/find-by-color', async function(req, res, next) {
-    var color, error, info, item, items, j, len;
-    color = req.body.keyword;
-    info = [];
-    try {
-      items = (await schema.findAndLoad({
-        'color': color
-      }));
-      for (j = 0, len = items.length; j < len; j++) {
-        item = items[j];
-        info.push(item.allProperties());
-      }
-    } catch (error1) {
-      error = error1;
-      return res.json({
-        'error': 'No This Color.'
-      });
-    }
-    return res.json(info);
   });
 
   router.put('/vote/:id', async function(req, res, next) {
