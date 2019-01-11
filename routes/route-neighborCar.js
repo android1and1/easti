@@ -78,11 +78,20 @@
   });
 
   router.put('/vote/:id', async function(req, res, next) {
-    var error, id, item;
+    var error, id, item, memo, num, old;
     id = req.params.id;
     try {
       item = (await nohm.factory('neighborCar', id));
-      item.property('visits', 1);
+      num = item.property('visits');
+      num = parseInt(num);
+      item.property('visits', num + 1);
+      old = item.property('memo');
+      memo = '<address><strong>';
+      memo += new Date;
+      memo += '</strong><br>';
+      memo += 'has vote once.';
+      memo += '<br></address>';
+      item.property('memo', old + memo);
       await item.save();
       return res.json({
         status: 'visits number added once.'

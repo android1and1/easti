@@ -48,7 +48,17 @@ router.put '/vote/:id',(req,res,next)->
   id = req.params.id
   try
     item = await nohm.factory 'neighborCar',id
-    item.property 'visits',1
+    num = item.property 'visits'
+    num = parseInt num
+    item.property 'visits',num + 1
+    old = item.property 'memo'
+
+    memo = '<address><strong>'  
+    memo += new Date
+    memo += '</strong><br>'
+    memo += 'has vote once.'
+    memo += '<br></address>'
+    item.property 'memo',old + memo
     await item.save() 
     res.json {status:'visits number added once.'}
   catch error

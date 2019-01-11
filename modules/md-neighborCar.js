@@ -58,9 +58,8 @@
       },
       visits: {
         defaultValue: 0,
-        type: function(newv, key, oldv) {
-          return parseInt(newv) + parseInt(oldv);
-        }
+        index: true,
+        type: 'integer'
       }
     };
 

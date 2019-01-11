@@ -48,6 +48,6 @@ class NeighborCar extends NohmModel
 
     visits:
       defaultValue: 0 
-      type: (newv,key,oldv)->
-        parseInt(newv) + parseInt(oldv)
+      index:true
+      type:'integer' 
 module.exports = NeighborCar
