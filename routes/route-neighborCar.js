@@ -78,18 +78,19 @@
   });
 
   router.put('/vote/:id', async function(req, res, next) {
-    var id, item;
+    var error, id, item;
     id = req.params.id;
-    console.log('id=', id);
-    item = (await nohm.factory('neighborCar', id));
-    console.log('isLoaded is:', item.isLoaded);
-    if (item.isLoaded) {
+    try {
+      item = (await nohm.factory('neighborCar', id));
+      item.property('visits', 1);
+      await item.save();
       return res.json({
-        status: 'loaded'
+        status: 'visits number added once.'
       });
-    } else {
+    } catch (error1) {
+      error = error1;
       return res.json({
-        status: 'not loaded'
+        error: 'occurs error during add visits number,reason:' + error.message
       });
     }
   });

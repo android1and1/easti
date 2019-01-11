@@ -46,14 +46,14 @@ router.post '/find-by/:index',(req,res,next)->
   
 router.put '/vote/:id',(req,res,next)->
   id = req.params.id
-  console.log 'id=',id
-  item = await nohm.factory 'neighborCar',id
-  console.log 'isLoaded is:',item.isLoaded
-  if item.isLoaded
-    res.json {status:'loaded'}
-  else
-    res.json {status:'not loaded'}
-  
+  try
+    item = await nohm.factory 'neighborCar',id
+    item.property 'visits',1
+    await item.save() 
+    res.json {status:'visits number added once.'}
+  catch error
+    res.json {error:'occurs error during add visits number,reason:' + error.message}
+    
 router.post '/find-by-brand',(req,res,next)->
   brand = req.body.keyword
   list = []

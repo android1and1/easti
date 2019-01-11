@@ -29,12 +29,12 @@ $ ->
       url:'/neighborCar/vote/' + id
       dataType:'json'
     .done (json)->
-     #alert JSON.stringify json 
-     window.createAlertBox $('#billboard'),json.status
+     if json.error
+       window.createAlertBox $('#billboard'),json.error
+     else
+       window.createAlertBox $('#billboard'),json.status
     .fail (reason)->
       alert reason
-    .always ->
-      alert 'has trigger AJAX-PUT.'
        
 
   $('button.edit').on 'click',(e)->

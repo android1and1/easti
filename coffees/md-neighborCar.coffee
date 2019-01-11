@@ -49,6 +49,5 @@ class NeighborCar extends NohmModel
     visits:
       defaultValue: 0 
       type: (newv,key,oldv)->
-        newv =  1 + parseInt(oldv) 
-        return newv
+        parseInt(newv) + parseInt(oldv)
 module.exports = NeighborCar

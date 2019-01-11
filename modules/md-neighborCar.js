@@ -59,8 +59,7 @@
       visits: {
         defaultValue: 0,
         type: function(newv, key, oldv) {
-          newv = 1 + parseInt(oldv);
-          return newv;
+          return parseInt(newv) + parseInt(oldv);
         }
       }
     };
