@@ -1,10 +1,8 @@
 extends ../layouts/main.pug
-block pagecss
-  style.
-    div.content {position:relative;top:4em;}
 block pagejs
   // script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
 block content
+  h1 Results List
   if list
     each item in list
       h1= 'id number#' + item.id 
@@ -13,3 +11,8 @@ block content
           li= k + ':' + v 
   else
     h1 No Any Result.
+  div.footer
+    ul.pager
+      li.previous
+        a(href="/neighborCar")  <span> &larr;</span>
+          |to home page of this channel
