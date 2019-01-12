@@ -248,10 +248,13 @@ browser.assert.attribute 'input','name',/\w+/
   arm architecture 
 #################### 
 #################### 
-raspberry pi,and beaglebone is based on arm.
-initially,it has not 'sqlite3' software.if you run 'npm i --save sqlite3',node module(npm-sqlit3) will installed,but its sub directory './build/' will bare,no '.so' plugin.cause run app will failure.
-resolve way is first do 'sudo apt install sqlite3',then rerun 'npm i --save sqlite3'.
-after node-npy install sqlite3 module,check it: "require 'sqlite3'"
+#//raspberry pi,and beaglebone is based on arm.
+#//initially,it has not 'sqlite3' software.if you run 'npm i --save sqlite3',node module(npm-sqlit3) will installed,but its sub directory './build/' will bare,no '.so' plugin.cause run app will failure.
+#//resolve way is first do 'sudo apt install sqlite3',then rerun 'npm i --save sqlite3'.
+#//after node-npy install sqlite3 module,check it: "require 'sqlite3'"
+above sounds wrong,today i use my pi3(not B+),from bare install the whole app 'git clone XXX' then 'npm i',it will automaticaly install all dependience modules include npm-sqlite3.
+after some while(5mins approx),run 'require sqlite3' successfully. check that if binary sqlite3 installed,said it not,but npm-sqlite3 still available,run the test script in ./share ok.
+so,it conclues that:it is no need anything just let node-pre-npy create module.before failures only because network delay,script cannt got the .tar,then timeout occurs.
 
 
 ################## 
