@@ -23,17 +23,19 @@ $ ->
 
   $('button.edit').on 'click',(e)->
     id = $(@).data('edit-id')
+    $panel = $(@).parents('.panel-body')
     $.ajax
-      type:'PUT'
-      url:'/neighborCar/edit/' + id
-      dataType:'json'
+      type:'GET'
+      url:'/neighborCar/update/' + id
+      dataType:''
     .done (json)->
-     if json.error
-       window.createAlertBox $('#billboard'),json.error
-     else
-       window.createAlertBox $('#billboard'),json.status
-    .fail (reason)->
-      alert reason
+      # create a form in inner of .panel
+      $panel.append json.form
+
+    .fail (xhr,status,thrown)->
+      alert status
+      console.log thrown
+      console.dir xhr  
     
   $('button.vote').on 'click',(e)-> 
     # how do i know the id which item should vote?
@@ -47,12 +49,11 @@ $ ->
        window.createAlertBox $('#billboard'),json.error
      else
        window.createAlertBox $('#billboard'),json.status
-    .fail (reason)->
-      alert reason
+    .fail (xhr,status,thrown)->
+      alert status
+      alert thrown
+      console.dir xhr 
        
-
-  $('button.edit').on 'click',(e)->
-    alert 'edit button be triggered.'
 
   $('#search-form').on 'submit',(evt)->
     way = $('[name=keyword-for]:checked').val()

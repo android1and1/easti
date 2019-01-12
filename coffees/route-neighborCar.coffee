@@ -44,9 +44,10 @@ router.post '/find-by/:index',(req,res,next)->
     return res.json {'error':'No This Index.'}
   res.render 'neighborCar/results-list.pug',{list:info }
  
-router.put '/edit/:id',(req,res,next)->
+router.get '/update/:id',(req,res,next)->
   id = req.params.id
-  res.send 'to do'
+  res.json form: '<form method="POST" action=""  class="form-horizontal"><div class="form-group"><label for="seesee"> See That:</label><input class="text" name="seesee" id="seesee" /></div><button type="submit" class="btn btn-success"> Submit!</button></form>'
+
 router.put '/vote/:id',(req,res,next)->
   id = req.params.id
   try
