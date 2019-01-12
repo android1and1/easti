@@ -43,7 +43,10 @@ router.post '/find-by/:index',(req,res,next)->
   catch error
     return res.json {'error':'No This Index.'}
   res.render 'neighborCar/results-list.pug',{list:info }
-  
+ 
+router.put '/edit/:id',(req,res,next)->
+  id = req.params.id
+  res.send 'to do'
 router.put '/vote/:id',(req,res,next)->
   id = req.params.id
   try

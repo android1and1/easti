@@ -20,6 +20,20 @@ $ ->
       alert reason
     #.always ->
     #  alert 'has trigger AJAX-DELETE.'
+
+  $('button.edit').on 'click',(e)->
+    id = $(@).data('edit-id')
+    $.ajax
+      type:'PUT'
+      url:'/neighborCar/edit/' + id
+      dataType:'json'
+    .done (json)->
+     if json.error
+       window.createAlertBox $('#billboard'),json.error
+     else
+       window.createAlertBox $('#billboard'),json.status
+    .fail (reason)->
+      alert reason
     
   $('button.vote').on 'click',(e)-> 
     # how do i know the id which item should vote?

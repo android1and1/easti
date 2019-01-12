@@ -2,6 +2,7 @@ extends ../layouts/main.pug
 block pagecss
   style.
     div.content {position:relative;top:4em;}
+    address {margin-left:2em;}
 block pagejs
   script(src="/mine/mine-create-alert-box.js")
   script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
@@ -48,19 +49,20 @@ block content
           .panel-body
             // display details
             ul
-              li license_plate_number:<span>&emsp;</span> <em>#{item.license_plate_number}</em>
-              li brand:<span>&emsp;</span><em> #{item.brand}</em>
-              li color: <span>&emsp;</span><em>#{item.color}</em>
-              li where_seen:<span>&emsp;</span><em> #{item.where_seen}</em>
-              li vehicle_model:<span>&emsp;</span><em> #{item.vehicle_model}</em>
+              li License_Plate_Number:<span>&emsp;</span> <em>#{item.license_plate_number}</em>
+              li Brand:<span>&emsp;</span><em> #{item.brand}</em>
+              li Color: <span>&emsp;</span><em>#{item.color}</em>
+              li Where_Seen:<span>&emsp;</span><em> #{item.where_seen}</em>
+              li Vehicle_Model:<span>&emsp;</span><em> #{item.vehicle_model}</em>
               - var timedesc = (new Date(parseInt(item.whatistime))).toLocaleString()
-              li whatistime:<span>&emsp;</span> <em>#{timedesc} </em>
-              li visits:<span>&emsp;</span> <em> #{item.visits} </em>
-              li memo<span>&emsp;</span> <em>#{item.memo}</em>
+              li WhatIsTime:<span>&emsp;</span> <em>#{timedesc} </em>
+              li Visits:<span>&emsp;</span> <em> #{item.visits} </em>
+              li Memo
+                div!= item.memo
             // support buttons 
             .btn-group.btn-group-lg.btn-group-vertical
               button(class="btn btn-info vote" data-vote-id= item.id) vote
-              button(class="btn btn-default edit" ) Edit  
+              button(class="btn btn-default edit" data-edit-id=item.id) Edit  
               button(class="btn btn-danger delete" data-delete-id= item.id) Delete  
   else
     .content
