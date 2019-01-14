@@ -23,23 +23,24 @@
     });
     //.always ->
     //  alert 'has trigger AJAX-DELETE.'
-    $('button.edit').on('click', function(e) {
-      var $panel, id;
-      id = $(this).data('edit-id');
-      $panel = $(this).parents('.panel-body');
-      return $.ajax({
-        type: 'GET',
-        url: '/neighborCar/update/' + id,
-        dataType: ''
-      }).done(function(json) {
-        // create a form in inner of .panel
-        return $panel.append(json.form);
-      }).fail(function(xhr, status, thrown) {
-        alert(status);
-        console.log(thrown);
-        return console.dir(xhr);
-      });
-    });
+    $('button.edit').on('click', function(e) {});
+    /*
+    id = $(@).data('edit-id')
+    $panel = $(@).parents('.panel-body')
+    $.ajax
+      type:'GET'
+      url:'/neighborCar/update/' + id
+      dataType:''
+    .done (json)->
+     * create a form in inner of .panel
+      $panel.append json.form
+
+    .fail (xhr,status,thrown)->
+      alert status
+      console.log thrown
+      console.dir xhr  
+     */
+    // TODO:give a form at client'side.
     $('button.vote').on('click', function(e) {
       var id;
       

@@ -1,0 +1,24 @@
+extends ../layouts/main
+block pagejs
+  script(src="/mine/mine-input-group.js")
+block content
+  .form-horizontal(method="POST" action="")
+    .form-group
+      label(for="id1" class="col-xs-4 control-label") ID Number
+      .col-xs-8
+        p.form-control-static#id1 0001
+    .form-group
+      .col-xs-6.col-xs-offset-1
+        .input-group
+          .input-group-addon
+            span @
+      .col-xs-5
+        input(class="form-control" type="text" name="name" id="name")
+    .form-group
+      .col-xs-6.col-xs-offset-1
+        .input-group
+          .input-group-btn
+            button(data-mean="A" class="btn btn-default") A 
+            button(data-mean="B" class="btn btn-default") B
+            button(data-mean="C" class="btn btn-default") C 
+          input(class="form-control" type="text" name="license-plate-number" id="license-plate-number")

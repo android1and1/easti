@@ -1,0 +1,68 @@
+extends ../layouts/main
+block pagejs
+  script(src="/mine/mine-nav-tabs.js")
+block pagecss
+  style.
+    .deli {width:100%;height:2px;background-color:navy;}
+block content
+  // data from server side,below is fake for testing purpose.
+  - 
+    data = {
+      license_plate_number:'455739',
+      color:'white',
+      vehicle_model:'yueye',
+      where_seen:'u1',
+      memo:'at begin.'
+    };
+
+  h2.text-center bootstrap js-suit: tabs.js
+  ul.nav.nav-tabs(role='tablist')
+    li
+      a(role="button" data-toggle="tab" href="#id1") license-plate-number
+    li
+      a(role="button" data-toggle="tab" href="#id2") color 
+    li
+      a(href="#id3") vehicle-model 
+    li
+      a(role="button" href="#id4" data-toggle="tab") where-you-seen 
+    li
+      a(role="button" data-toggle="tab" href="#id5") memo
+    li
+      a(role="button" data-toggle="tab" href="#id6") Statistics/Commit 
+  
+  div.tab-content
+    div.tab-pane#id1
+      label(for="license-plate-number")
+        | LicensePlateNumber:
+        | &emsp;&emsp;
+      input(class="form-control car_field" type="text" value="455689" id="license-plate-number" name="license-plate-number") 
+    div.tab-pane#id2
+      label(for="color")
+        | Color:
+        | &emsp;&emsp;
+      input(class="form-control car_field" type="text" value=data.color id="color" name="color") 
+      
+    div.tab-pane#id3
+      h4 Field: vehicle_model
+      label(for="vehicle_model")
+        | Vehicle Model:
+        | &emsp;&emsp;
+      input(type="text" value=data.vehicle_model id="vehicle_model" name="vehicle_model" class="car_field form_control") 
+    div.tab-pane#id4
+      h4 Field: where_seen 
+      label(for="where_seen")
+        | Where Seen? 
+        | &emsp;&emsp;
+      input(type="text" value=data.where_seen  class="car_field form-control" id="where_seen" name="where_seen") 
+    div.tab-pane#id5
+      label(for="memo")
+        | Memo 
+        | &emsp;&emsp;
+      input(class="car_field form-control" type="text" value=data.memo id="memo" name="memo")
+    
+    div.tab-pane#id6
+      h3 Statistics
+      nav
+        ul.pager
+          li.next 
+            a#commit(role="button" class="btn.btn-lg.btn-success") Commit! <span> &rarr;</span>

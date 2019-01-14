@@ -46,6 +46,7 @@
       allitems.push(ins.allProperties());
     }
     return res.render('neighborCar/list.pug', {
+      title: 'Top 10 List',
       top10: allitems
     });
   });
@@ -78,13 +79,14 @@
   });
 
   router.get('/update/:id', function(req, res, next) {
-    var id;
-    id = req.params.id;
-    return res.json({
-      form: '<form method="POST" action=""  class="form-horizontal"><div class="form-group"><label for="seesee"> See That:</label><input class="text" name="seesee" id="seesee" /></div><button type="submit" class="btn btn-success"> Submit!</button></form>'
-    });
+    return res.send('TODO,parse posted then response status.');
   });
 
+  /*
+  id = req.params.id
+  res.json form: '<form method="POST" action=""  class="form-horizontal"><div class="form-group"><label for="seesee"> See That:</label><input class="text" name="seesee" id="seesee" /></div><button type="submit" class="btn btn-success"> Submit!</button></form>'
+
+  */
   router.put('/vote/:id', async function(req, res, next) {
     var error, id, item, memo, num, old;
     id = req.params.id;

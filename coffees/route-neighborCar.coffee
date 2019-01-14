@@ -25,7 +25,7 @@ router.get '/list',(req,res,next)->
   for i in allids
     ins = await nohm.factory 'neighborCar',i
     allitems.push ins.allProperties()
-  res.render 'neighborCar/list.pug' ,{top10:allitems}
+  res.render 'neighborCar/list.pug' ,{title:'Top 10 List',top10:allitems}
     
 router.post '/find-by/:index',(req,res,next)->
   # final,i need the architech like this:
@@ -45,8 +45,12 @@ router.post '/find-by/:index',(req,res,next)->
   res.render 'neighborCar/results-list.pug',{list:info }
  
 router.get '/update/:id',(req,res,next)->
+  res.send 'TODO,parse posted then response status.'
+  ###
   id = req.params.id
   res.json form: '<form method="POST" action=""  class="form-horizontal"><div class="form-group"><label for="seesee"> See That:</label><input class="text" name="seesee" id="seesee" /></div><button type="submit" class="btn btn-success"> Submit!</button></form>'
+
+  ###
 
 router.put '/vote/:id',(req,res,next)->
   id = req.params.id

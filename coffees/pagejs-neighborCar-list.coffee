@@ -22,6 +22,7 @@ $ ->
     #  alert 'has trigger AJAX-DELETE.'
 
   $('button.edit').on 'click',(e)->
+    ###
     id = $(@).data('edit-id')
     $panel = $(@).parents('.panel-body')
     $.ajax
@@ -36,6 +37,8 @@ $ ->
       alert status
       console.log thrown
       console.dir xhr  
+    ###
+    # TODO:give a form at client'side.
     
   $('button.vote').on 'click',(e)-> 
     # how do i know the id which item should vote?
