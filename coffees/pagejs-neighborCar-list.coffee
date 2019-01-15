@@ -22,41 +22,11 @@ $ ->
     #  alert 'has trigger AJAX-DELETE.'
 
   $('button.edit').on 'click',(e)->
-    ###
-    id = $(@).data('edit-id')
-    $panel = $(@).parents('.panel-body')
-    $.ajax
-      type:'GET'
-      url:'/neighborCar/update/' + id
-      dataType:''
-    .done (json)->
-      # create a form in inner of .panel
-      $panel.append json.form
-
-    .fail (xhr,status,thrown)->
-      alert status
-      console.log thrown
-      console.dir xhr  
-    ###
-    # TODO:give a form at client'side.
-    
-  $('button.vote').on 'click',(e)-> 
-    # how do i know the id which item should vote?
-    id  = $(@).data('vote-id')
-    $.ajax
-      type:'PUT'
-      url:'/neighborCar/vote/' + id
-      dataType:'json'
-    .done (json)->
-     if json.error
-       window.createAlertBox $('#billboard'),json.error
-     else
-       window.createAlertBox $('#billboard'),json.status
-    .fail (xhr,status,thrown)->
-      alert status
-      alert thrown
-      console.dir xhr 
-       
+    opts = 
+      name:'<input type="text" name="name" id="name" placeholder="see.." >'
+      age:'<input type="number" default="40" defaultValue="40" >'
+    $parent = $(@).parents('.panel-body')
+    window.neighborCarTabs $parent,'myTabs',opts
 
   $('#search-form').on 'submit',(evt)->
     way = $('[name=keyword-for]:checked').val()

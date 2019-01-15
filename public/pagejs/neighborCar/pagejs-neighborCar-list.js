@@ -23,44 +23,14 @@
     });
     //.always ->
     //  alert 'has trigger AJAX-DELETE.'
-    $('button.edit').on('click', function(e) {});
-    /*
-    id = $(@).data('edit-id')
-    $panel = $(@).parents('.panel-body')
-    $.ajax
-      type:'GET'
-      url:'/neighborCar/update/' + id
-      dataType:''
-    .done (json)->
-     * create a form in inner of .panel
-      $panel.append json.form
-
-    .fail (xhr,status,thrown)->
-      alert status
-      console.log thrown
-      console.dir xhr  
-     */
-    // TODO:give a form at client'side.
-    $('button.vote').on('click', function(e) {
-      var id;
-      
-      // how do i know the id which item should vote?
-      id = $(this).data('vote-id');
-      return $.ajax({
-        type: 'PUT',
-        url: '/neighborCar/vote/' + id,
-        dataType: 'json'
-      }).done(function(json) {
-        if (json.error) {
-          return window.createAlertBox($('#billboard'), json.error);
-        } else {
-          return window.createAlertBox($('#billboard'), json.status);
-        }
-      }).fail(function(xhr, status, thrown) {
-        alert(status);
-        alert(thrown);
-        return console.dir(xhr);
-      });
+    $('button.edit').on('click', function(e) {
+      var $parent, opts;
+      opts = {
+        name: '<input type="text" name="name" id="name" placeholder="see.." >',
+        age: '<input type="number" default="40" defaultValue="40" >'
+      };
+      $parent = $(this).parents('.panel-body');
+      return window.neighborCarTabs($parent, 'myTabs', opts);
     });
     return $('#search-form').on('submit', function(evt) {
       var way;

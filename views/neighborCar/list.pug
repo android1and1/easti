@@ -3,9 +3,14 @@ block pagecss
   style.
     div.content {position:relative;top:4em;}
     address {margin-left:2em;}
+    .btn-group {
+      margin-left:0.9em;
+    } 
+
 block pagejs
   script(src="/mine/mine-create-alert-box.js")
   script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
+  script(src="/mine/mine-neighborCar-tabs.js")
 block content
   nav.navbar.navbar-inverse.navbar-fixed-top
     .container-fluid
@@ -60,7 +65,7 @@ block content
               li Memo
                 div!= item.memo
             // support buttons 
-            .btn-group.btn-group-lg.btn-group-vertical
+            .btn-group.btn-group-lg
               button(class="btn btn-info vote" data-vote-id= item.id) vote
               button(class="btn btn-default edit" data-edit-id=item.id) Edit  
               button(class="btn btn-danger delete" data-delete-id= item.id) Delete  
