@@ -32,7 +32,7 @@
       $parent = $(this).parents('.panel-body');
       return window.neighborCarTabs($parent, 'myTabs', opts);
     });
-    return $('#search-form').on('submit', function(evt) {
+    $('#search-form').on('submit', function(evt) {
       var way;
       way = $('[name=keyword-for]:checked').val();
       if (way === void 0 || way === null) {
@@ -41,11 +41,31 @@
         return $(this).attr('action', '/neighborCar/find-by/' + way);
       }
     });
+    
+    // let html form do its default submmitting.so disabled below 2 lines. 
+    // evt.preventDefault()
+    // evt.stopPropagation()
+    return $('button.vote').on('click', function(e) {
+      var id;
+      
+      // how do i know the id which item should vote?
+      id = $(this).data('vote-id');
+      return $.ajax({
+        type: 'PUT',
+        url: '/neighborCar/vote/' + id,
+        dataType: 'json'
+      }).done(function(json) {
+        if (json.error) {
+          return window.createAlertBox($('#billboard'), json.error);
+        } else {
+          return window.createAlertBox($('#billboard'), json.status);
+        }
+      }).fail(function(xhr, status, thrown) {
+        alert(status);
+        alert(thrown);
+        return console.dir(xhr);
+      });
+    });
   });
-
-  
-// let html form do its default submmitting.so disabled below 2 lines. 
-// evt.preventDefault()
-// evt.stopPropagation()
 
 }).call(this);

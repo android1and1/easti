@@ -38,3 +38,20 @@ $ ->
     # let html form do its default submmitting.so disabled below 2 lines. 
     # evt.preventDefault()
     # evt.stopPropagation()
+
+  $('button.vote').on 'click',(e)-> 
+    # how do i know the id which item should vote?
+    id  = $(@).data('vote-id')
+    $.ajax
+      type:'PUT'
+      url:'/neighborCar/vote/' + id
+      dataType:'json'
+    .done (json)->
+     if json.error
+       window.createAlertBox $('#billboard'),json.error
+     else
+       window.createAlertBox $('#billboard'),json.status
+    .fail (xhr,status,thrown)->
+      alert status
+      alert thrown
+      console.dir xhr 
