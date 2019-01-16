@@ -217,3 +217,10 @@ jp-stretch-pi-2
 Wed Jan 16 10:17:51 CST 2019
   list page: full of td in one table.the td i slisteners.they on click fter after the event occurs,they trigger only this one <td> \s class remove class list remove the .disable class,and itno....no.
   i thought about this,the td just loook like a td,but in fact it is a input ele.default(no click update button,edit button),it is just input.disabled,let inmediially ssee see what is like.?
+
+cyrus-Latitude-E7470
+2019年 01月 16日 星期三 16:09:31 CST
+  after wrote a mocha functional test - coffees/ft-neighborCar-list.coffee,i knew the time is arrived that let redis-server alone,app.js will no regress that it can startup redis-server,instead,it checks and reports if redis-server is ready as a env .
+  todo:1,re-write app.js,remove the startup codes,includes 'linux' conf and 'darwin' conf,add checks,check if redis-server is running,and use the correctly conf,so,redis-server must has a flag string:redis-cli set correctly 'linux:darwin:arm',the final resolve way is gulp script.
+  todo:2,if app.js check the redis-server is not running,it warns in console.log and html-client-page,via session-cookie.
+  todo:3,if redis-server running at wrong redis database(not within ./redisdb/),show warnings too.
