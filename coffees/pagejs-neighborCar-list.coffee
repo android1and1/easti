@@ -22,12 +22,7 @@ $ ->
     #  alert 'has trigger AJAX-DELETE.'
 
   $('button.edit').on 'click',(e)->
-    opts = 
-      name:'<input type="text" name="name" id="name" placeholder="see.." >'
-      age:'<input type="number" default="40" defaultValue="40" >'
-    $parent = $(@).parents('.panel-body')
-    window.neighborCarTabs $parent,'myTabs',opts
-
+    alert 'now all attributes can be edited(remove .disable class).'
   $('#search-form').on 'submit',(evt)->
     way = $('[name=keyword-for]:checked').val()
     if way is undefined or way is null

@@ -212,3 +212,8 @@ cyrus-Latitude-E7470
 Inch13Early2015Air
 2019年 1月10日 星期四 10时04分07秒 CST
   初步调通了两个按钮：DELETE和PUT，进一步。
+
+jp-stretch-pi-2
+Wed Jan 16 10:17:51 CST 2019
+  list page: full of td in one table.the td i slisteners.they on click fter after the event occurs,they trigger only this one <td> \s class remove class list remove the .disable class,and itno....no.
+  i thought about this,the td just loook like a td,but in fact it is a input ele.default(no click update button,edit button),it is just input.disabled,let inmediially ssee see what is like.?

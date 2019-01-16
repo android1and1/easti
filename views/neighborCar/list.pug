@@ -10,7 +10,57 @@ block pagecss
 block pagejs
   script(src="/mine/mine-create-alert-box.js")
   script(src="/pagejs/neighborCar/pagejs-neighborCar-list.js")
-  script(src="/mine/mine-neighborCar-tabs.js")
+block footer
+  h1 table without table-responsive class 
+  table.table.table-bordered.table-striped
+    tr
+      td without responsive
+      td
+         input(type="text" name="text1" value='value1')
+      td label:this field has success status
+      td.success
+         input(type="text"  name="text1" value='value1')
+    tr
+      td this field is disabled 
+      td
+         input(type="text" disabled='true' name="text1" value='value1')
+      td chaochang de label chao chang:without responsive
+      td
+         input(type="text" name="text1" value='value1')
+  h1 table with table-responsive class 
+  .table-responsive
+    table.table
+      tr
+        td label of field
+        td 
+          input(type='text' value='ni hao a?')
+        td label of field
+        td 
+          input(type='text' value='ni hao a?')
+        td chaochang de label chaochang de label:label of field
+        td 
+          input(type='text' value='ni hao a?')
+      tr
+        td label of field
+        td 
+          input(type='text' value='ni hao a?')
+        td label of field
+        td 
+          input(type='text' value='ni hao a?')
+        td chaochang de label chaochang de label:label of field
+        td 
+          input(type='text' value='ni hao a?')
+      tr
+        td label of field
+        td 
+          input(type='text' value='ni hao a?')
+        td label of field
+        td 
+          input(type='text' value='ni hao a?')
+        td chaochang de label chaochang de label:label of field
+        td 
+          input(type='text' value='ni hao a?')
+
 block content
   nav.navbar.navbar-inverse.navbar-fixed-top
     .container-fluid

@@ -24,13 +24,7 @@
     //.always ->
     //  alert 'has trigger AJAX-DELETE.'
     $('button.edit').on('click', function(e) {
-      var $parent, opts;
-      opts = {
-        name: '<input type="text" name="name" id="name" placeholder="see.." >',
-        age: '<input type="number" default="40" defaultValue="40" >'
-      };
-      $parent = $(this).parents('.panel-body');
-      return window.neighborCarTabs($parent, 'myTabs', opts);
+      return alert('now all attributes can be edited(remove .disable class).');
     });
     $('#search-form').on('submit', function(evt) {
       var way;
