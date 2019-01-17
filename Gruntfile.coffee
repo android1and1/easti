@@ -25,14 +25,21 @@ module.exports = (grunt)->
     'grunt-exec'
   ].forEach (task)->
     grunt.loadNpmTasks task
-
+  #check which platform is now
+  if process.platform is 'linux'
+    conf = './redisdb/linux.redis.conf'
+  else if process.platform is 'darwin'
+    conf = './redisdb/darwin.redis.conf'
+  else
+    conf=''
+  
   grunt.initConfig
     mochaTest:
       all:
         src:'qa/test-*.js'
     exec:
       runredis:
-        cmd:'redis-server ./redisdb/darwin.redis.conf &'
+        cmd:'redis-server ' + conf 
       killserver:
         cmd:'pgrep node | xargs kill -15'
       killredis:
