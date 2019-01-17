@@ -33,6 +33,8 @@ module.exports = (grunt)->
     exec:
       runredis:
         cmd:'redis-server ./redisdb/darwin.redis.conf &'
+      killserver:
+        cmd:'pgrep node | xargs kill -15'
       killredis:
         cmd:'redis-cli shutdown nosave'
       runserver:

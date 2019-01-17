@@ -300,3 +300,11 @@ in linux ,it is easy to install grunt-cli as global,but in darwin(Apple MacBook)
 instead,i obey net file teach me to install grunt-client as local(npm i --save-dev grunt-cli),then,add a soft link:
   "ln -s /home/xxx/easti/node_modules/grunt/grunt-cli/bin/grunt /usr/local/bin/"
 now grunt command will found.
+
+
+currently:20190117,impletes:
+  1,exec:runserver --- node app.js &
+  2,exec:runredis --- redis-server <conf file> &
+  3,killserver -- 'pgrep node |xargs kill -15'
+  4,killredis --- 'redis-cli shutdown nosave'
+via grunt do the task(ever diffcult for me),first run redis-server,then run app.js,resolve order confuse.thanks,Grunt!
