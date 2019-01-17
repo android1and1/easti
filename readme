@@ -268,3 +268,28 @@ currently,resolve this task by defines (a function) in module,then route can inv
 then,render to client with {fields:fields},which fields is module's field.
 notice that,something in .pug (view),parse field variable,need some tricks,see pugjs.org tuterials about 'interpolation of tag text'.
 
+#####################
+#####################
+  grunt 
+#####################
+#####################
+for mocha test,need grunt's plugin -- grunt-mocha-test (instead grunt-coffee-mocha),in <project>/Gruntfile.js:
+module.exports = function(grunt){
+  ['grunt-mocha-test',
+   ....
+  ].forEach(function(task){grunt.loadNpmTasks(task);});
+  grunt.initConfig({
+    ...
+    mochaTest:  //Notice That,'mocha-test' or 'mochatest' will failures,i waste many times on it.
+      all:{src:'qa/test-*.js'}
+   ...
+   });
+  //at last,register tasks.
+  grunt.registerTask('default',[
+    'mochaTest', // Need Same Name As Above.
+    'exec',
+    ...
+    ]);
+};
+ 
+  

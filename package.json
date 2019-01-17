@@ -28,6 +28,10 @@
     "thunkify": "^2.1.2"
   },
   "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-exec": "^3.0.0",
+    "grunt-mocha-test": "^0.13.3",
+    "mocha": "^5.2.0",
     "zombie": "^6.1.3"
   }
 }
