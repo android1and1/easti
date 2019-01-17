@@ -31,6 +31,11 @@ module.exports = (grunt)->
       all:
         src:'qa/test-*.js'
     exec:
-      sample:
-        cmd:'echo twice:HiHi'
-  grunt.registerTask 'default',['mochaTest','exec']
+      runredis:
+        cmd:'redis-server ./redisdb/darwin.redis.conf &'
+      killredis:
+        cmd:'redis-cli shutdown nosave'
+      runserver:
+        cmd:'sleep 2 && node ./app.js &'
+  #grunt.registerTask 'default',['mochaTest','exec']
+  grunt.registerTask 'default',['exec:runredis','exec:runserver']
