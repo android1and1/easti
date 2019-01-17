@@ -11,7 +11,7 @@ module.exports = function(grunt){
       },
       exec:{
         sample:
-          {cmd:'echo hihi'}
+          {cmd:'echo twice: hihi'}
       }
   });
   grunt.registerTask('default',['mochaTest','exec']);
