@@ -1,27 +1,6 @@
-###
-module.exports = function(grunt){
-  [
-    'grunt-mocha-test',
-    'grunt-exec',
-  ].forEach(function(task){
-    grunt.loadNpmTasks(task);
-  });
-  grunt.initConfig({
-      mochaTest: {
-        all:{src:'qa/test-*.js'},
-        single:{src:'qa/test-grunt-mochaTest-see.js'},
-      },
-      exec:{
-        sample:
-          {cmd:'echo twice: hihi'}
-      }
-  });
-  grunt.registerTask('default',['mochaTest','exec']);
-};
-###
 module.exports = (grunt)->
   [
-    'grunt-mocha-test'
+    'grunt-simple-mocha'
     'grunt-exec'
   ].forEach (task)->
     grunt.loadNpmTasks task
@@ -34,7 +13,7 @@ module.exports = (grunt)->
     conf=''
   
   grunt.initConfig
-    mochaTest:
+    simplemocha:
       all:
         src:'qa/test-*.js'
     exec:
@@ -46,5 +25,5 @@ module.exports = (grunt)->
         cmd:'redis-cli shutdown nosave'
       runserver:
         cmd:'sleep 2 && node ./app.js &'
-  #grunt.registerTask 'default',['mochaTest','exec']
+  #grunt.registerTask 'default',['simplemocha','exec']
   grunt.registerTask 'default',['exec:runredis','exec:runserver']
