@@ -3,13 +3,7 @@
 express = require 'express'
 app = express()
 app.set 'view engine','pug'
-if process.platform is 'darwin'
-  app.use express.static '/Users/mac/easti/public'
-else if process.platform is 'linux'
-  app.use express.static '/home/cyrus/easti/public'
-else
-  console.log 'no support platform.'
-  process.exit 1
+app.use express.static '/home/pi/easti/public' 
 app.get '/',(req,res)->
   res.render '3rdhello'
 http = require 'http'
@@ -22,3 +16,5 @@ io.on 'connect',(socket)->
   news = 'hi,welcome user:'
   news += socket.id
   io.emit 'message',news
+  socket.on 'replay',(msg)->
+    socket.emit 'message',msg

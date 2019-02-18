@@ -224,3 +224,11 @@ cyrus-Latitude-E7470
   todo:1,re-write app.js,remove the startup codes,includes 'linux' conf and 'darwin' conf,add checks,check if redis-server is running,and use the correctly conf,so,redis-server must has a flag string:redis-cli set correctly 'linux:darwin:arm',the final resolve way is gulp script.
   todo:2,if app.js check the redis-server is not running,it warns in console.log and html-client-page,via session-cookie.
   todo:3,if redis-server running at wrong redis database(not within ./redisdb/),show warnings too.
+
+jp-stretch-pi-2
+Mon Feb 18 20:13:35 CST 2019
+  want to build a socketio-standlone server ,the common html server's client can connect to it.
+
+jp-stretch-pi-2
+Mon Feb 18 21:42:24 CST 2019
+  the view - views/3rdhello.pug and server coffees/io-3rd-hello-server.coffee值得学习这个正是要的独立IO服务器的例子。 

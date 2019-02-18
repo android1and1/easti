@@ -12,12 +12,19 @@
 
   io = IO(server);
 
-  server.listen(3003, function() {
-    return console.log('server running at port 3003;press Ctrl-C to terminate.');
+  io.on('connect', function(socket) {
+    socket.send('hi guys.');
+    socket.on('wow', function(msg) {
+      console.log('heard from client:', msg);
+      return socket.emit('dare', 'dare to go!');
+    });
+    return socket.on('disconnect', function() {
+      return console.log('one user leave.');
+    });
   });
 
-  io.on('connect', function(socket) {
-    return io.send('hello everybody.');
+  server.listen(3003, function() {
+    return console.log('server running at port 3003;press Ctrl-C to terminate.');
   });
 
 }).call(this);
