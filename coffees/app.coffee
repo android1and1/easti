@@ -1,6 +1,13 @@
+# first of first check if 'redis-server' is running.
+{spawn} = require 'child_process'
+pgrep = spawn '/usr/bin/pgerp',['redis-server']
+pgrep.on 'close',(code)->
+  if code isnt 0
+    console.log 'should run redis-server first.'
+    process.exit 1
+
 path = require 'path'
 http = require 'http'
-{spawn} = require 'child_process'
 
 express = require 'express'
 app = express()
@@ -12,16 +19,11 @@ app.use express.static static_root
 # enable the variable - "req.body".like the old middware - "bodyParser"
 app.use express.urlencoded({extended:false})
 
-routers = ['neighborCar','readingjournals','tools','alpha','uploading','glossary']
-routers.forEach (name)->
-  path = './routes/route-' + name
-  (require path)(app)('/' + name)
 
 app.get '/',(req,res)->
   res.render 'index'
     ,
-    title:'I see You'
-    name:'wang!'
+    title:'Welcome!'
 
 app.use (req,res)->
   res.status 404
