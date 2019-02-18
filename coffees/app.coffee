@@ -1,6 +1,6 @@
 # first of first check if 'redis-server' is running.
 {spawn} = require 'child_process'
-pgrep = spawn '/usr/bin/pgerp',['redis-server']
+pgrep = spawn '/usr/bin/pgrep',['redis-server']
 pgrep.on 'close',(code)->
   if code isnt 0
     console.log 'should run redis-server first.'

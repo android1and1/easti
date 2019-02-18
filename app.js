@@ -5,7 +5,7 @@
 
   ({spawn} = require('child_process'));
 
-  pgrep = spawn('/usr/bin/pgerp', ['redis-server']);
+  pgrep = spawn('/usr/bin/pgrep', ['redis-server']);
 
   pgrep.on('close', function(code) {
     if (code !== 0) {
