@@ -9,8 +9,49 @@ pgrep.on 'close',(code)->
 path = require 'path'
 http = require 'http'
 qr_image = require 'qr-image'
+
 {Nohm,NohmModel} = require 'nohm'
+class Account extends NohmModel
+  @modelName = 'account'
+  @idGenerator = 'increment'
+  @definitions = 
+    name:
+      type:'string'
+      index:true
+      validations:['notEmpty']
+    code:
+      type:'integer'
+      index:true
+      validations:['notEmpty']
+    password:
+      type:'string'
+      validations:['notEmpty']
+    alive:
+      type:'boolean'
+      validations:['notEmpty']
+      defaultValue:true
+
+class DaKa extends NohmModel
+  @modelName = 'daily'
+  @idGenerator = 'increment'
+  @definitions = 
+    name:
+      type:'string'
+      index:true
+      validations:['notEmpty']
+    code:
+      type:'integer'
+      index:true
+      validations:['notEmpty']
+    
+
 redis = (require 'redis').createClient()
+redis.on 'connect',->
+  Nohm.setClient @
+  Nohm.setPrefix 'DaKa' # the main api name.
+  # register the 2 models.
+  dakaModel = Nohm.register DaKa
+  accountModel = Nohm.register Account
 
 express = require 'express'
 app = express()
@@ -47,6 +88,7 @@ app.get '/daka',(req,res)->
 
 app.get '/create-qrcode',(req,res)->
   text = req.query.text 
+  # templary solid 
   text = 'http://192.168.5.2:3003/login-success?text=' + text
   res.type 'png'
   qr_image.image(text).pipe res 
@@ -54,13 +96,31 @@ app.get '/create-qrcode',(req,res)->
 app.get '/login-success',(req,res)->
   text = req.query.text
   if text is 'you are beautiful.'
-    status = '打卡成功 ok'
+    status = '打卡成功'
   else
     status = '验证失败 打卡未完成'
   res.render 'login-success',{title:'login Result',status:status}
 
 app.get '/admin-login',(req,res)->
   res.render '/admin-login-form',{title:'Fill Authentication Form'}
+
+# user account initialize.
+app.all '/fill-account',(req,res)->
+   if req.method is 'GET'
+     res.render 'user-account-form',{title:'User Account Form'} 
+   else if req.method is 'POST'
+     {name,code,password} = req.body
+     ins = await Nohm.factory 'account'
+     ins.property
+       name:name
+       code:code
+       password:password
+       timestamp:new Date
+     try
+       await ins.save()
+       res.render 'save-success'
+     catch error
+       res.render 'save-fail',{reason:ins.errors}
 
 app.post '/admin-login',(req,res)->
   {name,password} = req.body
