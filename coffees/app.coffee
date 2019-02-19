@@ -8,6 +8,9 @@ pgrep.on 'close',(code)->
 
 path = require 'path'
 http = require 'http'
+qr_image = require 'qr-image'
+{Nohm,NohmModel} = require 'nohm'
+redis = (require 'redis').createClient()
 
 express = require 'express'
 app = express()
@@ -18,13 +21,60 @@ static_root = path.join PROJECT_ROOT,'public'
 app.use express.static static_root 
 # enable the variable - "req.body".like the old middware - "bodyParser"
 app.use express.urlencoded({extended:false})
-
-
+# session
+Session = require 'express-session'
+Store = (require 'connect-redis') Session
+app.use Session {
+  cookie:
+    maxAge: 1 * 1000 * 60 # 1 minute
+    httpOnly:true
+    path:'/admin-login'
+  secret: 'youkNoW.'
+  store: new Store
+  resave:false
+  saveUninitialized:true
+  } 
+  
 app.get '/',(req,res)->
   res.render 'index'
     ,
     title:'Welcome!'
 
+app.get '/daka',(req,res)->
+  res.render 'daka'
+    ,
+    title:'Welcome Daka!'
+
+app.get '/create-qrcode',(req,res)->
+  text = req.query.text 
+  text = 'http://192.168.5.2:3003/login-success?text=' + text
+  res.type 'png'
+  qr_image.image(text).pipe res 
+
+app.get '/login-success',(req,res)->
+  text = req.query.text
+  if text is 'you are beautiful.'
+    status = '打卡成功 ok'
+  else
+    status = '验证失败 打卡未完成'
+  res.render 'login-success',{title:'login Result',status:status}
+
+app.get '/admin-login',(req,res)->
+  res.render '/admin-login-form',{title:'Fill Authentication Form'}
+
+app.post '/admin-login',(req,res)->
+  {name,password} = req.body
+  # match name:password from redis db.
+  
+  if not req.session.auth
+    auth = 
+      role:'Admin'
+      initialTime:new Date
+    req.session.auth = auth
+    
+  # its pagejs is /mine/mine-admin-login.js
+  res.render 'admin-login',{auth:req.session.auth,title:'you are administrator'}
+  
 app.use (req,res)->
   res.status 404
   res.render '404'
