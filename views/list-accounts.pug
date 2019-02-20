@@ -9,10 +9,12 @@ block content
           name = item.name
           code = item.code
           timestamp = item.timestamp
-          password = item.password
+          password1 = item.password.slice(0,-4)
+          password2 = item.password.slice(-4)
+          password = password1.replace(/[\d\w]/g,'$') + password2
         .panel-heading= name + '(id=' + id  + ')'
         .panel-body
-          h3= code 
-          h3= timestamp 
-          h3= password 
+          h3= "code= " + code 
+          h3= "timestamp= " + timestamp 
+          h3= "password= " + password 
       

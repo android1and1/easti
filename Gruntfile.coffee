@@ -27,3 +27,4 @@ module.exports = (grunt)->
         cmd:'sleep 2 && node ./bin/www.js &'
   #grunt.registerTask 'default',['simplemocha','exec']
   grunt.registerTask 'default',['exec:runredis','exec:runserver']
+  grunt.registerTask 'killAll',['exec:killserver','exec:killredis']
