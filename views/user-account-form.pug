@@ -3,5 +3,15 @@ block content
   h1 Fill This Form For Login
   form(id="account_form" action="/fill-account" method="POST")
     .form-group
-      label(for=
+      label(for="idName") name:
+      input(type="text" name="name"  id="idName" class="form-control")
+    .form-group
+      label(for="idCode") Code: 
+      input(type="text" name="code" class="form-control")
+    .form-group
+      label(for="password") Password: 
+      input(type="text" name="password" class="form-control")
+    button.btn.btn-default(type="submit") Submit
+    
+
     

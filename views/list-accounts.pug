@@ -1,0 +1,18 @@
+extend layouts/main
+block content
+  div 
+    - for(eachone in accounts)
+      .panel.panel-default
+        - item = accounts[eachone]
+        - 
+          id = item.id
+          name = item.name
+          code = item.code
+          timestamp = item.timestamp
+          password = item.password
+        .panel-heading= name + '(id=' + id  + ')'
+        .panel-body
+          h3= code 
+          h3= timestamp 
+          h3= password 
+      

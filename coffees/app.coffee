@@ -10,57 +10,26 @@ path = require 'path'
 http = require 'http'
 qr_image = require 'qr-image'
 
-{Nohm,NohmModel} = require 'nohm'
-class Account extends NohmModel
-  @modelName = 'account'
-  @idGenerator = 'increment'
-  @definitions = 
-    name:
-      type:'string'
-      index:true
-      validations:['notEmpty']
-    code:
-      type:'integer'
-      index:true
-      validations:['notEmpty']
-    password:
-      type:'string'
-      validations:['notEmpty']
-    alive:
-      type:'boolean'
-      validations:['notEmpty']
-      defaultValue:true
-
-class DaKa extends NohmModel
-  @modelName = 'daily'
-  @idGenerator = 'increment'
-  @definitions = 
-    name:
-      type:'string'
-      index:true
-      validations:['notEmpty']
-    code:
-      type:'integer'
-      index:true
-      validations:['notEmpty']
-    
+{Nohm} = require 'nohm'
+Account = require './modules/md-account'
+Daka = require './modules/md-daka'
+dakaModel = undefined
+accountModel = undefined
 
 redis = (require 'redis').createClient()
 redis.on 'connect',->
   Nohm.setClient @
   Nohm.setPrefix 'DaKa' # the main api name.
   # register the 2 models.
-  dakaModel = Nohm.register DaKa
+  dakaModel = Nohm.register Daka
   accountModel = Nohm.register Account
 
 express = require 'express'
 app = express()
-PROJECT_ROOT = process.env.HOME + '/easti' 
 app.set 'view engine','pug'
-#static root directory setup
-static_root = path.join PROJECT_ROOT,'public'
+static_root = path.join __dirname,'public'
 app.use express.static static_root 
-# enable the variable - "req.body".like the old middware - "bodyParser"
+# enable "req.body",like the old middware - "bodyParser"
 app.use express.urlencoded({extended:false})
 # session
 Session = require 'express-session'
@@ -106,22 +75,32 @@ app.get '/admin-login',(req,res)->
 
 # user account initialize.
 app.all '/fill-account',(req,res)->
-   if req.method is 'GET'
-     res.render 'user-account-form',{title:'User Account Form'} 
-   else if req.method is 'POST'
-     {name,code,password} = req.body
-     ins = await Nohm.factory 'account'
-     ins.property
-       name:name
-       code:code
-       password:password
-       timestamp:new Date
-     try
-       await ins.save()
-       res.render 'save-success'
-     catch error
-       res.render 'save-fail',{reason:ins.errors}
+  if req.method is 'GET'
+    res.render 'user-account-form',{title:'User Account Form'} 
+  else if req.method is 'POST'
+    {name,code,password} = req.body
+    ins = await Nohm.factory 'account'
+    ins.property
+      name:name
+      code:code
+      password:password
+      timestamp:new Date
+    try
+      await ins.save()
+      res.render 'save-success',{itemid:ins.id}
+    catch error
+      res.render 'save-fail',{reason:ins.errors}
 
+app.get '/admin/list-accounts',(req,res)->
+  inss = await accountModel.findAndLoad()
+  results = [] 
+  inss.forEach (one)->
+    obj = one.allProperties()
+    obj.id = one.id
+    results.push obj 
+    
+  res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
+  
 app.post '/admin-login',(req,res)->
   {name,password} = req.body
   # match name:password from redis db.
