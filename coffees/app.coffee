@@ -70,8 +70,6 @@ app.get '/login-success',(req,res)->
     status = '验证失败 打卡未完成'
   res.render 'login-success',{title:'login Result',status:status}
 
-app.get '/admin-login',(req,res)->
-  res.render '/admin-login-form',{title:'Fill Authentication Form'}
 
 # user account initialize.
 app.all '/fill-account',(req,res)->
@@ -84,7 +82,7 @@ app.all '/fill-account',(req,res)->
       name:name
       code:code
       password:password
-      timestamp:new Date
+      initial_timestamp:new Date()
     try
       await ins.save()
       res.render 'save-success',{itemid:ins.id}
@@ -101,19 +99,25 @@ app.get '/admin/list-accounts',(req,res)->
     
   res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
   
-app.post '/admin-login',(req,res)->
+app.get '/admin/login',(req,res)->
+  # pagejs= /mine/mine-admin-login.js
+  res.render 'admin-login',{title:'Fill Authentication Form'}
+
+app.post '/admin/login',(req,res)->
   {name,password} = req.body
-  # match name:password from redis db.
-  
-  if not req.session.auth
-    auth = 
-      role:'Admin'
-      initialTime:new Date
-    req.session.auth = auth
-    
-  # its pagejs is /mine/mine-admin-login.js
-  res.render 'admin-login',{auth:req.session.auth,title:'you are administrator'}
-  
+  # create a instance
+  try
+    inss = await accountModel.findAndLoad {name:name} 
+    ins = inss[0]
+    dbpassword = ins.property 'password'
+  catch error
+    error_reason = error.message
+  if dbpassword is password
+    res.render 'login-success',{title:'test if administrator',auth_data:{name:name,password:dbpassword}}
+  else
+    res.json {status:'db error',reason:error_reason}
+
+
 app.use (req,res)->
   res.status 404
   res.render '404'

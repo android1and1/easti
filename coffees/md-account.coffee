@@ -1,4 +1,3 @@
-# 2019-2
 {NohmModel} = require 'nohm'
 class Account extends NohmModel
   @modelName = 'account'
@@ -6,14 +5,15 @@ class Account extends NohmModel
   @definitions = 
     name:
       type:'string'
-      index:true
+      unique:true
       validations:[
           'notEmpty'
           {name:'length',options:{min:4,max:15}}
+          # Just a sample.below:
           # granttee that name not contains '0' or 'o',they are not clear
           # display on screen,always.
-          (value,options)->
-            return Promise.resolve not /[0o]/.test value
+          #(value,options)->
+          #  return Promise.resolve not /[0o]/.test value
         ]
     code:
       type:'integer'
@@ -22,12 +22,12 @@ class Account extends NohmModel
     password:
       type:'string'
       validations:['notEmpty']
-    timestamp:
-      type:'string'
+    initial_timestamp:
+      type:'timestamp'
       index:true
+      defaultValue: ->return Date.parse new Date
     alive:
       type:'boolean'
       validations:['notEmpty']
       defaultValue:true
-
 module.exports = Account

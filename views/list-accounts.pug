@@ -8,7 +8,7 @@ block content
           id = item.id
           name = item.name
           code = item.code
-          timestamp = item.timestamp
+          timestamp = item.initial_timestamp
           password1 = item.password.slice(0,-4)
           password2 = item.password.slice(-4)
           password = password1.replace(/[\d\w]/g,'$') + password2

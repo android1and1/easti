@@ -109,12 +109,6 @@
     });
   });
 
-  app.get('/admin-login', function(req, res) {
-    return res.render('/admin-login-form', {
-      title: 'Fill Authentication Form'
-    });
-  });
-
   // user account initialize.
   app.all('/fill-account', async function(req, res) {
     var code, error, ins, name, password;
@@ -161,23 +155,41 @@
     });
   });
 
-  app.post('/admin-login', function(req, res) {
-    var auth, name, password;
-    ({name, password} = req.body);
-    // match name:password from redis db.
-    if (!req.session.auth) {
-      auth = {
-        role: 'Admin',
-        initialTime: new Date
-      };
-      req.session.auth = auth;
-    }
-    
-    // its pagejs is /mine/mine-admin-login.js
+  app.get('/admin/login', function(req, res) {
+    // pagejs= /mine/mine-admin-login.js
     return res.render('admin-login', {
-      auth: req.session.auth,
-      title: 'you are administrator'
+      title: 'Fill Authentication Form'
     });
+  });
+
+  app.post('/admin/login', async function(req, res) {
+    var dbpassword, error, error_reason, ins, inss, name, password;
+    ({name, password} = req.body);
+    try {
+      // create a instance
+      inss = (await accountModel.findAndLoad({
+        name: name
+      }));
+      ins = inss[0];
+      dbpassword = ins.property('password');
+    } catch (error1) {
+      error = error1;
+      error_reason = error.message;
+    }
+    if (dbpassword === password) {
+      return res.render('login-success', {
+        title: 'test if administrator',
+        auth_data: {
+          name: name,
+          password: dbpassword
+        }
+      });
+    } else {
+      return res.json({
+        status: 'db error',
+        reason: error_reason
+      });
+    }
   });
 
   app.use(function(req, res) {

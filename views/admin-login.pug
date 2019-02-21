@@ -1,6 +1,14 @@
 extend layouts/main
+//- its route is:'/admin/login
 block content
   h1 admin login
+  div#messagebox
+    p bare now.
+  if auth_session
+    h1 you authentication is alive
+  else
+    form(action="/admin/login" method="POST" id="loginform")
+      include admin-login-form.pug
 block pagejs
-  script(src="/socket.io/socket.io.js")
   script(src="/mine/mine-admin-login.js")
+  
