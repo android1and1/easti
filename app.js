@@ -68,8 +68,7 @@
   app.use(Session({
     cookie: {
       maxAge: 1 * 1000 * 60, // 1 minute
-      httpOnly: true,
-      path: '/admin-login'
+      httpOnly: true
     },
     secret: 'youkNoW.',
     store: new Store,
@@ -168,6 +167,9 @@
 
   app.post('/admin/login', async function(req, res) {
     var dbpassword, error, error_reason, ins, inss, name, password;
+    if (req.session.auth === void 0) {
+      console.log('now is bare-session-authentication.');
+    }
     ({name, password} = req.body);
     try {
       // create a instance
@@ -179,6 +181,10 @@
     } catch (error1) {
       error = error1;
       error_reason = error.message;
+      return res.json({
+        status: 'db error',
+        reason: error_reason
+      });
     }
     if (dbpassword === password) {
       return res.render('login-success', {
@@ -190,8 +196,8 @@
       });
     } else {
       return res.json({
-        status: 'db error',
-        reason: error_reason
+        status: 'authenticate error',
+        reason: 'user account name/password peer  not match stored.'
       });
     }
   });

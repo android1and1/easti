@@ -40,7 +40,6 @@ app.use Session {
   cookie:
     maxAge: 1 * 1000 * 60 # 1 minute
     httpOnly:true
-    path:'/admin-login'
   secret: 'youkNoW.'
   store: new Store
   resave:false
@@ -106,6 +105,8 @@ app.get '/admin/login',(req,res)->
   res.render 'admin-login',{title:'Fill Authentication Form'}
 
 app.post '/admin/login',(req,res)->
+  if req.session.auth is undefined
+    console.log 'now is bare-session-authentication.' 
   {name,password} = req.body
   # create a instance
   try
@@ -114,10 +115,11 @@ app.post '/admin/login',(req,res)->
     dbpassword = ins.property 'password'
   catch error
     error_reason = error.message
+    return res.json {status:'db error',reason:error_reason}
   if dbpassword is password
     res.render 'login-success',{title:'test if administrator',auth_data:{name:name,password:dbpassword}}
   else
-    res.json {status:'db error',reason:error_reason}
+    res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
 
 
 app.use (req,res)->
