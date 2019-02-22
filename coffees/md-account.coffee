@@ -23,9 +23,9 @@ class Account extends NohmModel
       type:'string'
       validations:['notEmpty']
     initial_timestamp:
-      type:'timestamp'
+      type:'integer'
+      validations:['notEmpty']
       index:true
-      defaultValue: ->return Date.parse new Date
     alive:
       type:'boolean'
       validations:['notEmpty']

@@ -32,6 +32,10 @@
 
   redis = (require('redis')).createClient();
 
+  redis.on('error', function(err) {
+    return console.log('Heard that:', err);
+  });
+
   redis.on('connect', function() {
     Nohm.setClient(this);
     Nohm.setPrefix('DaKa'); // the main api name.
@@ -123,7 +127,7 @@
         name: name,
         code: code,
         password: password,
-        timestamp: new Date
+        initial_timestamp: Date.parse(new Date()) // milion secs,integer
       });
       try {
         await ins.save();

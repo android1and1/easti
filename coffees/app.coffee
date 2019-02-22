@@ -17,6 +17,8 @@ dakaModel = undefined
 accountModel = undefined
 
 redis = (require 'redis').createClient()
+redis.on 'error',(err)->
+  console.log 'Heard that:',err
 redis.on 'connect',->
   Nohm.setClient @
   Nohm.setPrefix 'DaKa' # the main api name.
@@ -82,7 +84,7 @@ app.all '/fill-account',(req,res)->
       name:name
       code:code
       password:password
-      initial_timestamp:new Date()
+      initial_timestamp:Date.parse new Date() # milion secs,integer
     try
       await ins.save()
       res.render 'save-success',{itemid:ins.id}

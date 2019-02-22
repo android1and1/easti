@@ -41,11 +41,9 @@
         validations: ['notEmpty']
       },
       initial_timestamp: {
-        type: 'timestamp',
-        index: true,
-        defaultValue: function() {
-          return Date.parse(new Date);
-        }
+        type: 'integer',
+        validations: ['notEmpty'],
+        index: true
       },
       alive: {
         type: 'boolean',
