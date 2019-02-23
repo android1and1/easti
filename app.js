@@ -169,7 +169,6 @@
   app.post('/admin/login', async function(req, res) {
     var counter, dbpassword, error, error_reason, ins, inss, name, password, timestamp;
     if (req.session.auth === void 0) {
-      //console.log 'now is bare-session-authentication.' 
       req.session.auth = {
         tries: [],
         matches: [],
@@ -196,10 +195,9 @@
     if (dbpassword === password) {
       req.session.auth.alive = true;
       timestamp = new Date;
-      counter = req.session.auth.counter;
-      counter++;
-      req.session.auth.tries.push('counter#' + counter + ' try once at ' + timestamp);
-      req.session.auth.matches.push('Matches counter#' + counter + ' try.');
+      counter = req.session.auth.counter++;
+      req.session.auth.tries.push('try#' + counter + ' at ' + timestamp);
+      req.session.auth.matches.push('Matches try#' + counter + ' .');
       return res.render('login-success', {
         title: 'test if administrator',
         auth_data: {
@@ -210,10 +208,9 @@
     } else {
       req.session.auth.alive = false;
       timestamp = new Date;
-      counter = req.session.auth.counter;
-      counter++;
-      req.session.auth.tries.push('counter#' + counter + ' try once at ' + timestamp);
-      req.session.auth.matches.push('*not* Matches counter#' + counter + ' try.');
+      counter = req.session.auth.counter++;
+      req.session.auth.tries.push('try#' + counter + ' at ' + timestamp);
+      req.session.auth.matches.push('*NOT* matche try#' + counter + ' .');
       return res.json({
         status: 'authenticate error',
         reason: 'user account name/password peer  not match stored.'
