@@ -38,8 +38,9 @@ Session = require 'express-session'
 Store = (require 'connect-redis') Session
 app.use Session {
   cookie:
-    maxAge: 1 * 1000 * 60 # 1 minute
+    maxAge: 86400 * 1000  # one day. 
     httpOnly:true
+    path:'/'  # 似乎太过宽泛，之后有机会会琢磨这个
   secret: 'youkNoW.'
   store: new Store
   resave:false
@@ -106,7 +107,12 @@ app.get '/admin/login',(req,res)->
 
 app.post '/admin/login',(req,res)->
   if req.session.auth is undefined
-    console.log 'now is bare-session-authentication.' 
+    #console.log 'now is bare-session-authentication.' 
+    req.session.auth = 
+      tries:[] # the desc-string base on micro million secs.
+      matches:[]
+      alive:false  # the target-attribute which all route will check if it is true. 
+      counter:0
   {name,password} = req.body
   # create a instance
   try
@@ -117,10 +123,21 @@ app.post '/admin/login',(req,res)->
     error_reason = error.message
     return res.json {status:'db error',reason:error_reason}
   if dbpassword is password
+    req.session.auth.alive = true
+    timestamp = new Date
+    counter = req.session.auth.counter
+    counter++
+    req.session.auth.tries.push 'counter#' + counter + ' try once at ' + timestamp 
+    req.session.auth.matches.push 'Matches counter#' + counter + ' try.' 
     res.render 'login-success',{title:'test if administrator',auth_data:{name:name,password:dbpassword}}
   else
+    req.session.auth.alive = false
+    timestamp = new Date
+    counter = req.session.auth.counter
+    counter++
+    req.session.auth.tries.push 'counter#' + counter + ' try once at ' + timestamp 
+    req.session.auth.matches.push '*not* Matches counter#' + counter + ' try.' 
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
-
 
 app.use (req,res)->
   res.status 404
