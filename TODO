@@ -240,3 +240,17 @@ Wed Feb 20 09:46:40 CST 2019
 jp-stretch-pi-2
 Sun Feb 24 19:00:52 CST 2019
   resolve the crypt problem.
+
+cyrus-Latitude-E7470
+2019年 02月 25日 星期一 18:23:06 CST
+  user login /user-daka page,and admin login /admin-daka page.the 2 pages all has its 'io' variable which connected io server.
+  
+
+cyrus-Latitude-E7470
+2019年 02月 25日 星期一 21:17:35 CST
+  mess tonight,because big daughter and this app became mess.user's accounts in one table ,the table structor as admin user's accounts,but it is difference prority,from difference table,get difference prority,power.2 tables has same structor or let us say almost same.admin accounts table {id,name,password,code,initial_timestamp},user accounts table {id,name,password,code,initial_timestamp}
+  the first time admin/user login,the table is exists already,from a script name init2tables.let us refine it soon.
+  //this script entablishes 2 tables,has 1 or serial admins(if need),and numbers of users(as number of stuffs),
+  need a register route '/register/admin','/register/user',the 'super user' can add admin(s),and admin can add common user(s).owns a super key will act as 'super user'.the super key from <project>/crediential.txt.
+  this is the way resolved 'di yi tui dong'.
+ 

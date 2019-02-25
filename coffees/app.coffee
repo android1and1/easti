@@ -57,6 +57,22 @@ app.get '/',(req,res)->
     title:'Welcome!'
     auth:auth
 
+app.get '/user-daka',(req,res)->
+  auth_obj = req.session.auth
+  if auth_obj is undefined 
+    res.redirect 302,'/user/login'
+  else
+    res.render 'user-daka',{title:'User Console',auth_obj:auth_obj} 
+
+app.get '/user/login',(req,res)->
+  res.render 'user-login',{title:'Fill User Login Form'}
+
+app.post '/user/login',(req,res)->
+  {name,password} = req.body
+  
+app.get '/admin-daka',(req,res)->
+  res.render 'admin-daka',{title:'Admin Console'}
+ 
 app.get '/daka',(req,res)->
   res.render 'daka'
     ,
@@ -65,18 +81,17 @@ app.get '/daka',(req,res)->
 app.get '/create-qrcode',(req,res)->
   text = req.query.text 
   # templary solid 
-  text = 'http://192.168.5.2:3003/login-success?text=' + text
+  text = 'http://192.168.5.2:3003/login-response?text=' + text
   res.type 'png'
   qr_image.image(text).pipe res 
 
-app.get '/login-success',(req,res)->
+app.get '/login-response',(req,res)->
   text = req.query.text
   if text is 'you are beautiful.'
     status = '打卡成功'
   else
     status = '验证失败 打卡未完成'
-  res.render 'login-success',{title:'login Result',status:status}
-
+  res.render 'login-response',{title:'login Result',status:status}
 
 # user account initialize.
 app.all '/fill-account',(req,res)->
@@ -98,6 +113,8 @@ app.all '/fill-account',(req,res)->
       res.render 'save-fail',{reason:ins.errors}
 
 app.get '/admin/list-accounts',(req,res)->
+  if req.session.auth.alive is false
+    return res.redirect 302,'/admin/login'
   inss = await accountModel.findAndLoad()
   results = [] 
   inss.forEach (one)->
@@ -143,7 +160,7 @@ app.post '/admin/login',(req,res)->
     counter = req.session.auth.counter++
     req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
     req.session.auth.matches.push 'Matches try#' + counter + ' .' 
-    res.render 'login-success',{title:'test if administrator',auth_data:{name:name,password:dbpassword}}
+    res.render 'admin-login-success',{title:'test if administrator',auth_data:{name:name,password:dbpassword}}
   else
     req.session.auth.alive = false
     timestamp = new Date

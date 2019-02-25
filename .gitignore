@@ -13,7 +13,7 @@ node_modules/
 package-lock*
 lock-log*
 *.log
-credients/
+credentials/
 *.data
 configs/
 public/uploads

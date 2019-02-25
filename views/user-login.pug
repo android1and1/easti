@@ -1,0 +1,6 @@
+extend layouts/main
+//- its route is:'/user/login
+block content
+  h1 User Login
+  form(action="/user/login" method="POST" id="loginform")
+    include user-login-form.pug

@@ -91,6 +91,36 @@
     });
   });
 
+  app.get('/user-daka', function(req, res) {
+    var auth_obj;
+    auth_obj = req.session.auth;
+    if (auth_obj === void 0) {
+      return res.redirect(302, '/user/login');
+    } else {
+      return res.render('user-daka', {
+        title: 'User Console',
+        auth_obj: auth_obj
+      });
+    }
+  });
+
+  app.get('/user/login', function(req, res) {
+    return res.render('user-login', {
+      title: 'Fill User Login Form'
+    });
+  });
+
+  app.post('/user/login', function(req, res) {
+    var name, password;
+    return ({name, password} = req.body);
+  });
+
+  app.get('/admin-daka', function(req, res) {
+    return res.render('admin-daka', {
+      title: 'Admin Console'
+    });
+  });
+
   app.get('/daka', function(req, res) {
     return res.render('daka', {
       title: 'Welcome Daka!'
@@ -102,12 +132,12 @@
     text = req.query.text;
     
     // templary solid 
-    text = 'http://192.168.5.2:3003/login-success?text=' + text;
+    text = 'http://192.168.5.2:3003/login-response?text=' + text;
     res.type('png');
     return qr_image.image(text).pipe(res);
   });
 
-  app.get('/login-success', function(req, res) {
+  app.get('/login-response', function(req, res) {
     var status, text;
     text = req.query.text;
     if (text === 'you are beautiful.') {
@@ -115,7 +145,7 @@
     } else {
       status = '验证失败 打卡未完成';
     }
-    return res.render('login-success', {
+    return res.render('login-response', {
       title: 'login Result',
       status: status
     });
@@ -154,6 +184,9 @@
 
   app.get('/admin/list-accounts', async function(req, res) {
     var inss, results;
+    if (req.session.auth.alive === false) {
+      return res.redirect(302, '/admin/login');
+    }
     inss = (await accountModel.findAndLoad());
     results = [];
     inss.forEach(function(one) {
@@ -217,7 +250,7 @@
       counter = req.session.auth.counter++;
       req.session.auth.tries.push('try#' + counter + ' at ' + timestamp);
       req.session.auth.matches.push('Matches try#' + counter + ' .');
-      return res.render('login-success', {
+      return res.render('admin-login-success', {
         title: 'test if administrator',
         auth_data: {
           name: name,
