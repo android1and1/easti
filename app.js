@@ -80,8 +80,14 @@
   }));
 
   app.get('/', function(req, res) {
+    var auth, ref;
+    auth = void 0;
+    if (req != null ? (ref = req.session) != null ? ref.auth : void 0 : void 0) {
+      auth = req.session.auth;
+    }
     return res.render('index', {
-      title: 'Welcome!'
+      title: 'Welcome!',
+      auth: auth
     });
   });
 
@@ -194,6 +200,11 @@
       dbpassword = ins.property('password');
     } catch (error1) {
       error = error1;
+      req.session.auth.alive = false;
+      timestamp = new Date;
+      counter = req.session.auth.counter++;
+      req.session.auth.tries.push('try#' + counter + ' at ' + timestamp);
+      req.session.auth.matches.push('*NOT* matche try#' + counter + ' .');
       error_reason = error.message;
       return res.json({
         status: 'db error',

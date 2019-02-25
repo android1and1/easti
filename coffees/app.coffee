@@ -49,9 +49,13 @@ app.use Session {
   } 
   
 app.get '/',(req,res)->
+  auth = undefined
+  if req?.session?.auth
+    auth  = req.session.auth
   res.render 'index'
     ,
     title:'Welcome!'
+    auth:auth
 
 app.get '/daka',(req,res)->
   res.render 'daka'
@@ -126,6 +130,11 @@ app.post '/admin/login',(req,res)->
     ins = inss[0]
     dbpassword = ins.property 'password'
   catch error
+    req.session.auth.alive = false
+    timestamp = new Date
+    counter = req.session.auth.counter++
+    req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
+    req.session.auth.matches.push '*NOT* matche try#' + counter + ' .' 
     error_reason = error.message
     return res.json {status:'db error',reason:error_reason}
   if dbpassword is password

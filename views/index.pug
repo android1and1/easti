@@ -2,5 +2,7 @@ extend layouts/main.pug
 block content
   h1 easti site welcome you,here is index page
 block footer
+  if auth 
+    h1 #{JSON.stringify(auth)}
   h4 all right reserved by ..
   h4 2007~2018
