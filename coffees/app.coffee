@@ -9,6 +9,7 @@ pgrep.on 'close',(code)->
 path = require 'path'
 http = require 'http'
 qr_image = require 'qr-image'
+crypto = require 'crypto'
 
 {Nohm} = require 'nohm'
 Account = require './modules/md-account'
@@ -78,12 +79,13 @@ app.all '/fill-account',(req,res)->
   if req.method is 'GET'
     res.render 'user-account-form',{title:'User Account Form'} 
   else if req.method is 'POST'
+    # prepare crypto method
     {name,code,password} = req.body
     ins = await Nohm.factory 'account'
     ins.property
       name:name
       code:code
-      password:password
+      password:hashise password
       initial_timestamp:Date.parse new Date() # milion secs,integer
     try
       await ins.save()
@@ -95,7 +97,11 @@ app.get '/admin/list-accounts',(req,res)->
   inss = await accountModel.findAndLoad()
   results = [] 
   inss.forEach (one)->
-    obj = one.allProperties()
+    obj = {}
+    obj.name = one.property 'name'
+    obj.code = one.property 'code'
+    obj.initial_timestamp = one.property 'initial_timestamp'
+    obj.password = one.property 'password'
     obj.id = one.id
     results.push obj 
     
@@ -113,6 +119,7 @@ app.post '/admin/login',(req,res)->
       alive:false  # the target-attribute which all route will check if it is true. 
       counter:0
   {name,password} = req.body
+  password = hashise password
   # create a instance
   try
     inss = await accountModel.findAndLoad {name:name} 
@@ -150,3 +157,8 @@ if require.main is module
     console.log 'server running at port 3003;press Ctrl-C to terminate.'
 else
   module.exports = app 
+
+hashise = (plain)->
+  hash = crypto.createHash 'sha256'
+  hash.update plain
+  hash.digest 'hex' 
