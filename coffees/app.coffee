@@ -88,7 +88,7 @@ app.post '/user/login',(req,res)->
   if not namebool and passwordbool
     return res.json '含有非法字符（只允许ASCII字符和数字)!'
   
-  if req.session?.auth
+  if not req.session?.auth
     # auth initialize
     req.session.auth = 
       role:'unknown'
@@ -96,13 +96,10 @@ app.post '/user/login',(req,res)->
       matches:[]
       counter:0
   # first check if exists this name?
-  items = await accountModel.findAndLoad {name:name}
-  item = items[0]
-  if not item  # currently this name isnt exists
-    return res.json '没有这个用户.'
-  dbpassword = item.property 'password'
+  bool = await matchDB accountModel,name,password
+  console.log 'Bool Value==',bool 
   timestamp = new Date
-  if hashise password is dbpassword
+  if bool 
     # till here,login data is matches.
     req.session.auth.counter++
     req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
@@ -241,3 +238,6 @@ hashise = (plain)->
 # filter is a help function
 filter = (be_dealt_with)->
   return not /\W/.test be_dealt_with
+matchDB = (db,name,password)->
+  items = await db.findAndLoad {'name':name}
+  return false
