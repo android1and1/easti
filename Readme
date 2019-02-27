@@ -327,3 +327,9 @@ If your Gruntfile is wrote in CoffeeScript, please additionally run npm install 
 ]]]
 
 conclusion:install module - 'grunt' will install 'coffeescript 1.10.0' too,this cause problem sometimes.
+
+#### #### #### ####
+  credential
+#### #### #### ####
+书中说“凭证的外化”,for not to explore to anyother,we suggest let .gitignore control this directory <project>/credentials/,in this dir,we keep our super user password,database connetion password and so on.
+

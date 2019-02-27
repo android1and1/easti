@@ -31,10 +31,15 @@
       // display on screen,always.
       //(value,options)->
       //  return Promise.resolve not /[0o]/.test value
-      code: {
+      role: {
         type: 'integer',
         index: true,
-        validations: ['notEmpty']
+        validations: [
+          'notEmpty',
+          function(val) {
+            return Promise.resolve(val === 'admin' || val === 'superuser' || val === 'user' || val === 'unknown');
+          }
+        ]
       },
       password: {
         type: 'string',

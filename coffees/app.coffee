@@ -7,9 +7,19 @@ pgrep.on 'close',(code)->
     process.exit 1
 
 path = require 'path'
+fs = require 'fs'
 http = require 'http'
 qr_image = require 'qr-image'
 crypto = require 'crypto'
+
+# super-user's credential
+fs.stat './credentials/super-user.js',(err,stats)->
+  if err 
+    console.log 'Credential File Not Exists,Fix It.'
+    process.exit 1
+
+credential = require './credentials/super-user.js'
+superpass = credential.password
 
 {Nohm} = require 'nohm'
 Account = require './modules/md-account'
@@ -52,12 +62,14 @@ app.get '/',(req,res)->
   auth = undefined
   if req?.session?.auth
     auth  = req.session.auth
+  desc = JSON.stringify req.headers["user-agent"] 
   res.render 'index'
     ,
     title:'Welcome!'
     auth:auth
+    browser_desc:desc
 
-app.get '/user-daka',(req,res)->
+app.get '/user/daka',(req,res)->
   auth_obj = req.session.auth
   if auth_obj is undefined 
     res.redirect 302,'/user/login'
@@ -68,15 +80,41 @@ app.get '/user/login',(req,res)->
   res.render 'user-login',{title:'Fill User Login Form'}
 
 app.post '/user/login',(req,res)->
+  # reference line#163
   {name,password} = req.body
+  # filter these 2 strings for injecting
+  namebool = filter name
+  passwordbool= filter password
+  if not namebool and passwordbool
+    return res.json '含有非法字符（只允许ASCII字符和数字)!'
   
-app.get '/admin-daka',(req,res)->
+  if req.session?.auth
+    # auth initialize
+    req.session.auth = 
+      role:'unknown'
+      tries:[]
+      matches:[]
+      counter:0
+  # first check if exists this name?
+  items = await accountModel.findAndLoad {name:name}
+  item = items[0]
+  if not item  # currently this name isnt exists
+    return res.json '没有这个用户.'
+  dbpassword = item.property 'password'
+  timestamp = new Date
+  if hashise password is dbpassword
+    # till here,login data is matches.
+    req.session.auth.counter++
+    req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
+    req.session.auth.matches.push 'Matches counter#' + counter + ' .'  
+    req.session.auth.role = 'user' 
+    return res.json 'user role entablished.'
+  else
+    return res.json 'login failure.'
+    
+app.get '/admin/daka',(req,res)->
   res.render 'admin-daka',{title:'Admin Console'}
  
-app.get '/daka',(req,res)->
-  res.render 'daka'
-    ,
-    title:'Welcome Daka!'
 
 app.get '/create-qrcode',(req,res)->
   text = req.query.text 
@@ -85,7 +123,7 @@ app.get '/create-qrcode',(req,res)->
   res.type 'png'
   qr_image.image(text).pipe res 
 
-app.get '/login-response',(req,res)->
+app.get '/user/login-response',(req,res)->
   text = req.query.text
   if text is 'you are beautiful.'
     status = '打卡成功'
@@ -94,16 +132,16 @@ app.get '/login-response',(req,res)->
   res.render 'login-response',{title:'login Result',status:status}
 
 # user account initialize.
-app.all '/fill-account',(req,res)->
+app.all '/user/fill-account',(req,res)->
   if req.method is 'GET'
     res.render 'user-account-form',{title:'User Account Form'} 
   else if req.method is 'POST'
     # prepare crypto method
-    {name,code,password} = req.body
+    {name,password} = req.body
     ins = await Nohm.factory 'account'
     ins.property
       name:name
-      code:code
+      role:'user'
       password:hashise password
       initial_timestamp:Date.parse new Date() # milion secs,integer
     try
@@ -128,6 +166,16 @@ app.get '/admin/list-accounts',(req,res)->
     
   res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
   
+app.get '/superuser/login',(req,res)->
+  res.render 'superuser-login.pug',{title:'Are You A Super?'}
+app.post '/superuser/login',(req,res)->
+  superkey = (require './credentials/super-user.js').password
+  {password} = req.body
+  if password is superkey
+    res.json {staus:'super user login success.'}
+  else
+    res.json {staus:'super user login failurre.'}
+  
 app.get '/admin/login',(req,res)->
   # pagejs= /mine/mine-admin-login.js
   res.render 'admin-login',{title:'Fill Authentication Form'}
@@ -137,7 +185,7 @@ app.post '/admin/login',(req,res)->
     req.session.auth = 
       tries:[] # the desc-string base on micro million secs.
       matches:[]
-      alive:false  # the target-attribute which all route will check if it is true. 
+      role:'unknown'
       counter:0
   {name,password} = req.body
   password = hashise password
@@ -147,7 +195,6 @@ app.post '/admin/login',(req,res)->
     ins = inss[0]
     dbpassword = ins.property 'password'
   catch error
-    req.session.auth.alive = false
     timestamp = new Date
     counter = req.session.auth.counter++
     req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
@@ -155,20 +202,21 @@ app.post '/admin/login',(req,res)->
     error_reason = error.message
     return res.json {status:'db error',reason:error_reason}
   if dbpassword is password
-    req.session.auth.alive = true
+    req.session.role = 'admin'
     timestamp = new Date
     counter = req.session.auth.counter++
     req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
     req.session.auth.matches.push 'Matches try#' + counter + ' .' 
     res.render 'admin-login-success',{title:'test if administrator',auth_data:{name:name,password:dbpassword}}
   else
-    req.session.auth.alive = false
     timestamp = new Date
     counter = req.session.auth.counter++
     req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
     req.session.auth.matches.push '*NOT* matche try#' + counter + ' .' 
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
-
+app.get '/admin/register',(req,res)->
+app.get '/superuser/register',(req,res)->
+  
 app.use (req,res)->
   res.status 404
   res.render '404'
@@ -184,7 +232,12 @@ if require.main is module
 else
   module.exports = app 
 
+# hashise is a help function.
 hashise = (plain)->
   hash = crypto.createHash 'sha256'
   hash.update plain
   hash.digest 'hex' 
+ 
+# filter is a help function
+filter = (be_dealt_with)->
+  return not /\W/.test be_dealt_with

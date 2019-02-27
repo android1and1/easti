@@ -254,3 +254,18 @@ cyrus-Latitude-E7470
   need a register route '/register/admin','/register/user',the 'super user' can add admin(s),and admin can add common user(s).owns a super key will act as 'super user'.the super key from <project>/crediential.txt.
   this is the way resolved 'di yi tui dong'.
  
+
+jp-stretch-pi-2
+Tue Feb 26 14:33:10 CST 2019
+  how to prove i am super user?
+  login in in one page,it is form infact,fill account:password,then tell you right or not.
+
+jp-stretch-pi-2
+Tue Feb 26 15:19:13 CST 2019
+  now has a page authenticate the super user,but in level of session,no changes,need fix it.
+
+jp-stretch-pi-2
+Wed Feb 27 10:22:12 CST 2019
+  change all login routes to <role>/login,example:
+  (original)fill-account -> user/fill-account
+  currently,most route need changes.

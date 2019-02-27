@@ -15,10 +15,14 @@ class Account extends NohmModel
           #(value,options)->
           #  return Promise.resolve not /[0o]/.test value
         ]
-    code:
+    role:
       type:'integer'
       index:true
-      validations:['notEmpty']
+      validations:[
+          'notEmpty'
+          (val)->
+            return Promise.resolve val in ['admin','superuser','user','unknown']
+        ]
     password:
       type:'string'
       validations:['notEmpty']
