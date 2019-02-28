@@ -3,7 +3,7 @@ class Account extends NohmModel
   @modelName = 'account'
   @idGenerator = 'increment'
   @definitions = 
-    name:
+    alias:
       type:'string'
       unique:true
       validations:[
@@ -27,11 +27,7 @@ class Account extends NohmModel
       type:'string'
       validations:['notEmpty']
     initial_timestamp:
-      type:'integer'
+      type:'integer' # utc million secs
       validations:['notEmpty']
       index:true
-    alive:
-      type:'boolean'
-      validations:['notEmpty']
-      defaultValue:true
 module.exports = Account

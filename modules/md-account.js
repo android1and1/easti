@@ -46,14 +46,9 @@
         validations: ['notEmpty']
       },
       initial_timestamp: {
-        type: 'integer',
+        type: 'integer', // utc million secs
         validations: ['notEmpty'],
         index: true
-      },
-      alive: {
-        type: 'boolean',
-        validations: ['notEmpty'],
-        defaultValue: true
       }
     };
 

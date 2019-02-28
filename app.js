@@ -127,11 +127,11 @@
   });
 
   app.post('/user/login', async function(req, res) {
-    var bool, name, namebool, password, passwordbool, ref, timestamp;
+    var alias, bool, namebool, password, passwordbool, ref, timestamp;
     // reference line#163
-    ({name, password} = req.body);
+    ({alias, password} = req.body);
     // filter these 2 strings for injecting
-    namebool = filter(name);
+    namebool = filter(alias);
     passwordbool = filter(password);
     if (!namebool && passwordbool) {
       return res.json('含有非法字符（只允许ASCII字符和数字)!');
@@ -145,9 +145,8 @@
         counter: 0
       };
     }
-    // first check if exists this name?
-    bool = (await matchDB(accountModel, name, password));
-    console.log('Bool Value==', bool);
+    // first check if exists this alias name?
+    bool = (await matchDB(accountModel, alias, password));
     timestamp = new Date;
     if (bool) {
       
@@ -194,17 +193,17 @@
 
   // user account initialize.
   app.all('/user/fill-account', async function(req, res) {
-    var error, ins, name, password;
+    var alias, error, ins, password;
     if (req.method === 'GET') {
       return res.render('user-account-form', {
         title: 'User Account Form'
       });
     } else if (req.method === 'POST') {
       // prepare crypto method
-      ({name, password} = req.body);
+      ({alias, password} = req.body);
       ins = (await Nohm.factory('account'));
       ins.property({
-        name: name,
+        alias: alias,
         role: 'user',
         password: hashise(password),
         initial_timestamp: Date.parse(new Date()) // milion secs,integer
@@ -233,7 +232,7 @@
     inss.forEach(function(one) {
       var obj;
       obj = {};
-      obj.name = one.property('name');
+      obj.alias = one.property('alias');
       obj.code = one.property('code');
       obj.initial_timestamp = one.property('initial_timestamp');
       obj.password = one.property('password');
@@ -275,7 +274,7 @@
   });
 
   app.post('/admin/login', async function(req, res) {
-    var counter, dbpassword, error, error_reason, ins, inss, name, password, timestamp;
+    var alias, counter, dbpassword, error, error_reason, ins, inss, password, timestamp;
     if (req.session.auth === void 0) {
       req.session.auth = {
         tries: [],
@@ -284,12 +283,12 @@
         counter: 0
       };
     }
-    ({name, password} = req.body);
+    ({alias, password} = req.body);
     password = hashise(password);
     try {
       // create a instance
       inss = (await accountModel.findAndLoad({
-        name: name
+        alias: alias
       }));
       ins = inss[0];
       dbpassword = ins.property('password');
@@ -314,7 +313,7 @@
       return res.render('admin-login-success', {
         title: 'test if administrator',
         auth_data: {
-          name: name,
+          alias: alias,
           password: dbpassword
         }
       });
@@ -330,9 +329,42 @@
     }
   });
 
-  app.get('/admin/register', function(req, res) {});
+  app.get('/admin/register', function(req, res) {
+    return res.render('admin-register-user', {
+      title: 'Admin-Register-User'
+    });
+  });
 
-  app.get('/superuser/register', function(req, res) {});
+  app.get('/superuser/register', function(req, res) {
+    var ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'superuser') {
+      return res.redirect(302, '/superuser/login');
+    } else {
+      return res.render('superuser-register-admin', {
+        defaultValue: '1234567',
+        title: 'Superuser-register-admin'
+      });
+    }
+  });
+
+  app.post('/superuser/register', async function(req, res) {
+    var adminname, error, ins;
+    ({adminname} = req.body);
+    ins = (await Nohm.factory('account'));
+    ins.property({
+      alias: adminname,
+      role: 'admin',
+      initial_timestamp: Date.parse(new Date),
+      password: '1234567' // default password. 
+    });
+    try {
+      await ins.save();
+      return res.json('Saved.');
+    } catch (error1) {
+      error = error1;
+      return res.json(ins.errors);
+    }
+  });
 
   app.use(function(req, res) {
     res.status(404);
@@ -370,12 +402,21 @@
     return !/\W/.test(be_dealt_with);
   };
 
-  matchDB = async function(db, name, password) {
-    var items;
+  matchDB = async function(db, alias, password) {
+    var item, items;
     items = (await db.findAndLoad({
-      'name': name
+      'alias': alias
     }));
-    return false;
+    if (items.length === 0) { // means no found.
+      return false;
+    } else {
+      item = items[0];
+      if (hashise(password === item.property('password'))) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   };
 
 }).call(this);

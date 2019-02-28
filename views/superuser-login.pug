@@ -1,11 +1,9 @@
 extend layouts/main
 //- its route is:'/admin/login
 block content
-  h1 admin login
   form(action="/superuser/login" method="POST" id="loginform")
     .form-group
-      label(for="idName") User 
-      p.form-control-static Super User
+      h2.form-control-static Super User
     .form-group
       label(for="password") Password: 
       input(type="password" name="password" class="form-control")

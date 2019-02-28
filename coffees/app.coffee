@@ -81,9 +81,9 @@ app.get '/user/login',(req,res)->
 
 app.post '/user/login',(req,res)->
   # reference line#163
-  {name,password} = req.body
+  {alias,password} = req.body
   # filter these 2 strings for injecting
-  namebool = filter name
+  namebool = filter alias
   passwordbool= filter password
   if not namebool and passwordbool
     return res.json '含有非法字符（只允许ASCII字符和数字)!'
@@ -95,9 +95,8 @@ app.post '/user/login',(req,res)->
       tries:[]
       matches:[]
       counter:0
-  # first check if exists this name?
-  bool = await matchDB accountModel,name,password
-  console.log 'Bool Value==',bool 
+  # first check if exists this alias name?
+  bool = await matchDB accountModel,alias,password
   timestamp = new Date
   if bool 
     # till here,login data is matches.
@@ -134,10 +133,10 @@ app.all '/user/fill-account',(req,res)->
     res.render 'user-account-form',{title:'User Account Form'} 
   else if req.method is 'POST'
     # prepare crypto method
-    {name,password} = req.body
+    {alias,password} = req.body
     ins = await Nohm.factory 'account'
     ins.property
-      name:name
+      alias:alias
       role:'user'
       password:hashise password
       initial_timestamp:Date.parse new Date() # milion secs,integer
@@ -154,7 +153,7 @@ app.get '/admin/list-accounts',(req,res)->
   results = [] 
   inss.forEach (one)->
     obj = {}
-    obj.name = one.property 'name'
+    obj.alias = one.property 'alias'
     obj.code = one.property 'code'
     obj.initial_timestamp = one.property 'initial_timestamp'
     obj.password = one.property 'password'
@@ -184,11 +183,11 @@ app.post '/admin/login',(req,res)->
       matches:[]
       role:'unknown'
       counter:0
-  {name,password} = req.body
+  {alias,password} = req.body
   password = hashise password
   # create a instance
   try
-    inss = await accountModel.findAndLoad {name:name} 
+    inss = await accountModel.findAndLoad {alias:alias} 
     ins = inss[0]
     dbpassword = ins.property 'password'
   catch error
@@ -204,15 +203,36 @@ app.post '/admin/login',(req,res)->
     counter = req.session.auth.counter++
     req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
     req.session.auth.matches.push 'Matches try#' + counter + ' .' 
-    res.render 'admin-login-success',{title:'test if administrator',auth_data:{name:name,password:dbpassword}}
+    res.render 'admin-login-success',{title:'test if administrator',auth_data:{alias:alias,password:dbpassword}}
   else
     timestamp = new Date
     counter = req.session.auth.counter++
     req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
     req.session.auth.matches.push '*NOT* matche try#' + counter + ' .' 
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
+
 app.get '/admin/register',(req,res)->
+  res.render 'admin-register-user',{title:'Admin-Register-User'}
+
 app.get '/superuser/register',(req,res)->
+  if req.session?.auth?.role isnt 'superuser'
+    res.redirect 302,'/superuser/login'
+  else
+    res.render 'superuser-register-admin',{defaultValue:'1234567',title:'Superuser-register-admin'}
+app.post '/superuser/register',(req,res)->
+  {adminname} = req.body
+  ins = await Nohm.factory 'account' 
+  ins.property
+    alias:adminname
+    role:'admin'
+    initial_timestamp:Date.parse new Date
+    password:'1234567' # default password. 
+  try
+    await ins.save()
+    res.json 'Saved.'
+  catch error
+    res.json  ins.errors 
+  
   
 app.use (req,res)->
   res.status 404
@@ -238,6 +258,13 @@ hashise = (plain)->
 # filter is a help function
 filter = (be_dealt_with)->
   return not /\W/.test be_dealt_with
-matchDB = (db,name,password)->
-  items = await db.findAndLoad {'name':name}
-  return false
+matchDB = (db,alias,password)->
+  items = await db.findAndLoad {'alias':alias}
+  if items.length is 0 # means no found.
+    return false
+  else
+    item = items[0]
+    if hashise password is item.property 'password'
+      return true
+    else
+      return false
