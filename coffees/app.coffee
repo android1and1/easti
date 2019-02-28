@@ -88,24 +88,17 @@ app.post '/user/login',(req,res)->
   if not namebool and passwordbool
     return res.json '含有非法字符（只允许ASCII字符和数字)!'
   
-  if not req.session?.auth
-    # auth initialize
-    req.session.auth = 
-      role:'unknown'
-      tries:[]
-      matches:[]
-      counter:0
+  # auth initialize
+  initSession req
+
   # first check if exists this alias name?
   bool = await matchDB accountModel,alias,password
-  timestamp = new Date
   if bool 
     # till here,login data is matches.
-    req.session.auth.counter++
-    req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
-    req.session.auth.matches.push 'Matches counter#' + counter + ' .'  
-    req.session.auth.role = 'user' 
+    updateAuthSession req,'user'
     return res.json 'user role entablished.'
   else
+    updateAuthSession req,'unknown'
     return res.json 'login failure.'
     
 app.get '/admin/daka',(req,res)->
@@ -164,12 +157,17 @@ app.get '/admin/list-accounts',(req,res)->
   
 app.get '/superuser/login',(req,res)->
   res.render 'superuser-login.pug',{title:'Are You A Super?'}
+
 app.post '/superuser/login',(req,res)->
+  # initial sesson.auth
+  initSession req
   superkey = (require './credentials/super-user.js').password
   {password} = req.body
   if password is superkey
+    updateAuthSession req,'superuser'
     res.json {staus:'super user login success.'}
   else
+    updateAuthSession req,'unkown'
     res.json {staus:'super user login failurre.'}
   
 app.get '/admin/login',(req,res)->
@@ -177,12 +175,9 @@ app.get '/admin/login',(req,res)->
   res.render 'admin-login',{title:'Fill Authentication Form'}
 
 app.post '/admin/login',(req,res)->
-  if req.session.auth is undefined
-    req.session.auth = 
-      tries:[] # the desc-string base on micro million secs.
-      matches:[]
-      role:'unknown'
-      counter:0
+  # initial session.auth
+  initSession req
+
   {alias,password} = req.body
   password = hashise password
   # create a instance
@@ -198,28 +193,22 @@ app.post '/admin/login',(req,res)->
     error_reason = error.message
     return res.json {status:'db error',reason:error_reason}
   if dbpassword is password
-    req.session.role = 'admin'
-    timestamp = new Date
-    counter = req.session.auth.counter++
-    req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
-    req.session.auth.matches.push 'Matches try#' + counter + ' .' 
+    updateAuthSession req,'admin'
     res.render 'admin-login-success',{title:'test if administrator',auth_data:{alias:alias,password:dbpassword}}
   else
-    timestamp = new Date
-    counter = req.session.auth.counter++
-    req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
-    req.session.auth.matches.push '*NOT* matche try#' + counter + ' .' 
+    updateAuthSession req,'unknown'
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
 
-app.get '/admin/register',(req,res)->
+app.get '/admin/register-user',(req,res)->
   res.render 'admin-register-user',{title:'Admin-Register-User'}
 
-app.get '/superuser/register',(req,res)->
+app.get '/superuser/register-admin',(req,res)->
   if req.session?.auth?.role isnt 'superuser'
     res.redirect 302,'/superuser/login'
   else
     res.render 'superuser-register-admin',{defaultValue:'1234567',title:'Superuser-register-admin'}
-app.post '/superuser/register',(req,res)->
+
+app.post '/superuser/register-admin',(req,res)->
   {adminname} = req.body
   ins = await Nohm.factory 'account' 
   ins.property
@@ -249,6 +238,17 @@ if require.main is module
 else
   module.exports = app 
 
+# initSession is a help function
+initSession = (req)->
+  if not req.session?.auth
+    req.session.auth = 
+      counter:0
+      tries:[]
+      matches:[]
+      role:'unknown'    
+    console.log 'initialize!'
+  null
+
 # hashise is a help function.
 hashise = (plain)->
   hash = crypto.createHash 'sha256'
@@ -268,3 +268,16 @@ matchDB = (db,alias,password)->
       return true
     else
       return false
+
+# updateAuthSession is a help function
+updateAuthSession = (req,role)->
+  timestamp = new Date
+  counter = req.session.auth.counter++
+  req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
+  if role is 'unknown'
+    req.session.auth.matches.push '*Not* Matches counter#' + counter + ' .'  
+    req.session.auth.role = role 
+  else
+    req.session.auth.matches.push 'Matches counter#' + counter + ' .'  
+    req.session.auth.role = role 
+    

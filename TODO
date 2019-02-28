@@ -269,3 +269,7 @@ Wed Feb 27 10:22:12 CST 2019
   change all login routes to <role>/login,example:
   (original)fill-account -> user/fill-account
   currently,most route need changes.
+
+Inch13Early2015Air
+2019年 2月28日 星期四 09时58分16秒 CST
+  为避免过早优化，我可以容忍get '/superuser/login'里不使用modal.
