@@ -273,3 +273,11 @@ Wed Feb 27 10:22:12 CST 2019
 Inch13Early2015Air
 2019年 2月28日 星期四 09时58分16秒 CST
   为避免过早优化，我可以容忍get '/superuser/login'里不使用modal.
+
+DailyPi3
+2019年 02月 28日 星期四 16:42:55 CST
+  接下来应该是核心业务了：使用SOCKETIO,进行打卡和动态监控。主要涉及两类角色(role),admin and user,admin can listen user login,user dakaing,user dakaed,the most important thing is give user special socket a grphic for login in.need an inter-view pohot?
+  1,user page /user/daka,pagejs let this page has 2 listener .qrready(qrcode is ready now),and .loginover
+  2,admin page /admin/daka,pagejs let this page has  2 listener. one is ".provide-now",second is "qrcode-timeout"
+  3,on .connect ,user emit 'requery qrcode',server heard it,then .of 'admin-channel'.emit 'provide-now',
+  4,admin page will check auth.role attribute, trigger to display qrcode.I

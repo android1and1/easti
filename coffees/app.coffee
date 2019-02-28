@@ -120,24 +120,6 @@ app.get '/user/login-response',(req,res)->
     status = '验证失败 打卡未完成'
   res.render 'login-response',{title:'login Result',status:status}
 
-# user account initialize.
-app.all '/user/fill-account',(req,res)->
-  if req.method is 'GET'
-    res.render 'user-account-form',{title:'User Account Form'} 
-  else if req.method is 'POST'
-    # prepare crypto method
-    {alias,password} = req.body
-    ins = await Nohm.factory 'account'
-    ins.property
-      alias:alias
-      role:'user'
-      password:hashise password
-      initial_timestamp:Date.parse new Date() # milion secs,integer
-    try
-      await ins.save()
-      res.render 'save-success',{itemid:ins.id}
-    catch error
-      res.render 'save-fail',{reason:ins.errors}
 
 app.get '/admin/list-accounts',(req,res)->
   if req.session.auth.alive is false
@@ -164,7 +146,6 @@ app.post '/superuser/login',(req,res)->
   superkey = (require './credentials/super-user.js').password
   {password} = req.body
   hash = sha256 password
-  console.log 'store:post',superkey,hash
   if hash is superkey
     updateAuthSession req,'superuser'
     res.json {staus:'super user login success.'}
@@ -179,30 +160,20 @@ app.get '/admin/login',(req,res)->
 app.post '/admin/login',(req,res)->
   # initial session.auth
   initSession req
-
   {alias,password} = req.body
-  password = hashise password
-  # create a instance
-  try
-    inss = await accountModel.findAndLoad {alias:alias} 
-    ins = inss[0]
-    dbpassword = ins.property 'password'
-  catch error
-    timestamp = new Date
-    counter = req.session.auth.counter++
-    req.session.auth.tries.push 'try#' + counter + ' at ' + timestamp 
-    req.session.auth.matches.push '*NOT* matche try#' + counter + ' .' 
-    error_reason = error.message
-    return res.json {status:'db error',reason:error_reason}
-  if dbpassword is password
+  bool = await matchDB accountModel,alias,password
+  if bool
     updateAuthSession req,'admin'
-    res.render 'admin-login-success',{title:'test if administrator',auth_data:{alias:alias,password:dbpassword}}
+    res.render 'admin-login-success',{title:'test if administrator',auth_data:{alias:alias,password:password}}
   else
     updateAuthSession req,'unknown'
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
 
 app.get '/admin/register-user',(req,res)->
-  res.render 'admin-register-user',{title:'Admin-Register-User'}
+  if req.session?.auth?.role isnt 'admin'
+    res.redirect 302,'/admin/login'
+  else
+    res.render 'admin-register-user',{title:'Admin-Register-User'}
 
 app.get '/superuser/register-admin',(req,res)->
   if req.session?.auth?.role isnt 'superuser'
@@ -210,14 +181,34 @@ app.get '/superuser/register-admin',(req,res)->
   else
     res.render 'superuser-register-admin',{defaultValue:'1234567',title:'Superuser-register-admin'}
 
+app.post '/admin/register-user',(req,res)->
+  {alias,password} = req.body
+  if ! filter alias or ! filter password
+    return res.json 'Wrong:User Name(alias) contains invalid character(s).'
+  ins = await Nohm.factory 'account' 
+  ins.property
+    alias:alias
+    role:'user'
+    initial_timestamp:Date.parse new Date
+    # always remember:hashise!!
+    password: hashise password 
+  try
+    await ins.save()
+    res.json 'Register User - ' + alias
+  catch error
+    res.json  ins.errors 
+       
+  
 app.post '/superuser/register-admin',(req,res)->
   {adminname} = req.body
+  if ! filter adminname
+    return res.json 'Wrong:Admin Name(alias) contains invalid character(s).'
   ins = await Nohm.factory 'account' 
   ins.property
     alias:adminname
     role:'admin'
     initial_timestamp:Date.parse new Date
-    password:'1234567' # default password. 
+    password: hashise '1234567' # default password. 
   try
     await ins.save()
     res.json 'Saved.'
@@ -248,7 +239,6 @@ initSession = (req)->
       tries:[]
       matches:[]
       role:'unknown'    
-    console.log 'initialize!'
   null
 
 # hashise is a help function.
@@ -259,14 +249,18 @@ hashise = (plain)->
  
 # filter is a help function
 filter = (be_dealt_with)->
+  # return true is safe,return false means injectable.
   return not /\W/.test be_dealt_with
+
+#matchDB is a help function *Notice that* invoke this method via "await <this>"
 matchDB = (db,alias,password)->
+  # argument -- db:example 'accountModel'
   items = await db.findAndLoad {'alias':alias}
   if items.length is 0 # means no found.
     return false
   else
     item = items[0]
-    if hashise password is item.property 'password'
+    if (hashise password) is (item.property 'password')
       return true
     else
       return false

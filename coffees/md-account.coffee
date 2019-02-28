@@ -25,7 +25,9 @@ class Account extends NohmModel
         ]
     password:
       type:'string'
-      validations:['notEmpty']
+      validations:[
+          'notEmpty'
+        ]
     initial_timestamp:
       type:'integer' # utc million secs
       validations:['notEmpty']

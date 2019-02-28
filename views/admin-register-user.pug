@@ -1,0 +1,13 @@
+extend layouts/main
+block content
+  h2.well Admin Register User
+
+  form#register(action="" method="POST")
+    .form-group
+      label(for="idAlias") User Alias Name:
+      input(id="idAlias" name="alias" type="text" class="form-control")
+
+    .form-group
+      label(for="idPassword") User Password: 
+      input(id="idPassword" name="password" type="password" class="form-control")
+    button(type="submit" class="btn btn-default") Submit

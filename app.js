@@ -182,37 +182,6 @@
     });
   });
 
-  // user account initialize.
-  app.all('/user/fill-account', async function(req, res) {
-    var alias, error, ins, password;
-    if (req.method === 'GET') {
-      return res.render('user-account-form', {
-        title: 'User Account Form'
-      });
-    } else if (req.method === 'POST') {
-      // prepare crypto method
-      ({alias, password} = req.body);
-      ins = (await Nohm.factory('account'));
-      ins.property({
-        alias: alias,
-        role: 'user',
-        password: hashise(password),
-        initial_timestamp: Date.parse(new Date()) // milion secs,integer
-      });
-      try {
-        await ins.save();
-        return res.render('save-success', {
-          itemid: ins.id
-        });
-      } catch (error1) {
-        error = error1;
-        return res.render('save-fail', {
-          reason: ins.errors
-        });
-      }
-    }
-  });
-
   app.get('/admin/list-accounts', async function(req, res) {
     var inss, results;
     if (req.session.auth.alive === false) {
@@ -249,7 +218,6 @@
     superkey = (require('./credentials/super-user.js')).password;
     ({password} = req.body);
     hash = sha256(password);
-    console.log('store:post', superkey, hash);
     if (hash === superkey) {
       updateAuthSession(req, 'superuser');
       return res.json({
@@ -271,37 +239,18 @@
   });
 
   app.post('/admin/login', async function(req, res) {
-    var alias, counter, dbpassword, error, error_reason, ins, inss, password, timestamp;
+    var alias, bool, password;
     // initial session.auth
     initSession(req);
     ({alias, password} = req.body);
-    password = hashise(password);
-    try {
-      // create a instance
-      inss = (await accountModel.findAndLoad({
-        alias: alias
-      }));
-      ins = inss[0];
-      dbpassword = ins.property('password');
-    } catch (error1) {
-      error = error1;
-      timestamp = new Date;
-      counter = req.session.auth.counter++;
-      req.session.auth.tries.push('try#' + counter + ' at ' + timestamp);
-      req.session.auth.matches.push('*NOT* matche try#' + counter + ' .');
-      error_reason = error.message;
-      return res.json({
-        status: 'db error',
-        reason: error_reason
-      });
-    }
-    if (dbpassword === password) {
+    bool = (await matchDB(accountModel, alias, password));
+    if (bool) {
       updateAuthSession(req, 'admin');
       return res.render('admin-login-success', {
         title: 'test if administrator',
         auth_data: {
           alias: alias,
-          password: dbpassword
+          password: password
         }
       });
     } else {
@@ -314,9 +263,14 @@
   });
 
   app.get('/admin/register-user', function(req, res) {
-    return res.render('admin-register-user', {
-      title: 'Admin-Register-User'
-    });
+    var ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      return res.redirect(302, '/admin/login');
+    } else {
+      return res.render('admin-register-user', {
+        title: 'Admin-Register-User'
+      });
+    }
   });
 
   app.get('/superuser/register-admin', function(req, res) {
@@ -331,15 +285,41 @@
     }
   });
 
+  app.post('/admin/register-user', async function(req, res) {
+    var alias, error, ins, password;
+    ({alias, password} = req.body);
+    if (!filter(alias || !filter(password))) {
+      return res.json('Wrong:User Name(alias) contains invalid character(s).');
+    }
+    ins = (await Nohm.factory('account'));
+    ins.property({
+      alias: alias,
+      role: 'user',
+      initial_timestamp: Date.parse(new Date),
+      // always remember:hashise!!
+      password: hashise(password)
+    });
+    try {
+      await ins.save();
+      return res.json('Register User - ' + alias);
+    } catch (error1) {
+      error = error1;
+      return res.json(ins.errors);
+    }
+  });
+
   app.post('/superuser/register-admin', async function(req, res) {
     var adminname, error, ins;
     ({adminname} = req.body);
+    if (!filter(adminname)) {
+      return res.json('Wrong:Admin Name(alias) contains invalid character(s).');
+    }
     ins = (await Nohm.factory('account'));
     ins.property({
       alias: adminname,
       role: 'admin',
       initial_timestamp: Date.parse(new Date),
-      password: '1234567' // default password. 
+      password: hashise('1234567') // default password. 
     });
     try {
       await ins.save();
@@ -382,7 +362,6 @@
         matches: [],
         role: 'unknown'
       };
-      console.log('initialize!');
     }
     return null;
   };
@@ -398,11 +377,14 @@
   
   // filter is a help function
   filter = function(be_dealt_with) {
+    // return true is safe,return false means injectable.
     return !/\W/.test(be_dealt_with);
   };
 
+  //matchDB is a help function *Notice that* invoke this method via "await <this>"
   matchDB = async function(db, alias, password) {
     var item, items;
+    // argument -- db:example 'accountModel'
     items = (await db.findAndLoad({
       'alias': alias
     }));
@@ -410,7 +392,7 @@
       return false;
     } else {
       item = items[0];
-      if (hashise(password === item.property('password'))) {
+      if ((hashise(password)) === (item.property('password'))) {
         return true;
       } else {
         return false;
