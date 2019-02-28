@@ -12,7 +12,7 @@
     Account.idGenerator = 'increment';
 
     Account.definitions = {
-      name: {
+      alias: {
         type: 'string',
         unique: true,
         validations: [
@@ -32,7 +32,7 @@
       //(value,options)->
       //  return Promise.resolve not /[0o]/.test value
       role: {
-        type: 'integer',
+        type: 'string',
         index: true,
         validations: [
           'notEmpty',

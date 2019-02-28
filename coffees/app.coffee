@@ -163,11 +163,13 @@ app.post '/superuser/login',(req,res)->
   initSession req
   superkey = (require './credentials/super-user.js').password
   {password} = req.body
-  if password is superkey
+  hash = sha256 password
+  console.log 'store:post',superkey,hash
+  if hash is superkey
     updateAuthSession req,'superuser'
     res.json {staus:'super user login success.'}
   else
-    updateAuthSession req,'unkown'
+    updateAuthSession req,'unknown'
     res.json {staus:'super user login failurre.'}
   
 app.get '/admin/login',(req,res)->
@@ -274,10 +276,14 @@ updateAuthSession = (req,role)->
   timestamp = new Date
   counter = req.session.auth.counter++
   req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
+  req.session.auth.role = role 
   if role is 'unknown'
     req.session.auth.matches.push '*Not* Matches counter#' + counter + ' .'  
-    req.session.auth.role = role 
   else
     req.session.auth.matches.push 'Matches counter#' + counter + ' .'  
-    req.session.auth.role = role 
-    
+   
+# for authenticate super user password.
+sha256 = (plain)->
+  crypto.createHash 'sha256'
+    .update plain
+    .digest 'hex'

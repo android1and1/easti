@@ -16,7 +16,7 @@ class Account extends NohmModel
           #  return Promise.resolve not /[0o]/.test value
         ]
     role:
-      type:'integer'
+      type:'string'
       index:true
       validations:[
           'notEmpty'
