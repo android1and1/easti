@@ -119,7 +119,10 @@ app.get '/user/login-response',(req,res)->
 
 
 app.get '/admin/daka',(req,res)->
-  res.render 'admin-daka',{title:'Admin Console'}
+  if req.session?.auth?.role isnt 'admin'
+    res.redirect 302,'/admin/login'
+  else
+    res.render 'admin-daka',{title:'Admin Console'}
  
 app.get '/admin/login',(req,res)->
   # pagejs= /mine/mine-admin-login.js
@@ -172,7 +175,7 @@ app.post '/admin/register-user',(req,res)->
 app.post '/admin/login',(req,res)->
   # initial session.auth
   initSession req
-  {alias,password} = req.body
+  {alias,password,referrer} = req.body
   # mobj is 'match stats object'
   mobj = await matchDB accountModel,alias,password
   auth_data = {}
@@ -182,10 +185,12 @@ app.post '/admin/login',(req,res)->
     updateAuthSession req,'admin'
     auth_data.alias = alias
     auth_data.password = password
-    res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
+    res.redirect 302,referrer 
+    #res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
   else
     updateAuthSession req,'unknown'
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
+
 app.get '/admin/list-accounts',(req,res)->
   if req.session.auth.alive is false
     return res.redirect 302,'/admin/login'

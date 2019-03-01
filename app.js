@@ -176,9 +176,14 @@
   });
 
   app.get('/admin/daka', function(req, res) {
-    return res.render('admin-daka', {
-      title: 'Admin Console'
-    });
+    var ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      return res.redirect(302, '/admin/login');
+    } else {
+      return res.render('admin-daka', {
+        title: 'Admin Console'
+      });
+    }
   });
 
   app.get('/admin/login', function(req, res) {
@@ -256,10 +261,10 @@
   });
 
   app.post('/admin/login', async function(req, res) {
-    var alias, auth_data, mobj, password;
+    var alias, auth_data, mobj, password, referrer;
     // initial session.auth
     initSession(req);
-    ({alias, password} = req.body);
+    ({alias, password, referrer} = req.body);
     // mobj is 'match stats object'
     mobj = (await matchDB(accountModel, alias, password));
     auth_data = {};
@@ -270,11 +275,10 @@
       updateAuthSession(req, 'admin');
       auth_data.alias = alias;
       auth_data.password = password;
-      return res.render('admin-login-success', {
-        title: 'test if administrator',
-        auth_data: auth_data
-      });
+      return res.redirect(302, referrer);
     } else {
+      
+      //res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
       updateAuthSession(req, 'unknown');
       return res.json({
         status: 'authenticate error',

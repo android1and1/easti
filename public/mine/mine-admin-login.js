@@ -2,11 +2,13 @@
 (function() {
   $(function() {
     return $('form').on('submit', function(e) {
+      alert('referrer is:' + window.document.referrer);
+      $('input.hide').val('/');
       return $('input').each(function(index, ele) {
         if ($(ele).val().length === 0) {
           alert('should not be empty.');
           e.preventDefault();
-          return e.stopPropatation();
+          return e.stopPropagation();
         }
       });
     });

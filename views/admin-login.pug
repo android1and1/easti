@@ -6,7 +6,16 @@ block content
     h1 you authentication is alive
   else
     form(action="/admin/login" method="POST" id="loginform")
-      include admin-login-form.pug
+      input(class="hide" type="text" name="referrer")     
+      .form-group
+        label(for="idAlias") Admin Account(Name):
+        input(type="text" name="alias"  id="idAlias" class="form-control")
+       
+      .form-group
+        label(for="password") Admin Password: 
+        input(type="password" name="password" class="form-control")
+      button.btn.btn-default(type="submit") Authenticate Now 
 block pagejs
   script(src="/mine/mine-admin-login.js")
-  
+
+
