@@ -17,7 +17,7 @@
   });
 
   io.on('connect', function(socket) {
-    socket.send('hi guys.');
+    socket.send('hi every body.');
     socket.on('createqrcode', function(text, cb) {
       // client query a qrcode
       return cb('/create-qrcode?text=' + text);

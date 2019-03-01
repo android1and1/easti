@@ -281,3 +281,8 @@ DailyPi3
   2,admin page /admin/daka,pagejs let this page has  2 listener. one is ".provide-now",second is "qrcode-timeout"
   3,on .connect ,user emit 'requery qrcode',server heard it,then .of 'admin-channel'.emit 'provide-now',
   4,admin page will check auth.role attribute, trigger to display qrcode.I
+
+jp-stretch-pi-2
+Fri Mar  1 10:57:34 CST 2019
+  let us step into socketio world!
+  /usre/daka page is the first place we listen-trigger business-socket .

@@ -8,7 +8,7 @@ admin = io.of '/admin'
     socket.send 'You are an administrator.'
 
 io.on 'connect',(socket)->
-  socket.send 'hi guys.'
+  socket.send 'hi every body.'
   socket.on 'createqrcode',(text,cb)->
     # client query a qrcode
     cb '/create-qrcode?text=' + text

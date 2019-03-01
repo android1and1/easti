@@ -108,14 +108,12 @@
   });
 
   app.get('/user/daka', function(req, res) {
-    var auth_obj;
-    auth_obj = req.session.auth;
-    if (auth_obj === void 0) {
+    var ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'user') {
       return res.redirect(302, '/user/login');
     } else {
       return res.render('user-daka', {
-        title: 'User Console',
-        auth_obj: auth_obj
+        title: 'User DaKa Console'
       });
     }
   });

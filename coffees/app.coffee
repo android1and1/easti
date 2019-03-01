@@ -70,11 +70,10 @@ app.get '/',(req,res)->
     browser_desc:desc
 
 app.get '/user/daka',(req,res)->
-  auth_obj = req.session.auth
-  if auth_obj is undefined 
+  if req.session?.auth?.role isnt 'user'
     res.redirect 302,'/user/login'
   else
-    res.render 'user-daka',{title:'User Console',auth_obj:auth_obj} 
+    res.render 'user-daka',{title:'User DaKa Console'}
 
 app.get '/user/login',(req,res)->
   res.render 'user-login',{title:'Fill User Login Form'}
