@@ -1,18 +1,20 @@
 extend layouts/main
 block content
+  if accounts.length === 0
+    p currently no account.
   div 
     - for(eachone in accounts)
       .panel.panel-default
         - item = accounts[eachone]
         - 
           id = item.id
-          name = item.name
-          code = item.code
+          aliasName = item.name
+          role = item.role
           timestamp = item.initial_timestamp
           password = item.password
-        .panel-heading= name + '(id=' + id  + ')'
+        .panel-heading= aliasName + '(id=' + id  + ')'
         .panel-body
-          h3= "code= " + code 
+          h3= "role= " + code 
           h3= "timestamp= " + timestamp 
           h3= "password= " + password
       

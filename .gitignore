@@ -3,12 +3,12 @@ temp/
 tmp
 .temp
 .tmp
+*.rdb
+*.aof
 sqlitedb/*.db
 sqlitedb/*.sql
 sqlitedb/*.sqlite
 sqlitedb/*.sqlite3
-redisdb/*.rdb
-redisdb/*.aof
 node_modules/
 package-lock*
 lock-log*

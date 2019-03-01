@@ -92,8 +92,9 @@ app.post '/user/login',(req,res)->
   initSession req
 
   # first check if exists this alias name?
-  bool = await matchDB accountModel,alias,password
-  if bool 
+  # mobj is 'match stats object'
+  mobj = await matchDB accountModel,alias,password
+  if mobj.match_result 
     # till here,login data is matches.
     updateAuthSession req,'user'
     return res.json 'user role entablished.'
@@ -101,9 +102,6 @@ app.post '/user/login',(req,res)->
     updateAuthSession req,'unknown'
     return res.json 'login failure.'
     
-app.get '/admin/daka',(req,res)->
-  res.render 'admin-daka',{title:'Admin Console'}
- 
 
 app.get '/create-qrcode',(req,res)->
   text = req.query.text 
@@ -121,6 +119,74 @@ app.get '/user/login-response',(req,res)->
   res.render 'login-response',{title:'login Result',status:status}
 
 
+app.get '/admin/daka',(req,res)->
+  res.render 'admin-daka',{title:'Admin Console'}
+ 
+app.get '/admin/login',(req,res)->
+  # pagejs= /mine/mine-admin-login.js
+  res.render 'admin-login',{title:'Fill Authentication Form'}
+
+app.get '/admin/admin-update-password',(req,res)->
+  res.render 'admin-update-password',{title:'Admin-Update-Password'}
+
+app.post '/admin/admin-update-password',(req,res)->
+  {oldpassword,newpassword,alias} = req.body
+  items = await accountModel.findAndLoad {alias:alias}
+  if items.length is 0
+    res.json 'no found!'
+  else
+    item = items[0]
+    dbkeep = item.property 'password'
+    if dbkeep is hashise oldpassword
+      # update this item's password part
+      item.property 'password',hashise newpassword
+      try
+        item.save()
+      catch error
+        return res.json item.error 
+      return res.json 'Update Password For Admin.'
+    else #password is mismatches.
+      return res.json 'Mismatch your oldpassword,check it.'
+    
+app.get '/admin/register-user',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    res.redirect 302,'/admin/login'
+  else
+    res.render 'admin-register-user',{title:'Admin-Register-User'}
+
+app.post '/admin/register-user',(req,res)->
+  {alias,password} = req.body
+  if ! filter alias or ! filter password
+    return res.json 'Wrong:User Name(alias) contains invalid character(s).'
+  ins = await Nohm.factory 'account' 
+  ins.property
+    alias:alias
+    role:'user'
+    initial_timestamp:Date.parse new Date
+    # always remember:hashise!!
+    password: hashise password 
+  try
+    await ins.save()
+    res.json 'Register User - ' + alias
+  catch error
+    res.json  ins.errors 
+app.post '/admin/login',(req,res)->
+  # initial session.auth
+  initSession req
+  {alias,password} = req.body
+  # mobj is 'match stats object'
+  mobj = await matchDB accountModel,alias,password
+  auth_data = {}
+  if mobj.warning isnt ''
+    auth_data.warning = mobj.warning 
+  if mobj.match_result
+    updateAuthSession req,'admin'
+    auth_data.alias = alias
+    auth_data.password = password
+    res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
+  else
+    updateAuthSession req,'unknown'
+    res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
 app.get '/admin/list-accounts',(req,res)->
   if req.session.auth.alive is false
     return res.redirect 302,'/admin/login'
@@ -153,27 +219,6 @@ app.post '/superuser/login',(req,res)->
     updateAuthSession req,'unknown'
     res.json {staus:'super user login failurre.'}
   
-app.get '/admin/login',(req,res)->
-  # pagejs= /mine/mine-admin-login.js
-  res.render 'admin-login',{title:'Fill Authentication Form'}
-
-app.post '/admin/login',(req,res)->
-  # initial session.auth
-  initSession req
-  {alias,password} = req.body
-  bool = await matchDB accountModel,alias,password
-  if bool
-    updateAuthSession req,'admin'
-    res.render 'admin-login-success',{title:'test if administrator',auth_data:{alias:alias,password:password}}
-  else
-    updateAuthSession req,'unknown'
-    res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
-
-app.get '/admin/register-user',(req,res)->
-  if req.session?.auth?.role isnt 'admin'
-    res.redirect 302,'/admin/login'
-  else
-    res.render 'admin-register-user',{title:'Admin-Register-User'}
 
 app.get '/superuser/register-admin',(req,res)->
   if req.session?.auth?.role isnt 'superuser'
@@ -181,22 +226,6 @@ app.get '/superuser/register-admin',(req,res)->
   else
     res.render 'superuser-register-admin',{defaultValue:'1234567',title:'Superuser-register-admin'}
 
-app.post '/admin/register-user',(req,res)->
-  {alias,password} = req.body
-  if ! filter alias or ! filter password
-    return res.json 'Wrong:User Name(alias) contains invalid character(s).'
-  ins = await Nohm.factory 'account' 
-  ins.property
-    alias:alias
-    role:'user'
-    initial_timestamp:Date.parse new Date
-    # always remember:hashise!!
-    password: hashise password 
-  try
-    await ins.save()
-    res.json 'Register User - ' + alias
-  catch error
-    res.json  ins.errors 
        
   
 app.post '/superuser/register-admin',(req,res)->
@@ -252,18 +281,21 @@ filter = (be_dealt_with)->
   # return true is safe,return false means injectable.
   return not /\W/.test be_dealt_with
 
-#matchDB is a help function *Notice that* invoke this method via "await <this>"
+# matchDB is a help function 
+# *Notice that* invoke this method via "await <this>"
 matchDB = (db,alias,password)->
-  # argument -- db:example 'accountModel'
+  # db example 'accountModel'
   items = await db.findAndLoad {'alias':alias}
   if items.length is 0 # means no found.
     return false
   else
     item = items[0]
-    if (hashise password) is (item.property 'password')
-      return true
-    else
-      return false
+    dbkeep =  item.property 'password'
+    warning = ''
+    if dbkeep is '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414'
+      warning = 'should change this simple/initial/templory password immediately.'
+    match_result = ((hashise password) is dbkeep) 
+    return {match_result:match_result,warning:warning}
 
 # updateAuthSession is a help function
 updateAuthSession = (req,role)->
