@@ -93,6 +93,14 @@
     saveUninitialized: true
   }));
 
+  app.use(function(req, res, next) {
+    if (req.session.login_referrer) {
+      res.locals.login_referrer = req.session.login_referrer;
+      delete req.session.login_referrer;
+    }
+    return next();
+  });
+
   app.get('/', function(req, res) {
     var auth, desc, ref;
     auth = void 0;
@@ -178,7 +186,9 @@
   app.get('/admin/daka', function(req, res) {
     var ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
-      return res.redirect(302, '/admin/login');
+      // let middleware handle 'login_referrer' 
+      req.sessoin.login_referrer = '/admin/daka';
+      return res.redirect(303, '/admin/login');
     } else {
       return res.render('admin-daka', {
         title: 'Admin Console'
@@ -187,6 +197,9 @@
   });
 
   app.get('/admin/login', function(req, res) {
+    if (res.locals.login_referrer) {
+      console.log('get /admin/login can see');
+    }
     // pagejs= /mine/mine-admin-login.js
     return res.render('admin-login', {
       title: 'Fill Authentication Form'
@@ -261,10 +274,10 @@
   });
 
   app.post('/admin/login', async function(req, res) {
-    var alias, auth_data, mobj, password, referrer;
+    var alias, auth_data, mobj, password;
     // initial session.auth
     initSession(req);
-    ({alias, password, referrer} = req.body);
+    ({alias, password} = req.body);
     // mobj is 'match stats object'
     mobj = (await matchDB(accountModel, alias, password));
     auth_data = {};
@@ -275,10 +288,12 @@
       updateAuthSession(req, 'admin');
       auth_data.alias = alias;
       auth_data.password = password;
-      return res.redirect(302, referrer);
+      //res.redirect 302,referrer 
+      return res.render('admin-login-success', {
+        title: 'test if administrator',
+        auth_data: auth_data
+      });
     } else {
-      
-      //res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
       updateAuthSession(req, 'unknown');
       return res.json({
         status: 'authenticate error',

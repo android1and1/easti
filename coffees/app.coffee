@@ -57,7 +57,13 @@ app.use Session {
   resave:false
   saveUninitialized:true
   } 
-  
+ 
+app.use (req,res,next)->
+  if req.session.login_referrer
+    res.locals.login_referrer = req.session.login_referrer
+    delete  req.session.login_referrer
+  next()
+
 app.get '/',(req,res)->
   auth = undefined
   if req?.session?.auth
@@ -120,11 +126,14 @@ app.get '/user/login-response',(req,res)->
 
 app.get '/admin/daka',(req,res)->
   if req.session?.auth?.role isnt 'admin'
-    res.redirect 302,'/admin/login'
+    # let middleware handle 'login_referrer' 
+    req.sessoin.login_referrer = '/admin/daka'
+    res.redirect 303,'/admin/login'
   else
     res.render 'admin-daka',{title:'Admin Console'}
  
 app.get '/admin/login',(req,res)->
+  console.log 'get /admin/login can see' if res.locals.login_referrer
   # pagejs= /mine/mine-admin-login.js
   res.render 'admin-login',{title:'Fill Authentication Form'}
 
@@ -175,7 +184,7 @@ app.post '/admin/register-user',(req,res)->
 app.post '/admin/login',(req,res)->
   # initial session.auth
   initSession req
-  {alias,password,referrer} = req.body
+  {alias,password} = req.body
   # mobj is 'match stats object'
   mobj = await matchDB accountModel,alias,password
   auth_data = {}
@@ -185,8 +194,8 @@ app.post '/admin/login',(req,res)->
     updateAuthSession req,'admin'
     auth_data.alias = alias
     auth_data.password = password
-    res.redirect 302,referrer 
-    #res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
+    #res.redirect 302,referrer 
+    res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
   else
     updateAuthSession req,'unknown'
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
