@@ -76,7 +76,8 @@ app.get '/',(req,res)->
 
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'
-    res.redirect 302,'/user/login'
+    req.session.referrer = '/user/daka'
+    res.redirect 303,'/user/login'
   else
     res.render 'user-daka',{title:'User DaKa Console'}
 
@@ -85,7 +86,7 @@ app.get '/user/login',(req,res)->
 
 app.post '/user/login',(req,res)->
   # reference line#163
-  {alias,password} = req.body
+  {itisreferrer,alias,password} = req.body
   # filter these 2 strings for injecting
   namebool = filter alias
   passwordbool= filter password
@@ -101,7 +102,8 @@ app.post '/user/login',(req,res)->
   if mobj.match_result 
     # till here,login data is matches.
     updateAuthSession req,'user'
-    return res.json 'user role entablished.'
+    res.redirect 303,itisreferrer
+    #return res.json 'user role entablished.'
   else
     updateAuthSession req,'unknown'
     return res.json 'login failure.'

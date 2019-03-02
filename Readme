@@ -333,3 +333,29 @@ conclusion:install module - 'grunt' will install 'coffeescript 1.10.0' too,this 
 #### #### #### ####
 书中说“凭证的外化”,for not to explore to anyother,we suggest let .gitignore control this directory <project>/credentials/,in this dir,we keep our super user password,database connetion password and so on.
 
+#### #### #### #### #### #### #### ####
+  session + middleware(flash)
+#### #### #### #### #### #### #### ####
+in book - <web development with node and express>,writter said:
+(P93) 即显消息flash,也可以用查询url字符串来代替，但缺点一是太丑，二是不能做书签。另一种替代方式是使用会话来实现即显消息。
+我想比较一下使用两种方式在效率上的差别。第一种简称为会话，第二种简称查询。
+理论先做一个：
+会话：单次操作，
+1,需要定义一个函数，作为app.use的中间件。
+2,需要在业务页set up session object,then redirect to login get page(not post page,attention!)
+3,need login get page's view template add codes "if hasSessionObject then setup hidden-type field(example name=referrer) display html tag..."
+4,need login post code block adds "{referrer,...},redirect 303,referrer. 
+多次操作
+1,再不需要单次操作中的1,可以重用
+2,需要在业务页set up session object,then redirect to login get page(not post page,attention!)
+3,再不需要单次操作中的3,可以重用
+4,need login post code block adds "{referrer,...},redirect 303,referrer. 
+
+如果N个路由需要即时消息，那么步骤数为2N+2
+再来看一看使用查询的方式
+单次
+1,业务页经判断需要LOGIN时，重定向URL，URL附上参数
+2,LOGIN  GET PAGE 提供表单，增加HIDDEN域
+3,LOGIN POST PAGE 论证成功之后，重定向到原业务页（根据解析HIDDEN域)
+so,way2 N route=3N
+so,if few routes,way2 will efficeail few.

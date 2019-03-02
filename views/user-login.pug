@@ -3,4 +3,11 @@ extend layouts/main
 block content
   h1 User Login
   form(action="/user/login" method="POST" id="loginform")
-    include user-login-form.pug
+    input(type="hidden" name="itisreferrer" value=referrer)
+    .form-group
+      label(for="idAlias") User Account(Name):
+      input(type="text" name="alias"  id="idAlias" class="form-control")
+    .form-group
+      label(for="password") User Password: 
+      input(type="password" name="password" class="form-control")
+    button.btn.btn-default(type="submit") Authenticate Now 

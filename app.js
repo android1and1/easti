@@ -116,7 +116,8 @@
   app.get('/user/daka', function(req, res) {
     var ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'user') {
-      return res.redirect(302, '/user/login');
+      req.session.referrer = '/user/daka';
+      return res.redirect(303, '/user/login');
     } else {
       return res.render('user-daka', {
         title: 'User DaKa Console'
@@ -131,9 +132,9 @@
   });
 
   app.post('/user/login', async function(req, res) {
-    var alias, mobj, namebool, password, passwordbool;
+    var alias, itisreferrer, mobj, namebool, password, passwordbool;
     // reference line#163
-    ({alias, password} = req.body);
+    ({itisreferrer, alias, password} = req.body);
     // filter these 2 strings for injecting
     namebool = filter(alias);
     passwordbool = filter(password);
@@ -150,8 +151,9 @@
       
       // till here,login data is matches.
       updateAuthSession(req, 'user');
-      return res.json('user role entablished.');
+      return res.redirect(303, itisreferrer);
     } else {
+      //return res.json 'user role entablished.'
       updateAuthSession(req, 'unknown');
       return res.json('login failure.');
     }
