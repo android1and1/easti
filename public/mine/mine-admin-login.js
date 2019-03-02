@@ -2,13 +2,11 @@
 (function() {
   $(function() {
     return $('form').on('submit', function(e) {
-      return $('input').each(function(index, ele) {
-        if ($(ele).val().length === 0) {
-          alert('should not be empty.');
-          e.preventDefault();
-          return e.stopPropagation();
-        }
-      });
+      if ($('input[name=alias]').val().length === 0 || $('input[name=password]').val().length === 0) {
+        alert('should not be empty.');
+        e.preventDefault();
+        return e.stopPropagation();
+      }
     });
   });
 
