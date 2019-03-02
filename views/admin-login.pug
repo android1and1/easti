@@ -6,10 +6,10 @@ block content
     h1 you authentication is alive
   else
     form(action="/admin/login" method="POST" id="loginform")
+      input(type="hidden",value=referrer,name="itisreferrer") 
       .form-group
         label(for="idAlias") Admin Account(Name):
         input(type="text" name="alias"  id="idAlias" class="form-control")
-       
       .form-group
         label(for="password") Admin Password: 
         input(type="password" name="password" class="form-control")

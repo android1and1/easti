@@ -94,10 +94,8 @@
   }));
 
   app.use(function(req, res, next) {
-    if (req.session.login_referrer) {
-      res.locals.login_referrer = req.session.login_referrer;
-      delete req.session.login_referrer;
-    }
+    res.locals.referrer = req.session.referrer;
+    delete req.session.referrer; // then,delete() really harmless
     return next();
   });
 
@@ -186,8 +184,7 @@
   app.get('/admin/daka', function(req, res) {
     var ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
-      // let middleware handle 'login_referrer' 
-      req.sessoin.login_referrer = '/admin/daka';
+      req.session.referrer = '/admin/daka';
       return res.redirect(303, '/admin/login');
     } else {
       return res.render('admin-daka', {
@@ -197,9 +194,6 @@
   });
 
   app.get('/admin/login', function(req, res) {
-    if (res.locals.login_referrer) {
-      console.log('get /admin/login can see');
-    }
     // pagejs= /mine/mine-admin-login.js
     return res.render('admin-login', {
       title: 'Fill Authentication Form'
@@ -274,10 +268,10 @@
   });
 
   app.post('/admin/login', async function(req, res) {
-    var alias, auth_data, mobj, password;
+    var alias, auth_data, itisreferrer, mobj, password;
     // initial session.auth
     initSession(req);
-    ({alias, password} = req.body);
+    ({itisreferrer, alias, password} = req.body);
     // mobj is 'match stats object'
     mobj = (await matchDB(accountModel, alias, password));
     auth_data = {};
@@ -288,12 +282,10 @@
       updateAuthSession(req, 'admin');
       auth_data.alias = alias;
       auth_data.password = password;
-      //res.redirect 302,referrer 
-      return res.render('admin-login-success', {
-        title: 'test if administrator',
-        auth_data: auth_data
-      });
+      return res.redirect(303, itisreferrer);
     } else {
+      
+      //res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
       updateAuthSession(req, 'unknown');
       return res.json({
         status: 'authenticate error',
