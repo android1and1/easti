@@ -193,8 +193,10 @@ app.post '/admin/login',(req,res)->
     updateAuthSession req,'admin'
     auth_data.alias = alias
     auth_data.password = password
-    res.redirect 303,itisreferrer 
-    #res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
+    if not itisreferrer 
+      res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
+    else
+      res.redirect 303,itisreferrer 
   else
     updateAuthSession req,'unknown'
     res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}

@@ -284,10 +284,15 @@
       updateAuthSession(req, 'admin');
       auth_data.alias = alias;
       auth_data.password = password;
-      return res.redirect(303, itisreferrer);
+      if (!itisreferrer) {
+        return res.render('admin-login-success', {
+          title: 'test if administrator',
+          auth_data: auth_data
+        });
+      } else {
+        return res.redirect(303, itisreferrer);
+      }
     } else {
-      
-      //res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
       updateAuthSession(req, 'unknown');
       return res.json({
         status: 'authenticate error',
