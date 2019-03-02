@@ -284,14 +284,9 @@
       updateAuthSession(req, 'admin');
       auth_data.alias = alias;
       auth_data.password = password;
-      if (!itisreferrer) {
-        return res.render('admin-login-success', {
-          title: 'test if administrator',
-          auth_data: auth_data
-        });
-      } else {
-        return res.redirect(303, itisreferrer);
-      }
+      itisreferrer = itisreferrer || '/admin/login-success';
+      //res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
+      return res.redirect(303, itisreferrer);
     } else {
       updateAuthSession(req, 'unknown');
       return res.json({
@@ -299,6 +294,12 @@
         reason: 'user account name/password peer  not match stored.'
       });
     }
+  });
+
+  app.get('/admin/login-success', function(req, res) {
+    return res.render('admin-login-success.pug', {
+      title: 'Administrator Role Entablished'
+    });
   });
 
   app.get('/admin/list-accounts', async function(req, res) {

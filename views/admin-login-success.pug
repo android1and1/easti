@@ -1,7 +1,3 @@
 extend layouts/main
 block content
-  if auth_data.warning
-    h4 <span class="label label-warning">warning</span>   " #{auth_data.warning}"
-    a(href="/admin/admin-update-password" alt="link to update page") Update Your Admin Password Now
   h1 Admin Login Successful
-  h2 #{auth_data.name} <span class="label label-default"> #{auth_data.password} </span>
