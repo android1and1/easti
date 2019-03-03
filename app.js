@@ -148,7 +148,7 @@
     initSession(req);
     // first check if exists this alias name?
     // mobj is 'match stats object'
-    mobj = (await matchDB(accountModel, alias, password));
+    mobj = (await matchDB(accountModel, alias, 'user', password));
     if (mobj.match_result) {
       
       // till here,login data is matches.
@@ -159,6 +159,42 @@
       return res.render('user-login-failure', {
         reason: '账户/口令不匹配!',
         title: 'User-Login-Failure'
+      });
+    }
+  });
+
+  app.get('/user/logout', function(req, res) {
+    var role;
+    // check if current role is correctly
+    role = req.session.auth.role;
+    if (role === 'user') {
+      req.session.auth.role = 'unknown';
+      return res.render('user-logout', {
+        title: 'logout',
+        status: 'logout success'
+      });
+    } else {
+      return res.render('user-logout', {
+        title: 'logout',
+        status: 'logout failure'
+      });
+    }
+  });
+
+  app.get('/admin/logout', function(req, res) {
+    var role;
+    // check if current role is correctly
+    role = req.session.auth.role;
+    if (role === 'admin') {
+      req.session.auth.role = 'unknown';
+      return res.render('admin-logout', {
+        title: 'logout',
+        status: 'logout success'
+      });
+    } else {
+      return res.render('admin-logout', {
+        title: 'logout',
+        status: 'logout failure'
       });
     }
   });
@@ -297,7 +333,7 @@
     initSession(req);
     // first check if exists this alias name?
     // mobj is 'match stats object'
-    mobj = (await matchDB(accountModel, alias, password));
+    mobj = (await matchDB(accountModel, alias, 'admin', password));
     if (mobj.match_result) {
       
       // till here,login data is matches.
@@ -454,8 +490,8 @@
 
   // matchDB is a help function 
   // *Notice that* invoke this method via "await <this>"
-  matchDB = async function(db, alias, password) {
-    var dbkeep, item, items, match_result, warning;
+  matchDB = async function(db, alias, role, password) {
+    var dbpassword, dbrole, item, items, match_result, warning;
     // db example 'accountModel'
     items = (await db.findAndLoad({
       'alias': alias
@@ -464,12 +500,13 @@
       return false;
     } else {
       item = items[0];
-      dbkeep = item.property('password');
+      dbpassword = item.property('password');
+      dbrole = item.property('role');
       warning = '';
-      if (dbkeep === '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414') {
+      if (dbpassword === '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414') {
         warning = 'should change this simple/initial/templory password immediately.';
       }
-      match_result = (hashise(password)) === dbkeep;
+      match_result = (hashise(password)) === dbpassword && dbrole === role;
       return {
         match_result: match_result,
         warning: warning

@@ -1,3 +1,9 @@
 extend layouts/main
 block content
   h1 User Login Successful
+  nav
+    ul.pager
+      li.previous
+        a(href="/user/logout") <span>&larr;</span> Exit
+      li.next
+        a(href="/user/daka") go to DaKa <span>&rarr;</span>

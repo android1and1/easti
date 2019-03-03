@@ -96,7 +96,7 @@ app.post '/user/login',(req,res)->
   initSession req
   # first check if exists this alias name?
   # mobj is 'match stats object'
-  mobj = await matchDB accountModel,alias,password
+  mobj = await matchDB accountModel,alias,'user',password
   if mobj.match_result 
     # till here,login data is matches.
     updateAuthSession req,'user'
@@ -104,6 +104,25 @@ app.post '/user/login',(req,res)->
   else
     updateAuthSession req,'unknown'
     return res.render 'user-login-failure',{reason: '账户/口令不匹配!',title:'User-Login-Failure'}
+
+app.get '/user/logout',(req,res)->
+  # check if current role is correctly
+  role = req.session.auth.role
+  if role is 'user'
+    req.session.auth.role = 'unknown'
+    res.render 'user-logout',{title:'logout',status:'logout success'}
+  else
+    res.render 'user-logout',{title:'logout',status:'logout failure'}
+    
+  
+app.get '/admin/logout',(req,res)->
+  # check if current role is correctly
+  role = req.session.auth.role
+  if role is 'admin'
+    req.session.auth.role = 'unknown'
+    res.render 'admin-logout',{title:'logout',status:'logout success'}
+  else
+    res.render 'admin-logout',{title:'logout',status:'logout failure'}
 
 app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
@@ -191,7 +210,7 @@ app.post '/admin/login',(req,res)->
   initSession req
   # first check if exists this alias name?
   # mobj is 'match stats object'
-  mobj = await matchDB accountModel,alias,password
+  mobj = await matchDB accountModel,alias,'admin',password
   if mobj.match_result 
     # till here,login data is matches.
     updateAuthSession req,'admin'
@@ -301,18 +320,19 @@ filter = (be_dealt_with)->
 
 # matchDB is a help function 
 # *Notice that* invoke this method via "await <this>"
-matchDB = (db,alias,password)->
+matchDB = (db,alias,role,password)->
   # db example 'accountModel'
   items = await db.findAndLoad {'alias':alias}
   if items.length is 0 # means no found.
     return false
   else
     item = items[0]
-    dbkeep =  item.property 'password'
+    dbpassword =  item.property 'password'
+    dbrole = item.property 'role'
     warning = ''
-    if dbkeep is '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414'
+    if dbpassword is '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414'
       warning = 'should change this simple/initial/templory password immediately.'
-    match_result = ((hashise password) is dbkeep) 
+    match_result = ((hashise password) is dbpassword  and dbrole is role) 
     return {match_result:match_result,warning:warning}
 
 # updateAuthSession is a help function
