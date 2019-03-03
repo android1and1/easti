@@ -132,16 +132,18 @@
   });
 
   app.post('/user/login', async function(req, res) {
-    var alias, itisreferrer, mobj, namebool, password, passwordbool;
+    var alias, isInvalidation, itisreferrer, mobj, password;
     // reference line#163
     ({itisreferrer, alias, password} = req.body);
-    // filter these 2 strings for injecting
-    namebool = filter(alias);
-    passwordbool = filter(password);
-    if (!namebool && passwordbool) {
-      return res.json('含有非法字符（只允许ASCII字符和数字)!');
+    itisreferrer = itisreferrer || '/user/login-success';
+    // filter these 2 strings for anti-injecting
+    isInvalidation = !filter(alias || !filter(password));
+    if (isInvalidation) {
+      return res.render('user-login-failure', {
+        reason: '含有非法字符（只允许ASCII字符和数字)!',
+        title: 'User-Login-Failure'
+      });
     }
-    
     // auth initialize
     initSession(req);
     // first check if exists this alias name?
@@ -153,10 +155,18 @@
       updateAuthSession(req, 'user');
       return res.redirect(303, itisreferrer);
     } else {
-      //return res.json 'user role entablished.'
       updateAuthSession(req, 'unknown');
-      return res.json('login failure.');
+      return res.render('user-login-failure', {
+        reason: '账户/口令不匹配!',
+        title: 'User-Login-Failure'
+      });
     }
+  });
+
+  app.get('/user/login-success', function(req, res) {
+    return res.render('user-login-success', {
+      title: 'User Role Validation:successfully'
+    });
   });
 
   app.get('/create-qrcode', function(req, res) {
@@ -270,28 +280,34 @@
   });
 
   app.post('/admin/login', async function(req, res) {
-    var alias, auth_data, itisreferrer, mobj, password;
+    var alias, isInvalid, itisreferrer, mobj, password;
+    ({itisreferrer, alias, password} = req.body);
+    itisreferrer = itisreferrer || '/admin/login-success';
+    
+    // filter alias,and password
+    isInvalid = !filter(alias || !filter(password));
+    if (isInvalid) {
+      return res.render('admin-login-failure', {
+        title: 'Login-Failure',
+        reason: 'contains invalid char(s).'
+      });
+    }
+    
     // initial session.auth
     initSession(req);
-    ({itisreferrer, alias, password} = req.body);
+    // first check if exists this alias name?
     // mobj is 'match stats object'
     mobj = (await matchDB(accountModel, alias, password));
-    auth_data = {};
-    if (mobj.warning !== '') {
-      auth_data.warning = mobj.warning;
-    }
     if (mobj.match_result) {
+      
+      // till here,login data is matches.
       updateAuthSession(req, 'admin');
-      auth_data.alias = alias;
-      auth_data.password = password;
-      itisreferrer = itisreferrer || '/admin/login-success';
-      //res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
       return res.redirect(303, itisreferrer);
     } else {
       updateAuthSession(req, 'unknown');
-      return res.json({
-        status: 'authenticate error',
-        reason: 'user account name/password peer  not match stored.'
+      return res.render('admin-login-failure', {
+        title: 'Login-Failure',
+        reason: 'account/password peer dismatches.'
       });
     }
   });

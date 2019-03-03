@@ -3,6 +3,7 @@ extend layouts/main
 block content
   h1 User Login
   form(action="/user/login" method="POST" id="loginform")
+    //- "referrer" variable from res.locals.referrer which from session.referrer.if session.referrer isnt assignment,"referrer" is null("" as string type) 
     input(type="hidden" name="itisreferrer" value=referrer)
     .form-group
       label(for="idAlias") User Account(Name):

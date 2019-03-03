@@ -6,6 +6,7 @@ block content
     h1 you authentication is alive
   else
     form(action="/admin/login" method="POST" id="loginform")
+      //- "referrer" variable from res.locals.referrer which from session.referrer.if session.referrer isnt assignment,"referrer" is null("" as string type) 
       input(type="hidden",value=referrer,name="itisreferrer") 
       .form-group
         label(for="idAlias") Admin Account(Name):

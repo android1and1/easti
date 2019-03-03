@@ -87,15 +87,13 @@ app.get '/user/login',(req,res)->
 app.post '/user/login',(req,res)->
   # reference line#163
   {itisreferrer,alias,password} = req.body
-  # filter these 2 strings for injecting
-  namebool = filter alias
-  passwordbool= filter password
-  if not namebool and passwordbool
-    return res.json '含有非法字符（只允许ASCII字符和数字)!'
-  
+  itisreferrer = itisreferrer or '/user/login-success'
+  # filter these 2 strings for anti-injecting
+  isInvalidation = (! filter alias or ! filter password)
+  if isInvalidation 
+    return res.render 'user-login-failure',{reason: '含有非法字符（只允许ASCII字符和数字)!',title:'User-Login-Failure'}
   # auth initialize
   initSession req
-
   # first check if exists this alias name?
   # mobj is 'match stats object'
   mobj = await matchDB accountModel,alias,password
@@ -103,11 +101,12 @@ app.post '/user/login',(req,res)->
     # till here,login data is matches.
     updateAuthSession req,'user'
     res.redirect 303,itisreferrer
-    #return res.json 'user role entablished.'
   else
     updateAuthSession req,'unknown'
-    return res.json 'login failure.'
-    
+    return res.render 'user-login-failure',{reason: '账户/口令不匹配!',title:'User-Login-Failure'}
+
+app.get '/user/login-success',(req,res)->
+  res.render 'user-login-success',{title:'User Role Validation:successfully'}
 
 app.get '/create-qrcode',(req,res)->
   text = req.query.text 
@@ -180,25 +179,28 @@ app.post '/admin/register-user',(req,res)->
     res.json 'Register User - ' + alias
   catch error
     res.json  ins.errors 
+
 app.post '/admin/login',(req,res)->
+  {itisreferrer,alias,password} = req.body
+  itisreferrer = itisreferrer or '/admin/login-success' 
+  # filter alias,and password
+  isInvalid = ( ! filter alias or ! filter password)
+  if isInvalid 
+    return res.render 'admin-login-failure',{title:'Login-Failure',reason:'contains invalid char(s).'} 
   # initial session.auth
   initSession req
-  {itisreferrer,alias,password} = req.body
+  # first check if exists this alias name?
   # mobj is 'match stats object'
   mobj = await matchDB accountModel,alias,password
-  auth_data = {}
-  if mobj.warning isnt ''
-    auth_data.warning = mobj.warning 
-  if mobj.match_result
+  if mobj.match_result 
+    # till here,login data is matches.
     updateAuthSession req,'admin'
-    auth_data.alias = alias
-    auth_data.password = password
-    itisreferrer = itisreferrer or '/admin/login-success'
-    #res.render 'admin-login-success',{title:'test if administrator',auth_data:auth_data}
     res.redirect 303,itisreferrer
   else
     updateAuthSession req,'unknown'
-    res.json {status:'authenticate error',reason:'user account name/password peer  not match stored.'}
+    res.render 'admin-login-failure' ,{title:'Login-Failure',reason:'account/password peer dismatches.'}
+
+  
 
 app.get '/admin/login-success',(req,res)->
   res.render 'admin-login-success.pug',{title:'Administrator Role Entablished'}
