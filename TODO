@@ -290,3 +290,10 @@ Fri Mar  1 10:57:34 CST 2019
 Inch13Early2015Air
 2019年 3月 1日 星期五 15时04分55秒 CST
   want to resolve navigating problem,when user directly browser to '/user/daka' but has no session about auth.role,server let it login as user first,usually,give a response show it is successfully.but server can not browser to '/user/daka',it leaves user do it,it is a no good exprereince.i should resovlve it ti=hthis afternoon.
+
+Inch13Early2015Air
+2019年 3月 3日 星期日 16时16分18秒 CST
+  /admin(user)/logout access method from GET to put.
+  think about which route will browser(redirect) to logout?
+  oh yes,the main useful is in site:first page.
+  so,it is harmless for build(rebuild) index route.

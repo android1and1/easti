@@ -1,10 +1,13 @@
 extend layouts/main.pug
+block pagejs
+  script(src="/mine/mine-index.js")
 block content
   h1 easti site welcome you,here is index page
+  button(class="btn btn-default" id="login") login 
+  button(class="btn btn-default" id="logout") logout current account 
+  
 block footer
-  if auth 
-    h1 #{JSON.stringify(auth)}
-  if browser_desc
-    h4 heades here all here - #{browser_desc}
+  if role == 'admin' 
+    h1 Currently Your Role As #{role}.
   h4 all right reserved by ..
   h4 2007~2018

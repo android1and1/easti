@@ -100,16 +100,10 @@
   });
 
   app.get('/', function(req, res) {
-    var auth, desc, ref;
-    auth = void 0;
-    if (req != null ? (ref = req.session) != null ? ref.auth : void 0 : void 0) {
-      auth = req.session.auth;
-    }
-    desc = JSON.stringify(req.headers["user-agent"]);
+    var ref, ref1;
     return res.render('index', {
       title: 'Welcome!',
-      auth: auth,
-      browser_desc: desc
+      role: (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0
     });
   });
 
@@ -163,37 +157,37 @@
     }
   });
 
-  app.get('/user/logout', function(req, res) {
+  app.put('/user/logout', function(req, res) {
     var role;
     // check if current role is correctly
     role = req.session.auth.role;
     if (role === 'user') {
       req.session.auth.role = 'unknown';
-      return res.render('user-logout', {
-        title: 'logout',
+      return res.json({
+        reason: '',
         status: 'logout success'
       });
     } else {
-      return res.render('user-logout', {
-        title: 'logout',
+      return res.json({
+        reason: 'No This Account Or Role Isnt User.',
         status: 'logout failure'
       });
     }
   });
 
-  app.get('/admin/logout', function(req, res) {
+  app.put('/admin/logout', function(req, res) {
     var role;
     // check if current role is correctly
     role = req.session.auth.role;
     if (role === 'admin') {
       req.session.auth.role = 'unknown';
-      return res.render('admin-logout', {
-        title: 'logout',
+      return res.json({
+        reason: '',
         status: 'logout success'
       });
     } else {
-      return res.render('admin-logout', {
-        title: 'logout',
+      return res.json({
+        reason: 'no this account or role isnt admin.',
         status: 'logout failure'
       });
     }

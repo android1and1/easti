@@ -64,15 +64,10 @@ app.use (req,res,next)->
   next()
 
 app.get '/',(req,res)->
-  auth = undefined
-  if req?.session?.auth
-    auth  = req.session.auth
-  desc = JSON.stringify req.headers["user-agent"] 
   res.render 'index'
     ,
     title:'Welcome!'
-    auth:auth
-    browser_desc:desc
+    role:req.session?.auth?.role
 
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'
@@ -105,24 +100,24 @@ app.post '/user/login',(req,res)->
     updateAuthSession req,'unknown'
     return res.render 'user-login-failure',{reason: '账户/口令不匹配!',title:'User-Login-Failure'}
 
-app.get '/user/logout',(req,res)->
+app.put '/user/logout',(req,res)->
   # check if current role is correctly
   role = req.session.auth.role
   if role is 'user'
     req.session.auth.role = 'unknown'
-    res.render 'user-logout',{title:'logout',status:'logout success'}
+    res.json {reason:'',status:'logout success'}
   else
-    res.render 'user-logout',{title:'logout',status:'logout failure'}
+    res.json {reason:'No This Account Or Role Isnt User.',status:'logout failure'}
     
   
-app.get '/admin/logout',(req,res)->
+app.put '/admin/logout',(req,res)->
   # check if current role is correctly
   role = req.session.auth.role
   if role is 'admin'
     req.session.auth.role = 'unknown'
-    res.render 'admin-logout',{title:'logout',status:'logout success'}
+    res.json {reason:'',status:'logout success'}
   else
-    res.render 'admin-logout',{title:'logout',status:'logout failure'}
+    res.json {reason:'no this account or role isnt admin.',status:'logout failure'}
 
 app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
