@@ -146,12 +146,12 @@
     if (mobj.match_result) {
       
       // till here,login data is matches.
-      updateAuthSession(req, 'user');
+      updateAuthSession(req, 'user', alias);
       return res.redirect(303, itisreferrer);
     } else {
-      updateAuthSession(req, 'unknown');
+      updateAuthSession(req, 'unknown', 'noname');
       return res.render('user-login-failure', {
-        reason: '账户/口令不匹配!',
+        reason: '帐户不存在或者账户/口令不匹配!',
         title: 'User-Login-Failure'
       });
     }
@@ -331,10 +331,10 @@
     if (mobj.match_result) {
       
       // till here,login data is matches.
-      updateAuthSession(req, 'admin');
+      updateAuthSession(req, 'admin', alias);
       return res.redirect(303, itisreferrer);
     } else {
-      updateAuthSession(req, 'unknown');
+      updateAuthSession(req, 'unknown', 'noname');
       return res.render('admin-login-failure', {
         title: 'Login-Failure',
         reason: 'account/password peer dismatches.'
@@ -385,12 +385,12 @@
     ({password} = req.body);
     hash = sha256(password);
     if (hash === superkey) {
-      updateAuthSession(req, 'superuser');
+      updateAuthSession(req, 'superuser', 'superuser');
       return res.json({
         staus: 'super user login success.'
       });
     } else {
-      updateAuthSession(req, 'unknown');
+      updateAuthSession(req, 'unknown', 'noname');
       return res.json({
         staus: 'super user login failurre.'
       });
@@ -458,6 +458,7 @@
     var ref;
     if (!((ref = req.session) != null ? ref.auth : void 0)) {
       req.session.auth = {
+        alias: 'noname',
         counter: 0,
         tries: [],
         matches: [],
@@ -509,12 +510,13 @@
   };
 
   // updateAuthSession is a help function
-  updateAuthSession = function(req, role) {
+  updateAuthSession = function(req, role, alias) {
     var counter, timestamp;
     timestamp = new Date;
     counter = req.session.auth.counter++;
     req.session.auth.tries.push('counter#' + counter + ':user try to login at ' + timestamp);
     req.session.auth.role = role;
+    req.session.auth.alias = alias;
     if (role === 'unknown') {
       return req.session.auth.matches.push('*Not* Matches counter#' + counter + ' .');
     } else {

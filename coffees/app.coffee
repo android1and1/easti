@@ -94,11 +94,11 @@ app.post '/user/login',(req,res)->
   mobj = await matchDB accountModel,alias,'user',password
   if mobj.match_result 
     # till here,login data is matches.
-    updateAuthSession req,'user'
+    updateAuthSession req,'user',alias
     res.redirect 303,itisreferrer
   else
-    updateAuthSession req,'unknown'
-    return res.render 'user-login-failure',{reason: '账户/口令不匹配!',title:'User-Login-Failure'}
+    updateAuthSession req,'unknown','noname'
+    return res.render 'user-login-failure',{reason: '帐户不存在或者账户/口令不匹配!',title:'User-Login-Failure'}
 
 app.put '/user/logout',(req,res)->
   # check if current role is correctly
@@ -208,10 +208,10 @@ app.post '/admin/login',(req,res)->
   mobj = await matchDB accountModel,alias,'admin',password
   if mobj.match_result 
     # till here,login data is matches.
-    updateAuthSession req,'admin'
+    updateAuthSession req,'admin',alias
     res.redirect 303,itisreferrer
   else
-    updateAuthSession req,'unknown'
+    updateAuthSession req,'unknown','noname'
     res.render 'admin-login-failure' ,{title:'Login-Failure',reason:'account/password peer dismatches.'}
 
   
@@ -245,10 +245,10 @@ app.post '/superuser/login',(req,res)->
   {password} = req.body
   hash = sha256 password
   if hash is superkey
-    updateAuthSession req,'superuser'
+    updateAuthSession req,'superuser','superuser'
     res.json {staus:'super user login success.'}
   else
-    updateAuthSession req,'unknown'
+    updateAuthSession req,'unknown','noname'
     res.json {staus:'super user login failurre.'}
   
 
@@ -296,6 +296,7 @@ else
 initSession = (req)->
   if not req.session?.auth
     req.session.auth = 
+      alias:'noname'
       counter:0
       tries:[]
       matches:[]
@@ -331,11 +332,12 @@ matchDB = (db,alias,role,password)->
     return {match_result:match_result,warning:warning}
 
 # updateAuthSession is a help function
-updateAuthSession = (req,role)->
+updateAuthSession = (req,role,alias)->
   timestamp = new Date
   counter = req.session.auth.counter++
   req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
   req.session.auth.role = role 
+  req.session.auth.alias = alias 
   if role is 'unknown'
     req.session.auth.matches.push '*Not* Matches counter#' + counter + ' .'  
   else
