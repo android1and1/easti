@@ -297,3 +297,11 @@ Inch13Early2015Air
   think about which route will browser(redirect) to logout?
   oh yes,the main useful is in site:first page.
   so,it is harmless for build(rebuild) index route.
+
+Inch13Early2015Air
+2019年 3月 4日 星期一 08时39分36秒 CST
+  qu da zheng.
+  the first page,contains a picture,feather,special-write,and a form
+  index page has 4 links,the 'logout' link to ajax put.
+  user daka ,admin daka 2 buttons,display role state,give a shortcuts login.
+  The Index Page Also Have plenty details to fixes.
