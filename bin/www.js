@@ -17,10 +17,19 @@
     return socket.send('Good News For Administrators.');
   });
 
-  
+  admin_group.on('png ready', function() {
+    return user_group.emit('admin qr ready', 'goto url:/has/png/qrcode');
+  });
+
   // user page(client):/user/daka
   user_group = io.of('/user').on('connect', function(socket) {
     return socket.send('Good News For Users.');
+  });
+
+  user_group.on('query qr', function(userid) {
+    // user in client page send requery for daka
+    // server emit and client side .on 'show qrcode' - /admin/daka
+    return admin_group.emit('qr ready', 'transfer from' + userid);
   });
 
   io.on('connect', function(socket) {
@@ -28,10 +37,6 @@
     socket.on('createqrcode', function(text, cb) {
       // client query a qrcode
       return cb('/create-qrcode?text=' + text);
-    });
-    socket.on('wow', function(msg) {
-      console.log('heard from client:', msg);
-      return socket.emit('dare', 'dare to go!');
     });
     return socket.on('disconnect', function() {
       return console.log('one user leave.');

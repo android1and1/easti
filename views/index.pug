@@ -9,7 +9,10 @@ block pagecss
       background-size:80%;
     }
 block content
-  h1 easti site welcome you,here is index page
+  h1 your currently role is [#{role}].
+  if role == 'visitor'
+    h1 Please Login With Your Role
+  h1 [#{alias}],welcome d.a.k.a.
   
   ul.nav.nav-tabs.nav-stacked
    li(role="presentation" class="active")

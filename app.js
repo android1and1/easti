@@ -100,10 +100,16 @@
   });
 
   app.get('/', function(req, res) {
-    var ref, ref1;
+    var alias, ref, ref1, ref2, ref3, role;
+    role = (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0;
+    alias = (ref2 = req.session) != null ? (ref3 = ref2.auth) != null ? ref3.alias : void 0 : void 0;
+    if (role === 'unknown' && alias === 'noname') {
+      [role, alias] = ['visitor', 'hi'];
+    }
     return res.render('index', {
-      title: 'Welcome!',
-      role: (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0
+      title: 'welcome-daka',
+      role: role,
+      alias: alias
     });
   });
 
@@ -163,6 +169,7 @@
     role = req.session.auth.role;
     if (role === 'user') {
       req.session.auth.role = 'unknown';
+      req.session.auth.alias = 'noname';
       return res.json({
         reason: '',
         status: 'logout success'
@@ -181,6 +188,7 @@
     role = req.session.auth.role;
     if (role === 'admin') {
       req.session.auth.role = 'unknown';
+      req.session.auth.alias = 'noname';
       return res.json({
         reason: '',
         status: 'logout success'

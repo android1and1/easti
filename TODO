@@ -305,3 +305,38 @@ Inch13Early2015Air
   index page has 4 links,the 'logout' link to ajax put.
   user daka ,admin daka 2 buttons,display role state,give a shortcuts login.
   The Index Page Also Have plenty details to fixes.
+
+Inch13Early2015Air
+2019年 3月 4日 星期一 16时42分41秒 CST
+  与之前比起来，都是小事，现在要真正地去使用SOCKETIO，发起打卡请求，让有ADMIN权限的BROWSER，画出QR码，并由系统通知每个终端：“可以去前台打卡扫码了。”
+  需要做的不少，真正要解决的技术环节是：
+  一，如何以一个伪随机字串，生成不事的QRCODE？
+  二，如何给一个QRCODE设置时效，比如一分钟内？
+  三，ADMIN和USER的SESSION时效如何管理，比如对一个USER有疑问，如何给它一个DISABLE属性？
+  。。。。
+  还是先做最容易的吧！？。。。
+  但是，最激动人心的，还是想搞通那个USER-》SERVER-》ADMIN的推送场颢！这就需要久约定一下各自的角色，行为，也就是像拍电影一样，需要一个剧本了。
+  script:
+  roles:A,a user,name is 'noeasy,its password is '123';B,admin,name is 'fool',password:'1234567',its password is default,no change,so each time 'fool' in site's index page,it be warning :'change your password immedaiately.';C,the socket.io server side ,name : 'io',io has 2 channel,'/admin',and '/user',io can connect all roles(instances) via these 2 channel,example:io.of('/admin').emit('onething','command1 about onething'),then admin in browser heard that,according to codes in pagejs,admin pull some data from server,and inform user via admin.emit 'inform-user','composed-data',this for server's io,io transform and at last give message to users which they request at first time.(sketch)
+  detail-script(version II)
+  roles:A,B,C obey above sketch version.
+  events:
+    User noeasy(A,from here ignores intro) want daka,he visit site's first page /index,he saw there are 2 main Link,1 for admin,1 for user,he clicked the user link.
+    in the daka page:noeasy be leaded to clicked the button 'start DaKa',after clicked,pagejs emit an event:req-qr-code,as it name said,noeasy requery to server(admin) he want a qrcode.
+    server heard that because io-server has scripts:io.of '/user .on 'req-qr-code','username:noeasy',server do some compose things,add timestamp and <username:noeasy>,let them be a string.server also give a timeout to this string:1minute.
+    how server do above thing(s)?
+    i means main thing:give a timeout-limited-string to another?
+    via redis can do it naturally.redis.set 'one','one means do one thing.';redis.ttl 'one',60 # give 60secs,after the dead line,one is invisiable.
+    so,as i say,it is be more comprshenble,server make this special string,and let redis-server store it as a key,and add additional ttl time(secs).server side knew it.
+    server prepair anything,then emit to channel '/admin',server let all listenning admin(s),show a qrcode,its content is (example) : '/visit/user/special/daka/page?key=user:noeasy:timestamp:1500849999123:salt-string-affix'
+    ...
+    after sevieral tranforms,the user at last scan qrcode,qrcode to what?
+    response page is included in qrcode which written as 'http://host/visit/user/special/daka/page?key=...',let us say '/user/daka' page.
+    the page codes (fake):
+    app.get '/user/daka',(req,res)->
+      # pull info from redis db
+      ins = await accountModel.load <id> 
+      # if ins isnt undefined,say its life is still active.
+      obj = ins.allProperties()
+      
+      

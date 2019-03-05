@@ -64,10 +64,15 @@ app.use (req,res,next)->
   next()
 
 app.get '/',(req,res)->
+  role = req.session?.auth?.role
+  alias = req.session?.auth?.alias
+  if role is 'unknown' and alias is 'noname'
+    [role,alias] = ['visitor','hi']
   res.render 'index'
     ,
-    title:'Welcome!'
-    role:req.session?.auth?.role
+    title:'welcome-daka'
+    role:role
+    alias:alias
 
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'
@@ -105,6 +110,7 @@ app.put '/user/logout',(req,res)->
   role = req.session.auth.role
   if role is 'user'
     req.session.auth.role = 'unknown'
+    req.session.auth.alias = 'noname'
     res.json {reason:'',status:'logout success'}
   else
     res.json {reason:'No This Account Or Role Isnt User.',status:'logout failure'}
@@ -115,6 +121,7 @@ app.put '/admin/logout',(req,res)->
   role = req.session.auth.role
   if role is 'admin'
     req.session.auth.role = 'unknown'
+    req.session.auth.alias = 'noname'
     res.json {reason:'',status:'logout success'}
   else
     res.json {reason:'no this account or role isnt admin.',status:'logout failure'}
