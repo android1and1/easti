@@ -7,8 +7,9 @@
     if (io) {
       socket = io('/admin');
       socket.on('message', function(msg) {
-        $box.append('<h4>Server Tell That My Id Is:' + msg + '</h4>');
-        return $box.append('<h4>In My Side(admin daka page),My Id:' + socket.id + '</h4>');
+        return $box.append($('<h3/>', {
+          text: msg
+        }));
       });
       return socket.on('qr ready', function(msg) {
         $box.append('<h4>qr ready event:' + msg + '</h4>');

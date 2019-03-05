@@ -2,17 +2,18 @@
 (function() {
   $(function() {
     var $box, user;
+    // client side listen 2 events:['admin qr ready','message'],and emit
+    // 1 event 'query qr'
     $box = $('#box');
     user = io('/user');
     user.on('connect', function() {
-      user.emit('wow');
-      return user.emit('query qr', user.id);
+      return $box.append('<p> client joined socketio,id=' + user.id + '.</p>');
     });
     user.on('message', function(msg) {
-      return $box.append('<p>[event:message]' + msg + '</p>');
+      return $box.append('<p>[Event:message]' + msg + '</p>');
     });
     user.on('admin qr ready', function(msg) {
-      return $box.append('<p>[evetn:admin qr ready]' + msg + '</p>');
+      return $box.append('<p>[Event:admin qr ready]' + msg + '</p>');
     });
     return $('button#daka').on('click', function(e) {
       return user.emit('query qr', user.id);
