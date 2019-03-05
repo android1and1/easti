@@ -14,22 +14,20 @@
 
   // admin_group's client page (route) is /admin/daka
   admin_group = io.of('/admin').on('connect', function(socket) {
-    return socket.send('Good News For Administrators.');
-  });
-
-  admin_group.on('png ready', function() {
-    return user_group.emit('admin qr ready', 'goto url:/has/png/qrcode');
+    socket.send('Your Socket Id is: ' + socket.id);
+    return socket.on('png ready', function() {
+      return user_group.emit('admin qr ready', 'goto url:/has/png/qrcode');
+    });
   });
 
   // user page(client):/user/daka
   user_group = io.of('/user').on('connect', function(socket) {
-    return socket.send('Good News For Users.');
-  });
-
-  user_group.on('query qr', function(userid) {
-    // user in client page send requery for daka
-    // server emit and client side .on 'show qrcode' - /admin/daka
-    return admin_group.emit('qr ready', 'transfer from' + userid);
+    socket.send('new user joined,id - ' + socket.id);
+    return socket.on('query qr', function(userid) {
+      // user in client page send requery for daka
+      // do something about create qr code png,then inform admin(s) 
+      return admin_group.emit('qr ready', 'transfer from' + userid);
+    });
   });
 
   io.on('connect', function(socket) {
