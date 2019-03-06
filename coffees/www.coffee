@@ -11,9 +11,9 @@ admin_group = io.of '/admin'
     user_group.clients (err,clients)->
       # report important things:1,currently how many users,2,ids of them
       socket.send 'Current Client list:' + clients.join(',') 
-    socket.on 'png ready',->
+    socket.on 'qr fetched',->
       # 虽然在定义时并没有user_group,不影响运行时态.
-      user_group.emit 'admin qr ready','goto url:/has/png/qrcode'
+      user_group.emit 'qr ready','goto url:/has/png/qrcode'
 
 # user page(client):/user/daka
 user_group = io.of '/user'
@@ -23,9 +23,9 @@ user_group = io.of '/user'
     admin_group.clients (err,clients)->
       socket.send 'Current Role Admin List:' + clients.join(',')
     socket.on 'query qr',(userid)->
-      # user in client page send requery for daka
-      # do something about create qr code png,then inform admin(s) 
-      admin_group.emit 'qr ready','transfer from' + userid
+      # user chanel requery qrcode. server side generate a png qrcode,
+      # then inform admin channel with data ,admin page will render these.
+      admin_group.emit 'fetch qr',{url:'/create-qrcode?text=there-was-something-beautiful',userid: userid ,timestamp:new Date}
 
 io.on 'connect',(socket)->
   socket.send 'hi every body.'

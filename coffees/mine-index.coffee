@@ -17,3 +17,7 @@ $ ->
         console.log three
       e.preventDefault()
       e.stopPropagation()
+
+  #2019-3-4 
+  $('#yessir').on 'click',->
+    $(@).button 'complete' 

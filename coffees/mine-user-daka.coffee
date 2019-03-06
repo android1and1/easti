@@ -7,8 +7,8 @@ $ ->
     $box.append '<p> client joined socketio,id=' + user.id + '.</p>'
   user.on 'message',(msg)->
     $box.append '<p>[Event:message]' + msg + '</p>'
-  user.on 'admin qr ready',(msg)->
-    $box.append '<p>[Event:admin qr ready]' + msg + '</p>'
+  user.on 'qr ready',(msg)->
+    $box.append '<p>[Event:qr ready]' + msg + '</p>'
 
   $('button#daka').on 'click',(e)->
     user.emit 'query qr',user.id

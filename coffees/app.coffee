@@ -130,6 +130,8 @@ app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
 
 app.get '/create-qrcode',(req,res)->
+  # socketio invokes way:
+  # admin_group.emit ' 
   text = req.query.text 
   # templary solid 
   text = 'http://192.168.5.2:3003/login-response?text=' + text

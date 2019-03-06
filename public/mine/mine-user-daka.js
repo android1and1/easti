@@ -12,8 +12,8 @@
     user.on('message', function(msg) {
       return $box.append('<p>[Event:message]' + msg + '</p>');
     });
-    user.on('admin qr ready', function(msg) {
-      return $box.append('<p>[Event:admin qr ready]' + msg + '</p>');
+    user.on('qr ready', function(msg) {
+      return $box.append('<p>[Event:qr ready]' + msg + '</p>');
     });
     return $('button#daka').on('click', function(e) {
       return user.emit('query qr', user.id);
