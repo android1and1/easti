@@ -9,6 +9,8 @@ $ ->
     $box.append '<p>[Event:message]' + msg + '</p>'
   user.on 'qr ready',(msg)->
     $box.append '<p>[Event:qr ready]' + msg + '</p>'
+  user.on 'no admin',->
+    $box.append '<p>No Admin Currently,Need Active It First.</p>'
 
   $('button#daka').on 'click',(e)->
     user.emit 'query qr',user.id

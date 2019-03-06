@@ -15,6 +15,9 @@
     user.on('qr ready', function(msg) {
       return $box.append('<p>[Event:qr ready]' + msg + '</p>');
     });
+    user.on('no admin', function() {
+      return $box.append('<p>No Admin Currently,Need Active It First.</p>');
+    });
     return $('button#daka').on('click', function(e) {
       return user.emit('query qr', user.id);
     });

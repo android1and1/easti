@@ -22,7 +22,7 @@
     });
     return socket.on('qr fetched', function() {
       // 虽然在定义时并没有user_group,不影响运行时态.
-      return user_group.emit('qr ready', 'goto url:/has/png/qrcode');
+      return user_group.emit('qr ready', 'Qrcode is ready,go and scan for daka.');
     });
   });
 
@@ -30,16 +30,22 @@
   user_group = io.of('/user').on('connect', function(socket) {
     // once one user joined,should tell admin channel this change.
     admin_group.send('one user joined right now,sockeet number:' + socket.id);
-    admin_group.clients(function(err, clients) {
-      return socket.send('Current Role Admin List:' + clients.join(','));
+    admin_group.clients(function(err, admins) {
+      return socket.send('Current Role Admin List:' + admins.join(','));
     });
     return socket.on('query qr', function(userid) {
       // user chanel requery qrcode. server side generate a png qrcode,
       // then inform admin channel with data ,admin page will render these.
-      return admin_group.emit('fetch qr', {
-        url: '/create-qrcode?text=there-was-something-beautiful',
-        userid: userid,
-        timestamp: new Date
+      return admin_group.clients(function(err, admins) {
+        if (admins.length === 0) {
+          return user_group.emit('no admin');
+        } else {
+          return admin_group.emit('fetch qr', {
+            url: '/create-qrcode?text=there-was-something-beautiful',
+            userid: userid,
+            timestamp: new Date
+          });
+        }
       });
     });
   });
