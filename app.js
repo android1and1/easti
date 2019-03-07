@@ -216,17 +216,15 @@
     });
   });
 
-  app.get('/create-qrcode', function(req, res) {
+  app.get('/create-qrcode', async function(req, res) {
     var text;
     text = req.query.text;
-    return setAsync('important', text).then(function() {
-      return expireAsync('important', 60).then(function() {
-        // templary solid ,original mode is j602 
-        text = 'http://192.168.5.2:3003/user/daka-response?text=' + text;
-        res.type('png');
-        return qr_image.image(text).pipe(res);
-      });
-    });
+    await setAsync('important', text);
+    await expireAsync('important', 60);
+    // templary solid ,original mode is j602 
+    text = 'http://192.168.5.2:3003/user/daka-response?text=' + text;
+    res.type('png');
+    return qr_image.image(text).pipe(res);
   });
 
   app.get('/user/daka-response', async function(req, res) {
@@ -235,18 +233,18 @@
     text = req.query.text;
     dbtext = (await getAsync('important'));
     stats = {
-      original: thing,
+      original: dbtext,
       current: text
     };
     if (text === dbtext && text !== '' && dbtext !== '') {
-      return stats.status = '打卡成功';
+      stats.status = '打卡成功';
     } else {
       stats.status = '打卡失败';
-      return res.render('user-daka-response', {
-        title: 'login Result',
-        stats: stats
-      });
     }
+    return res.render('user-daka-response', {
+      title: 'login Result',
+      stats: stats
+    });
   });
 
   app.get('/admin/daka', function(req, res) {

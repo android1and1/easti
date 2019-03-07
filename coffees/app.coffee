@@ -140,25 +140,23 @@ app.get '/user/login-success',(req,res)->
 
 app.get '/create-qrcode',(req,res)->
   text = req.query.text 
-  setAsync 'important',text
-  .then ->
-    expireAsync 'important',60
-    .then ->
-      # templary solid ,original mode is j602 
-      text = 'http://192.168.5.2:3003/user/daka-response?text=' + text
-      res.type 'png'
-      qr_image.image(text).pipe res 
+  await setAsync 'important',text
+  await expireAsync 'important',60
+  # templary solid ,original mode is j602 
+  text = 'http://192.168.5.2:3003/user/daka-response?text=' + text
+  res.type 'png'
+  qr_image.image(text).pipe res 
 
 app.get '/user/daka-response',(req,res)->
   # user-daka upload 'text' via scan-qrcode-then-goto-url.
   text = req.query.text
   dbtext = await getAsync 'important'
-  stats = {original:thing,current:text}
+  stats = {original:dbtext,current:text}
   if text is dbtext and text isnt '' and dbtext isnt ''
     stats.status = '打卡成功'
   else
     stats.status = '打卡失败'
-    res.render 'user-daka-response',{title:'login Result',stats:stats}
+  res.render 'user-daka-response',{title:'login Result',stats:stats}
 
 app.get '/admin/daka',(req,res)->
   if req.session?.auth?.role isnt 'admin'
