@@ -10,11 +10,13 @@ $ ->
   $img = $box.find 'img'
   if io
     socket = io('/admin')
+ 
     socket.on 'message',(msg)->
       $box.append $('<li/>',{text:msg}) 
+      $box.append $('<li/>',{text:'in admin,socket id=' + socket.id})
+
     socket.on 'fetch qr',(seedobj)->
       # display a png qrcode for users 'daka'
-     
       token = seedobj.socketid.replace('#','')
       token += ':' + Date.now() 
       $img.attr 'src',seedobj.url + '?text=' + token

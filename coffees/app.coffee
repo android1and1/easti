@@ -1,5 +1,7 @@
 # first of first check if 'redis-server' is running.
 {spawn} = require 'child_process'
+# this for redis promisify(client.get),the way inpirit from npm-redis.
+{promisify} = require 'util'
 pgrep = spawn '/usr/bin/pgrep',['redis-server']
 pgrep.on 'close',(code)->
   if code isnt 0
@@ -28,6 +30,13 @@ dakaModel = undefined
 accountModel = undefined
 
 redis = (require 'redis').createClient()
+setAsync = promisify redis.set
+  .bind redis
+getAsync = promisify redis.get
+  .bind redis
+expireAsync = promisify redis.expire
+  .bind redis
+
 redis.on 'error',(err)->
   console.log 'Heard that:',err
 redis.on 'connect',->
@@ -130,22 +139,26 @@ app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
 
 app.get '/create-qrcode',(req,res)->
-  # socketio invokes way:
-  # admin_group.emit ' 
   text = req.query.text 
-  # templary solid 
-  text = 'http://192.168.5.2:3003/user/daka-response?text=' + text
-  res.type 'png'
-  qr_image.image(text).pipe res 
+  setAsync 'important',text
+  .then ->
+    expireAsync 'important',60
+    .then ->
+      # templary solid ,original mode is j602 
+      text = 'http://192.168.5.2:3003/user/daka-response?text=' + text
+      res.type 'png'
+      qr_image.image(text).pipe res 
 
 app.get '/user/daka-response',(req,res)->
+  # user-daka upload 'text' via scan-qrcode-then-goto-url.
   text = req.query.text
-  if text is 'you are beautiful.'
-    status = '打卡成功'
+  dbtext = await getAsync 'important'
+  stats = {original:thing,current:text}
+  if text is dbtext and text isnt '' and dbtext isnt ''
+    stats.status = '打卡成功'
   else
-    status = '验证失败 打卡未完成'
-  res.render 'user-daka-response',{title:'login Result',status:status}
-
+    stats.status = '打卡失败'
+    res.render 'user-daka-response',{title:'login Result',stats:stats}
 
 app.get '/admin/daka',(req,res)->
   if req.session?.auth?.role isnt 'admin'

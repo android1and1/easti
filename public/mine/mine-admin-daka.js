@@ -14,8 +14,11 @@
     if (io) {
       socket = io('/admin');
       socket.on('message', function(msg) {
-        return $box.append($('<li/>', {
+        $box.append($('<li/>', {
           text: msg
+        }));
+        return $box.append($('<li/>', {
+          text: 'in admin,socket id=' + socket.id
         }));
       });
       return socket.on('fetch qr', function(seedobj) {

@@ -3,7 +3,7 @@
   $(function() {
     // 2019-3-3,at Petit Paris.
     // change the mind at 2019-3-4.yao qu da zhen.
-    ['#user-logout', '#admin-logout'].forEach(function(ele) {
+    return ['#user-logout', '#admin-logout'].forEach(function(ele) {
       return $(ele).on('click', function(e) {
         var url;
         url = ele.replace(/#/, '/').replace(/\-/, '/');
@@ -21,10 +21,6 @@
         e.preventDefault();
         return e.stopPropagation();
       });
-    });
-    //2019-3-4 
-    return $('#yessir').on('click', function() {
-      return $(this).button('complete');
     });
   });
 
