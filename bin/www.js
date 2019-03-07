@@ -40,10 +40,10 @@
         if (admins.length === 0) {
           return user_group.emit('no admin');
         } else {
+          //admin_group.emit 'fetch qr',{url:'/create-qrcode?text=there-was-something-beautiful',userid: userid ,timestamp:new Date}
           return admin_group.emit('fetch qr', {
-            url: '/create-qrcode?text=there-was-something-beautiful',
-            userid: userid,
-            timestamp: new Date
+            url: '/create-qrcode',
+            socketid: userid
           });
         }
       });

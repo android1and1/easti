@@ -134,17 +134,17 @@ app.get '/create-qrcode',(req,res)->
   # admin_group.emit ' 
   text = req.query.text 
   # templary solid 
-  text = 'http://192.168.5.2:3003/login-response?text=' + text
+  text = 'http://192.168.5.2:3003/user/daka-response?text=' + text
   res.type 'png'
   qr_image.image(text).pipe res 
 
-app.get '/user/login-response',(req,res)->
+app.get '/user/daka-response',(req,res)->
   text = req.query.text
   if text is 'you are beautiful.'
     status = '打卡成功'
   else
     status = '验证失败 打卡未完成'
-  res.render 'login-response',{title:'login Result',status:status}
+  res.render 'user-daka-response',{title:'login Result',status:status}
 
 
 app.get '/admin/daka',(req,res)->

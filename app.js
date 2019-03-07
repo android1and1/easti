@@ -209,15 +209,17 @@
 
   app.get('/create-qrcode', function(req, res) {
     var text;
+    // socketio invokes way:
+    // admin_group.emit ' 
     text = req.query.text;
     
     // templary solid 
-    text = 'http://192.168.5.2:3003/login-response?text=' + text;
+    text = 'http://192.168.5.2:3003/user/daka-response?text=' + text;
     res.type('png');
     return qr_image.image(text).pipe(res);
   });
 
-  app.get('/user/login-response', function(req, res) {
+  app.get('/user/daka-response', function(req, res) {
     var status, text;
     text = req.query.text;
     if (text === 'you are beautiful.') {
@@ -225,7 +227,7 @@
     } else {
       status = '验证失败 打卡未完成';
     }
-    return res.render('login-response', {
+    return res.render('user-daka-response', {
       title: 'login Result',
       status: status
     });
