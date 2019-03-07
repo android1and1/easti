@@ -3,21 +3,24 @@
   $(function() {
     var $box, $img, socket;
     // 2019-3-2(1?) Manman went to school alone,but she didn't fell lonely.
-    $box = $('#box');
+    $box = $('ol#box');
     $img = $box.find('img');
     if (io) {
       socket = io('/admin');
       socket.on('message', function(msg) {
-        return $box.append($('<h3/>', {
+        return $box.append($('<li/>', {
           text: msg
         }));
       });
       return socket.on('fetch qr', function(seedobj) {
         // display a png qrcode for users 'daka'
-        alert('heard that fetch qr event');
         $img.attr('src', seedobj.url);
-        $box.append('<h4>Requerst Timestamp:' + seedobj.timestamp + '</h4>');
-        $box.append('<h4>' + seedobj.userid + ' dakaing!</h4>');
+        $box.append($('<li/>', {
+          text: 'Requerst Timestamp:' + seedobj.timestamp
+        }));
+        $box.append($('<li/>', {
+          text: seedobj.userid + ' dakaing'
+        }));
         return socket.emit('qr fetched', socket.id);
       });
     }

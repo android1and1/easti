@@ -4,19 +4,25 @@
     var $box, user;
     // client side listen 2 events:['admin qr ready','message'],and emit
     // 1 event 'query qr'
-    $box = $('#box');
+    $box = $('ol#box');
     user = io('/user');
     user.on('connect', function() {
-      return $box.append('<p> client joined socketio,id=' + user.id + '.</p>');
+      return $box.append('<li/> client joined socketio,id=' + user.id + '.</o>');
     });
     user.on('message', function(msg) {
-      return $box.append('<p>[Event:message]' + msg + '</p>');
+      return $box.append($('<li/>', {
+        text: '[Event:message]' + msg
+      }));
     });
     user.on('qr ready', function(msg) {
-      return $box.append('<p>[Event:qr ready]' + msg + '</p>');
+      return $box.append($('<li/>', {
+        text: '[Event:qr ready]' + msg
+      }));
     });
     user.on('no admin', function() {
-      return $box.append('<p>No Admin Currently,Need Active It First.</p>');
+      return $box.append($('<li/>', {
+        text: 'No Admin Currently,Need Active It First'
+      }));
     });
     return $('button#daka').on('click', function(e) {
       return user.emit('query qr', user.id);
