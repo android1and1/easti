@@ -3,13 +3,17 @@ class Daka extends NohmModel
   @modelName = 'daily'
   @idGenerator = 'increment'
   @definitions = 
-    name:
+    alias:
       type:'string'
-      index:true
       validations:['notEmpty']
-    code:
+      index:true
+    utc_ms:
       type:'integer'
-      index:true
       validations:['notEmpty']
-    
+      index:true
+    browser:
+      type:'string'
+    whatistime:
+      type:'string'
+      validations:['notEmpty']
 module.exports = Daka

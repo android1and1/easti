@@ -29,8 +29,7 @@ user_group = io.of '/user'
         if admins.length is 0
           user_group.emit 'no admin' 
         else
-          #admin_group.emit 'fetch qr',{url:'/create-qrcode?text=there-was-something-beautiful',userid: userid ,timestamp:new Date}
-          admin_group.emit 'fetch qr',{url:'/create-qrcode',socketid:userid}
+          admin_group.emit 'fetch qr',{url:'/create-qrcode',timestamp:Date.now(),socketid:userid}
 
 io.on 'connect',(socket)->
   socket.send 'hi every body.'

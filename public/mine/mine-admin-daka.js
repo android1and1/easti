@@ -25,7 +25,7 @@
         var token;
         // display a png qrcode for users 'daka'
         token = seedobj.socketid.replace('#', '');
-        token += ':' + Date.now();
+        token += ':' + seedobj.timestamp;
         $img.attr('src', seedobj.url + '?text=' + token);
         $box.append($('<li/>', {
           text: 'Query String:' + token

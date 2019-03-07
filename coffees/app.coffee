@@ -139,6 +139,7 @@ app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
 
 app.get '/create-qrcode',(req,res)->
+  # the query string from user-daka js code(img.src=url+'....')
   text = req.query.text 
   await setAsync 'important',text
   await expireAsync 'important',60
@@ -151,12 +152,27 @@ app.get '/user/daka-response',(req,res)->
   # user-daka upload 'text' via scan-qrcode-then-goto-url.
   text = req.query.text
   dbtext = await getAsync 'important'
-  stats = {original:dbtext,current:text}
   if text is dbtext and text isnt '' and dbtext isnt ''
-    stats.status = '打卡成功'
+    # save this daka-item
+    try
+      obj = new Date
+      desc = obj.toString()
+      ms = Date.parse obj 
+      ins = await Nohm.factory 'daily'
+      ins.property
+        alias: req.session.auth.alias
+        utc_ms: ms
+        whatistime: desc 
+        browser: req.headers["user-agent"] 
+      await ins.save()
+      return res.render 'user-daka-response',{title:'login Result',status:'打卡成功'}
+    catch error
+      console.log 'error',error
+      # show db errors
+      return res.json ins.error
   else
-    stats.status = '打卡失败'
-  res.render 'user-daka-response',{title:'login Result',stats:stats}
+    return res.render 'user-daka-response',{title:'login Result',status:'打卡失败'}
+    
 
 app.get '/admin/daka',(req,res)->
   if req.session?.auth?.role isnt 'admin'

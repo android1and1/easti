@@ -218,6 +218,7 @@
 
   app.get('/create-qrcode', async function(req, res) {
     var text;
+    // the query string from user-daka js code(img.src=url+'....')
     text = req.query.text;
     await setAsync('important', text);
     await expireAsync('important', 60);
@@ -228,23 +229,40 @@
   });
 
   app.get('/user/daka-response', async function(req, res) {
-    var dbtext, stats, text;
+    var dbtext, desc, error, ins, ms, obj, text;
     // user-daka upload 'text' via scan-qrcode-then-goto-url.
     text = req.query.text;
     dbtext = (await getAsync('important'));
-    stats = {
-      original: dbtext,
-      current: text
-    };
     if (text === dbtext && text !== '' && dbtext !== '') {
-      stats.status = '打卡成功';
+      try {
+        // save this daka-item
+        obj = new Date;
+        desc = obj.toString();
+        ms = Date.parse(obj);
+        ins = (await Nohm.factory('daily'));
+        ins.property({
+          alias: req.session.auth.alias,
+          utc_ms: ms,
+          whatistime: desc,
+          browser: req.headers["user-agent"]
+        });
+        await ins.save();
+        return res.render('user-daka-response', {
+          title: 'login Result',
+          status: '打卡成功'
+        });
+      } catch (error1) {
+        error = error1;
+        console.log('error', error);
+        // show db errors
+        return res.json(ins.error);
+      }
     } else {
-      stats.status = '打卡失败';
+      return res.render('user-daka-response', {
+        title: 'login Result',
+        status: '打卡失败'
+      });
     }
-    return res.render('user-daka-response', {
-      title: 'login Result',
-      stats: stats
-    });
   });
 
   app.get('/admin/daka', function(req, res) {
