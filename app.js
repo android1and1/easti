@@ -129,6 +129,7 @@
       return res.redirect(303, '/user/login');
     } else {
       return res.render('user-daka', {
+        alias: req.session.auth.alias,
         title: 'User DaKa Console'
       });
     }
@@ -217,23 +218,27 @@
   });
 
   app.get('/create-qrcode', async function(req, res) {
-    var text;
+    var fulltext, text;
     // the query string from user-daka js code(img.src=url+'....')
-    text = req.query.text;
+    // query string include socketid,timestamp,and alias
+    text = [req.query.socketid, req.query.timestamp].join('-');
     await setAsync('important', text);
     await expireAsync('important', 60);
     // templary solid ,original mode is j602 
-    text = 'http://192.168.5.2:3003/user/daka-response?text=' + text;
+    fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text;
     res.type('png');
-    return qr_image.image(text).pipe(res);
+    return qr_image.image(fulltext).pipe(res);
   });
 
   app.get('/user/daka-response', async function(req, res) {
-    var dbtext, desc, error, ins, ms, obj, text;
+    var dbkeep, desc, error, ins, ms, obj, ref, ref1, text;
     // user-daka upload 'text' via scan-qrcode-then-goto-url.
-    text = req.query.text;
-    dbtext = (await getAsync('important'));
-    if (text === dbtext && text !== '' && dbtext !== '') {
+    text = req.query.check;
+    dbkeep = (await getAsync('important'));
+    if (req.query.alias !== ((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.alias : void 0 : void 0)) {
+      return res.json('you should requery daka and visit this page via only one browser');
+    }
+    if (dbkeep !== '' && text !== '' && dbkeep === text) {
       try {
         // save this daka-item
         obj = new Date;
@@ -241,7 +246,8 @@
         ms = Date.parse(obj);
         ins = (await Nohm.factory('daily'));
         ins.property({
-          alias: req.session.auth.alias,
+          // if client has 2 difference browser,one for socketio,and one for qrcode-parser.how the 'alias' value is fit?
+          alias: req.query.alias, // or req.session.auth.alias 
           utc_ms: ms,
           whatistime: desc,
           browser: req.headers["user-agent"]

@@ -354,3 +354,7 @@ cyrus-Latitude-E7470
   admin-group defined at server side,its 'on connect' event,accept a callback function,this function's argument,is 'socket'.problem one:"this socket stand on which side?server or client(browser)?";problem two:what things it can handle?
   anwer 1 : the codes about socket,socket events,all in server side,its id is identified at server side and client side.so ,the more aglyily mind is "the socket acts server side and client side,anytime put message into one side the other side will see it."
   problem two answer:socket.on socket.emit,notice that only 'socket.on',if defined admin-group.on is nosense
+
+Inch13Early2015Air
+2019年 3月 8日 星期五 11时28分47秒 CST
+  how to limit clients concurrently request admin display qrcode,i means ,one person request first,and concu another person immedialy request qrcode whild the first one hasnt full time to scan-and-brower.when the first man doing the qrcode is not present its alias id.

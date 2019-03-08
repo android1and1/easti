@@ -35,7 +35,7 @@
     admin_group.clients(function(err, admins) {
       return socket.send('Current Role Admin List:' + admins.join(','));
     });
-    return socket.on('query qr', function(userid) {
+    return socket.on('query qr', function(userid, alias) {
       // user chanel requery qrcode. server side generate a png qrcode,
       // then inform admin channel with data ,admin page will render these.
       return admin_group.clients(function(err, admins) {
@@ -43,6 +43,7 @@
           return user_group.emit('no admin');
         } else {
           return admin_group.emit('fetch qr', {
+            alias: alias,
             url: '/create-qrcode',
             timestamp: Date.now(),
             socketid: userid

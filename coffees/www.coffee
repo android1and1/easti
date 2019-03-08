@@ -26,14 +26,14 @@ user_group = io.of '/user'
     
     admin_group.clients (err,admins)->
       socket.send 'Current Role Admin List:' + admins.join(',')
-    socket.on 'query qr',(userid)->
+    socket.on 'query qr',(userid,alias)->
       # user chanel requery qrcode. server side generate a png qrcode,
       # then inform admin channel with data ,admin page will render these.
       admin_group.clients (err,admins)->
         if admins.length is 0
           user_group.emit 'no admin' 
         else
-          admin_group.emit 'fetch qr',{url:'/create-qrcode',timestamp:Date.now(),socketid:userid}
+          admin_group.emit 'fetch qr',{alias:alias,url:'/create-qrcode',timestamp:Date.now(),socketid:userid}
 
 io.on 'connect',(socket)->
   socket.send 'hi every body.'

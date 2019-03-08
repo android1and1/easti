@@ -16,9 +16,11 @@ $ ->
 
     socket.on 'fetch qr',(seedobj)->
       # display a png qrcode for users 'daka'
-      token = seedobj.socketid.replace('#','')
-      token += ':' + seedobj.timestamp 
-      $img.attr 'src',seedobj.url + '?text=' + token
-      $box.append $ '<li/>',{text: 'Query String:' + token}
+      socketid = seedobj.socketid.replace('#','')
+      querystring = '?socketid=' + socketid
+      querystring += '&&timestamp=' + seedobj.timestamp
+      querystring += '&&alias=' + seedobj.alias
+      $img.attr 'src',seedobj.url + querystring 
+      $box.append $ '<li/>',{text: 'Query String:' + querystring}
       $box.append $ '<li/>',{text: seedobj.socketid + ' dakaing'}
       socket.emit 'qr fetched',socket.id

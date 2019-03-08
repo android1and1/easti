@@ -21,13 +21,15 @@
         }));
       });
       return socket.on('fetch qr', function(seedobj) {
-        var token;
+        var querystring, socketid;
         // display a png qrcode for users 'daka'
-        token = seedobj.socketid.replace('#', '');
-        token += ':' + seedobj.timestamp;
-        $img.attr('src', seedobj.url + '?text=' + token);
+        socketid = seedobj.socketid.replace('#', '');
+        querystring = '?socketid=' + socketid;
+        querystring += '&&timestamp=' + seedobj.timestamp;
+        querystring += '&&alias=' + seedobj.alias;
+        $img.attr('src', seedobj.url + querystring);
         $box.append($('<li/>', {
-          text: 'Query String:' + token
+          text: 'Query String:' + querystring
         }));
         $box.append($('<li/>', {
           text: seedobj.socketid + ' dakaing'

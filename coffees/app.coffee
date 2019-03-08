@@ -88,7 +88,7 @@ app.get '/user/daka',(req,res)->
     req.session.referrer = '/user/daka'
     res.redirect 303,'/user/login'
   else
-    res.render 'user-daka',{title:'User DaKa Console'}
+    res.render 'user-daka',{alias:req.session.auth.alias,title:'User DaKa Console'}
 
 app.get '/user/login',(req,res)->
   res.render 'user-login',{title:'Fill User Login Form'}
@@ -140,19 +140,22 @@ app.get '/user/login-success',(req,res)->
 
 app.get '/create-qrcode',(req,res)->
   # the query string from user-daka js code(img.src=url+'....')
-  text = req.query.text 
+  # query string include socketid,timestamp,and alias
+  text = [req.query.socketid,req.query.timestamp].join('-')
   await setAsync 'important',text
   await expireAsync 'important',60
   # templary solid ,original mode is j602 
-  text = 'http://192.168.5.2:3003/user/daka-response?text=' + text
+  fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
   res.type 'png'
-  qr_image.image(text).pipe res 
+  qr_image.image(fulltext).pipe res 
 
 app.get '/user/daka-response',(req,res)->
   # user-daka upload 'text' via scan-qrcode-then-goto-url.
-  text = req.query.text
-  dbtext = await getAsync 'important'
-  if text is dbtext and text isnt '' and dbtext isnt ''
+  text = req.query.check
+  dbkeep= await getAsync 'important'
+  if req.query.alias isnt req.session?.auth?.alias
+    return res.json 'you should requery daka and visit this page via only one browser'
+  if dbkeep isnt '' and text isnt '' and dbkeep is text
     # save this daka-item
     try
       obj = new Date
@@ -160,7 +163,8 @@ app.get '/user/daka-response',(req,res)->
       ms = Date.parse obj 
       ins = await Nohm.factory 'daily'
       ins.property
-        alias: req.session.auth.alias
+        # if client has 2 difference browser,one for socketio,and one for qrcode-parser.how the 'alias' value is fit?
+        alias: req.query.alias # or req.session.auth.alias 
         utc_ms: ms
         whatistime: desc 
         browser: req.headers["user-agent"] 
