@@ -344,3 +344,13 @@ DailyPi3
 2019年 03月 07日 星期四 09:29:48 CST
   <socket.id>:<user-alias-name>:<timestamp>
   at route -- /usr/daka-response (old name: /user/login-response)
+
+cyrus-Latitude-E7470
+2019年 03月 08日 星期五 09:54:44 CST
+  index page,simple and incorrectly,the feather should focus to 'daka',2 role,a stats info,maybe need a nav-bar,staticise,main ,plenty of block should be dialogure box,a fluidiable,small banner give some correseponse article,lib,skillful,notices...colorfully,has some animalable,..
+  at server side ,need alyzler route,staticifixs of one special name(alias),display,totaling,this man's daka items ,sortable,and could sort by aesc,des-aesc,a range of dates,has a friendly share way,download,qrcode,mail?
+  again,i try to explain what is 'socket'.
+  from currently project,i use socket.io 2 channels,1 is admin-group,2,is user-group,they are all base on session's auth object.
+  admin-group defined at server side,its 'on connect' event,accept a callback function,this function's argument,is 'socket'.problem one:"this socket stand on which side?server or client(browser)?";problem two:what things it can handle?
+  anwer 1 : the codes about socket,socket events,all in server side,its id is identified at server side and client side.so ,the more aglyily mind is "the socket acts server side and client side,anytime put message into one side the other side will see it."
+  problem two answer:socket.on socket.emit,notice that only 'socket.on',if defined admin-group.on is nosense

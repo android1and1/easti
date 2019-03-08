@@ -1,6 +1,7 @@
 $ ->
-  # client side listen 2 events:['admin qr ready','message'],and emit
-  # 1 event 'query qr'
+  # what is socket? 
+  # in this page,'user' is a really socket,from it,and to it,message or object be transfered.
+  # at server side,has 2 main roles,one is namespace(always confuze with socket),and two is socket.
   $box = $('ol#box')
   user = io('/user')
   user.on 'connect',()->

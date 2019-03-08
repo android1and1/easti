@@ -29,7 +29,9 @@
   // user page(client):/user/daka
   user_group = io.of('/user').on('connect', function(socket) {
     // once one user joined,should tell admin channel this change.
-    admin_group.send('one user joined right now,sockeet number:' + socket.id);
+    // client's infomation almost from socket.request.
+    admin_group.send('one user joined right now,socket-id:' + socket.id);
+    admin_group.send('user-agent is:' + socket.request.headers['user-agent']);
     admin_group.clients(function(err, admins) {
       return socket.send('Current Role Admin List:' + admins.join(','));
     });

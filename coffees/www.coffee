@@ -3,6 +3,7 @@ IO = require 'socket.io'
 app = require '../app.js'
 server  =  http.Server app
 io = IO server
+
 # admin_group's client page (route) is /admin/daka
 admin_group = io.of '/admin'
   .on 'connect',(socket)->
@@ -19,7 +20,10 @@ admin_group = io.of '/admin'
 user_group = io.of '/user'
   .on 'connect',(socket)->
     # once one user joined,should tell admin channel this change.
-    admin_group.send 'one user joined right now,sockeet number:' + socket.id
+    # client's infomation almost from socket.request.
+    admin_group.send 'one user joined right now,socket-id:' + socket.id
+    admin_group.send 'user-agent is:' + socket.request.headers['user-agent']
+    
     admin_group.clients (err,admins)->
       socket.send 'Current Role Admin List:' + admins.join(',')
     socket.on 'query qr',(userid)->
