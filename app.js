@@ -231,13 +231,23 @@
   });
 
   app.get('/user/daka-response', async function(req, res) {
-    var dbkeep, desc, error, ins, ms, obj, ref, ref1, text;
+    var dbkeep, desc, error, ins, ms, obj, ref, ref1, session_alias, text;
+    session_alias = (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.alias : void 0 : void 0;
+    if (session_alias === void 0) {
+      req.session.referrer = '/user/daka-response';
+      return res.redirect(303, '/user/login');
+    }
+    if (req.query.alias !== session_alias) {
+      return res.json({
+        status: 'alias inconsistent',
+        warning: 'you should requery daka and visit this page via only one browser',
+        session: session_alias,
+        querystring: req.query.alias
+      });
+    }
     // user-daka upload 'text' via scan-qrcode-then-goto-url.
     text = req.query.check;
     dbkeep = (await getAsync('important'));
-    if (req.query.alias !== ((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.alias : void 0 : void 0)) {
-      return res.json('you should requery daka and visit this page via only one browser');
-    }
     if (dbkeep !== '' && text !== '' && dbkeep === text) {
       try {
         // save this daka-item

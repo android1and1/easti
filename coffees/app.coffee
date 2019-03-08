@@ -150,11 +150,15 @@ app.get '/create-qrcode',(req,res)->
   qr_image.image(fulltext).pipe res 
 
 app.get '/user/daka-response',(req,res)->
+  session_alias = req.session?.auth?.alias
+  if session_alias is undefined
+    req.session.referrer = '/user/daka-response'
+    return res.redirect 303,'/user/login'
+  if req.query.alias isnt session_alias 
+    return res.json {status:'alias inconsistent',warning:'you should requery daka and visit this page via only one browser',session:session_alias,querystring:req.query.alias}
   # user-daka upload 'text' via scan-qrcode-then-goto-url.
   text = req.query.check
   dbkeep= await getAsync 'important'
-  if req.query.alias isnt req.session?.auth?.alias
-    return res.json 'you should requery daka and visit this page via only one browser'
   if dbkeep isnt '' and text isnt '' and dbkeep is text
     # save this daka-item
     try
