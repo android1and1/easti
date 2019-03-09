@@ -16,4 +16,6 @@ $ ->
     $box.append $ '<li/>',{text:'No Admin Currently,Need Active It First'}
 
   $('button#daka').on 'click',(e)->
+    # if 'daka' time is out of range of ruler,server will stop daka
+    # and send a message:'not daka time.'
     user.emit 'query qr',user.id,alias

@@ -358,3 +358,18 @@ cyrus-Latitude-E7470
 Inch13Early2015Air
 2019年 3月 8日 星期五 11时28分47秒 CST
   how to limit clients concurrently request admin display qrcode,i means ,one person request first,and concu another person immedialy request qrcode whild the first one hasnt full time to scan-and-brower.when the first man doing the qrcode is not present its alias id.
+
+Inch13Early2015Air
+2019年 3月 9日 星期六 09时03分25秒 CST
+  help function - timediff(one,two)-> adjustment one >= two return one
+
+  tooEarly(),how to resolve utc cst difference,
+  utc 23 == cst 7(-8)
+  so,am in cst is: 
+  
+  8 0 # 24
+  7 23 
+  6 22  #22 + 8 = 22 +2 + 6 = 0 + 6 
+  5 21
+  4 20
+  if getHour < 20 and getHour() >  

@@ -3,7 +3,43 @@ IO = require 'socket.io'
 app = require '../app.js'
 server  =  http.Server app
 io = IO server
-
+# help function ,justies if daka event during daka time.
+# 打卡时间规定，上午UTC时间为23:25-23:45 pm : 9:50-9:59&&10:00-10:10
+ruler = 
+  am:
+    # 北京时间上午7:25-7:45
+    first_half:
+      hour:23 #utc23=7:00AM(cst)
+      minutes:
+        min:25
+        max:45
+    second_half:null
+  pm:
+    # 北京时间下午17:50 - 18:10
+    first_half:
+      hour:9 #utc9=17:00PM
+      minutes:
+        min:50
+        max:59
+    second_half:
+      hour:10 #utc10=18:00PM
+      minutes:
+        min:0
+        max:10
+inRange = (ruler)->
+  current = new Date
+  hour = current.getUTCHours()
+  minute = current.getUTCMinutes()
+  for _,i of ruler # i in [am,pm]
+    for _,ii of i  # ii in [first_half,second_half]  
+      if ii is null 
+        continue
+      if hour isnt ii.hour
+        continue
+      if minute in [ii.minutes.min..ii.minutes.max] 
+        return true
+  false
+    
 # admin_group's client page (route) is /admin/daka
 admin_group = io.of '/admin'
   .on 'connect',(socket)->
@@ -27,6 +63,10 @@ user_group = io.of '/user'
     admin_group.clients (err,admins)->
       socket.send 'Current Role Admin List:' + admins.join(',')
     socket.on 'query qr',(userid,alias)->
+      # first check if now is 'daka-time'?
+      bool = (inRange ruler)
+      if bool is false
+        return socket.send 'not daka time.daka time range is[7:30am-7:40am,17:50pm-18:10pm]'
       # user chanel requery qrcode. server side generate a png qrcode,
       # then inform admin channel with data ,admin page will render these.
       admin_group.clients (err,admins)->

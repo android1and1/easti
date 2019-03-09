@@ -28,6 +28,8 @@
       }));
     });
     return $('button#daka').on('click', function(e) {
+      // if 'daka' time is out of range of ruler,server will stop daka
+      // and send a message:'not daka time.'
       return user.emit('query qr', user.id, alias);
     });
   });
