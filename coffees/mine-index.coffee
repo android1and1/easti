@@ -11,7 +11,7 @@ $ ->
         responseType:'json'
       .done (json)->
         alert json.status 
-        $(ele).parent().attr('disable',true)
+        $(ele).parent().addClass('disabled')
       .fail (one,two,three)->
         console.log two
         console.log three

@@ -13,7 +13,7 @@
           responseType: 'json'
         }).done(function(json) {
           alert(json.status);
-          return $(ele).parent().attr('disable', true);
+          return $(ele).parent().addClass('disabled');
         }).fail(function(one, two, three) {
           console.log(two);
           return console.log(three);
