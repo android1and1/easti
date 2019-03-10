@@ -26,7 +26,8 @@ ruler =
       minutes:
         min:0
         max:10
-inRange = (ruler)->
+isFirstClick = (ruler)->
+  # get ruler.xx
   current = new Date
   hour = current.getUTCHours()
   minute = current.getUTCMinutes()
@@ -55,6 +56,7 @@ admin_group = io.of '/admin'
 # user page(client):/user/daka
 user_group = io.of '/user'
   .on 'connect',(socket)->
+    # 来，看这里，试试看我们的IOSOCKET与APP模块（即EXRPRESS）通讯。
     # once one user joined,should tell admin channel this change.
     # client's infomation almost from socket.request.
     admin_group.send 'one user joined right now,socket-id:' + socket.id
@@ -63,10 +65,6 @@ user_group = io.of '/user'
     admin_group.clients (err,admins)->
       socket.send 'Current Role Admin List:' + admins.join(',')
     socket.on 'query qr',(userid,alias)->
-      # first check if now is 'daka-time'?
-      bool = (inRange ruler)
-      if bool is false
-        return socket.send 'not daka time.daka time range is[7:30am-7:40am,17:50pm-18:10pm]'
       # user chanel requery qrcode. server side generate a png qrcode,
       # then inform admin channel with data ,admin page will render these.
       admin_group.clients (err,admins)->

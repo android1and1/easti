@@ -373,3 +373,14 @@ Inch13Early2015Air
   5 21
   4 20
   if getHour < 20 and getHour() >  
+
+Inch13Early2015Air
+2019年 3月10日 星期日 07时32分42秒 CST
+  resolve the inRange() problem,it works,but has dobout that:if it is really userful denny someone later commit his daka?in common scanoior,always has somebody need record when he came and when he leave.so daka really means 'come and go'.
+  so,the underlying problem is :give a toggle-mechanism to person daka event,one click daka button,he is in 'have come and not go out' staus,we call this simple as "first click","first click " expecting second click.the last click daka rely on current time,if time is in 'am',we ensure this person forgot daka when he go out yesterday afternoon,so this click,we think it as first-click,expecting second-click.
+  need 2 things:1,change inRange to isFirst(),isSecond().
+  2,in model of redis db,add one field:pairing,pairing is boolean type.if one click button,server said 'it is first click',the one after a short time,click again,server check db,know this is not second click,server tell that 'dont commit again'.so,how could io socket connect db.
+Inch13Early2015Air
+2019年 3月10日 星期日 13时07分17秒 CST
+  mami and daddy from GuangDong to home.arrived at 10:55 am,wuchang railway station.
+  in app.js(the main codes),set up redis as app.redis,so include app module,redis is available.check if it is true.

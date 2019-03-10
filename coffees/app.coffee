@@ -23,13 +23,17 @@ fs.stat './credentials/super-user.js',(err,stats)->
 credential = require './credentials/super-user.js'
 superpass = credential.password
 
-{Nohm} = require 'nohm'
+express = require 'express'
+# include app at early time,so it is available for exprand app to include
+# redis things.
+app = express()
+{Nohm} = app.Nohm = require 'nohm'
 Account = require './modules/md-account'
 Daka = require './modules/md-daka'
-dakaModel = undefined
-accountModel = undefined
+dakaModel = app.dakaModel = undefined
+accountModel = app.accountModel = undefined
 
-redis = (require 'redis').createClient()
+redis = app.redis = (require 'redis').createClient()
 setAsync = promisify redis.set
   .bind redis
 getAsync = promisify redis.get
@@ -46,8 +50,6 @@ redis.on 'connect',->
   dakaModel = Nohm.register Daka
   accountModel = Nohm.register Account
 
-express = require 'express'
-app = express()
 app.set 'view engine','pug'
 static_root = path.join __dirname,'public'
 app.use express.static static_root 
