@@ -49,6 +49,7 @@
   isFirstClick = function(ruler) {
     var _, current, hour, i, ii, minute, ref, ref1;
     // get ruler.xx
+    // if current time is during daka-time ,and this day has no record now.
     current = new Date;
     hour = current.getUTCHours();
     minute = current.getUTCMinutes();
@@ -92,8 +93,11 @@
   });
 
   // user page(client):/user/daka
-  user_group = io.of('/user').on('connect', function(socket) {
+  user_group = io.of('/user').on('connect', async function(socket) {
+    var version;
     // 来，看这里，试试看我们的IOSOCKET与APP模块（即EXRPRESS）通讯。
+    version = (await app.getAsync('version'));
+    socket.send('Version - ' + version);
     // once one user joined,should tell admin channel this change.
     // client's infomation almost from socket.request.
     admin_group.send('one user joined right now,socket-id:' + socket.id);

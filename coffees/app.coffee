@@ -36,7 +36,7 @@ accountModel = app.accountModel = undefined
 redis = app.redis = (require 'redis').createClient()
 setAsync = promisify redis.set
   .bind redis
-getAsync = promisify redis.get
+getAsync = app.getAsync = promisify redis.get
   .bind redis
 expireAsync = promisify redis.expire
   .bind redis

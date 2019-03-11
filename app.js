@@ -59,7 +59,7 @@
 
   setAsync = promisify(redis.set).bind(redis);
 
-  getAsync = promisify(redis.get).bind(redis);
+  getAsync = app.getAsync = promisify(redis.get).bind(redis);
 
   expireAsync = promisify(redis.expire).bind(redis);
 

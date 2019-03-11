@@ -28,6 +28,7 @@ ruler =
         max:10
 isFirstClick = (ruler)->
   # get ruler.xx
+  # if current time is during daka-time ,and this day has no record now.
   current = new Date
   hour = current.getUTCHours()
   minute = current.getUTCMinutes()
@@ -57,6 +58,8 @@ admin_group = io.of '/admin'
 user_group = io.of '/user'
   .on 'connect',(socket)->
     # 来，看这里，试试看我们的IOSOCKET与APP模块（即EXRPRESS）通讯。
+    version = await app.getAsync 'version'
+    socket.send 'Version - ' + version
     # once one user joined,should tell admin channel this change.
     # client's infomation almost from socket.request.
     admin_group.send 'one user joined right now,socket-id:' + socket.id
