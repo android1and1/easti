@@ -359,3 +359,10 @@ in book - <web development with node and express>,writter said:
 3,LOGIN POST PAGE 论证成功之后，重定向到原业务页（根据解析HIDDEN域)
 so,way2 N route=3N
 so,if few routes,way2 will efficeail few.
+
+################
+  git push tags
+################
+git push origin --tags
+will push all local tags to remote git resposity
+
