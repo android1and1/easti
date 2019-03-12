@@ -124,7 +124,19 @@ app.put '/user/logout',(req,res)->
   else
     res.json {reason:'No This Account Or Role Isnt User.',status:'logout failure'}
     
-  
+# retrieve today records for one user.
+app.get '/user/today-items',(req,res)->
+  # use dakaModel and factory all ok.
+  alias = req.query.alias
+  if alias is undefined
+    return res.json 'should special one user(alias).'
+  example = new Date
+  example.setUTCHours 7
+  example.setUTCMinutes 20 
+  example.setUTCSeconds 0
+  ids = await dakaModel.find {alias:alias,utc_ms:{min:Date.parse example}} 
+  res.json ids
+    
 app.put '/admin/logout',(req,res)->
   # check if current role is correctly
   role = req.session.auth.role

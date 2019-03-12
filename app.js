@@ -192,6 +192,28 @@
     }
   });
 
+  
+  // retrieve today records for one user.
+  app.get('/user/today-items', async function(req, res) {
+    var alias, example, ids;
+    // use dakaModel and factory all ok.
+    alias = req.query.alias;
+    if (alias === void 0) {
+      return res.json('should special one user(alias).');
+    }
+    example = new Date;
+    example.setUTCHours(7);
+    example.setUTCMinutes(20);
+    example.setUTCSeconds(0);
+    ids = (await dakaModel.find({
+      alias: alias,
+      utc_ms: {
+        min: Date.parse(example)
+      }
+    }));
+    return res.json(ids);
+  });
+
   app.put('/admin/logout', function(req, res) {
     var role;
     // check if current role is correctly
