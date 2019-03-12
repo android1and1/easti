@@ -21,8 +21,6 @@ admin_group = io.of '/admin'
 # user page(client):/user/daka
 user_group = io.of '/user'
   .on 'connect',(socket)->
-    version = await app.getAsync 'version'
-    socket.send 'Version - ' + version
     # once one user joined,should tell admin channel this change.
     # client's infomation almost from socket.request.
     admin_group.send 'one user joined right now,socket-id:' + socket.id

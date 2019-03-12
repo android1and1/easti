@@ -393,3 +393,11 @@ Tue Mar 12 10:33:34 CST 2019
   i think firstClick() and like-it methods,no need defined at socketio server side,just give a route to socket server.
   if i need recently one user's records,ajax query to /user/recently-10-days/,express will collect all needness and call redis api,at last,give a json obj to this socketio rquest.
   so,i reset --hard to HEAD~2 disable some migiration like redis=app.redis=(require 'redis').createClient()
+
+jp-stretch-pi-2
+Tue Mar 12 14:35:50 CST 2019
+  finish isFirstClick()
+
+jp-stretch-pi-2
+Tue Mar 12 16:59:07 CST 2019
+  in views/user-daka.pug,add one button,in one button group.1 is 'entry' button,2 is 'exit' button,anytime,only one is active,socketio server will absert which is active one.

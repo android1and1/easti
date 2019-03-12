@@ -1,11 +1,11 @@
 extend layouts/main
 //- route:'/user/daka'
 block content
-  h1 socket io is the core of business
-  h1 socket io is the core of business
-  h1 i am daka:user
-  button#daka.btn-default.btn Daka
-  ol#box(data-alias= alias)
+  h1#box(data-alias= alias) User:#{alias} 
+  .btn-group-vertical
+    button#entry.btn-default.btn Entry(入场)
+    button#exit.btn-default.btn Exit(出场)
+  ol#box
 block pagejs
   script(src="/socket.io/socket.io.js")
   script(src="/mine/mine-user-daka.js")

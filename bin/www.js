@@ -31,10 +31,7 @@
   });
 
   // user page(client):/user/daka
-  user_group = io.of('/user').on('connect', async function(socket) {
-    var version;
-    version = (await app.getAsync('version'));
-    socket.send('Version - ' + version);
+  user_group = io.of('/user').on('connect', function(socket) {
     // once one user joined,should tell admin channel this change.
     // client's infomation almost from socket.request.
     admin_group.send('one user joined right now,socket-id:' + socket.id);
