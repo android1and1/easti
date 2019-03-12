@@ -10,7 +10,9 @@
     alias = $box.data('alias');
     user = io('/user');
     user.on('connect', function() {
-      return $box.append('<li/> client joined socketio,id=' + user.id + '.</o>');
+      return $box.append($('<li/>', {
+        text: 'client joined socketio,id=' + user.id
+      }));
     });
     user.on('message', function(msg) {
       return $box.append($('<li/>', {

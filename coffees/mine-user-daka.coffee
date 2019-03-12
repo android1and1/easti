@@ -7,7 +7,7 @@ $ ->
   alias = $box.data 'alias'
   user = io('/user')
   user.on 'connect',()->
-    $box.append '<li/> client joined socketio,id=' + user.id + '.</o>'
+    $box.append $ '<li/>',{text: 'client joined socketio,id=' + user.id }
   user.on 'message',(msg)->
     $box.append $ '<li/>',{text:'[Event:message]' + msg }
   user.on 'qr ready',(msg)->

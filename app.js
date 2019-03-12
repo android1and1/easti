@@ -39,21 +39,27 @@
 
   superpass = credential.password;
 
-  ({Nohm} = require('nohm'));
+  express = require('express');
+
+  // include app at early time,so it is available for exprand app to include
+  // redis things.
+  app = express();
+
+  ({Nohm} = app.Nohm = require('nohm'));
 
   Account = require('./modules/md-account');
 
   Daka = require('./modules/md-daka');
 
-  dakaModel = void 0;
+  dakaModel = app.dakaModel = void 0;
 
-  accountModel = void 0;
+  accountModel = app.accountModel = void 0;
 
-  redis = (require('redis')).createClient();
+  redis = app.redis = (require('redis')).createClient();
 
   setAsync = promisify(redis.set).bind(redis);
 
-  getAsync = promisify(redis.get).bind(redis);
+  getAsync = app.getAsync = promisify(redis.get).bind(redis);
 
   expireAsync = promisify(redis.expire).bind(redis);
 
@@ -68,10 +74,6 @@
     dakaModel = Nohm.register(Daka);
     return accountModel = Nohm.register(Account);
   });
-
-  express = require('express');
-
-  app = express();
 
   app.set('view engine', 'pug');
 
