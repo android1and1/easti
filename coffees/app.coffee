@@ -154,8 +154,8 @@ app.get '/create-qrcode',(req,res)->
   await setAsync 'important',text
   await expireAsync 'important',60
   # templary solid ,original mode is j602 
-  #fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
-  fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+  fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+  #fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
   res.type 'png'
   qr_image.image(fulltext).pipe res 
 

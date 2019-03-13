@@ -3,6 +3,8 @@ IO = require 'socket.io'
 app = require '../app.js'
 server  =  http.Server app
 io = IO server
+# 占用率
+usage = 0 #没有打卡用户请求时，为0
 # help function ,justies if daka event during daka time.
 # admin_group's client page (route) is /admin/daka
 admin_group = io.of '/admin'
@@ -34,14 +36,6 @@ user_group = io.of '/user'
           user_group.emit 'no admin' 
         else
           admin_group.emit 'fetch qr',{alias:alias,url:'/create-qrcode',timestamp:Date.now(),socketid:userid}
-
-io.on 'connect',(socket)->
-  socket.send 'hi every body.'
-  socket.on 'createqrcode',(text,cb)->
-    # client query a qrcode
-    cb '/create-qrcode?text=' + text
-  socket.on 'disconnect',->
-    console.log 'one user leave.'
 
 server.listen 3003,->
   console.log 'server running at port 3003;press Ctrl-C to terminate.'

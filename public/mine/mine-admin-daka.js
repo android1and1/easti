@@ -10,33 +10,34 @@
     // client-socket,its .on and .emit act as point-to-point suit,it is a 'shuang gong' mechemst.
     $box = $('ol#box');
     $img = $box.find('img');
-    if (io) {
-      socket = io('/admin');
-      socket.on('message', function(msg) {
-        $box.append($('<li/>', {
-          text: msg
-        }));
-        return $box.append($('<li/>', {
-          text: 'in admin,socket id=' + socket.id
-        }));
-      });
-      return socket.on('fetch qr', function(seedobj) {
-        var querystring, socketid;
-        // display a png qrcode for users 'daka'
-        socketid = seedobj.socketid.replace('#', '');
-        querystring = '?socketid=' + socketid;
-        querystring += '&&timestamp=' + seedobj.timestamp;
-        querystring += '&&alias=' + seedobj.alias;
-        $img.attr('src', seedobj.url + querystring);
-        $box.append($('<li/>', {
-          text: 'Query String:' + querystring
-        }));
-        $box.append($('<li/>', {
-          text: seedobj.socketid + ' dakaing'
-        }));
-        return socket.emit('qr fetched', socket.id);
-      });
+    if (!io) {
+      $box.append('<h1> IO Server Not Connect,Detect Enviroment</h1>');
     }
+    socket = io('/admin');
+    socket.on('message', function(msg) {
+      $box.append($('<li/>', {
+        text: msg
+      }));
+      return $box.append($('<li/>', {
+        text: 'in admin,socket id=' + socket.id
+      }));
+    });
+    return socket.on('fetch qr', function(seedobj) {
+      var querystring, socketid;
+      // display a png qrcode for users 'daka'
+      socketid = seedobj.socketid.replace('#', '');
+      querystring = '?socketid=' + socketid;
+      querystring += '&&timestamp=' + seedobj.timestamp;
+      querystring += '&&alias=' + seedobj.alias;
+      $img.attr('src', seedobj.url + querystring);
+      $box.append($('<li/>', {
+        text: 'Query String:' + querystring
+      }));
+      $box.append($('<li/>', {
+        text: seedobj.socketid + ' dakaing'
+      }));
+      return socket.emit('qr fetched', socket.id);
+    });
   });
 
 }).call(this);
