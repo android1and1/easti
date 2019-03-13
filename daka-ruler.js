@@ -1,8 +1,3 @@
-/* 
- bin/www.js will require this,like below:
- require '../daka-ruler.js' 
-*/
-
 ruler = {
   am: {
     // 北京时间上午7:25-7:45

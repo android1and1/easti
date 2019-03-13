@@ -22,6 +22,8 @@ fs.stat './credentials/super-user.js',(err,stats)->
 
 credential = require './credentials/super-user.js'
 superpass = credential.password
+# ruler for daka app am:7:30 pm:18:00
+ruler = require './daka-ruler.js'
 
 {Nohm} = require 'nohm'
 Account = require './modules/md-account'
@@ -124,9 +126,8 @@ app.put '/user/logout',(req,res)->
   else
     res.json {reason:'No This Account Or Role Isnt User.',status:'logout failure'}
     
-# retrieve today records for one user.
+# 下面的路由用于检索当日，特定用户是否为第一次打卡（进场） 
 app.get '/user/today-items',(req,res)->
-  # use dakaModel and factory all ok.
   alias = req.query.alias
   if alias is undefined
     return res.json 'should special one user(alias).'
@@ -135,7 +136,14 @@ app.get '/user/today-items',(req,res)->
   example.setUTCMinutes 20 
   example.setUTCSeconds 0
   ids = await dakaModel.find {alias:alias,utc_ms:{min:Date.parse example}} 
-  res.json ids
+  if ids.length is 0
+    res.json 'no item'
+  else
+    results = []
+    for id in ids
+      ins = await dakaModel.load id
+      results.push ins.allProperties()
+    res.json results
     
 app.put '/admin/logout',(req,res)->
   # check if current role is correctly

@@ -4,8 +4,6 @@ app = require '../app.js'
 server  =  http.Server app
 io = IO server
 # help function ,justies if daka event during daka time.
-# 引入打卡时间规定，上午UTC时间为23:25-23:45 pm : 9:50-9:59&&10:00-10:10
-ruler = require '../daka-ruler.js'
 # admin_group's client page (route) is /admin/daka
 admin_group = io.of '/admin'
   .on 'connect',(socket)->
