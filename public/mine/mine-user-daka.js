@@ -29,10 +29,12 @@
         text: 'No Admin Currently,Need Active It First'
       }));
     });
-    return $('button#entry').on('click', function(e) {
-      // if 'daka' time is out of range of ruler,server will stop daka
-      // and send a message:'not daka time.'
-      return user.emit('query qr', user.id, alias);
+    return ['entry', 'exit'].forEach(function(v) {
+      var elename;
+      elename = 'button#' + v;
+      return $(elename).on('click', function(e) {
+        return user.emit('query qr', user.id, alias);
+      });
     });
   });
 

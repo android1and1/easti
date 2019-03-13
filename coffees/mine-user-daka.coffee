@@ -15,7 +15,7 @@ $ ->
   user.on 'no admin',->
     $box.append $ '<li/>',{text:'No Admin Currently,Need Active It First'}
 
-  $('button#entry').on 'click',(e)->
-    # if 'daka' time is out of range of ruler,server will stop daka
-    # and send a message:'not daka time.'
-    user.emit 'query qr',user.id,alias
+  ['entry','exit'].forEach (v)->
+    elename = 'button#' + v
+    $(elename).on 'click',(e)->
+      user.emit 'query qr',user.id,alias

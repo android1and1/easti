@@ -23,7 +23,7 @@ fs.stat './credentials/super-user.js',(err,stats)->
 credential = require './credentials/super-user.js'
 superpass = credential.password
 # ruler for daka app am:7:30 pm:18:00
-ruler = require './daka-ruler.js'
+ruler = require './ruler-of-daka.js'
 
 {Nohm} = require 'nohm'
 Account = require './modules/md-account'
@@ -90,7 +90,15 @@ app.get '/user/daka',(req,res)->
     req.session.referrer = '/user/daka'
     res.redirect 303,'/user/login'
   else
-    res.render 'user-daka',{alias:req.session.auth.alias,title:'User DaKa Console'}
+    # check which scene the user now in?
+    user = req.session.auth.alias
+    # ruler object 
+    today = new Date 
+    today.setHours ruler.am.hours
+    today.setMinutes ruler.am.minutes
+    today.setSeconds 0
+    ids = await dakaModel.find {alias:user,utc_ms:{min:Date.parse today}}
+    res.render 'user-daka',{mod:ids.length,alias:user,title:'User DaKa Console'}
 
 app.get '/user/login',(req,res)->
   res.render 'user-login',{title:'Fill User Login Form'}
@@ -126,25 +134,6 @@ app.put '/user/logout',(req,res)->
   else
     res.json {reason:'No This Account Or Role Isnt User.',status:'logout failure'}
     
-# 下面的路由用于检索当日，特定用户是否为第一次打卡（进场） 
-app.get '/user/today-items',(req,res)->
-  alias = req.query.alias
-  if alias is undefined
-    return res.json 'should special one user(alias).'
-  example = new Date
-  example.setUTCHours 7
-  example.setUTCMinutes 20 
-  example.setUTCSeconds 0
-  ids = await dakaModel.find {alias:alias,utc_ms:{min:Date.parse example}} 
-  if ids.length is 0
-    res.json 'no item'
-  else
-    results = []
-    for id in ids
-      ins = await dakaModel.load id
-      results.push ins.allProperties()
-    res.json results
-    
 app.put '/admin/logout',(req,res)->
   # check if current role is correctly
   role = req.session.auth.role
@@ -165,7 +154,8 @@ app.get '/create-qrcode',(req,res)->
   await setAsync 'important',text
   await expireAsync 'important',60
   # templary solid ,original mode is j602 
-  fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+  #fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+  fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
   res.type 'png'
   qr_image.image(fulltext).pipe res 
 

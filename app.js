@@ -40,7 +40,7 @@
   superpass = credential.password;
 
   // ruler for daka app am:7:30 pm:18:00
-  ruler = require('./daka-ruler.js');
+  ruler = require('./ruler-of-daka.js');
 
   ({Nohm} = require('nohm'));
 
@@ -125,14 +125,28 @@
     });
   });
 
-  app.get('/user/daka', function(req, res) {
-    var ref, ref1;
+  app.get('/user/daka', async function(req, res) {
+    var ids, ref, ref1, today, user;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'user') {
       req.session.referrer = '/user/daka';
       return res.redirect(303, '/user/login');
     } else {
+      // check which scene the user now in?
+      user = req.session.auth.alias;
+      // ruler object 
+      today = new Date;
+      today.setHours(ruler.am.hours);
+      today.setMinutes(ruler.am.minutes);
+      today.setSeconds(0);
+      ids = (await dakaModel.find({
+        alias: user,
+        utc_ms: {
+          min: Date.parse(today)
+        }
+      }));
       return res.render('user-daka', {
-        alias: req.session.auth.alias,
+        mod: ids.length,
+        alias: user,
         title: 'User DaKa Console'
       });
     }
@@ -195,37 +209,6 @@
     }
   });
 
-  
-  // 下面的路由用于检索当日，特定用户是否为第一次打卡（进场） 
-  app.get('/user/today-items', async function(req, res) {
-    var alias, example, i, id, ids, ins, len, results;
-    alias = req.query.alias;
-    if (alias === void 0) {
-      return res.json('should special one user(alias).');
-    }
-    example = new Date;
-    example.setUTCHours(7);
-    example.setUTCMinutes(20);
-    example.setUTCSeconds(0);
-    ids = (await dakaModel.find({
-      alias: alias,
-      utc_ms: {
-        min: Date.parse(example)
-      }
-    }));
-    if (ids.length === 0) {
-      return res.json('no item');
-    } else {
-      results = [];
-      for (i = 0, len = ids.length; i < len; i++) {
-        id = ids[i];
-        ins = (await dakaModel.load(id));
-        results.push(ins.allProperties());
-      }
-      return res.json(results);
-    }
-  });
-
   app.put('/admin/logout', function(req, res) {
     var role;
     // check if current role is correctly
@@ -259,7 +242,8 @@
     await setAsync('important', text);
     await expireAsync('important', 60);
     // templary solid ,original mode is j602 
-    fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text;
+    //fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+    fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text;
     res.type('png');
     return qr_image.image(fulltext).pipe(res);
   });
