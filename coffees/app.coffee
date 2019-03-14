@@ -306,6 +306,21 @@ app.post '/superuser/login',(req,res)->
     res.json {staus:'super user login failurre.'}
   
 
+app.get '/admin/list-user-daka',(req,res)->
+  # first,check role if is admin
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/list-user-items'
+    return res.redirect 303,'/admin/login'
+  alias = req.query.alias
+  if ! alias 
+    return res.json 'no special user,check and redo.'
+  inss = await dakaModel.findAndLoad alias:alias
+  result = []
+  for ins in inss
+    obj = ins.allProperties()
+    result.push obj 
+  res.render 'admin-list-user-daka',{title:'List User DaKa Items',data:result}
+  
 app.get '/superuser/register-admin',(req,res)->
   if req.session?.auth?.role isnt 'superuser'
     res.redirect 302,'/superuser/login'

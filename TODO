@@ -412,3 +412,8 @@ Wed Mar 13 16:18:34 CST 2019
   qrcode picture(png) in view - views/admin-daka.pug,pagejs - public/mine/mine-admin-daka.js,
   view,need split into 2 main box,top one named pngbox,bottom named messagebox or simplely msgbox.
    
+Inch13Early2015Air
+2019年 3月14日 星期四 10时49分28秒 CST
+  admin can help user daka even after correctly time.give a route for it:'/admin/budaka/'
+  admin can retrieves all user items,sort by some field,collects by time range.
+  admin can give a gogo to user,when user be stuck at server's time or role.

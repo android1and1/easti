@@ -474,6 +474,32 @@
     }
   });
 
+  app.get('/admin/list-user-daka', async function(req, res) {
+    var alias, i, ins, inss, len, obj, ref, ref1, result;
+    // first,check role if is admin
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/list-user-items';
+      return res.redirect(303, '/admin/login');
+    }
+    alias = req.query.alias;
+    if (!alias) {
+      return res.json('no special user,check and redo.');
+    }
+    inss = (await dakaModel.findAndLoad({
+      alias: alias
+    }));
+    result = [];
+    for (i = 0, len = inss.length; i < len; i++) {
+      ins = inss[i];
+      obj = ins.allProperties();
+      result.push(obj);
+    }
+    return res.render('admin-list-user-daka', {
+      title: 'List User DaKa Items',
+      data: result
+    });
+  });
+
   app.get('/superuser/register-admin', function(req, res) {
     var ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'superuser') {
