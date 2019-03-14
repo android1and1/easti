@@ -1,10 +1,15 @@
 extend layouts/main
 block content
-  h1 socket io is the core of business
   h1 Admin DaKa
-  ol#box
-    img(class="img-responsive img-rounded" src="" width="50%" alt="bare initial")
-  hr
+  div#pngbox
+    div(class="row")
+      div(class="col-sm-6 col-md-4")
+        div(class="thumbnail")
+          img(src="/images/pix64x64.png" alt="a sample picture")
+        div(class="caption")
+  div#container
+    ol#msgbox
 block pagejs
   script(src="/socket.io/socket.io.js")
   script(src="/mine/mine-admin-daka.js")
+

@@ -5,15 +5,16 @@ $ ->
   # listener,whereas,the channel(namespace)'s .on definition is not work about message(object) transfer.but it can .emit() to 
   # all listeners in client.
   # client-socket,its .on and .emit act as point-to-point suit,it is a 'shuang gong' mechemst.
-  $box = $('ol#box')
-  $img = $box.find 'img'
+  $pngbox = $('#pngbox')
+  $msgbox = $('#msgbox')
+  $img = $pngbox.find 'img'
   if !io
-    $box.append '<h1> IO Server Not Connect,Detect Enviroment</h1>'
+    $msgbox.append '<h1> IO Server Not Connect,Detect Enviroment</h1>'
   socket = io '/admin'
  
   socket.on 'message',(msg)->
-    $box.append $('<li/>',{text:msg}) 
-    $box.append $('<li/>',{text:'in admin,socket id=' + socket.id})
+    $msgbox.append $('<li/>',{text:msg}) 
+    $msgbox.append $('<li/>',{text:'in admin,socket id=' + socket.id})
 
   socket.on 'fetch qr',(seedobj)->
     # display a png qrcode for users 'daka'
@@ -21,7 +22,16 @@ $ ->
     querystring = '?socketid=' + socketid
     querystring += '&&timestamp=' + seedobj.timestamp
     querystring += '&&alias=' + seedobj.alias
+    # remove alias name element,then add new one.
+    #beforethings =  $pngbox.find('h4.text-center')
+    #if beforethings
+    #  beforethings.remove()
+    beforethings = $pngbox.find '.caption h3'
+    if beforethings
+      beforethings.remove()
+    #$img.before '<h4 class="text-center">打卡人:' + seedobj.alias + '</h4>'
+    $('.caption').append '<h3>for user:' + seedobj.alias + '</h3>'
     $img.attr 'src',seedobj.url + querystring 
-    $box.append $ '<li/>',{text: 'Query String:' + querystring}
-    $box.append $ '<li/>',{text: seedobj.socketid + ' dakaing'}
+    $msgbox.append $ '<li/>',{text: 'Query String:' + querystring}
+    $msgbox.append $ '<li/>',{text: seedobj.socketid + ' dakaing'}
     socket.emit 'qr fetched',socket.id
