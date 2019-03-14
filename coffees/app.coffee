@@ -274,14 +274,15 @@ app.get '/admin/login-success',(req,res)->
   res.render 'admin-login-success.pug',{title:'Administrator Role Entablished'}
 
 app.get '/admin/list-accounts',(req,res)->
-  if req.session.auth.alive is false
+  if req.session?.auth?.role isnt 'admin' 
+    req.session.referrer = '/admin/list-accounts'
     return res.redirect 302,'/admin/login'
   inss = await accountModel.findAndLoad()
   results = [] 
   inss.forEach (one)->
     obj = {}
     obj.alias = one.property 'alias'
-    obj.code = one.property 'code'
+    obj.role = one.property 'role'
     obj.initial_timestamp = one.property 'initial_timestamp'
     obj.password = one.property 'password'
     obj.id = one.id
@@ -314,6 +315,8 @@ app.get '/admin/list-user-daka',(req,res)->
   alias = req.query.alias
   if ! alias 
     return res.json 'no special user,check and redo.'
+  if not filter alias
+    return res.json 'has invalid char(s).'
   inss = await dakaModel.findAndLoad alias:alias
   result = []
   for ins in inss

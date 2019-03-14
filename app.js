@@ -426,8 +426,9 @@
   });
 
   app.get('/admin/list-accounts', async function(req, res) {
-    var inss, results;
-    if (req.session.auth.alive === false) {
+    var inss, ref, ref1, results;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/list-accounts';
       return res.redirect(302, '/admin/login');
     }
     inss = (await accountModel.findAndLoad());
@@ -436,7 +437,7 @@
       var obj;
       obj = {};
       obj.alias = one.property('alias');
-      obj.code = one.property('code');
+      obj.role = one.property('role');
       obj.initial_timestamp = one.property('initial_timestamp');
       obj.password = one.property('password');
       obj.id = one.id;
@@ -484,6 +485,9 @@
     alias = req.query.alias;
     if (!alias) {
       return res.json('no special user,check and redo.');
+    }
+    if (!filter(alias)) {
+      return res.json('has invalid char(s).');
     }
     inss = (await dakaModel.findAndLoad({
       alias: alias
