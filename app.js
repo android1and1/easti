@@ -125,6 +125,21 @@
     });
   });
 
+  app.get('/create-qrcode', async function(req, res) {
+    var fulltext, text;
+    // the query string from user-daka js code(img.src=url+'....')
+    // query string include socketid,timestamp,and alias
+    text = [req.query.socketid, req.query.timestamp].join('-');
+    await setAsync('important', text);
+    await expireAsync('important', 60);
+    // templary solid ,original mode is j602 
+    fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text;
+    
+    //fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+    res.type('png');
+    return qr_image.image(fulltext).pipe(res);
+  });
+
   app.get('/user/daka', async function(req, res) {
     var ids, ref, ref1, today, user;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'user') {
@@ -209,44 +224,10 @@
     }
   });
 
-  app.put('/admin/logout', function(req, res) {
-    var role;
-    // check if current role is correctly
-    role = req.session.auth.role;
-    if (role === 'admin') {
-      req.session.auth.role = 'unknown';
-      req.session.auth.alias = 'noname';
-      return res.json({
-        reason: '',
-        status: 'logout success'
-      });
-    } else {
-      return res.json({
-        reason: 'no this account or role isnt admin.',
-        status: 'logout failure'
-      });
-    }
-  });
-
   app.get('/user/login-success', function(req, res) {
     return res.render('user-login-success', {
       title: 'User Role Validation:successfully'
     });
-  });
-
-  app.get('/create-qrcode', async function(req, res) {
-    var fulltext, text;
-    // the query string from user-daka js code(img.src=url+'....')
-    // query string include socketid,timestamp,and alias
-    text = [req.query.socketid, req.query.timestamp].join('-');
-    await setAsync('important', text);
-    await expireAsync('important', 60);
-    // templary solid ,original mode is j602 
-    fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text;
-    
-    //fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
-    res.type('png');
-    return qr_image.image(fulltext).pipe(res);
   });
 
   app.get('/user/daka-response', async function(req, res) {
@@ -300,6 +281,8 @@
     }
   });
 
+  
+  // route-admin start
   app.get('/admin/daka', function(req, res) {
     var ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
@@ -323,6 +306,25 @@
     return res.render('admin-update-password', {
       title: 'Admin-Update-Password'
     });
+  });
+
+  app.put('/admin/logout', function(req, res) {
+    var role;
+    // check if current role is correctly
+    role = req.session.auth.role;
+    if (role === 'admin') {
+      req.session.auth.role = 'unknown';
+      req.session.auth.alias = 'noname';
+      return res.json({
+        reason: '',
+        status: 'logout success'
+      });
+    } else {
+      return res.json({
+        reason: 'no this account or role isnt admin.',
+        status: 'logout failure'
+      });
+    }
   });
 
   app.post('/admin/admin-update-password', async function(req, res) {
@@ -447,6 +449,23 @@
       title: 'Admin:List Accounts',
       accounts: results
     });
+  });
+
+  app.all('/admin/daka-complement', function(req, res) {
+    var alias;
+    if (req.method === 'POST') {
+      //parse body
+      alias = req.body.alias;
+      return res.json({
+        parsed: {
+          alias: alias
+        }
+      });
+    } else {
+      return res.render('admin-daka-complement', {
+        title: 'Admin Daka-Complement'
+      });
+    }
   });
 
   app.get('/superuser/login', function(req, res) {
