@@ -15,15 +15,15 @@ qr_image = require 'qr-image'
 crypto = require 'crypto'
 
 # super-user's credential
-fs.stat './credentials/super-user.js',(err,stats)->
+fs.stat './configs/credentials/super-user.js',(err,stats)->
   if err 
     console.log 'Credential File Not Exists,Fix It.'
     process.exit 1
 
-credential = require './credentials/super-user.js'
+credential = require './configs/credentials/super-user.js'
 superpass = credential.password
 # ruler for daka app am:7:30 pm:18:00
-ruler = require './ruler-of-daka.js'
+ruler = require './configs/ruler-of-daka.js'
 
 {Nohm} = require 'nohm'
 Account = require './modules/md-account'

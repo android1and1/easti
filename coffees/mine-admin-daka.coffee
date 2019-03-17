@@ -29,8 +29,8 @@ $ ->
     beforethings = $pngbox.find '.caption h3'
     if beforethings
       beforethings.remove()
-    #$img.before '<h4 class="text-center">打卡人:' + seedobj.alias + '</h4>'
-    $('.caption').append '<h3>for user:' + seedobj.alias + '</h3>'
+    #$('.caption').append '<h3>for user:' + seedobj.alias + '</h3>'
+    $('.caption').append $('<h3/>',{text:'打卡人  ' + seedobj.alias,'class':'text-center'})
     $img.attr 'src',seedobj.url + querystring 
     $msgbox.append $ '<li/>',{text: 'Query String:' + querystring}
     $msgbox.append $ '<li/>',{text: seedobj.socketid + ' dakaing'}
