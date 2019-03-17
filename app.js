@@ -140,6 +140,12 @@
     return qr_image.image(fulltext).pipe(res);
   });
 
+  
+  // maniuate new func or new mind.
+  app.get('/play', function(req, res) {
+    return res.render('play');
+  });
+
   app.get('/user/daka', async function(req, res) {
     var ids, ref, ref1, today, user;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'user') {

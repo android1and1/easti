@@ -96,6 +96,9 @@ app.get '/create-qrcode',(req,res)->
   #fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
   res.type 'png'
   qr_image.image(fulltext).pipe res 
+# maniuate new func or new mind.
+app.get '/play',(req,res)->
+  res.render 'play'
 
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'
