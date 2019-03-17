@@ -85,6 +85,21 @@ app.get '/',(req,res)->
     role:role
     alias:alias
 
+app.get '/create-qrcode',(req,res)->
+  # the query string from user-daka js code(img.src=url+'....')
+  # query string include socketid,timestamp,and alias
+  text = [req.query.socketid,req.query.timestamp].join('-')
+  await setAsync 'important',text
+  await expireAsync 'important',60
+  # templary solid ,original mode is j602 
+  fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+  #fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+  res.type 'png'
+  qr_image.image(fulltext).pipe res 
+# maniuate new func or new mind.
+app.get '/play',(req,res)->
+  res.render 'play'
+
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'
     req.session.referrer = '/user/daka'
@@ -134,30 +149,8 @@ app.put '/user/logout',(req,res)->
   else
     res.json {reason:'No This Account Or Role Isnt User.',status:'logout failure'}
     
-app.put '/admin/logout',(req,res)->
-  # check if current role is correctly
-  role = req.session.auth.role
-  if role is 'admin'
-    req.session.auth.role = 'unknown'
-    req.session.auth.alias = 'noname'
-    res.json {reason:'',status:'logout success'}
-  else
-    res.json {reason:'no this account or role isnt admin.',status:'logout failure'}
-
 app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
-
-app.get '/create-qrcode',(req,res)->
-  # the query string from user-daka js code(img.src=url+'....')
-  # query string include socketid,timestamp,and alias
-  text = [req.query.socketid,req.query.timestamp].join('-')
-  await setAsync 'important',text
-  await expireAsync 'important',60
-  # templary solid ,original mode is j602 
-  fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
-  #fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
-  res.type 'png'
-  qr_image.image(fulltext).pipe res 
 
 app.get '/user/daka-response',(req,res)->
   session_alias = req.session?.auth?.alias
@@ -191,7 +184,7 @@ app.get '/user/daka-response',(req,res)->
   else
     return res.render 'user-daka-response',{title:'login Result',status:'打卡失败'}
     
-
+# route-admin start
 app.get '/admin/daka',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/daka'
@@ -205,6 +198,16 @@ app.get '/admin/login',(req,res)->
 
 app.get '/admin/admin-update-password',(req,res)->
   res.render 'admin-update-password',{title:'Admin-Update-Password'}
+
+app.put '/admin/logout',(req,res)->
+  # check if current role is correctly
+  role = req.session.auth.role
+  if role is 'admin'
+    req.session.auth.role = 'unknown'
+    req.session.auth.alias = 'noname'
+    res.json {reason:'',status:'logout success'}
+  else
+    res.json {reason:'no this account or role isnt admin.',status:'logout failure'}
 
 app.post '/admin/admin-update-password',(req,res)->
   {oldpassword,newpassword,alias} = req.body
@@ -268,27 +271,33 @@ app.post '/admin/login',(req,res)->
     updateAuthSession req,'unknown','noname'
     res.render 'admin-login-failure' ,{title:'Login-Failure',reason:'account/password peer dismatches.'}
 
-  
-
 app.get '/admin/login-success',(req,res)->
   res.render 'admin-login-success.pug',{title:'Administrator Role Entablished'}
 
 app.get '/admin/list-accounts',(req,res)->
-  if req.session.auth.alive is false
+  if req.session?.auth?.role isnt 'admin' 
+    req.session.referrer = '/admin/list-accounts'
     return res.redirect 302,'/admin/login'
   inss = await accountModel.findAndLoad()
   results = [] 
   inss.forEach (one)->
     obj = {}
     obj.alias = one.property 'alias'
-    obj.code = one.property 'code'
+    obj.role = one.property 'role'
     obj.initial_timestamp = one.property 'initial_timestamp'
     obj.password = one.property 'password'
     obj.id = one.id
     results.push obj 
     
   res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
-  
+app.all '/admin/daka-complement',(req,res)->
+  if req.method is 'POST'
+    #parse body
+    alias = req.body.alias
+    res.json parsed:alias:alias
+  else
+    res.render 'admin-daka-complement',{title:'Admin Daka-Complement'}
+    
 app.get '/superuser/login',(req,res)->
   res.render 'superuser-login.pug',{title:'Are You A Super?'}
 
@@ -314,6 +323,8 @@ app.get '/admin/list-user-daka',(req,res)->
   alias = req.query.alias
   if ! alias 
     return res.json 'no special user,check and redo.'
+  if not filter alias
+    return res.json 'has invalid char(s).'
   inss = await dakaModel.findAndLoad alias:alias
   result = []
   for ins in inss

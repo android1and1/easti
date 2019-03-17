@@ -417,3 +417,17 @@ Inch13Early2015Air
   admin can help user daka even after correctly time.give a route for it:'/admin/budaka/'
   admin can retrieves all user items,sort by some field,collects by time range.
   admin can give a gogo to user,when user be stuck at server's time or role.
+
+jp-stretch-pi-2
+Fri Mar 15 09:27:25 CST 2019
+  /admin/complement this route can handle :machine breakdown,outage,memory card destrory...or maybe a newbie forgot daka but she/he really done the work.
+admin fill one form about underlying fields,the forms also include a button "more",click this button cause a new form expanded.
+
+DailyPi3
+2019年 03月 15日 星期五 12:59:19 CST
+  implement 'checked' trigger .disabled.
+  implement 'more' func.
+
+DailyPi3
+2019年 03月 15日 星期五 14:26:13 CST
+  需要很高超的jQuery操纵元素技巧，才能处理动态插入，新表之类的问题。back to j602.

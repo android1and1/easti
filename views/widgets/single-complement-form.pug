@@ -1,0 +1,29 @@
+form(id="default-form" class='customise form-horizontal',method='POST',action='')
+  .form-group
+    span.help-block each form's submit button only submit single form's data,if want one-click-submit-all-form,browser to bottom of this page,click 'all-submit' button.
+    label.col-xs-5  alias name:
+    .col-xs-7
+      input(name="alias" class="input-lg form-control" type="text" placeholder="Alias Name(account)")
+  .form-group
+    .radio
+      label
+        | single进场 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        input(type="radio" name="default-radio"  value="option1" class="custom-checkbox")
+      label
+        | single 出场? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        input(type="radio" name="default-radio" value="option2" class="custom-checkbox")
+      label
+        | 当日进场出场? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        input(type="radio" value="option3" checked="1" name="default-radio" class="custom-checkbox")
+  .form-group
+    label.col-xs-5  打卡进场时间:
+    .col-xs-7
+      input(name="daka-first-half" class="form-control" type="text" placeholder="datetime,.default is standard daka-time..")
+  .form-group
+    label.col-xs-5  打卡出场时间: 
+    .col-xs-7
+      input(name="daka-second-half" class="form-control" type="text" placeholder="datetime,.default is standard daka-time..")
+  .btn-group.btn-group-lg
+    button.btn.btn-default(type="reset") Reset 
+    button.btn.btn-success(type="submit") Submit
+    button.btn.btn-default.more More+

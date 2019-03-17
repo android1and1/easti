@@ -8,13 +8,13 @@ block content
         - item = accounts[eachone]
         - 
           id = item.id
-          aliasName = item.name
+          alias = item.alias
           role = item.role
           timestamp = item.initial_timestamp
           password = item.password
-        .panel-heading= aliasName + '(id=' + id  + ')'
+        .panel-heading= alias + '(id=' + id  + ')'
         .panel-body
-          h3= "role= " + code 
+          h3= "role= " + alias 
           h3= "timestamp= " + timestamp 
           h3= "password= " + password
       
