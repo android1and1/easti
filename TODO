@@ -431,3 +431,32 @@ DailyPi3
 DailyPi3
 2019年 03月 15日 星期五 14:26:13 CST
   需要很高超的jQuery操纵元素技巧，才能处理动态插入，新表之类的问题。back to j602.
+
+Inch13Early2015Air
+2019年 3月17日 星期日 11时02分01秒 CST
+  configures---.config----is many than you thought,we need collect it into one singleton dir.
+  the admin page of daka app,need simple,remove diggoest infos,keep it cleaning,just display has/has not client(s),qrcode,for who?the step1 is over,last commit.
+  multiple forms in one page,ajax submit,durnig this time,how collects all datas,and check them,now try it out. 
+
+Inch13Early2015Air
+2019年 3月17日 星期日 19时24分06秒 CST
+  how post?ajax html5(form-data api) post?jquery post?
+  ajax.post <which-data-structure> ?client side,data seem to [{name:'field-name',value:'fiele-value'},...]
+  make some practices,do exercise.
+  at server side,
+
+Inch13Early2015Air
+2019年 3月18日 星期一 06时45分56秒 CST
+  collect forms data inot ajax obj
+
+Inch13Early2015Air
+2019年 3月18日 星期一 09时32分57秒 CST
+  Blob serverside give a route let pic can serve,client side create a xhr2,xhr2.open 'this route',xhr2.resonseType = 'blob',when blob coming,parse it as a png.
+  xhr2.onload = (e)->
+    blob = e.target.response
+    img = new Image
+    url = window.URL.createObjectUrl blob
+    img.onload = ->
+      window.URL.revokeObjectUrl url
+    img.src = url
+    $('body').append img

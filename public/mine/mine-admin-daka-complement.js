@@ -41,12 +41,14 @@
       return e.stopPropagation();
     });
     return $('#total-submit').on('click', function(e) {
-      var arr, text;
-      arr = $('form').serializeArray();
-      text = JSON.stringify(arr);
-      return $('h1').first().after($('<p/>', {
-        text: text
-      }));
+      var arr, i, j, len;
+      arr = $('form:not(".hidden")').serializeArray();
+      for (j = 0, len = arr.length; j < len; j++) {
+        i = arr[j];
+        $('h1').first().after('<p>' + i.name + ':' + i.value + '</p>');
+      }
+      e.preventDefault();
+      return e.stopPropagation();
     });
   });
 

@@ -12,6 +12,7 @@ path = require 'path'
 fs = require 'fs'
 http = require 'http'
 qr_image = require 'qr-image'
+formidable = require 'formidable'
 crypto = require 'crypto'
 
 # super-user's credential

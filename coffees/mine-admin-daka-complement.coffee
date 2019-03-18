@@ -34,6 +34,8 @@ $ ->
     e.stopPropagation()
 
   $('#total-submit').on 'click',(e)->
-     arr = $('form').serializeArray()
-     text = JSON.stringify arr
-     $('h1').first().after $('<p/>',{text:text})
+     arr = $('form:not(".hidden")').serializeArray()
+     for i in arr
+       $('h1').first().after '<p>' +  i.name + ':' +  i.value + '</p>'
+     e.preventDefault()
+     e.stopPropagation()
