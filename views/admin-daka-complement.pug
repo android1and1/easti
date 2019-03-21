@@ -1,5 +1,69 @@
 extend layouts/main
 block pagejs
+  script.
+    // defines a coviental method,to create a new form.
+    // 写一个重头方法在此，原先的做法是放在public/mine/或是pagejs里。
+    var new_form = function(n){ //n is a number(Integer)
+      $form = $('<form/>',{'class':'form-horizontal'});
+      // group1 include input:alias,group2 includes options（radio),
+      // group3,4 include 进场出场时间
+      $group1 = $('<div/>',{'class':'form-group'});
+      $label1 = $('<label/>',{'class':'col-xs-5','text':'Alias Name'});
+      $row1 = $('<div/>',{'class':'col-xs-7'});
+      // input:alias 
+      $input1 = $('<input/>',{'class':'input-lg form-control',name:'alias' + n,placeholder:'your alias..'});
+      // group1 component
+      $group1.append($label1);
+      $row1.append($input1);
+      $group1.append($row1);
+      $form.append($group1);
+      // group 2 
+      $group2 = $('<div/>',{'class':'form-group'});
+      $row2 = $('<div/>',{'class':'radio'});
+      $label_option1 = $('<label/>',{'html':'仅进场&nbsp;&nbsp;&nbsp;&nbsp; <input type="radio" name="' + 'combo' + n + '" value="option1" class="custome-checkbox"> '});
+      $label_option2 = $('<label/>',{'html':'仅出场&nbsp;&nbsp;<input type="radio" name="' + 'combo' + n + '" value="option2" class="custome-checkbox">'});
+      $label_option3 = $('<label/>',{'html':'进场和出场&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="' + 'combo' + n + '" value="option3" checked="1" class="custome-checkbox">'});
+      // component group 2
+      $row2.append($label_option1);
+      $row2.append($label_option2);
+      $row2.append($label_option3);
+      $group2.append($row2);
+      // group3 includes label3 and input3(进场时间)
+      $group3 = $('<div/>',{'class':'form-group'});
+      $label3 = $('<label/>',{'class':'col-xs-5','text':'进场时间'});
+      $row3 = $('<div/>',{'class':'col-xs-7'});
+      $input3 = $('<input/>',{'class':'form-control',name:'first-half-'+ n,placeholder:'进场时间..'});
+      // component group 3
+      $group3.append($label3);
+      $row3.append($input3);
+      $group3.append($row3);
+      // group4 includes input:出场时间 
+      $group4 = $('<div/>',{'class':'form-group'});
+      $label4 = $('<label/>',{'class':'col-xs-5','text':'出场时间'});
+      $row4 = $('<div/>',{'class':'col-xs-7'})
+      $input4 = $('<input/>',{'class':'form-control',name:'second-half-'+ n,placeholder:'出场时间..'});
+      // component group4
+      $group4.append($label4);
+      $row4.append($input4);
+      $group4.append($row4);
+      //group 5 includes buttons.
+      $group5 = $('<div/>',{'class':'btn-group btn-group-lg'});
+      $resetbutton = $('<button/>',{'class':'btn btn-default','text':'Reset','type':'reset'});
+      $deletebutton = $('<button/>',{'class':'btn btn-danger','text':'Delete'});
+      $morebutton = $('<button/>',{'class':'btn btn-default more',text:'more+'});
+      // component group5
+      $group5.append($resetbutton); 
+      $group5.append($deletebutton); 
+      $group5.append($morebutton); 
+      
+      // at last,component all.
+      $form.append($group1);
+      $form.append($group2);
+      $form.append($group3);
+      $form.append($group4);
+      $form.append($group5);
+      return $form;
+    }
   script(src="/mine/mine-admin-daka-complement.js")
 block content
   h1 Admin Complement Page
@@ -38,33 +102,8 @@ block content
       br/
     //- this button not include in the form.
     button.btn.btn-success.btn-block#total-submit Submit
-    // a hidden form for sequence copies.
-    form(id="hidden-form" class='hidden form-horizontal',method='POST',action='')
-      .form-group
-        span.help-block each form's submit button only submit single form's data,if want one-click-submit-all-form,browser to bottom of this page,click 'all-submit' button.
-        label.col-xs-5  alias name:
-        .col-xs-7
-          input(name="hidden-alias" class="input-lg form-control" type="text" placeholder="Alias Name(account)")
-      .form-group
-        .radio
-          label
-            | single进场 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            input(type="radio" name="hidden-option"  value="option1" class="custom-checkbox")
-          label
-            | single 出场? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            input(type="radio" name="hidden-option" value="option2" class="custom-checkbox")
-          label
-            | 当日进场出场? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            input(type="radio" value="option3" checked="1" name="hidden-option" class="custom-checkbox")
-      .form-group
-        label.col-xs-5  打卡进场时间:
-        .col-xs-7
-          input(name="hidden-first-half" class="form-control" type="text" placeholder="datetime,.default is standard daka-time..")
-      .form-group
-        label.col-xs-5  打卡出场时间: 
-        .col-xs-7
-          input(name="hidden-second-half" class="form-control" type="text" placeholder="datetime,.default is standard daka-time..")
-      .btn-group.btn-group-lg
-        button.btn.btn-default(type="reset") Reset 
-        button.btn.btn-danger  Delete
-        button.btn.btn-default.more More+
+block footer
+  //- see if form is right.
+  br/
+  br/
+  button.btn.btn-lg.btn-default.btn-block#id44 let form display!

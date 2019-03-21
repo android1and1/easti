@@ -460,3 +460,7 @@ Inch13Early2015Air
       window.URL.revokeObjectUrl url
     img.src = url
     $('body').append img
+
+jp-stretch-pi-2
+Wed Mar 20 07:34:16 CST 2019
+  includes buttons too.
