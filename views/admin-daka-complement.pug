@@ -19,15 +19,25 @@ block pagejs
       $form.append($group1);
       // group 2 
       $group2 = $('<div/>',{'class':'form-group'});
-      $row2 = $('<div/>',{'class':'radio'});
-      $label_option1 = $('<label/>',{'html':'仅进场&nbsp;&nbsp;&nbsp;&nbsp; <input type="radio" name="' + 'combo' + n + '" value="option1" class="custome-checkbox"> '});
-      $label_option2 = $('<label/>',{'html':'仅出场&nbsp;&nbsp;<input type="radio" name="' + 'combo' + n + '" value="option2" class="custome-checkbox">'});
-      $label_option3 = $('<label/>',{'html':'进场和出场&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="' + 'combo' + n + '" value="option3" checked="1" class="custome-checkbox">'});
+      $left = $('<div/>',{'class':'col-xs-2'}); 
+      $middle = $('<div/>',{'class':'col-xs-2'}); 
+      $right = $('<div/>',{'class':'col-xs-2'}); 
+      $label_option1 = $('<label/>',{text:'仅进场  '});
+      $option1= $('<input/>',{'type':'radio','name': 'combo' + n ,value:'option1'});
+      $label_option2 = $('<label/>',{text:'仅出场  '});
+      $option2= $('<input/>',{'type':'radio','name':'combo' + n ,value:'option2'});
+      $label_option3 = $('<label/>',{text:'进场 & 出场  '});
+      $option3= $('<input/>',{'type':'radio','name':  'combo' + n ,value:'option3'});
       // component group 2
-      $row2.append($label_option1);
-      $row2.append($label_option2);
-      $row2.append($label_option3);
-      $group2.append($row2);
+      $label_option1.append($option1);
+      $left.append($label_option1);
+      $label_option2.append($option2);
+      $middle.append($label_option2);
+      $label_option3.append($option3);
+      $right.append($label_option3);
+      $group2.append($left);
+      $group2.append($middle);
+      $group2.append($right);
       // group3 includes label3 and input3(进场时间)
       $group3 = $('<div/>',{'class':'form-group'});
       $label3 = $('<label/>',{'class':'col-xs-5','text':'进场时间'});
@@ -62,44 +72,14 @@ block pagejs
       $form.append($group3);
       $form.append($group4);
       $form.append($group5);
+      $form.append('<br/>');
+      $form.append('<br/>');
       return $form;
     }
   script(src="/mine/mine-admin-daka-complement.js")
 block content
   h1 Admin Complement Page
   div#container
-    // include widgets/single-complement-form.pug
-    form(id="form0" class='form-horizontal',method='POST',action='')
-      .form-group
-        span.help-block each form's submit button only submit single form's data,if want one-click-submit-all-form,browser to bottom of this page,click 'all-submit' button.
-        label.col-xs-5  alias name:
-        .col-xs-7
-          input(name="alias0" class="input-lg form-control" type="text" placeholder="Alias Name(account)")
-      .form-group
-        .radio
-          label
-            | single进场 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            input(type="radio" name="combo0"  value="option1" class="custom-checkbox")
-          label
-            | single 出场? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            input(type="radio" name="combo0" value="option2" class="custom-checkbox")
-          label
-            | 当日进场出场? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            input(type="radio" value="option3" checked="1" name="combo0" class="custom-checkbox")
-      .form-group
-        label.col-xs-5  打卡进场时间:
-        .col-xs-7
-          input(name="first-half0" class="form-control" type="text" placeholder="datetime,.default is standard daka-time..")
-      .form-group
-        label.col-xs-5  打卡出场时间: 
-        .col-xs-7
-          input(name="second-half0" class="form-control" type="text" placeholder="datetime,.default is standard daka-time..")
-      btn-group.btn-group-lg
-        button.btn.btn-default(type="reset") Reset 
-        button.btn.btn-danger(disabled='1')  Delete
-        button.btn.btn-default.more More+
-      br/
-      br/
     //- this button not include in the form.
     button.btn.btn-success.btn-block#total-submit Submit
 block footer

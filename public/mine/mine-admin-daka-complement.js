@@ -2,6 +2,13 @@
 (function() {
   $(function() {
     var counter;
+    // after window.loaded,create a form -- form0
+    counter = 0;
+    (new_form(counter++)).insertBefore($('#total-submit'));
+    
+    // the first form should disable 'delete' button
+    $('button.btn-danger').attr('disabled', 1);
+    
     // 注册所有类型为RADIO的控件，当点击时禁用/解禁相邻的TEXT控件。
     $('#container').on('click', 'input[type=radio]', function(e) {
       var $input_entry, $input_exit;
@@ -20,15 +27,13 @@
       }
     });
     $('#container').on('click', 'button.more', function(e) {
-      var lastform, newer;
-      // clone default form#form0
-      lastform = $('form').last();
-      newer = $('#hidden-form').clone();
-      newer.removeClass('hidden');
-      newer.find('.btn-danger').removeAttr('disabled');
-      lastform.after(newer);
+      var $form;
+      // create a new form
+      $form = new_form(counter);
+      $form.insertBefore($('#total-submit'));
       e.preventDefault();
-      return e.stopPropagation();
+      e.stopPropagation();
+      return counter++;
     });
     $('#container').on('click', 'button.btn-danger', function(e) {
       var theform;
@@ -37,7 +42,7 @@
       e.preventDefault();
       return e.stopPropagation();
     });
-    $('#total-submit').on('click', function(e) {
+    return $('#total-submit').on('click', function(e) {
       var arr, i, j, len;
       arr = $('form:not(".hidden")').serializeArray();
       for (j = 0, len = arr.length; j < len; j++) {
@@ -46,14 +51,6 @@
       }
       e.preventDefault();
       return e.stopPropagation();
-    });
-    counter = 0;
-    return $('button#id44').on('click', function(e) {
-      var $form;
-      // create a new form
-      counter++;
-      $form = new_form(counter);
-      return $form.insertBefore($('#total-submit'));
     });
   });
 

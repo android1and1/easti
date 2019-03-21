@@ -1,4 +1,9 @@
 $ ->
+  # after window.loaded,create a form -- form0
+  counter = 0
+  (new_form(counter++)).insertBefore $('#total-submit') 
+  # the first form should disable 'delete' button
+  $('button.btn-danger').attr 'disabled',1 
   # 注册所有类型为RADIO的控件，当点击时禁用/解禁相邻的TEXT控件。
   $('#container').on 'click','input[type=radio]',(e)->
     $input_entry = $(this).closest('.form-group').next().find 'input'
@@ -15,15 +20,13 @@ $ ->
         $input_entry.removeAttr 'disabled'
 
   $('#container').on 'click','button.more',(e)->
-    # clone default form#form0
-    lastform = $('form').last()
-    newer = $('#hidden-form').clone()
-    newer.removeClass 'hidden'
-    newer.find('.btn-danger').removeAttr('disabled')
-    lastform.after newer 
+    # create a new form
+    $form = new_form(counter)
+    $form.insertBefore $('#total-submit') 
     e.preventDefault()
     e.stopPropagation()
-    
+    counter++
+
   $('#container').on 'click','button.btn-danger',(e)->
     theform = $(@).closest('form')
     theform.remove()
@@ -36,9 +39,3 @@ $ ->
       $('h1').first().after '<p>' +  i.name + ':' +  i.value + '</p>'
     e.preventDefault()
     e.stopPropagation()
-  counter = 0
-  $('button#id44').on 'click',(e)->
-    # create a new form
-    counter++
-    $form = new_form(counter)
-    $form.insertBefore $('#total-submit') 
