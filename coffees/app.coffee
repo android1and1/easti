@@ -104,6 +104,14 @@ app.all '/play',(req,res)->
     console.dir req.body
   else
     res.render 'play',{title:'p-l-a-y-!'}
+app.all '/play-version-xhr2',(req,res)->
+  # via html5 and xml http request version2.
+  if req.method is 'POST'
+    res.send JSON.stringify {something:'you should do'} 
+    console.dir req.body
+  else
+    res.render 'play-ver-2',{title:'p-l-a-y-!'}
+  
 
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'

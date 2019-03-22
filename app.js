@@ -155,6 +155,20 @@
     }
   });
 
+  app.all('/play-version-xhr2', function(req, res) {
+    // via html5 and xml http request version2.
+    if (req.method === 'POST') {
+      res.send(JSON.stringify({
+        something: 'you should do'
+      }));
+      return console.dir(req.body);
+    } else {
+      return res.render('play-ver-2', {
+        title: 'p-l-a-y-!'
+      });
+    }
+  });
+
   app.get('/user/daka', async function(req, res) {
     var ids, ref, ref1, today, user;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'user') {
