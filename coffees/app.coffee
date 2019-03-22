@@ -112,6 +112,9 @@ app.all '/play-version-xhr2',(req,res)->
     formdata.parse req,(err,fields,files)->
       if err
         return res.json 'ajax error.'
+      # fields's structor is object,includes k-v peers
+      for k,v of fields
+        console.log k,':',v 
       res.json fields 
   else
     res.render 'play-ver-2',{title:'p-l-a-y-!'}

@@ -162,8 +162,14 @@
       // use formidable parse data
       formdata = new formidable.IncomingForm;
       return formdata.parse(req, function(err, fields, files) {
+        var k, v;
         if (err) {
           return res.json('ajax error.');
+        }
+// fields's structor is object,includes k-v peers
+        for (k in fields) {
+          v = fields[k];
+          console.log(k, ':', v);
         }
         return res.json(fields);
       });

@@ -1,9 +1,12 @@
 $ ->
   $('button#commit').on 'click',(e)->
+    # xhr2 + formData + [key:[]] structor
+    # the structor be found in zhongnan hospitol 2019-3-22 evening while
+    # A-Pin is ill
     xhr = new XMLHttpRequest
     xhr.open 'POST','/play-version-xhr2'
     xhr.responseType = 'json'
-    xhr.onload = (e)->
+    xhr.onloadend = (e)->
       json = @response
       console.log 'Server Said',json
       for a of json
@@ -11,8 +14,14 @@ $ ->
     # collect data
     fd = new FormData
     dataArray = $('form').serializeArray()
+    fields = {} 
     for peer in dataArray
-      console.log peer.name,peer.value
-      fd.append peer.name,peer.value
+      name = peer.name
+      value = peer.value
+      if name not in Object.keys(fields)
+        fields[name] = []
+      fields[name].push value
+    for n of fields 
+      fd.append n,fields[n]
     xhr.send fd 
 
