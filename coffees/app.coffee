@@ -107,8 +107,12 @@ app.all '/play',(req,res)->
 app.all '/play-version-xhr2',(req,res)->
   # via html5 and xml http request version2.
   if req.method is 'POST'
-    res.send JSON.stringify {something:'you should do'} 
-    console.dir req.body
+    # use formidable parse data
+    formdata = new formidable.IncomingForm
+    formdata.parse req,(err,fields,files)->
+      if err
+        return res.json 'ajax error.'
+      res.json fields 
   else
     res.render 'play-ver-2',{title:'p-l-a-y-!'}
   

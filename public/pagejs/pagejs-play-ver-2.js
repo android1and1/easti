@@ -2,18 +2,29 @@
 (function() {
   $(function() {
     return $('button#commit').on('click', function(e) {
-      var dataArray, xhr;
+      var dataArray, fd, i, len, peer, xhr;
       xhr = new XMLHttpRequest;
       xhr.open('POST', '/play-version-xhr2');
-      xhr.responseType = 'text';
-      xhr.onloadend = function(e) {
-        var text;
-        text = $(this).response;
-        return alert(text);
+      xhr.responseType = 'json';
+      xhr.onload = function(e) {
+        var a, json, results;
+        json = this.response;
+        console.log('Server Said', json);
+        results = [];
+        for (a in json) {
+          results.push(alert(a + ':' + json[a]));
+        }
+        return results;
       };
       // collect data
+      fd = new FormData;
       dataArray = $('form').serializeArray();
-      return xhr.send('nihao');
+      for (i = 0, len = dataArray.length; i < len; i++) {
+        peer = dataArray[i];
+        console.log(peer.name, peer.value);
+        fd.append(peer.name, peer.value);
+      }
+      return xhr.send(fd);
     });
   });
 

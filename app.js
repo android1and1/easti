@@ -156,12 +156,17 @@
   });
 
   app.all('/play-version-xhr2', function(req, res) {
+    var formdata;
     // via html5 and xml http request version2.
     if (req.method === 'POST') {
-      res.send(JSON.stringify({
-        something: 'you should do'
-      }));
-      return console.dir(req.body);
+      // use formidable parse data
+      formdata = new formidable.IncomingForm;
+      return formdata.parse(req, function(err, fields, files) {
+        if (err) {
+          return res.json('ajax error.');
+        }
+        return res.json(fields);
+      });
     } else {
       return res.render('play-ver-2', {
         title: 'p-l-a-y-!'
