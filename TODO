@@ -464,3 +464,8 @@ Inch13Early2015Air
 jp-stretch-pi-2
 Wed Mar 20 07:34:16 CST 2019
   includes buttons too.
+
+jp-stretch-pi-2
+Fri Mar 22 08:20:54 CST 2019
+  server side,parse the array from client's ajax's serializeArray(),it like:[{name:__,value:___},{name:__,value:___},...].
+  need do excerise??

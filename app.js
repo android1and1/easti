@@ -144,8 +144,15 @@
 
   
   // maniuate new func or new mind.
-  app.get('/play', function(req, res) {
-    return res.render('play');
+  app.all('/play', function(req, res) {
+    if (req.method === 'POST') {
+      res.json(req.body);
+      return console.dir(req.body);
+    } else {
+      return res.render('play', {
+        title: 'p-l-a-y-!'
+      });
+    }
   });
 
   app.get('/user/daka', async function(req, res) {

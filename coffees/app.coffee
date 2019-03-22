@@ -98,8 +98,12 @@ app.get '/create-qrcode',(req,res)->
   res.type 'png'
   qr_image.image(fulltext).pipe res 
 # maniuate new func or new mind.
-app.get '/play',(req,res)->
-  res.render 'play'
+app.all '/play',(req,res)->
+  if req.method is 'POST'
+    res.json req.body
+    console.dir req.body
+  else
+    res.render 'play',{title:'p-l-a-y-!'}
 
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'
