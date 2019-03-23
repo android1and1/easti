@@ -312,9 +312,13 @@ app.get '/admin/list-accounts',(req,res)->
   res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
 app.all '/admin/daka-complement',(req,res)->
   if req.method is 'POST'
-    #parse body
-    alias = req.body.alias
-    res.json parsed:alias:alias
+    # because client post via xhr,so server side use 'formidable' module
+    formid = new formidable.IncomingForm
+    formid.parse req,(err,fields,files)->
+      if err
+        res.json {code:-1} 
+      else
+        res.json fields 
   else
     res.render 'admin-daka-complement',{title:'Admin Daka-Complement'}
     

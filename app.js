@@ -492,13 +492,17 @@
   });
 
   app.all('/admin/daka-complement', function(req, res) {
-    var alias;
+    var formid;
     if (req.method === 'POST') {
-      //parse body
-      alias = req.body.alias;
-      return res.json({
-        parsed: {
-          alias: alias
+      // because client post via xhr,so server side use 'formidable' module
+      formid = new formidable.IncomingForm;
+      return formid.parse(req, function(err, fields, files) {
+        if (err) {
+          return res.json({
+            code: -1
+          });
+        } else {
+          return res.json(fields);
         }
       });
     } else {

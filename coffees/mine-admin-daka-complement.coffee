@@ -35,7 +35,23 @@ $ ->
 
   $('#total-submit').on 'click',(e)->
     arr = $('form').serializeArray()
-    for i in arr
-      $('h1').first().after '<p>' +  i.name + ':' +  i.value + '</p>'
+    fd = new FormData
+    mapobj = {} 
+    for item in arr
+      if item.name not in Object.keys(mapobj)
+        mapobj[item.name]=[] # initialize 
+      mapobj[item.name].push item.value
+    for item of mapobj
+      fd.append item,mapobj[item]
+    xhr = new XMLHttpRequest
+    # if no below line,response will be 'text'(string)
+    xhr.responseType = 'json'
+    xhr.ontimeout = 3000 # 3 secs. 
+    xhr.onloadend = (evt)->
+      # createAlertBox() included already
+      for k,v of evt.target.response
+        window.createAlertBox $('#msg'),k + ':' + v
+    xhr.open 'POST',''
+    xhr.send fd
     e.preventDefault()
     e.stopPropagation()

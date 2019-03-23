@@ -1,5 +1,6 @@
 extend layouts/main
 block pagejs
+  script(src="/pagejs/pagejs-create-alert-box.js")
   script.
     // defines a coviental method,to create a new form.
     // 写一个重头方法在此，原先的做法是放在public/mine/或是pagejs里。
@@ -82,3 +83,4 @@ block content
   div#container
     //- this button not include in the form.
     button.btn.btn-success.btn-block#total-submit Submit
+  div#msg
