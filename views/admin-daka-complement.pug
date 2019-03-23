@@ -28,7 +28,7 @@ block pagejs
       $label_option2 = $('<label/>',{text:'仅出场  '});
       $option2= $('<input/>',{'type':'radio','name':'combo' + n ,value:'option2'});
       $label_option3 = $('<label/>',{text:'进场 & 出场  '});
-      $option3= $('<input/>',{'type':'radio','name':  'combo' + n ,value:'option3'});
+      $option3= $('<input/>',{'checked':'1','type':'radio','name':  'combo' + n ,value:'option3'});
       // component group 2
       $label_option1.append($option1);
       $left.append($label_option1);
@@ -75,6 +75,7 @@ block pagejs
       $form.append($group5);
       $form.append('<br/>');
       $form.append('<br/>');
+      $form.append('<hr/>');
       return $form;
     }
   script(src="/mine/mine-admin-daka-complement.js")

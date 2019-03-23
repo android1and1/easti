@@ -34,15 +34,17 @@ $ ->
     e.stopPropagation()
 
   $('#total-submit').on 'click',(e)->
-    arr = $('form').serializeArray()
+    array = $('form').serializeArray()
     fd = new FormData
-    mapobj = {} 
-    for item in arr
-      if item.name not in Object.keys(mapobj)
-        mapobj[item.name]=[] # initialize 
-      mapobj[item.name].push item.value
-    for item of mapobj
-      fd.append item,mapobj[item]
+    # if multiple forms has same field name,need a map object
+    #mapobj = {} 
+    for item in array
+      #if item.name not in Object.keys(mapobj)
+      #  mapobj[item.name]=[] # initialize 
+      #mapobj[item.name].push item.value
+      fd.append item.name,item.value  
+    #for item of mapobj
+    #  fd.append item,mapobj[item]
     xhr = new XMLHttpRequest
     # if no below line,response will be 'text'(string)
     xhr.responseType = 'json'
