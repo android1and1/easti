@@ -44,7 +44,7 @@
     });
     return $('#total-submit').on('click', function(e) {
       var arr, i, j, len;
-      arr = $('form:not(".hidden")').serializeArray();
+      arr = $('form').serializeArray();
       for (j = 0, len = arr.length; j < len; j++) {
         i = arr[j];
         $('h1').first().after('<p>' + i.name + ':' + i.value + '</p>');
