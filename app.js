@@ -494,7 +494,7 @@
   app.all('/admin/daka-complement', function(req, res) {
     var formid;
     if (req.method === 'POST') {
-      // because client post via xhr,so server side use 'formidable' module
+      // client post via xhr,so server side use 'formidable' module
       formid = new formidable.IncomingForm;
       return formid.parse(req, function(err, fields, files) {
         if (err) {

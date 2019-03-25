@@ -309,11 +309,11 @@ app.get '/admin/list-accounts',(req,res)->
     obj.password = one.property 'password'
     obj.id = one.id
     results.push obj 
-    
   res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
+
 app.all '/admin/daka-complement',(req,res)->
   if req.method is 'POST'
-    # because client post via xhr,so server side use 'formidable' module
+    # client post via xhr,so server side use 'formidable' module
     formid = new formidable.IncomingForm
     formid.parse req,(err,fields,files)->
       if err

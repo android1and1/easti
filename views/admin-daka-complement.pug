@@ -12,7 +12,7 @@ block pagejs
       $label1 = $('<label/>',{'class':'col-xs-5','text':'Alias Name'});
       $row1 = $('<div/>',{'class':'col-xs-7'});
       // input:alias 
-      $input1 = $('<input/>',{'class':'input-lg form-control',name:'alias' + n,placeholder:'your alias..'});
+      $input1 = $('<input/>',{'class':'input-lg form-control',name:'alias' + n,placeholder:'User Alias..'});
       // group1 component
       $group1.append($label1);
       $row1.append($input1);
@@ -44,7 +44,7 @@ block pagejs
       $label3 = $('<label/>',{'class':'col-xs-5','text':'进场时间'});
       $row3 = $('<div/>',{'class':'col-xs-7'});
       $input3 = $('<input/>',{'class':'form-control',name:'first-half-'+ n,placeholder:'进场时间..'});
-      // component group 3
+      // group 3: second-half-N
       $group3.append($label3);
       $row3.append($input3);
       $group3.append($row3);
@@ -57,7 +57,7 @@ block pagejs
       $group4.append($label4);
       $row4.append($input4);
       $group4.append($row4);
-      //group 5 includes buttons.
+      //group 5: buttons.
       $group5 = $('<div/>',{'class':'btn-group btn-group-lg'});
       $resetbutton = $('<button/>',{'class':'btn btn-default','text':'Reset','type':'reset'});
       $deletebutton = $('<button/>',{'class':'btn btn-danger','text':'Delete'});
