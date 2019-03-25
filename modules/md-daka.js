@@ -29,10 +29,10 @@
         type: 'string',
         validations: ['notEmpty']
       },
-      isProxy: {
-        type: 'boolean',
+      dakaer: {
+        type: 'string',
         validations: ['notEmpty'],
-        defaultValue: false
+        defaultValue: 'self'
       },
       category: {
         type: 'string',
@@ -40,7 +40,7 @@
           'notEmpty',
           function(value,
           options) {
-            return Promise.resolve(value === 'am' || value === 'AM' || value === 'pm' || value === 'PM');
+            return Promise.resolve(value === 'entry' || value === 'Entry' || value === 'exit' || value === 'Exit');
           }
         ]
       }

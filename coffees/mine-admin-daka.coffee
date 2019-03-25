@@ -30,8 +30,15 @@ $ ->
     beforethings = $pngbox.find '.caption h3'
     if beforethings
       beforethings.remove()
-    #$('.caption').append '<h3>for user:' + seedobj.alias + '</h3>'
     $('.caption').append $('<h3/>',{text:'打卡人  ' + seedobj.alias,'class':'text-center'})
+    mode = seedobj.mode
+    if mode is 'entry'
+      mode = 'Entry(进场)'
+    else if mode is 'exit'
+      mode = 'Exit(出场)'
+    else
+      mode = 'Unkonw(不清)'
+    $('.caption').append $('<h3/>',{text:'状态 ' + mode,'class':'text-center'})
     $img.attr 'src',seedobj.url + querystring 
     $msgbox.append $ '<li/>',{text: 'Query String:' + querystring}
     $msgbox.append $ '<li/>',{text: seedobj.socketid + ' dakaing'}

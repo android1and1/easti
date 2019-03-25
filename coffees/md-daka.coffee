@@ -16,16 +16,16 @@ class Daka extends NohmModel
     whatistime:
       type:'string'
       validations:['notEmpty']
-    isProxy:
-      type:'boolean'
+    dakaer:
+      type:'string'
       validations:['notEmpty']
-      defaultValue:false 
+      defaultValue:'self'
     category:
       type:'string'
       validations:[
           'notEmpty' 
           (value,options)->
-            Promise.resolve value in ['entry','Entry','exit','Exit]
+            Promise.resolve value in ['entry','Entry','exit','Exit']
         ]
         
 module.exports = Daka

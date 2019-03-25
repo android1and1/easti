@@ -24,7 +24,7 @@
       }));
     });
     return socket.on('fetch qr', function(seedobj) {
-      var beforethings, querystring, socketid;
+      var beforethings, mode, querystring, socketid;
       // display a png qrcode for users 'daka'
       socketid = seedobj.socketid.replace('#', '');
       querystring = '?socketid=' + socketid;
@@ -39,9 +39,20 @@
       if (beforethings) {
         beforethings.remove();
       }
-      //$('.caption').append '<h3>for user:' + seedobj.alias + '</h3>'
       $('.caption').append($('<h3/>', {
         text: '打卡人  ' + seedobj.alias,
+        'class': 'text-center'
+      }));
+      mode = seedobj.mode;
+      if (mode === 'entry') {
+        mode = 'Entry(进场)';
+      } else if (mode === 'exit') {
+        mode = 'Exit(出场)';
+      } else {
+        mode = 'Unkonw(不清)';
+      }
+      $('.caption').append($('<h3/>', {
+        text: '状态 ' + mode,
         'class': 'text-center'
       }));
       $img.attr('src', seedobj.url + querystring);

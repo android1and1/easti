@@ -135,9 +135,7 @@
     await setAsync('important', text);
     await expireAsync('important', 60);
     // templary solid ,original mode is j602 
-    fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text;
-    
-    //fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&mode=' + req.query.mode + '&&check=' + text 
+    fulltext = 'http://192.168.5.2:3003/user/daka-response?mode=' + req.query.mode + '&&alias=' + req.query.alias + '&&check=' + text;
     res.type('png');
     return qr_image.image(fulltext).pipe(res);
   });
@@ -302,8 +300,7 @@
           utc_ms: ms,
           whatistime: desc,
           browser: req.headers["user-agent"],
-          isProxy: false,
-          category: req.query.mode // entry or exit
+          category: req.query.mode // 'entry' or 'exit' mode
         });
         await ins.save();
         return res.render('user-daka-response', {
