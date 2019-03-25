@@ -18,4 +18,5 @@ $ ->
   ['entry','exit'].forEach (v)->
     elename = 'button#' + v
     $(elename).on 'click',(e)->
-      user.emit 'query qr',user.id,alias
+      # add 'v' as the 3rd argument,will invokes at route '/user/daka'
+      user.emit 'query qr',user.id,alias,v

@@ -22,6 +22,7 @@ $ ->
     querystring = '?socketid=' + socketid
     querystring += '&&timestamp=' + seedobj.timestamp
     querystring += '&&alias=' + seedobj.alias
+    querystring += '&&mode=' + seedobj.mode
     # remove alias name element,then add new one.
     #beforethings =  $pngbox.find('h4.text-center')
     #if beforethings

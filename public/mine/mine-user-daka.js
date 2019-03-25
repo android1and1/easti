@@ -33,7 +33,8 @@
       var elename;
       elename = 'button#' + v;
       return $(elename).on('click', function(e) {
-        return user.emit('query qr', user.id, alias);
+        // add 'v' as the 3rd argument,will invokes at route '/user/daka'
+        return user.emit('query qr', user.id, alias, v);
       });
     });
   });

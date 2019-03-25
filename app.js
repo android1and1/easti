@@ -137,7 +137,7 @@
     // templary solid ,original mode is j602 
     fulltext = 'http://192.168.5.2:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text;
     
-    //fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&check=' + text 
+    //fulltext = 'http://192.168.3.160:3003/user/daka-response?alias=' + req.query.alias + '&&mode=' + req.query.mode + '&&check=' + text 
     res.type('png');
     return qr_image.image(fulltext).pipe(res);
   });
@@ -199,8 +199,9 @@
           min: Date.parse(today)
         }
       }));
+      // mode变量值为0提示“入场”待打卡状态，1则为“出场”待打卡状态。
       return res.render('user-daka', {
-        mod: ids.length,
+        mode: ids.length,
         alias: user,
         title: 'User DaKa Console'
       });
@@ -300,7 +301,9 @@
           alias: req.query.alias, // or req.session.auth.alias 
           utc_ms: ms,
           whatistime: desc,
-          browser: req.headers["user-agent"]
+          browser: req.headers["user-agent"],
+          isProxy: false,
+          category: req.query.mode // entry or exit
         });
         await ins.save();
         return res.render('user-daka-response', {

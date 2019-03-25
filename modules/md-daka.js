@@ -28,6 +28,21 @@
       whatistime: {
         type: 'string',
         validations: ['notEmpty']
+      },
+      isProxy: {
+        type: 'boolean',
+        validations: ['notEmpty'],
+        defaultValue: false
+      },
+      category: {
+        type: 'string',
+        validations: [
+          'notEmpty',
+          function(value,
+          options) {
+            return Promise.resolve(value === 'am' || value === 'AM' || value === 'pm' || value === 'PM');
+          }
+        ]
       }
     };
 

@@ -4,13 +4,13 @@ block content
   h1(class="text-center") 打卡APP 内部使用 
   h1(id="box" class="text-center" data-alias= alias) 打卡人:#{alias} 
   p 按下相应按钮申请打卡，扫描管理机上的二维码，完成打卡。 
-  - if(mod==0){
+  - if(mode==0){
     button(id="entry" class="btn-block btn-default btn") Entry(入场)
     br/
     br/
     button(id="exit" class="btn-block btn-default btn" disabled="true") Exit(出场)
   - }
-  - else if(mod == 1){
+  - else if(mode == 1){
     button(id="entry" class="btn-block btn-default btn" disabled="true") Entry(入场)
     button(id="exit" class="btn-block btn-default btn") Exit(出场)
   - }else{
