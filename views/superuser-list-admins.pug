@@ -16,6 +16,12 @@ block content
         .panel-body
           h3= "alias= " + alias 
           h3= "role= " + role 
-          h3= "timestamp= " + timestamp 
+          - time_describe = new Date(timestamp)
+          h3= "账户创建时间: " + time_describe
           h3= "password= " + password
-      
+        .row
+          .col-sm-offset-4.col-sm-5
+            button.btn.btn-danger.remove Remove!
+        br/
+block pagejs
+  script(src="/mine/mine-superuser-list-admins.js")
