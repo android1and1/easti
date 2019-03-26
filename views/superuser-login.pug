@@ -2,6 +2,7 @@ extend layouts/main
 //- its route is:'/admin/login
 block content
   form(action="/superuser/login" method="POST" id="loginform")
+    input(class="hidden" name="itisreferrer" value=referrer )
     .form-group
       h2.form-control-static Super User
     .form-group

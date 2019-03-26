@@ -97,27 +97,6 @@ app.get '/create-qrcode',(req,res)->
   res.type 'png'
   qr_image.image(fulltext).pipe res 
 # maniuate new func or new mind.
-app.all '/play',(req,res)->
-  if req.method is 'POST'
-    res.json req.body
-    console.dir req.body
-  else
-    res.render 'play',{title:'p-l-a-y-!'}
-app.all '/play-version-xhr2',(req,res)->
-  # via html5 and xml http request version2.
-  if req.method is 'POST'
-    # use formidable parse data
-    formdata = new formidable.IncomingForm
-    formdata.parse req,(err,fields,files)->
-      if err
-        return res.json 'ajax error.'
-      # fields's structor is object,includes k-v peers
-      for k,v of fields
-        console.log k,':',v 
-      res.json fields 
-  else
-    res.render 'play-ver-2',{title:'p-l-a-y-!'}
-  
 
 app.get '/user/daka',(req,res)->
   if req.session?.auth?.role isnt 'user'
@@ -298,7 +277,7 @@ app.get '/admin/login-success',(req,res)->
 app.get '/admin/list-accounts',(req,res)->
   if req.session?.auth?.role isnt 'admin' 
     req.session.referrer = '/admin/list-accounts'
-    return res.redirect 302,'/admin/login'
+    return res.redirect 303,'/admin/login'
   inss = await accountModel.findAndLoad()
   results = [] 
   inss.forEach (one)->
@@ -311,7 +290,10 @@ app.get '/admin/list-accounts',(req,res)->
     results.push obj 
   res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
 
-app.all '/admin/daka-complement',(req,res)->
+app.all '/superuser/daka-complement',(req,res)->
+  if req.session?.auth?.role isnt 'superuser'
+    req.session.referrer = '/superuser/daka-complement'
+    return res.redirect 303,'/superuser/login'
   if req.method is 'POST'
     # client post via xhr,so server side use 'formidable' module
     formid = new formidable.IncomingForm
@@ -325,24 +307,27 @@ app.all '/admin/daka-complement',(req,res)->
         for obj in objs #objs is an array,elements be made by one object
           response = await complement_save obj['combo'],obj      
           responses.push response
-        # response to browser(client)
+        # responses example:[{},[{},{}],{}...]
         res.json responses
-        console.dir responses
   else
-    res.render 'admin-daka-complement',{title:'Admin Daka-Complement'}
+    res.render 'superuser-daka-complement',{title:'Super User Daka-Complement'}
 
 app.get '/superuser/login',(req,res)->
+  # referrer will received from middle ware
   res.render 'superuser-login.pug',{title:'Are You A Super?'}
 
 app.post '/superuser/login',(req,res)->
   # initial sesson.auth
   initSession req
   superkey = (require './credentials/super-user.js').password
-  {password} = req.body
+  {password,itisreferrer} = req.body
   hash = sha256 password
   if hash is superkey
     updateAuthSession req,'superuser','superuser'
-    res.json {staus:'super user login success.'}
+    if itisreferrer
+      res.redirect 302,itisreferrer
+    else
+      res.json {staus:'super user login success.'}
   else
     updateAuthSession req,'unknown','noname'
     res.json {staus:'super user login failurre.'}
@@ -481,10 +466,6 @@ complement_save = (option,fieldobj)->
   response = undefined 
   # inner help function - single_save()
   single_save = (standard)->
-    console.log ' x x'.repeat 12
-    console.log 'standard object'
-    console.dir standard
-    console.log ' x x'.repeat 12
     ins = await Nohm.factory 'daily'
     ins.property standard 
     try

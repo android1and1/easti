@@ -63,15 +63,8 @@
       xhr.responseType = 'json';
       xhr.ontimeout = 3000; // 3 secs. 
       xhr.onloadend = function(evt) {
-        var k, ref, results, v;
-        ref = evt.target.response;
         // createAlertBox() included already
-        results = [];
-        for (k in ref) {
-          v = ref[k];
-          results.push(window.createAlertBox($('#msg'), k + ':' + v));
-        }
-        return results;
+        return window.createAlertBox($('#msg'), JSON.stringify(xhr.response));
       };
       xhr.open('POST', '');
       xhr.send(fd);

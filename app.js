@@ -143,42 +143,6 @@
 
   
   // maniuate new func or new mind.
-  app.all('/play', function(req, res) {
-    if (req.method === 'POST') {
-      res.json(req.body);
-      return console.dir(req.body);
-    } else {
-      return res.render('play', {
-        title: 'p-l-a-y-!'
-      });
-    }
-  });
-
-  app.all('/play-version-xhr2', function(req, res) {
-    var formdata;
-    // via html5 and xml http request version2.
-    if (req.method === 'POST') {
-      // use formidable parse data
-      formdata = new formidable.IncomingForm;
-      return formdata.parse(req, function(err, fields, files) {
-        var k, v;
-        if (err) {
-          return res.json('ajax error.');
-        }
-// fields's structor is object,includes k-v peers
-        for (k in fields) {
-          v = fields[k];
-          console.log(k, ':', v);
-        }
-        return res.json(fields);
-      });
-    } else {
-      return res.render('play-ver-2', {
-        title: 'p-l-a-y-!'
-      });
-    }
-  });
-
   app.get('/user/daka', async function(req, res) {
     var ids, ref, ref1, today, user;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'user') {
@@ -472,7 +436,7 @@
     var inss, ref, ref1, results;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
       req.session.referrer = '/admin/list-accounts';
-      return res.redirect(302, '/admin/login');
+      return res.redirect(303, '/admin/login');
     }
     inss = (await accountModel.findAndLoad());
     results = [];
@@ -492,8 +456,12 @@
     });
   });
 
-  app.all('/admin/daka-complement', function(req, res) {
-    var formid;
+  app.all('/superuser/daka-complement', function(req, res) {
+    var formid, ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'superuser') {
+      req.session.referrer = '/superuser/daka-complement';
+      return res.redirect(303, '/superuser/login');
+    }
     if (req.method === 'POST') {
       // client post via xhr,so server side use 'formidable' module
       formid = new formidable.IncomingForm;
@@ -513,36 +481,40 @@
             response = (await complement_save(obj['combo'], obj));
             responses.push(response);
           }
-          // response to browser(client)
-          res.json(responses);
-          return console.dir(responses);
+          // responses example:[{},[{},{}],{}...]
+          return res.json(responses);
         }
       });
     } else {
-      return res.render('admin-daka-complement', {
-        title: 'Admin Daka-Complement'
+      return res.render('superuser-daka-complement', {
+        title: 'Super User Daka-Complement'
       });
     }
   });
 
   app.get('/superuser/login', function(req, res) {
+    // referrer will received from middle ware
     return res.render('superuser-login.pug', {
       title: 'Are You A Super?'
     });
   });
 
   app.post('/superuser/login', function(req, res) {
-    var hash, password, superkey;
+    var hash, itisreferrer, password, superkey;
     // initial sesson.auth
     initSession(req);
     superkey = (require('./credentials/super-user.js')).password;
-    ({password} = req.body);
+    ({password, itisreferrer} = req.body);
     hash = sha256(password);
     if (hash === superkey) {
       updateAuthSession(req, 'superuser', 'superuser');
-      return res.json({
-        staus: 'super user login success.'
-      });
+      if (itisreferrer) {
+        return res.redirect(302, itisreferrer);
+      } else {
+        return res.json({
+          staus: 'super user login success.'
+        });
+      }
     } else {
       updateAuthSession(req, 'unknown', 'noname');
       return res.json({
@@ -740,10 +712,6 @@
     // inner help function - single_save()
     single_save = async function(standard) {
       var error, ins;
-      console.log(' x x'.repeat(12));
-      console.log('standard object');
-      console.dir(standard);
-      console.log(' x x'.repeat(12));
       ins = (await Nohm.factory('daily'));
       ins.property(standard);
       try {

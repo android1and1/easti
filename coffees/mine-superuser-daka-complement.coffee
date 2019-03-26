@@ -51,8 +51,7 @@ $ ->
     xhr.ontimeout = 3000 # 3 secs. 
     xhr.onloadend = (evt)->
       # createAlertBox() included already
-      for k,v of evt.target.response
-        window.createAlertBox $('#msg'),k + ':' + v
+      window.createAlertBox $('#msg'),JSON.stringify(xhr.response)
     xhr.open 'POST',''
     xhr.send fd
     e.preventDefault()
