@@ -319,10 +319,18 @@ app.all '/admin/daka-complement',(req,res)->
       if err
         res.json {code:-1} 
       else
-        res.json fields 
+        # store
+        objs = convert fields 
+        responses = []
+        for obj in objs #objs is an array,elements be made by one object
+          response = await complement_save obj['combo'],obj      
+          responses.push response
+        # response to browser(client)
+        res.json responses
+        console.dir responses
   else
     res.render 'admin-daka-complement',{title:'Admin Daka-Complement'}
-    
+
 app.get '/superuser/login',(req,res)->
   res.render 'superuser-login.pug',{title:'Are You A Super?'}
 
@@ -453,3 +461,72 @@ sha256 = (plain)->
   crypto.createHash 'sha256'
     .update plain
     .digest 'hex'
+
+# help func convert,can convert formidable's fields object to an object arrary(for iterator store in redis).
+convert = (fields)->
+  results = []
+  for i,v of fields
+    matched = i.match /(\D*)(\d*)$/ 
+    pre = matched[1]
+    post = matched[2] 
+    if (post in Object.keys(results)) is false
+      results[post] = {}
+    results[post][pre] = v
+  results
+
+# help function - complement_save()
+# complement_save handle single object(one form in client side).
+complement_save = (option,fieldobj)->
+  # option always is uploaded object's field - option
+  response = undefined 
+  # inner help function - single_save()
+  single_save = (standard)->
+    console.log ' x x'.repeat 12
+    console.log 'standard object'
+    console.dir standard
+    console.log ' x x'.repeat 12
+    ins = await Nohm.factory 'daily'
+    ins.property standard 
+    try
+      await ins.save()
+    catch error
+      console.dir error
+      return {'item-id':ins.id,'saved':false,reason:ins.errors}
+    return {'item-id':ins.id,'saved':true}
+  switch option
+    when 'option1'
+      standard = 
+        alias:fieldobj.alias
+        utc_ms:Date.parse fieldobj['first-half-']
+        whatistime:fieldobj['first-half-']
+        dakaer:'admin'
+        category:'entry' 
+      response = await single_save standard
+    when 'option2'
+      standard = 
+        alias:fieldobj.alias
+        utc_ms:Date.parse fieldobj['second-half-']
+        whatistime:fieldobj['second-half-']
+        dakaer:'admin'
+        category:'exit' 
+      response = await single_save standard
+    when 'option3'
+      standard1 = 
+        alias:fieldobj.alias
+        utc_ms:Date.parse fieldobj['first-half-']
+        whatistime:fieldobj['first-half-']
+        dakaer:'admin'
+        category:'entry' 
+      standard2 = 
+        alias:fieldobj.alias
+        utc_ms:Date.parse fieldobj['second-half-']
+        whatistime:fieldobj['second-half-']
+        dakaer:'admin'
+        category:'exit' 
+      # save 2 instances.
+      response1 = await single_save standard1
+      response2 = await single_save standard2
+      response = [response1,response2]
+    else
+      response = {code:-1,reason:'unknow status.'}
+  response

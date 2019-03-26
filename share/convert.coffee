@@ -14,6 +14,14 @@ fields =
   option3:'d option'
   data3:'d data'
   time3:'d time'
+  alias33:'x person'
+  option33:'x person'
+  'alias-34':'y person'
+  'option-34':'y option'
+  'data-first-half-34':'y data'
+  alias44:'the last man'
+  option44:'the last option'
+  data44:'the last data'
 
 
 # change fields as [{alias:'a person',option:'a option',data:'a data'},

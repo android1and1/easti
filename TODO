@@ -491,3 +491,10 @@ Sat Mar 23 15:05:26 CST 2019
 jp-stretch-pi-2
 Mon Mar 25 20:16:09 CST 2019
   batch store,admin complement.implement it.
+
+jp-stretch-pi-2
+Tue Mar 26 11:45:59 CST 2019
+  need simple response message for client /admin/daka-complement,alert-box,statifics:[{},{},[{},{}],{}].
+  above said,4 forms,the 3rd form include 'entry' and 'exit' items.saved successfully.client(administrator) need know stored:5 items,
+  statifics:stored 5 items - [14,15,16,17,18]  in array is ids of items which be saved successfully.
+  jie manman now.
