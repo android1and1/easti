@@ -274,11 +274,11 @@ app.post '/admin/login',(req,res)->
 app.get '/admin/login-success',(req,res)->
   res.render 'admin-login-success.pug',{title:'Administrator Role Entablished'}
 
-app.get '/admin/list-accounts',(req,res)->
+app.get '/admin/list-users',(req,res)->
   if req.session?.auth?.role isnt 'admin' 
-    req.session.referrer = '/admin/list-accounts'
+    req.session.referrer = '/admin/list-users'
     return res.redirect 303,'/admin/login'
-  inss = await accountModel.findAndLoad()
+  inss = await accountModel.findAndLoad({'role':'user'})
   results = [] 
   inss.forEach (one)->
     obj = {}
@@ -288,7 +288,7 @@ app.get '/admin/list-accounts',(req,res)->
     obj.password = one.property 'password'
     obj.id = one.id
     results.push obj 
-  res.render 'list-accounts',{title:'Admin:List Accounts',accounts:results}
+  res.render 'admin-list-users',{title:'Admin:List-Users',accounts:results}
 
 app.all '/superuser/daka-complement',(req,res)->
   if req.session?.auth?.role isnt 'superuser'
@@ -349,7 +349,22 @@ app.get '/admin/list-user-daka',(req,res)->
     obj = ins.allProperties()
     result.push obj 
   res.render 'admin-list-user-daka',{title:'List User DaKa Items',data:result}
-  
+app.get '/superuser/list-admins',(req,res)->
+  if req.session?.auth?.role isnt 'superuser'
+    req.session.referrer = '/superuser/list-admins'
+    return res.redirect 303,'/superuser/login'
+  inss = await accountModel.findAndLoad {'role':'admin'}  
+  results = [] 
+  inss.forEach (one)->
+    obj = {}
+    obj.alias = one.property 'alias'
+    obj.role = one.property 'role'
+    obj.initial_timestamp = one.property 'initial_timestamp'
+    obj.password = one.property 'password'
+    obj.id = one.id
+    results.push obj 
+  res.render 'superuser-list-admins',{title:'List-Administrators',accounts:results}
+
 app.get '/superuser/register-admin',(req,res)->
   if req.session?.auth?.role isnt 'superuser'
     res.redirect 302,'/superuser/login'

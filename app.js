@@ -432,13 +432,15 @@
     });
   });
 
-  app.get('/admin/list-accounts', async function(req, res) {
+  app.get('/admin/list-users', async function(req, res) {
     var inss, ref, ref1, results;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
-      req.session.referrer = '/admin/list-accounts';
+      req.session.referrer = '/admin/list-users';
       return res.redirect(303, '/admin/login');
     }
-    inss = (await accountModel.findAndLoad());
+    inss = (await accountModel.findAndLoad({
+      'role': 'user'
+    }));
     results = [];
     inss.forEach(function(one) {
       var obj;
@@ -450,8 +452,8 @@
       obj.id = one.id;
       return results.push(obj);
     });
-    return res.render('list-accounts', {
-      title: 'Admin:List Accounts',
+    return res.render('admin-list-users', {
+      title: 'Admin:List-Users',
       accounts: results
     });
   });
@@ -549,6 +551,32 @@
     return res.render('admin-list-user-daka', {
       title: 'List User DaKa Items',
       data: result
+    });
+  });
+
+  app.get('/superuser/list-admins', async function(req, res) {
+    var inss, ref, ref1, results;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'superuser') {
+      req.session.referrer = '/superuser/list-admins';
+      return res.redirect(303, '/superuser/login');
+    }
+    inss = (await accountModel.findAndLoad({
+      'role': 'admin'
+    }));
+    results = [];
+    inss.forEach(function(one) {
+      var obj;
+      obj = {};
+      obj.alias = one.property('alias');
+      obj.role = one.property('role');
+      obj.initial_timestamp = one.property('initial_timestamp');
+      obj.password = one.property('password');
+      obj.id = one.id;
+      return results.push(obj);
+    });
+    return res.render('superuser-list-admins', {
+      title: 'List-Administrators',
+      accounts: results
     });
   });
 
