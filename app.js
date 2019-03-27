@@ -432,6 +432,35 @@
     });
   });
 
+  app.get('/admin/list-user-daka', async function(req, res) {
+    var alias, ins, inss, j, len, obj, ref, ref1, result;
+    alias = req.query.alias;
+    if (!alias) {
+      return res.json('no special user,check and redo.');
+    }
+    if (!filter(alias)) {
+      return res.json('has invalid char(s).');
+    }
+    // first,check role if is admin
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/list-user-daka?alias=' + alias;
+      return res.redirect(303, '/admin/login');
+    }
+    inss = (await dakaModel.findAndLoad({
+      alias: alias
+    }));
+    result = [];
+    for (j = 0, len = inss.length; j < len; j++) {
+      ins = inss[j];
+      obj = ins.allProperties();
+      result.push(obj);
+    }
+    return res.render('admin-list-user-daka', {
+      title: 'List User DaKa Items',
+      data: result
+    });
+  });
+
   app.get('/admin/list-users', async function(req, res) {
     var inss, ref, ref1, results;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
@@ -455,6 +484,53 @@
     return res.render('admin-list-users', {
       title: 'Admin:List-Users',
       accounts: results
+    });
+  });
+
+  app.get('/superuser/list-admins', async function(req, res) {
+    var inss, ref, ref1, results;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'superuser') {
+      req.session.referrer = '/superuser/list-admins';
+      return res.redirect(303, '/superuser/login');
+    }
+    inss = (await accountModel.findAndLoad({
+      'role': 'admin'
+    }));
+    results = [];
+    inss.forEach(function(one) {
+      var obj;
+      obj = {};
+      obj.alias = one.property('alias');
+      obj.role = one.property('role');
+      obj.initial_timestamp = one.property('initial_timestamp');
+      obj.password = one.property('password');
+      obj.id = one.id;
+      return results.push(obj);
+    });
+    return res.render('superuser-list-admins', {
+      title: 'List-Administrators',
+      accounts: results
+    });
+  });
+
+  app.put('/superuser/del-admin', async function(req, res) {
+    var error, id, ins;
+    ins = (await Nohm.factory('account'));
+    // req.query.id be transimit from '/superuser/list-admins' page.  
+    id = req.query.id;
+    ins.id = id;
+    try {
+      await ins.remove();
+    } catch (error1) {
+      error = error1;
+      return res.json({
+        code: -1,
+        'reason': JSON.stringify(ins.errors)
+      });
+    }
+    return res.json({
+      code: 0,
+      'gala': 'remove #' + id + ' success.'
     });
   });
 
@@ -502,20 +578,17 @@
   });
 
   app.post('/superuser/login', function(req, res) {
-    var hash, itisreferrer, password, superkey;
+    var hash, itisreferrer, password;
     // initial sesson.auth
     initSession(req);
-    superkey = (require('./credentials/super-user.js')).password;
     ({password, itisreferrer} = req.body);
     hash = sha256(password);
-    if (hash === superkey) {
+    if (hash === superpass) {
       updateAuthSession(req, 'superuser', 'superuser');
       if (itisreferrer) {
-        return res.redirect(302, itisreferrer);
+        return res.redirect(303, itisreferrer);
       } else {
-        return res.json({
-          staus: 'super user login success.'
-        });
+        return res.redirect(301, '/superuser/login-success.pug');
       }
     } else {
       updateAuthSession(req, 'unknown', 'noname');
@@ -523,61 +596,6 @@
         staus: 'super user login failurre.'
       });
     }
-  });
-
-  app.get('/admin/list-user-daka', async function(req, res) {
-    var alias, ins, inss, j, len, obj, ref, ref1, result;
-    // first,check role if is admin
-    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
-      req.session.referrer = '/admin/list-user-items';
-      return res.redirect(303, '/admin/login');
-    }
-    alias = req.query.alias;
-    if (!alias) {
-      return res.json('no special user,check and redo.');
-    }
-    if (!filter(alias)) {
-      return res.json('has invalid char(s).');
-    }
-    inss = (await dakaModel.findAndLoad({
-      alias: alias
-    }));
-    result = [];
-    for (j = 0, len = inss.length; j < len; j++) {
-      ins = inss[j];
-      obj = ins.allProperties();
-      result.push(obj);
-    }
-    return res.render('admin-list-user-daka', {
-      title: 'List User DaKa Items',
-      data: result
-    });
-  });
-
-  app.get('/superuser/list-admins', async function(req, res) {
-    var inss, ref, ref1, results;
-    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'superuser') {
-      req.session.referrer = '/superuser/list-admins';
-      return res.redirect(303, '/superuser/login');
-    }
-    inss = (await accountModel.findAndLoad({
-      'role': 'admin'
-    }));
-    results = [];
-    inss.forEach(function(one) {
-      var obj;
-      obj = {};
-      obj.alias = one.property('alias');
-      obj.role = one.property('role');
-      obj.initial_timestamp = one.property('initial_timestamp');
-      obj.password = one.property('password');
-      obj.id = one.id;
-      return results.push(obj);
-    });
-    return res.render('superuser-list-admins', {
-      title: 'List-Administrators',
-      accounts: results
-    });
   });
 
   app.get('/superuser/register-admin', function(req, res) {

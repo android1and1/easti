@@ -274,6 +274,23 @@ app.post '/admin/login',(req,res)->
 app.get '/admin/login-success',(req,res)->
   res.render 'admin-login-success.pug',{title:'Administrator Role Entablished'}
 
+app.get '/admin/list-user-daka',(req,res)->
+  alias = req.query.alias
+  if ! alias 
+    return res.json 'no special user,check and redo.'
+  if not filter alias
+    return res.json 'has invalid char(s).'
+  # first,check role if is admin
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/list-user-daka?alias=' +  alias
+    return res.redirect 303,'/admin/login'
+  inss = await dakaModel.findAndLoad alias:alias
+  result = []
+  for ins in inss
+    obj = ins.allProperties()
+    result.push obj 
+  res.render 'admin-list-user-daka',{title:'List User DaKa Items',data:result}
+
 app.get '/admin/list-users',(req,res)->
   if req.session?.auth?.role isnt 'admin' 
     req.session.referrer = '/admin/list-users'
@@ -290,6 +307,33 @@ app.get '/admin/list-users',(req,res)->
     results.push obj 
   res.render 'admin-list-users',{title:'Admin:List-Users',accounts:results}
 
+app.get '/superuser/list-admins',(req,res)->
+  if req.session?.auth?.role isnt 'superuser'
+    req.session.referrer = '/superuser/list-admins'
+    return res.redirect 303,'/superuser/login'
+  inss = await accountModel.findAndLoad {'role':'admin'}  
+  results = [] 
+  inss.forEach (one)->
+    obj = {}
+    obj.alias = one.property 'alias'
+    obj.role = one.property 'role'
+    obj.initial_timestamp = one.property 'initial_timestamp'
+    obj.password = one.property 'password'
+    obj.id = one.id
+    results.push obj 
+  res.render 'superuser-list-admins',{title:'List-Administrators',accounts:results}
+
+app.put '/superuser/del-admin',(req,res)->
+  ins = await Nohm.factory 'account'
+  # req.query.id be transimit from '/superuser/list-admins' page.  
+  id = req.query.id
+  ins.id = id
+  try
+    await ins.remove()
+  catch error
+    return res.json {code:-1,'reason':JSON.stringify(ins.errors)}
+  return res.json {code:0,'gala':'remove #' + id + ' success.'}
+   
 app.all '/superuser/daka-complement',(req,res)->
   if req.session?.auth?.role isnt 'superuser'
     req.session.referrer = '/superuser/daka-complement'
@@ -319,51 +363,18 @@ app.get '/superuser/login',(req,res)->
 app.post '/superuser/login',(req,res)->
   # initial sesson.auth
   initSession req
-  superkey = (require './credentials/super-user.js').password
   {password,itisreferrer} = req.body
   hash = sha256 password
-  if hash is superkey
+  if hash is superpass
     updateAuthSession req,'superuser','superuser'
     if itisreferrer
-      res.redirect 302,itisreferrer
+      res.redirect 303,itisreferrer
     else
-      res.json {staus:'super user login success.'}
+      res.redirect 301,'/superuser/login-success.pug'
   else
     updateAuthSession req,'unknown','noname'
     res.json {staus:'super user login failurre.'}
   
-
-app.get '/admin/list-user-daka',(req,res)->
-  # first,check role if is admin
-  if req.session?.auth?.role isnt 'admin'
-    req.session.referrer = '/admin/list-user-items'
-    return res.redirect 303,'/admin/login'
-  alias = req.query.alias
-  if ! alias 
-    return res.json 'no special user,check and redo.'
-  if not filter alias
-    return res.json 'has invalid char(s).'
-  inss = await dakaModel.findAndLoad alias:alias
-  result = []
-  for ins in inss
-    obj = ins.allProperties()
-    result.push obj 
-  res.render 'admin-list-user-daka',{title:'List User DaKa Items',data:result}
-app.get '/superuser/list-admins',(req,res)->
-  if req.session?.auth?.role isnt 'superuser'
-    req.session.referrer = '/superuser/list-admins'
-    return res.redirect 303,'/superuser/login'
-  inss = await accountModel.findAndLoad {'role':'admin'}  
-  results = [] 
-  inss.forEach (one)->
-    obj = {}
-    obj.alias = one.property 'alias'
-    obj.role = one.property 'role'
-    obj.initial_timestamp = one.property 'initial_timestamp'
-    obj.password = one.property 'password'
-    obj.id = one.id
-    results.push obj 
-  res.render 'superuser-list-admins',{title:'List-Administrators',accounts:results}
 
 app.get '/superuser/register-admin',(req,res)->
   if req.session?.auth?.role isnt 'superuser'

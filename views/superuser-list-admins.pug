@@ -21,7 +21,9 @@ block content
           h3= "password= " + password
         .row
           .col-sm-offset-4.col-sm-5
-            button.btn.btn-danger.remove Remove!
+            button.btn.btn-danger.remove(data-itemid=id) Remove!
         br/
 block pagejs
+  script(src="/pagejs/pagejs-createModal.js")
+  script(src="/pagejs/pagejs-create-alert-box.js")
   script(src="/mine/mine-superuser-list-admins.js")
