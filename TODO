@@ -512,3 +512,9 @@ Tue Mar 26 22:44:19 CST 2019
 Inch13Early2015Air
 2019年 3月27日 星期三 10时45分07秒 CST
   and del and del
+
+Inch13Early2015Air
+2019年 3月28日 星期四 09时45分33秒 CST
+  add a field - 'isActive' to module  - md-account
+  in app.js,matchDB method,add codes about authenticates 'isActive' is true.
+  disable one admin or one user,add routes.

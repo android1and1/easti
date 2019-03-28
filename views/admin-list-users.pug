@@ -11,11 +11,12 @@ block content
           alias = item.alias
           role = item.role
           timestamp = item.initial_timestamp
+          time_describe = new Date(timestamp) 
           password = item.password
         .panel-heading= alias + '(id=' + id  + ')'
         .panel-body
-          h3= "alias= " + alias 
-          h3= "role= " + role 
-          h3= "timestamp= " + timestamp 
-          h3= "password= " + password
+          h3 <small>alias</small> #{alias} 
+          h3 <small>role</small> #{role} 
+          h3 <small>创建时间</small> #{time_describe}
+          h3 <small>password:</small> #{password}
       

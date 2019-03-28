@@ -360,6 +360,9 @@ app.get '/superuser/login',(req,res)->
   # referrer will received from middle ware
   res.render 'superuser-login.pug',{title:'Are You A Super?'}
 
+app.get '/superuser/login-success',(req,res)->
+  res.render 'superuser-login-success.pug',{title:'Super User Login!'}
+
 app.post '/superuser/login',(req,res)->
   # initial sesson.auth
   initSession req
@@ -370,7 +373,7 @@ app.post '/superuser/login',(req,res)->
     if itisreferrer
       res.redirect 303,itisreferrer
     else
-      res.redirect 301,'/superuser/login-success.pug'
+      res.redirect 301,'/superuser/login-success'
   else
     updateAuthSession req,'unknown','noname'
     res.json {staus:'super user login failurre.'}
@@ -427,6 +430,20 @@ initSession = (req)->
       role:'unknown'    
   null
 
+# updateAuthSession is a help function
+# this method be invoked by {user|admin|superuser}/login (post request)
+updateAuthSession = (req,role,alias)->
+  timestamp = new Date
+  counter = req.session.auth.counter++
+  req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
+  req.session.auth.role = role 
+  req.session.auth.alias = alias 
+  if role is 'unknown'
+    req.session.auth.matches.push '*Not* Matches counter#' + counter + ' .'  
+  else
+    req.session.auth.matches.push 'Matches counter#' + counter + ' .'  
+   
+
 # hashise is a help function.
 hashise = (plain)->
   hash = crypto.createHash 'sha256'
@@ -449,24 +466,13 @@ matchDB = (db,alias,role,password)->
     item = items[0]
     dbpassword =  item.property 'password'
     dbrole = item.property 'role'
+    isActive = item.property 'isActive'
     warning = ''
     if dbpassword is '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414'
       warning = 'should change this simple/initial/templory password immediately.'
-    match_result = ((hashise password) is dbpassword  and dbrole is role) 
+    match_result = (isActive) and ((hashise password) is dbpassword)  and (dbrole is role) 
     return {match_result:match_result,warning:warning}
 
-# updateAuthSession is a help function
-updateAuthSession = (req,role,alias)->
-  timestamp = new Date
-  counter = req.session.auth.counter++
-  req.session.auth.tries.push 'counter#' + counter + ':user try to login at ' + timestamp
-  req.session.auth.role = role 
-  req.session.auth.alias = alias 
-  if role is 'unknown'
-    req.session.auth.matches.push '*Not* Matches counter#' + counter + ' .'  
-  else
-    req.session.auth.matches.push 'Matches counter#' + counter + ' .'  
-   
 # for authenticate super user password.
 sha256 = (plain)->
   crypto.createHash 'sha256'
@@ -537,3 +543,8 @@ complement_save = (option,fieldobj)->
     else
       response = {code:-1,reason:'unknow status.'}
   response
+
+# help function - 'ensure'
+ensure = (req,who)->
+  req.session.auth
+  

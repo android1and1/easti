@@ -23,6 +23,11 @@ class Account extends NohmModel
           (val)->
             return Promise.resolve val in ['admin','superuser','user','unknown']
         ]
+    # admin can disable users,but superuser should del admin,
+    # not disable,and no way to do this.
+    isActive:
+      type:'boolean'
+      defaultValue:true
     password:
       type:'string'
       validations:[
