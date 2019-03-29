@@ -393,12 +393,32 @@
     }
   });
 
-  app.post('/admin/enable-user', function(req, res) {});
+  app.post('/admin/enable-user', async function(req, res) {
+    var error, id, ins, reason;
+    id = req.body.id;
+    try {
+      ins = (await Nohm.factory('account', id));
+      ins.property('isActive', true);
+      await ins.save();
+      return res.json({
+        code: 0,
+        message: 'update user,now user in active-status.'
+      });
+    } catch (error1) {
+      error = error1;
+      reason = {
+        thrown: error,
+        nohm_said: ins.errors
+      };
+      return res.json({
+        code: -1,
+        reason: reason
+      });
+    }
+  });
 
-  // todo.
   app.post('/admin/disable-user', async function(req, res) {
     var error, id, ins, reason;
-    // expected user's id is from req.body.id,client is '/admin/list-users'
     id = req.body.id;
     try {
       ins = (await Nohm.factory('account', id));

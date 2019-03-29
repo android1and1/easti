@@ -24,9 +24,9 @@ block content
           .btn-group.btn-group-md
             if isActive
               button.btn.btn-default.disablebutton(data-userid=id data-complete-text="Has Disabled.") Disable This Account
-              button.btn.btn-default.enablebutton.hidden(data-userid=id) Enable This Account
-            esle
-              button.btn.btn-default.disablebutton.hidden(data-userid=id data-complete-text="Has Disabled.") Disable This Account
+              button.btn.btn-default.enablebutton(disabled data-userid=id) Enable This Account
+            else
+              button.btn.btn-default.disablebutton(disabled data-userid=id data-complete-text="Has Disabled.") Disable This Account
               button.btn.btn-default.enablebutton(data-userid=id) Enable This Account
             button.btn.btn-default.removebutton(data-userid=id) Remove This Account
      

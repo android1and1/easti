@@ -252,9 +252,20 @@ app.post '/admin/register-user',(req,res)->
     res.json  ins.errors 
 
 app.post '/admin/enable-user',(req,res)->
-  # todo.
+  id = req.body.id
+  try
+    ins = await Nohm.factory 'account',id
+    ins.property 'isActive',true
+    await ins.save()
+    res.json {code:0,message:'update user,now user in active-status.' }
+  catch error
+    reason = {
+      thrown: error
+      nohm_said:ins.errors
+    }
+    res.json {code:-1,reason:reason}
+    
 app.post '/admin/disable-user',(req,res)->
-  # expected user's id is from req.body.id,client is '/admin/list-users'
   id = req.body.id
   try
     ins = await Nohm.factory 'account',id
