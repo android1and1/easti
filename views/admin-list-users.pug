@@ -28,8 +28,9 @@ block content
             else
               button.btn.btn-default.disablebutton(disabled data-userid=id data-complete-text="Has Disabled.") Disable This Account
               button.btn.btn-default.enablebutton(data-userid=id) Enable This Account
-            button.btn.btn-default.removebutton(data-userid=id) Remove This Account
+            button.btn.btn-default.deletebutton(data-userid=id) Delete This Account
      
 block pagejs
   script(src="/pagejs/pagejs-createModal.js")
+  script(src="/pagejs/pagejs-create-alert-box.js")
   script(src="/mine/mine-admin-list-users.js") 

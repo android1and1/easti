@@ -279,6 +279,17 @@ app.post '/admin/disable-user',(req,res)->
     }
     res.json {code:-1,reason:reason}
     
+app.put '/admin/del-user',(req,res)->
+  ins = await Nohm.factory 'account'
+  # req.query.id be transimit from '/admin/list-users' page.  
+  id = req.body.id
+  ins.id = id
+  try
+    await ins.remove()
+  catch error
+    return res.json {code:-1,'reason':JSON.stringify(ins.errors)}
+  return res.json {code:0,'gala':'remove #' + id + ' success.'}
+   
 app.post '/admin/login',(req,res)->
   {itisreferrer,alias,password} = req.body
   itisreferrer = itisreferrer or '/admin/login-success' 
@@ -431,7 +442,10 @@ app.post '/superuser/register-admin',(req,res)->
     res.json 'Saved.'
   catch error
     res.json  ins.errors 
-  
+ 
+# play 
+app.get '/play',(req,res)->
+  res.render 'play',{title:'paly!'}
   
 app.use (req,res)->
   res.status 404

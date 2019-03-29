@@ -441,6 +441,27 @@
     }
   });
 
+  app.put('/admin/del-user', async function(req, res) {
+    var error, id, ins;
+    ins = (await Nohm.factory('account'));
+    // req.query.id be transimit from '/admin/list-users' page.  
+    id = req.body.id;
+    ins.id = id;
+    try {
+      await ins.remove();
+    } catch (error1) {
+      error = error1;
+      return res.json({
+        code: -1,
+        'reason': JSON.stringify(ins.errors)
+      });
+    }
+    return res.json({
+      code: 0,
+      'gala': 'remove #' + id + ' success.'
+    });
+  });
+
   app.post('/admin/login', async function(req, res) {
     var alias, isInvalid, itisreferrer, mobj, password;
     ({itisreferrer, alias, password} = req.body);
@@ -685,6 +706,14 @@
       error = error1;
       return res.json(ins.errors);
     }
+  });
+
+  
+  // play 
+  app.get('/play', function(req, res) {
+    return res.render('play', {
+      title: 'paly!'
+    });
   });
 
   app.use(function(req, res) {

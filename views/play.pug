@@ -1,0 +1,38 @@
+extends layouts/main
+block content
+  div.left
+    p left side 
+    p left side 
+    p left side 
+    p left side 
+    p left side 
+  div.right
+    button.btn.btn-primary.btn-lg#switch Switch!
+    p right content
+    p right content
+    p right content
+    p right content
+    p right content
+
+block pagecss
+  style.
+    div.left{
+      position:relative;
+      left:-1000px;
+      width:300px;
+      height:500px;
+      background-color:maroon;
+      border:2px dotted yellow;
+      float:left;
+    }
+    div.right{
+      left:14px;
+      position:relative;
+      width:700px;
+      height:700px;
+      background-color:white;
+      border:1px solid purple;
+    }
+      
+block pagejs
+  script(src="/mine/mine-play.js")
