@@ -393,6 +393,34 @@
     }
   });
 
+  app.post('/admin/enable-user', function(req, res) {});
+
+  // todo.
+  app.post('/admin/disable-user', async function(req, res) {
+    var error, id, ins, reason;
+    // expected user's id is from req.body.id,client is '/admin/list-users'
+    id = req.body.id;
+    try {
+      ins = (await Nohm.factory('account', id));
+      ins.property('isActive', false);
+      await ins.save();
+      return res.json({
+        code: 0,
+        message: 'update user,now user in disable-status.'
+      });
+    } catch (error1) {
+      error = error1;
+      reason = {
+        thrown: error,
+        nohm_said: ins.errors
+      };
+      return res.json({
+        code: -1,
+        reason: reason
+      });
+    }
+  });
+
   app.post('/admin/login', async function(req, res) {
     var alias, isInvalid, itisreferrer, mobj, password;
     ({itisreferrer, alias, password} = req.body);
@@ -478,6 +506,7 @@
       obj.role = one.property('role');
       obj.initial_timestamp = one.property('initial_timestamp');
       obj.password = one.property('password');
+      obj.isActive = one.property('isActive');
       obj.id = one.id;
       return results.push(obj);
     });

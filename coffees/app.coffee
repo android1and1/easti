@@ -251,6 +251,23 @@ app.post '/admin/register-user',(req,res)->
   catch error
     res.json  ins.errors 
 
+app.post '/admin/enable-user',(req,res)->
+  # todo.
+app.post '/admin/disable-user',(req,res)->
+  # expected user's id is from req.body.id,client is '/admin/list-users'
+  id = req.body.id
+  try
+    ins = await Nohm.factory 'account',id
+    ins.property 'isActive',false
+    await ins.save()
+    res.json {code:0,message:'update user,now user in disable-status.' }
+  catch error
+    reason = {
+      thrown: error
+      nohm_said:ins.errors
+    }
+    res.json {code:-1,reason:reason}
+    
 app.post '/admin/login',(req,res)->
   {itisreferrer,alias,password} = req.body
   itisreferrer = itisreferrer or '/admin/login-success' 
@@ -303,6 +320,7 @@ app.get '/admin/list-users',(req,res)->
     obj.role = one.property 'role'
     obj.initial_timestamp = one.property 'initial_timestamp'
     obj.password = one.property 'password'
+    obj.isActive = one.property 'isActive'
     obj.id = one.id
     results.push obj 
   res.render 'admin-list-users',{title:'Admin:List-Users',accounts:results}
