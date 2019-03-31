@@ -1,11 +1,9 @@
 $ ->
   $('button#switch').on 'click',(evt)->
     $('.right').animate {
-        left:'+=750'
-        top:'0'
-        opacity:'0.85'
+        left:850
       }
       ,
-      300
+      600
       ,
-      ->$('.left').css('left',0)
+      ->$('.left').removeClass('hidden')

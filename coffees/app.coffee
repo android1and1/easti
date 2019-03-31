@@ -136,7 +136,7 @@ app.post '/user/login',(req,res)->
     res.redirect 303,itisreferrer
   else
     updateAuthSession req,'unknown','noname'
-    return res.render 'user-login-failure',{reason: '帐户不存在或者账户/口令不匹配!',title:'User-Login-Failure'}
+    return res.render 'user-login-failure',{reason: '用户登录失败，原因：帐户不存在／帐户被临时禁用／账户口令不匹配。',title:'User-Login-Failure'}
 
 app.put '/user/logout',(req,res)->
   # check if current role is correctly
@@ -296,7 +296,7 @@ app.post '/admin/login',(req,res)->
   # filter alias,and password
   isInvalid = ( ! filter alias or ! filter password)
   if isInvalid 
-    return res.render 'admin-login-failure',{title:'Login-Failure',reason:'contains invalid char(s).'} 
+    return res.render 'admin-login-failure',{title:'Login-Failure',reason:'表单中含有非法字符.'} 
   # initial session.auth
   initSession req
   # first check if exists this alias name?
@@ -308,7 +308,7 @@ app.post '/admin/login',(req,res)->
     res.redirect 303,itisreferrer
   else
     updateAuthSession req,'unknown','noname'
-    res.render 'admin-login-failure' ,{title:'Login-Failure',reason:'account/password peer dismatches.'}
+    res.render 'admin-login-failure' ,{title:'Login-Failure',reason:'管理员登录失败，原因：帐户不存在或者帐户被临时禁用或者帐户名与口令不匹配。'}
 
 app.get '/admin/login-success',(req,res)->
   res.render 'admin-login-success.pug',{title:'Administrator Role Entablished'}
