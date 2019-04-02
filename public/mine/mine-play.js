@@ -8,16 +8,16 @@
       right = $('.right');
       if (left.hasClass('hidden')) {
         return left.removeClass('hidden').animate({
-          width: '1100'
+          width: '85%'
         }, 600, function() {
-          return right.width('100'); // no .hidden
+          return right.width('10%'); // no .hidden
         });
       } else {
         return left.animate({
-          width: '100'
+          width: '10%'
         }, 600, function() {
           return right.animate({
-            width: '1300'
+            width: '85%'
           }, 150, function() {
             return left.addClass('hidden');
           });
