@@ -217,11 +217,13 @@
       req.session.auth.role = 'unknown';
       req.session.auth.alias = 'noname';
       return res.json({
+        code: 0,
         reason: '',
         status: 'logout success'
       });
     } else {
       return res.json({
+        code: -1,
         reason: 'No This Account Or Role Isnt User.',
         status: 'logout failure'
       });

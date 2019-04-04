@@ -2,7 +2,7 @@
 (function() {
   $(function() {
     $('#page-width').text('page  width= ' + $('body').width() + ' px.');
-    return $('button#switch').on('click', function(evt) {
+    $('button#switch').on('click', function(evt) {
       var left, right;
       left = $('.left');
       right = $('.right');
@@ -33,6 +33,26 @@
           });
         });
       }
+    });
+    return $('#userLogout').on('click', function(e) {
+      var that;
+      that = this;
+      e.preventDefault();
+      e.stopPropagation();
+      return $.ajax({
+        url: '/user/logout',
+        type: 'PUT',
+        dataType: 'json'
+      }).done(function(json) {
+        var theli;
+        alert(json.status);
+        // disable this link.
+        theli = $(that).parent();
+        return theli.addClass('disabled');
+      }).fail(function(xhr, status, thrown) {
+        console.log(status);
+        return console.log(thrown);
+      });
     });
   });
 

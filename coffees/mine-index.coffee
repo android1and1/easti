@@ -7,13 +7,19 @@ $ ->
         .replace /\-/,'/'
       $.ajax 
         url:url
+        # in fact ,there is an error,not 'method',should be 'type'
         method:'PUT'
+        # in fact ,there is an error,not 'responseType',should be 'dataType'
         responseType:'json'
       .done (json)->
-        alert json.status 
-        $(ele).parent().addClass('disabled')
-      .fail (one,two,three)->
-        console.log two
-        console.log three
+        #in fact,there is an error,when client's role not as it said(logout),ajax will not fail,but case the 'else' case 
+        if json.code is 0 
+          alert json.status
+          $(ele).parent().addClass 'disabled'
+        else
+          alert json.status + ' reason: ' + json.reason
+      .fail (xhr,status,thrown)->
+        console.log status 
+        console.log thrown
       e.preventDefault()
       e.stopPropagation()

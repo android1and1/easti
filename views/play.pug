@@ -12,14 +12,13 @@ block content
         .tab-pane.active(id="userLogin")
           h1 User Login Content
           ul.nav.nav-pills.nav-stacked
-            li.active
+            li
               a(href="/user/login") Go To Login Page
             li 
-              a(href="/user/logout") Exit User's Account
-            li 
-              a(href="/user/logout") Exit User's Account
-            li 
-              a(href="/user/logout") Exit User's Account
+              // treated by pagejs - mine-play.js
+              a(href="#" id="userLogout") Exit User's Account
+            li.active 
+              a(href="/user/daka") User DaKa
         .tab-pane(id="adminLogin")
           h1 Admin Login Content 
           p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..

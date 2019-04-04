@@ -9,14 +9,21 @@
         url = ele.replace(/#/, '/').replace(/\-/, '/');
         $.ajax({
           url: url,
+          // in fact ,there is an error,not 'method',should be 'type'
           method: 'PUT',
+          // in fact ,there is an error,not 'responseType',should be 'dataType'
           responseType: 'json'
         }).done(function(json) {
-          alert(json.status);
-          return $(ele).parent().addClass('disabled');
-        }).fail(function(one, two, three) {
-          console.log(two);
-          return console.log(three);
+          //in fact,there is an error,when client's role not as it said(logout),ajax will not fail,but case the 'else' case 
+          if (json.code === 0) {
+            alert(json.status);
+            return $(ele).parent().addClass('disabled');
+          } else {
+            return alert(json.status + ' reason: ' + json.reason);
+          }
+        }).fail(function(xhr, status, thrown) {
+          console.log(status);
+          return console.log(thrown);
         });
         e.preventDefault();
         return e.stopPropagation();

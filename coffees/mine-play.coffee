@@ -20,3 +20,21 @@ $ ->
       left.animate {width:'0%'},600,->
         right.animate {width:'95%'},150,->
           left.addClass 'hidden'
+
+  $('#userLogout').on 'click',(e)->
+    that = this
+    e.preventDefault()
+    e.stopPropagation() 
+    $.ajax {
+        url:'/user/logout'
+        type:'PUT'
+        dataType:'json'
+      }
+    .done (json)->
+      alert json.status
+      # disable this link.
+      theli = $(that).parent()
+      theli.addClass 'disabled' 
+    .fail (xhr,status,thrown)->
+      console.log status
+      console.log thrown

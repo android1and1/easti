@@ -144,9 +144,9 @@ app.put '/user/logout',(req,res)->
   if role is 'user'
     req.session.auth.role = 'unknown'
     req.session.auth.alias = 'noname'
-    res.json {reason:'',status:'logout success'}
+    res.json {code:0,reason:'',status:'logout success'}
   else
-    res.json {reason:'No This Account Or Role Isnt User.',status:'logout failure'}
+    res.json {code:-1,reason:'No This Account Or Role Isnt User.',status:'logout failure'}
     
 app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
