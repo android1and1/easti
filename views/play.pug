@@ -1,22 +1,38 @@
 extends layouts/main
 block content
   div.left.hidden
-    .jumbotron
-      h1 Fill The Login Form
-      h4 role - admin/superuser/user
-    ul.nav.nav-pills.nav-stacked
+    ul.nav.nav-tabs.nav-justified
       li.active 
-        a(href="#") sample
+        a(data-toggle="tab" href="#userLogin") User Login 
       li
-        a(href="#") sample
+        a(data-toggle="tab" href="#adminLogin") Admin Login 
       li
-        a(href="#") sample
-      li
-        a(href="#") sample
-      li
-        a(href="#") sample
-      li
-        a(href="#") sample
+        a(data-toggle="tab" href="#superuserLogin") Super User Login 
+      div.tab-content
+        .tab-pane.active(id="userLogin")
+          h1 User Login Content
+          ul.nav.nav-pills.nav-stacked
+            li.active
+              a(href="/user/login") Go To Login Page
+            li 
+              a(href="/user/logout") Exit User's Account
+            li 
+              a(href="/user/logout") Exit User's Account
+            li 
+              a(href="/user/logout") Exit User's Account
+        .tab-pane(id="adminLogin")
+          h1 Admin Login Content 
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        .tab-pane(id="superuserLogin")
+          h1 Super User Login Content 
+   
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
   div.right
     button.btn.btn-default.btn-lg#switch
       span.glyphicon.glyphicon-menu-hamburger
@@ -39,8 +55,7 @@ block pagecss
     div.left{
       width:10%;
       float:left;
-      background-color:#dddddd;
-      border:2px dotted yellow;
+      background-color:white;
       z-index:10;
       overflow:hidden;
     }
