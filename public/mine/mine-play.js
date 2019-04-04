@@ -7,17 +7,27 @@
       left = $('.left');
       right = $('.right');
       if (left.hasClass('hidden')) {
-        return left.removeClass('hidden').animate({
-          width: '85%'
-        }, 600, function() {
-          return right.width('10%'); // no .hidden
+        // right animate first ,then left.
+        return right.animate({
+          width: '10%'
+        }, 300, function() {
+          return left.removeClass('hidden').animate({
+            width: '85%'
+          }, 700); // no .hidden
         });
       } else {
+        /*
+        left.removeClass 'hidden'
+        .animate {width:'85%'},600,()->
+        #right.width '10%'
+         * give some animation.
+        right.animate {width:'10%'},400
+         */
         return left.animate({
-          width: '10%'
+          width: '0%'
         }, 600, function() {
           return right.animate({
-            width: '85%'
+            width: '95%'
           }, 150, function() {
             return left.addClass('hidden');
           });
