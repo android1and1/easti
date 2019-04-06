@@ -553,3 +553,12 @@ hp505B
 Thu Apr  4 11:22:14 CST 2019
   from here,go to really.need stacked ul elements.login page now not standlone,be mixed to First page.frist page content,maybe (should) be main ,hot app soul,it is daka.and at the bottom of this content block,i should give some interesting thing.like 'jie sheng',what english word it is?
   查过“有道”，叫“knotting".
+
+jp-stretch-pi-2
+Sat Apr  6 20:46:12 CST 2019
+  margin problem goes over.
+  next step,need an alternatively way 'daka',client visit 'daka' page,clicked 'daka' button,server let admin machine display QR code,but client's camera is destory already,so he clicked 'alter way for daka' button,server heard that,and give a 6-bits alphabet string let admin machine display it,at same moment,give a form to dakaing client,client enter above 6bits alphabet string,and commit the form.server check:
+  1,client role is user,username keep same.
+  2,client'form filled and fields all right.
+  3,done before dead line.
+  but before implements daka,change index.pug to 'play.pug'
