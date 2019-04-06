@@ -1,24 +1,20 @@
 $ ->
   $('#page-width').text 'page  width= ' + $('body').width() + ' px.'
   $('button#switch').on 'click',(evt)->
-    left = $('.left')
+    left = $ '.left'
     right = $ '.right'
     if left.hasClass 'hidden'
       # right animate first ,then left.
-      right.animate {width:'10%'},300,->
+      right.animate {width:'15%'},10,->
+        # 给个遮罩效果
+        $('#rightmodal').toggleClass 'hidden'
         left.removeClass 'hidden'
           .animate {width:'85%'},700
-      ###
-      left.removeClass 'hidden'
-      .animate {width:'85%'},600,()->
-        #right.width '10%'
-        # give some animation.
-        right.animate {width:'10%'},400
-      ###
-
     else # no .hidden
       left.animate {width:'0%'},600,->
-        right.animate {width:'95%'},150,->
+        # 去除遮罩
+        $('#rightmodal').toggleClass 'hidden'
+        right.animate {width:'100%'},150,->
           left.addClass 'hidden'
 
   $('#userLogout').on 'click',(e)->

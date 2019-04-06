@@ -9,25 +9,22 @@
       if (left.hasClass('hidden')) {
         // right animate first ,then left.
         return right.animate({
-          width: '10%'
-        }, 300, function() {
+          width: '15%'
+        }, 10, function() {
+          // 给个遮罩效果
+          $('#rightmodal').toggleClass('hidden');
           return left.removeClass('hidden').animate({
             width: '85%'
           }, 700); // no .hidden
         });
       } else {
-        /*
-        left.removeClass 'hidden'
-        .animate {width:'85%'},600,()->
-        #right.width '10%'
-         * give some animation.
-        right.animate {width:'10%'},400
-         */
         return left.animate({
           width: '0%'
         }, 600, function() {
+          // 去除遮罩
+          $('#rightmodal').toggleClass('hidden');
           return right.animate({
-            width: '95%'
+            width: '100%'
           }, 150, function() {
             return left.addClass('hidden');
           });

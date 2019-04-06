@@ -1,40 +1,41 @@
 extends layouts/main
 block content
   div.left.hidden
-    ul.nav.nav-tabs.nav-justified
+    ul.nav.nav-pills.nav-stacked
       li.active 
-        a(data-toggle="tab" href="#userLogin") User Login 
+        a(data-toggle="collapse" href="#userLogin") User Login 
       li
-        a(data-toggle="tab" href="#adminLogin") Admin Login 
+        a(data-toggle="collapse" href="#adminLogin") Admin Login 
       li
-        a(data-toggle="tab" href="#superuserLogin") Super User Login 
-      div.tab-content
-        .tab-pane.active(id="userLogin")
-          h1 User Login Content
-          ul.nav.nav-pills.nav-stacked
-            li
-              a(href="/user/login") Go To Login Page
-            li 
-              // treated by pagejs - mine-play.js
-              a(href="#" id="userLogout") Exit User's Account
-            li.active 
-              a(href="/user/daka") User DaKa
-        .tab-pane(id="adminLogin")
-          h1 Admin Login Content 
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
-        .tab-pane(id="superuserLogin")
-          h1 Super User Login Content 
+        a(data-toggle="collapse" href="#superuserLogin") Super User Login 
+
+      div(id="userLogin" class="collapse")
+        h1 User Login Content
+        ul.nav.nav-pills.nav-stacked
+          li
+            a(href="/user/login") Go To Login Page
+          li 
+            // treated by pagejs - mine-play.js
+            a(href="#" id="userLogout") Exit User's Account
+          li.active 
+            a(href="/user/daka") User DaKa
+      div(class="collapse" id="adminLogin")
+        h1 Admin Login Content 
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+      div(class="collapse" id="superuserLogin")
+        h1 Super User Login Content 
    
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
-          p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
+        p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..  p give some advices..
   div.right
-    button.btn.btn-default.btn-lg#switch
-      span.glyphicon.glyphicon-menu-hamburger
+    nav.navbar.navbar-default#onebuttonbar 
+      button.btn.btn-default.btn-md#switch
+        span.glyphicon.glyphicon-menu-hamburger
     .jumbotron
       h1 Navigator Of Main App
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
@@ -43,27 +44,52 @@ block content
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
 block footer
+  div#rightmodal.hidden
   h2#page-width.clearfix 
 block pagecss
   style.
+    body {
+      width:100%;
+      padding:0px;
+      margin:0px;
+      position:relative;
+      background-color:#fff;
+    }
+    nav#onebuttonbar {
+      z-index:1000;
+    }
     div.left,div.right {
       overflow:hidden;
       white-space:nowrap;
       color:#4a5a6a;
+      padding:0px;
+      margin:0px;
     }
     div.left{
       width:10%;
       float:left;
       background-color:white;
-      z-index:10;
       overflow:hidden;
     }
     div.right{
-      width:95%;
+      width:100%;
       height:700px;
       background-color:#FF9966;
-      border:1px solid purple;
     }
-      
+    #rightmodal {
+      position:absolute;
+      top:0;
+      z-index:10;
+      right:0;
+      width:15%;
+      height:100%;
+      background-color:rgba(0,0,0,0.5);
+    }
+    div.tab-content {
+      border:2px solid purple;
+    }
+    #switch {
+      margin-left:1em;
+    }    
 block pagejs
   script(src="/mine/mine-play.js")
