@@ -1,5 +1,9 @@
 extend layouts/main
 block content
+  nav.navbar.navbar-default.navbar-fixed-top
+    .container
+      a(type="button" class="navbar-btn btn btn-primary" href="/") &larr; 回到首页 
+      h4.navbar-right.navbar-text 当前用户列表
   if accounts.length === 0
     p currently no account.
   div 

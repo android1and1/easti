@@ -139,8 +139,7 @@ app.post '/user/login',(req,res)->
     return res.render 'user-login-failure',{reason: '用户登录失败，原因：帐户不存在／帐户被临时禁用／账户口令不匹配。',title:'User-Login-Failure'}
 
 app.put '/user/logout',(req,res)->
-  # check if current role is correctly
-  role = req.session.auth.role
+  role = req.session?.auth?.role
   if role is 'user'
     req.session.auth.role = 'unknown'
     req.session.auth.alias = 'noname'
@@ -200,13 +199,13 @@ app.get '/admin/admin-update-password',(req,res)->
   res.render 'admin-update-password',{title:'Admin-Update-Password'}
 
 app.put '/admin/logout',(req,res)->
-  # check if current role is correctly
-  role = req.session.auth.role
+  role = req.session?.auth?.role
   if role is 'admin'
     req.session.auth.role = 'unknown'
     req.session.auth.alias = 'noname'
     res.json {reason:'',status:'logout success'}
   else
+    # notice that,if client logout failure,not change its role and alias
     res.json {reason:'no this account or role isnt admin.',status:'logout failure'}
 
 app.post '/admin/admin-update-password',(req,res)->

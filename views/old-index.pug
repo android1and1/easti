@@ -1,0 +1,29 @@
+extend layouts/main.pug
+block pagejs
+  script(src="/mine/mine-index.js")
+block pagecss
+  style.
+    body {
+      background-image: url("/images/unma.jpg");
+      background-position:22% 22%;
+      background-size:80%;
+    }
+block content
+  h1 your currently role is [#{role}].
+  if role == 'visitor'
+    h1 Please Login With Your Role
+  h1 [#{alias}],welcome d.a.k.a.
+
+  ul.nav.nav-tabs.nav-stacked
+   li(role="presentation" class="active")
+        a(id="userlogin" href="/user/login") User Login 
+   li(role="presentation")
+        a(href="#user#logout" id="user-logout") User Logout 
+   li(role="presentation")
+        a(href="/admin/login" id="adminlogin") Admin Login 
+   li(role="presentation")
+        a(href="#admin#logout" id="admin-logout") Admin Logout 
+  
+block footer
+  h4 all right reserved by ..
+  h4 2007~2018
