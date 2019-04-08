@@ -1,0 +1,41 @@
+extend layouts/main
+block content
+  nav.navbar.navbar-inverse.navbar-fixed-top
+    .container
+      a(href="/" role="button" type="button" class="navbar-left navbar-btn btn btn-default")
+        |&larr; 返回首页
+    
+  br/
+  br/
+  h2 设置筛选条件，并按下<small>列出!</small>按钮 
+  .container-fluid
+    form.horizontal-form
+      .form-group
+        label(class="col-xs-5") User: 
+          select(class="form-control")
+            each alias in aliases
+              option #{alias} 
+        label(class="col-xs-7") Range:
+          select(class="form-control")
+            option 15 days 
+            option 1 month 
+            option 6 month 
+            option 1 year 
+            option 2 years 
+      .form-group
+        .col-xs-4
+          button.btn.btn-default.btn-lg(type="submit")  列出!
+  table.table
+    thead
+      tr
+        td
+          label 用户 
+        td
+          label category 
+        td
+          label self/admin 
+    tbody
+      tr
+        td PiPi 
+        td Exit 
+        td 2015-09-09 9:48:49 

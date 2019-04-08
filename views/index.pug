@@ -10,7 +10,6 @@ block content
             li
               a(href="/user/login") Go To Login Page
             li 
-              // treated by pagejs - mine-play.js
               a(href="#" id="userLogout") Exit User's Account
             li
               a(href="/user/daka") User DaKa
@@ -27,6 +26,10 @@ block content
               a(href="/admin/register-user" id="adminRegisterUser") Admin Register User
             li
               a(href="/admin/list-users" id="adminListUsers") Admin List Users
+            li
+              a(href="/admin/daka" id="adminDaka") Admin DaKa 
+            li
+              a(href="/admin/checkout-daka" id="adminCheckoutOneUser") Check Out DaKa History 
       li
         h2
           a(data-toggle="collapse" href="#superuserLogin") Super User Login 
@@ -40,6 +43,8 @@ block content
               a(href="/superuser/register-admin" id="superuserRegisterAdmin") Superuser Register Admin 
             li
               a(href="/superuser/list-admins" id="superuserListUsers") Superuser List Admins 
+            li
+              a(href='/superuser/daka-complement') daka complement
   div.right
     nav.navbar.navbar-default#onebuttonbar 
       button.btn.btn-default.btn-md#switch

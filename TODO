@@ -562,3 +562,12 @@ Sat Apr  6 20:46:12 CST 2019
   2,client'form filled and fields all right.
   3,done before dead line.
   but before implements daka,change index.pug to 'play.pug'
+
+jp-stretch-pi-2
+Sun Apr  7 19:54:34 CST 2019
+  admin-list-user-daka now became the task.old codes make no sense,no like a list,no clearly.by visual view,need a tablise list,bootstrap give a striped table look.odrder order is the important thing.give a reverse-date list.
+  because browser-agent field too long,give a collaspse effect9button.
+
+jp-stretch-pi-2
+Mon Apr  8 18:22:59 CST 2019
+  admin list daka records.

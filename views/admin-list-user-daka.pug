@@ -1,15 +1,34 @@
 extends layouts/main
+block pagejs
+  script(src="/pagejs/pagejs-createModal.js")
+  script(src="/mine/mine-admin-list-user-daka.js")
 block content
   nav.navbar.navbar-default.navbar-fixed-top
     .container
-      a(type="button" href="/" class="btn btn-default navbar-btn") Back
+      a(type="button" href="/" class="btn btn-default navbar-left navbar-btn") Back
+      h3.navbar-text &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; User:<small> #{alias}</small> daka history list
   //
     has variable :data,it is an array which elements all are object(ins.
     allProperties()
-  ul
-    each item in data
-      li id number is: #{item.id}
-      li alias=#{item.alias}
-      li browser=#{item.browser}
-      li utc_ms=#{item.utc_ms}
-      li whatistime=#{item.whatistime}
+  br/
+  br/
+  table.table 
+    thead
+      tr 
+        td #
+        td 用户 
+        td 填表者 
+        td 类别
+        td whatistime
+        td Detail
+    tbody
+      each item in data
+        tr
+          td #{item.id}
+          td #{item.alias}
+          td #{item.dakaer}
+          td #{item.category}
+          td #{item.whatistime}
+          td 
+            - var lookcarefull = JSON.stringify([item.id,item.alias,item.dakaer,item.category,item.whatistime,item.browser,item.utc_ms]) 
+            button.dakadetail(data-detail=lookcarefull) 详细

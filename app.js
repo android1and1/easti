@@ -210,9 +210,8 @@
   });
 
   app.put('/user/logout', function(req, res) {
-    var role;
-    // check if current role is correctly
-    role = req.session.auth.role;
+    var ref, ref1, role;
+    role = (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0;
     if (role === 'user') {
       req.session.auth.role = 'unknown';
       req.session.auth.alias = 'noname';
@@ -316,9 +315,8 @@
   });
 
   app.put('/admin/logout', function(req, res) {
-    var role;
-    // check if current role is correctly
-    role = req.session.auth.role;
+    var ref, ref1, role;
+    role = (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0;
     if (role === 'admin') {
       req.session.auth.role = 'unknown';
       req.session.auth.alias = 'noname';
@@ -327,6 +325,7 @@
         status: 'logout success'
       });
     } else {
+      // notice that,if client logout failure,not change its role and alias
       return res.json({
         reason: 'no this account or role isnt admin.',
         status: 'logout failure'
@@ -503,6 +502,31 @@
     });
   });
 
+  app.get('/admin/checkout-daka', async function(req, res) {
+    var aliases, ins, inss, ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/checkout-daka';
+      return res.redirect(303, '/admin/login');
+    }
+    // query all user's name
+    inss = (await accountModel.findAndLoad({
+      role: 'user'
+    }));
+    aliases = (function() {
+      var j, len, results1;
+      results1 = [];
+      for (j = 0, len = inss.length; j < len; j++) {
+        ins = inss[j];
+        results1.push(ins.property('alias'));
+      }
+      return results1;
+    })();
+    return res.render('admin-checkout-daka', {
+      aliases: aliases,
+      title: 'Checkout-One-User-DaKa'
+    });
+  });
+
   app.get('/admin/list-user-daka', async function(req, res) {
     var alias, ins, inss, j, len, obj, ref, ref1, result;
     alias = req.query.alias;
@@ -527,6 +551,7 @@
       result.push(obj);
     }
     return res.render('admin-list-user-daka', {
+      alias: alias,
       title: 'List User DaKa Items',
       data: result
     });
@@ -710,14 +735,6 @@
     }
   });
 
-  
-  // play 
-  app.get('/play', function(req, res) {
-    return res.render('play', {
-      title: 'paly!'
-    });
-  });
-
   app.use(function(req, res) {
     res.status(404);
     return res.render('404');
@@ -871,7 +888,8 @@
           utc_ms: Date.parse(fieldobj['first-half-']),
           whatistime: fieldobj['first-half-'],
           dakaer: 'admin',
-          category: 'entry'
+          category: 'entry',
+          browser: 'admin browser'
         };
         response = (await single_save(standard));
         break;
@@ -881,7 +899,8 @@
           utc_ms: Date.parse(fieldobj['second-half-']),
           whatistime: fieldobj['second-half-'],
           dakaer: 'admin',
-          category: 'exit'
+          category: 'exit',
+          browser: 'admin browser'
         };
         response = (await single_save(standard));
         break;

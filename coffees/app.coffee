@@ -312,6 +312,15 @@ app.post '/admin/login',(req,res)->
 app.get '/admin/login-success',(req,res)->
   res.render 'admin-login-success.pug',{title:'Administrator Role Entablished'}
 
+app.get '/admin/checkout-daka',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/checkout-daka'
+    return res.redirect 303,'/admin/login'
+  # query all user's name
+  inss = await accountModel.findAndLoad {role:'user'} 
+  aliases = ( ins.property('alias') for ins in inss )
+  res.render 'admin-checkout-daka',{aliases:aliases,title:'Checkout-One-User-DaKa'}
+
 app.get '/admin/list-user-daka',(req,res)->
   alias = req.query.alias
   if ! alias 
@@ -327,7 +336,7 @@ app.get '/admin/list-user-daka',(req,res)->
   for ins in inss
     obj = ins.allProperties()
     result.push obj 
-  res.render 'admin-list-user-daka',{title:'List User DaKa Items',data:result}
+  res.render 'admin-list-user-daka',{alias:alias,title:'List User DaKa Items',data:result}
 
 app.get '/admin/list-users',(req,res)->
   if req.session?.auth?.role isnt 'admin' 
@@ -442,10 +451,6 @@ app.post '/superuser/register-admin',(req,res)->
   catch error
     res.json  ins.errors 
  
-# play 
-app.get '/play',(req,res)->
-  res.render 'play',{title:'paly!'}
-  
 app.use (req,res)->
   res.status 404
   res.render '404'
@@ -556,6 +561,7 @@ complement_save = (option,fieldobj)->
         whatistime:fieldobj['first-half-']
         dakaer:'admin'
         category:'entry' 
+        browser:'admin browser'
       response = await single_save standard
     when 'option2'
       standard = 
@@ -564,6 +570,7 @@ complement_save = (option,fieldobj)->
         whatistime:fieldobj['second-half-']
         dakaer:'admin'
         category:'exit' 
+        browser:'admin browser'
       response = await single_save standard
     when 'option3'
       standard1 = 
