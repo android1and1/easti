@@ -321,6 +321,16 @@ app.get '/admin/checkout-daka',(req,res)->
   aliases = ( ins.property('alias') for ins in inss )
   res.render 'admin-checkout-daka',{aliases:aliases,title:'Checkout-One-User-DaKa'}
 
+# route /daka database interaction
+app.get '/daka/one',(req,res)->
+  {user,range} = req.query
+  ids = await dakaModel.find {alias:user,utc_ms:{min:0}}
+  hashes = []
+  for id in ids
+    ins = await dakaModel.load id
+    hashes.push ins.allProperties() 
+  res.json hashes 
+
 app.get '/admin/list-user-daka',(req,res)->
   alias = req.query.alias
   if ! alias 

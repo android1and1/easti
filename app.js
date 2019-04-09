@@ -527,6 +527,25 @@
     });
   });
 
+  // route /daka database interaction
+  app.get('/daka/one', async function(req, res) {
+    var hashes, id, ids, ins, j, len, range, user;
+    ({user, range} = req.query);
+    ids = (await dakaModel.find({
+      alias: user,
+      utc_ms: {
+        min: 0
+      }
+    }));
+    hashes = [];
+    for (j = 0, len = ids.length; j < len; j++) {
+      id = ids[j];
+      ins = (await dakaModel.load(id));
+      hashes.push(ins.allProperties());
+    }
+    return res.json(hashes);
+  });
+
   app.get('/admin/list-user-daka', async function(req, res) {
     var alias, ins, inss, j, len, obj, ref, ref1, result;
     alias = req.query.alias;

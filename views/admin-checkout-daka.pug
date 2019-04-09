@@ -1,4 +1,6 @@
 extend layouts/main
+block pagejs
+  script(src="/mine/mine-admin-checkout-daka.js")
 block content
   nav.navbar.navbar-inverse.navbar-fixed-top
     .container
@@ -7,16 +9,17 @@ block content
     
   br/
   br/
-  h2 设置筛选条件，并按下<small>列出!</small>按钮 
+  h4 设置筛选条件
+  h4 并按下<small>列出!</small>按钮 
   .container-fluid
     form.horizontal-form
       .form-group
         label(class="col-xs-5") User: 
-          select(class="form-control")
+          select(name="user" class="form-control")
             each alias in aliases
               option #{alias} 
         label(class="col-xs-7") Range:
-          select(class="form-control")
+          select(name="range" class="form-control")
             option 15 days 
             option 1 month 
             option 6 month 
@@ -25,17 +28,17 @@ block content
       .form-group
         .col-xs-4
           button.btn.btn-default.btn-lg(type="submit")  列出!
-  table.table
+  table.table.table-striped
     thead
       tr
         td
-          label 用户 
+          label 用户  
         td
           label category 
         td
+          label timestamp 
+        td
           label self/admin 
+        td
+          label 详细
     tbody
-      tr
-        td PiPi 
-        td Exit 
-        td 2015-09-09 9:48:49 
