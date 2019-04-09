@@ -529,7 +529,7 @@
 
   // route /daka database interaction
   app.get('/daka/one', async function(req, res) {
-    var hashes, id, ids, ins, j, len, range, user;
+    var hashes, id, ids, ins, j, len, range, sorted, user;
     ({user, range} = req.query);
     ids = (await dakaModel.find({
       alias: user,
@@ -537,9 +537,12 @@
         min: 0
       }
     }));
+    sorted = (await dakaModel.sort({
+      'field': 'utc_ms'
+    }, ids));
     hashes = [];
-    for (j = 0, len = ids.length; j < len; j++) {
-      id = ids[j];
+    for (j = 0, len = sorted.length; j < len; j++) {
+      id = sorted[j];
       ins = (await dakaModel.load(id));
       hashes.push(ins.allProperties());
     }

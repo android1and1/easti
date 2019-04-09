@@ -325,8 +325,9 @@ app.get '/admin/checkout-daka',(req,res)->
 app.get '/daka/one',(req,res)->
   {user,range} = req.query
   ids = await dakaModel.find {alias:user,utc_ms:{min:0}}
+  sorted = await dakaModel.sort {'field':'utc_ms'},ids
   hashes = []
-  for id in ids
+  for id in sorted 
     ins = await dakaModel.load id
     hashes.push ins.allProperties() 
   res.json hashes 
