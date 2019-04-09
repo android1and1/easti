@@ -570,31 +570,33 @@ complement_save = (option,fieldobj)->
         alias:fieldobj.alias
         utc_ms:Date.parse fieldobj['first-half-']
         whatistime:fieldobj['first-half-']
-        dakaer:'admin'
+        dakaer:'superuser'
         category:'entry' 
-        browser:'admin browser'
+        browser:req.headers['user-agent']
       response = await single_save standard
     when 'option2'
       standard = 
         alias:fieldobj.alias
         utc_ms:Date.parse fieldobj['second-half-']
         whatistime:fieldobj['second-half-']
-        dakaer:'admin'
+        dakaer:'superuser'
         category:'exit' 
-        browser:'admin browser'
+        browser:req.headers['user-agent']
       response = await single_save standard
     when 'option3'
       standard1 = 
         alias:fieldobj.alias
         utc_ms:Date.parse fieldobj['first-half-']
         whatistime:fieldobj['first-half-']
-        dakaer:'admin'
+        dakaer:'superuser'
+        browser:req.headers['user-agent']
         category:'entry' 
       standard2 = 
         alias:fieldobj.alias
         utc_ms:Date.parse fieldobj['second-half-']
         whatistime:fieldobj['second-half-']
-        dakaer:'admin'
+        dakaer:'superuser'
+        browser:req.headers['user-agent']
         category:'exit' 
       # save 2 instances.
       response1 = await single_save standard1

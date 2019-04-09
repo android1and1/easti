@@ -909,9 +909,9 @@
           alias: fieldobj.alias,
           utc_ms: Date.parse(fieldobj['first-half-']),
           whatistime: fieldobj['first-half-'],
-          dakaer: 'admin',
+          dakaer: 'superuser',
           category: 'entry',
-          browser: 'admin browser'
+          browser: 'super' 
         };
         response = (await single_save(standard));
         break;
@@ -920,9 +920,9 @@
           alias: fieldobj.alias,
           utc_ms: Date.parse(fieldobj['second-half-']),
           whatistime: fieldobj['second-half-'],
-          dakaer: 'admin',
+          dakaer: 'superuser',
           category: 'exit',
-          browser: 'admin browser'
+          browser: 'super' 
         };
         response = (await single_save(standard));
         break;
@@ -931,14 +931,16 @@
           alias: fieldobj.alias,
           utc_ms: Date.parse(fieldobj['first-half-']),
           whatistime: fieldobj['first-half-'],
-          dakaer: 'admin',
+          dakaer: 'superuser',
+          browser: 'super',
           category: 'entry'
         };
         standard2 = {
           alias: fieldobj.alias,
           utc_ms: Date.parse(fieldobj['second-half-']),
           whatistime: fieldobj['second-half-'],
-          dakaer: 'admin',
+          dakaer: 'superuser',
+          browser: 'super',
           category: 'exit'
         };
         

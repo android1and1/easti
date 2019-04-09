@@ -1,10 +1,30 @@
 $ ->
+  # defines a inner help function 
+  prefill = (num)->
+    str = '' + num
+    if str.length is 1
+      return '0'+str
+    return str
+  format = (value)->
+    date = new Date value
+    year = date.getFullYear()
+    month = prefill(date.getMonth()+1)  # Jan is '0' in Date API
+    day = prefill(date.getDate())
+    hour = prefill(date.getHours())
+    minute = prefill(date.getMinutes())
+    seconds = prefill(date.getSeconds())
+    milliseconds = date.getMilliseconds()
+    return year + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + seconds + '.' + milliseconds + 'Z' 
+  
   $('table.table').on 'click','button.detailbutton',(evt)->
      evt.preventDefault()
      evt.stopPropagation()
-     data = $(evt.target).data 'detail'
-     createModal $('body'),{boxid:'youknow',titleText:'Detail Of Daka',bodyText:data}
-     $('#youknow').modal() 
+     alias = $(@).data('detail-alias')
+     id = $(@).data('detail-id')
+     category = $(@).data('detail-category')
+     browser = $(@).data('detail-browser')
+     utc_ms = $(@).data('detail-utc-ms')
+     alert [id,alias,category,browser,utc_ms].join('\n')
 
   $('form').on 'submit',(e)->
     # ajax do query
@@ -30,9 +50,11 @@ $ ->
       # order:['alias','category','timestamp','dakaer']
       $tr.append $('<td/>',{text:ele.alias})
       $tr.append $('<td/>',{text:ele.category})
-      $tr.append $('<td/>',{text:(new Date(ele.utc_ms)).toLocaleString()})
+      #$tr.append $('<td/>',{text:(new Date(ele.utc_ms)).toLocaleString()})
+      $tr.append $('<td/>',{text:format ele.utc_ms})
       $tr.append $('<td/>',{text:ele.dakaer})
-      $tr.append $('<td/>',{html:'<button class="btn btn-default detailbutton" data-detail="id:browser=' + ele.id + ':' + ele.browser + '" >Details</button>'}) 
+      $button = $('<button/>',{text:'Detail','class':"btn btn-default detailbutton",'data-detail-id':ele.id,'data-detail-browser':ele.browser,'data-detail-alias':ele.alias,'data-detail-utc-ms':ele.utc_ms,'data-detail-dakaer':ele.dakaer,'data-detail-category':ele.category})
+      $tr.append $('<td/>').append($button)
       tbody.append $tr
   # help function - obj2list
   obj2list = (obj)->
