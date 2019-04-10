@@ -288,7 +288,7 @@
   });
 
   
-  // route-admin start
+  // start-point-admin 
   app.get('/admin/daka', function(req, res) {
     var ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
@@ -391,6 +391,34 @@
     } catch (error1) {
       error = error1;
       return res.json(ins.errors);
+    }
+  });
+
+  app.all('/admin/create-new-ticket', function(req, res) {
+    var formid, ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/create-new-ticket';
+      return res.redirect(303, '/admin/login');
+    }
+    // redis instance already exists - 'redis'
+    if (req.method === 'GET') {
+      return res.render('admin-create-new-ticket', {
+        alias: req.session.auth.alias,
+        title: 'Admin-Create-New-Ticket' // POST
+      });
+    } else {
+      // let npm-formidable handles
+      formid = new formidable.IncomingForm;
+      formid.uploadDir = path.join(__dirname, 'public', 'tickets');
+      return formid.parse(req, function(err, fields, files) {
+        var echo, k, v;
+        echo = [];
+        for (k in fields) {
+          v = fields[k];
+          echo.push(k + ':' + v);
+        }
+        return res.json(echo);
+      });
     }
   });
 
@@ -911,7 +939,7 @@
           whatistime: fieldobj['first-half-'],
           dakaer: 'superuser',
           category: 'entry',
-          browser: 'super' 
+          browser: req.headers['user-agent']
         };
         response = (await single_save(standard));
         break;
@@ -922,7 +950,7 @@
           whatistime: fieldobj['second-half-'],
           dakaer: 'superuser',
           category: 'exit',
-          browser: 'super' 
+          browser: req.headers['user-agent']
         };
         response = (await single_save(standard));
         break;
@@ -932,7 +960,7 @@
           utc_ms: Date.parse(fieldobj['first-half-']),
           whatistime: fieldobj['first-half-'],
           dakaer: 'superuser',
-          browser: 'super',
+          browser: req.headers['user-agent'],
           category: 'entry'
         };
         standard2 = {
@@ -940,7 +968,7 @@
           utc_ms: Date.parse(fieldobj['second-half-']),
           whatistime: fieldobj['second-half-'],
           dakaer: 'superuser',
-          browser: 'super',
+          browser: req.headers['user-agent'],
           category: 'exit'
         };
         

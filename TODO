@@ -580,3 +580,18 @@ cyrus-Latitude-E7470
 2019年 04月 09日 星期二 11:43:20 CST
   jie manman le,jin tian da yu,jiang wen 10du.
   need really implements time range limit,think,range could be number of items,not time range.
+
+jp-stretch-pi-2
+Wed Apr 10 08:40:18 CST 2019
+  start here,i thought it is nessary to build a 'ticket' channel/route/schema.
+  super user need this to collect all problems during development.think about that:superuser browser its newest version,act as an user,an admin,almost all time,he/she will find some problems,why not write to server db right now,no via another way(note,doc..)?
+  how-to?
+  super need,super resolve,but that ticket is from admin(s).so admin channel add 'ticket' entry(route) - /admin/create-new-ticket
+  it should exists a table,redis schema,schema first...
+
+  this time,i dont wont depends nohm,let native(relatively) npm-redis handle index,order.steps?
+  1st,make rules instead of schema,rules is:hmset a-hash,index number increase 1,then create index ,put into indexes(type:set),when need look for it ,so ,check which redis-client is alive .
+
+jp-stretch-pi-2
+Wed Apr 10 11:06:47 CST 2019
+  use formidable handle ticket route.should furmer furer..

@@ -183,7 +183,7 @@ app.get '/user/daka-response',(req,res)->
   else
     return res.render 'user-daka-response',{title:'login Result',status:'打卡失败'}
     
-# route-admin start
+# start-point-admin 
 app.get '/admin/daka',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/daka'
@@ -250,6 +250,22 @@ app.post '/admin/register-user',(req,res)->
   catch error
     res.json  ins.errors 
 
+app.all '/admin/create-new-ticket',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/create-new-ticket'
+    return res.redirect 303,'/admin/login'
+  # redis instance already exists - 'redis'
+  if req.method is 'GET'
+    res.render 'admin-create-new-ticket',{alias:req.session.auth.alias,title:'Admin-Create-New-Ticket'} 
+  else # POST
+    # let npm-formidable handles
+    formid = new formidable.IncomingForm
+    formid.uploadDir = path.join __dirname,'public','tickets'
+    formid.parse req,(err,fields,files)->
+      echo = []
+      for k,v of fields
+        echo.push k + ':' + v
+      res.json echo
 app.post '/admin/enable-user',(req,res)->
   id = req.body.id
   try
