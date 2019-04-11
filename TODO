@@ -595,3 +595,34 @@ Wed Apr 10 08:40:18 CST 2019
 jp-stretch-pi-2
 Wed Apr 10 11:06:47 CST 2019
   use formidable handle ticket route.should furmer furer..
+
+jp-stretch-pi-2
+Wed Apr 10 18:05:25 CST 2019
+  store.each ticket is hash,{title:xxx,ticket:xxx,category:'tool',should call it trick,'trick',timestamp:xxx should 2 timestamp,one is client,one is server timestamp.the rule.
+  rule:
+  1,prefix is 'Ticket'
+  2,each hash name should be like that: 'Ticket:Trick(category):hash:1'
+  3,need an  index hash's counter.
+  4,search via:keys 'Ticket:Memo*' (Memo is 1/3 of category),get ids,then for..in loop to further doing.app will leverage find all to list all of Ticket,so advice is dont leave too much ticket for clearly screen.del it easy,give a list,each item has a trigger button,click will delete db's item.no update event,can del then create new.so core skill is how-to 'hmset' and 'set index-counter',no forget anytime?should defines a save,called ticket_save() psole codes:
+   ticket_save = (res,fields,)-.>
+     await index = redis.get special-index
+     
+jp-stretch-pi-2
+Thu Apr 11 10:28:52 CST 2019
+  ticket_save = (res,fields)->
+    redis.get 'counter',(err,counter)->
+      keyname = [TICKET_PREFIX,fields.category,'hash',counter].join ':'
+      options_array = flatten fields
+      redis.hmset keyname,options_array,(err,reply)->
+        if reply is 'OK'
+          res.json 'OK'
+        else
+          res.json err
+
+    # help function
+      flatten = (obj)->
+        result = []
+        for k,v of obj
+          result=result.concat [k,v]
+        result
+           

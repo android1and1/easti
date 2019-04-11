@@ -6,8 +6,13 @@ block pagecss
     body {
       color:#1a2a3a;
     }
+    .preview {
+      margin-top:2em;
+      padding:2em;
+      margin-bottom:2em; 
+    }
 block content
-  nav.navbar.navbar-default.navbar-fixed-top
+  nav.navbar.navbar-inverse.navbar-default.navbar-fixed-top
     a(type="button" class="navbar-btn btn btn-default" role="button" href="/") 
       span.glyphicon.glyphicon-chevron-left
       | index page
@@ -34,8 +39,10 @@ block content
       label(for="ticket") Write Ticket Here:
       textarea(class="form-control" rows="15" id="ticket" name="ticket") 
     .form-group
-      label(for="onephoto") Photo (optional)
-      input(type="file" name="photo" id="onephoto")
+      input(class="hidden" type="file" name="photo" id="onephoto")
+      label(type="button" for="onephoto" class="btn btn-default btn-lg") 点击这里选择图片（可选）
+      div.preview
+       
     .form-group
       input.hidden(name="client_time" value="0")
       input.hidden(name="admin_alias" value=alias)

@@ -49,6 +49,9 @@ redis.on 'connect',->
   dakaModel = Nohm.register Daka
   accountModel = Nohm.register Account
 
+# database:ticket,ticket is where place admin commits about site advice
+TICKET_PREFIX = 'ticket'
+
 express = require 'express'
 app = express()
 app.set 'view engine','pug'
@@ -250,6 +253,11 @@ app.post '/admin/register-user',(req,res)->
   catch error
     res.json  ins.errors 
 
+# db operator:DELETE
+# db operator:UPDATE(admin urging,super user resolved,use these way)
+# db operator:FIND
+
+# db operator:ADD
 app.all '/admin/create-new-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/create-new-ticket'
@@ -261,11 +269,27 @@ app.all '/admin/create-new-ticket',(req,res)->
     # let npm-formidable handles
     formid = new formidable.IncomingForm
     formid.uploadDir = path.join __dirname,'public','tickets'
-    formid.parse req,(err,fields,files)->
-      echo = []
+    formid.keepExtensions = true
+    formid.maxFileSize = 20 * 1024 * 1024 
+    formid.on 'error',(formid_err)->
+      res.json formid_err
+    formid.parse req,(formid_err,fields,files)->
+      if formid_err
+        return res.json formid_err
+      options = ['urge','0','resolved','false']
       for k,v of fields
-        echo.push k + ':' + v
-      res.json echo
+        options = options.concat [k,v] 
+      # store this ticket
+      redis.incr (TICKET_PREFIX + ':counter'),(err,number)->
+        if err isnt null # occurs error.
+          return res.json err
+        keyname = [TICKET_PREFIX,'hash',fields.category,number].join ':'
+        redis.hmset keyname,options,(err,reply)->
+          if err
+            return res.json err
+          else
+            return res.json reply # successfully
+
 app.post '/admin/enable-user',(req,res)->
   id = req.body.id
   try
@@ -625,4 +649,3 @@ complement_save = (option,fieldobj)->
 # help function - 'ensure'
 ensure = (req,who)->
   req.session.auth
-  
