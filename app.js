@@ -399,9 +399,8 @@
 
   
   // db operator:DELETE
-  // db operator:UPDATE(admin urging,super user resolved,use these way)
-  // db operator:FIND
-
+  // db operator:UPDATE(admin urging,super user resolved,use these way,a delicate case is,a ticket(always category is 'tool' want keep long time,superuser or admin can update ticket let ticket ttl longer,each click will auto-increment 10 days,for example)
+  // db operator:FIND(superuser,admin are need list all tickets)
   // db operator:ADD
   app.all('/admin/create-new-ticket', function(req, res) {
     var formid, ref, ref1;
@@ -442,6 +441,7 @@
             return res.json(err);
           }
           keyname = [TICKET_PREFIX, 'hash', fields.category, number].join(':');
+          options = options.concat(['ticket_id', number]);
           return redis.hmset(keyname, options, function(err, reply) {
             if (err) {
               return res.json(err);
@@ -689,6 +689,29 @@
     return res.render('superuser-list-admins', {
       title: 'List-Administrators',
       accounts: results
+    });
+  });
+
+  app.get('/superuser/list-tickets/:category', function(req, res) {
+    var pattern;
+    pattern = [TICKET_PREFIX, 'hash', req.params.category, '*'].join(':');
+    return redis.keys(pattern, function(err, keys) {
+      var j, key, len, list;
+      list = redis.multi();
+      for (j = 0, len = keys.length; j < len; j++) {
+        key = keys[j];
+        list.hgetall(key);
+      }
+      return list.exec(function(err, replies) {
+        if (err) {
+          return res.json(err);
+        } else {
+          return res.render('superuser-list-tickets', {
+            title: 'list tickets',
+            tickets: replies
+          });
+        }
+      });
     });
   });
 

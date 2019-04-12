@@ -626,3 +626,15 @@ Thu Apr 11 10:28:52 CST 2019
           result=result.concat [k,v]
         result
            
+
+jp-stretch-pi-2
+Thu Apr 11 14:01:16 CST 2019
+  should give tickets(hash) a ttl.redis.ttl 'key',time-num?so,module no need implements 'del-ticket'?
+  update route:
+  u1: /superuser/sign-ticket-resolved
+  u2: /admin/urge-ticket-sign
+  more important problem,how-to let sup[eruser see the ticket?and ,how admin see the signed ticket(s)?
+  so,need a list route,in module view,it's 'finding'
+  f1:/superuser/list-tickets
+  f2:/admin/list-tickets
+  for they are can see during browsering index page,need a lighty sign,a bootstrap's label - span.label.label-default 4 means super user has 4 newest(no signed) tickets. 

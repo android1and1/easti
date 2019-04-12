@@ -254,9 +254,8 @@ app.post '/admin/register-user',(req,res)->
     res.json  ins.errors 
 
 # db operator:DELETE
-# db operator:UPDATE(admin urging,super user resolved,use these way)
-# db operator:FIND
-
+# db operator:UPDATE(admin urging,super user resolved,use these way,a delicate case is,a ticket(always category is 'tool' want keep long time,superuser or admin can update ticket let ticket ttl longer,each click will auto-increment 10 days,for example)
+# db operator:FIND(superuser,admin are need list all tickets)
 # db operator:ADD
 app.all '/admin/create-new-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
@@ -284,6 +283,7 @@ app.all '/admin/create-new-ticket',(req,res)->
         if err isnt null # occurs error.
           return res.json err
         keyname = [TICKET_PREFIX,'hash',fields.category,number].join ':'
+        options = options.concat ['ticket_id',number]
         redis.hmset keyname,options,(err,reply)->
           if err
             return res.json err
@@ -421,6 +421,18 @@ app.get '/superuser/list-admins',(req,res)->
     obj.id = one.id
     results.push obj 
   res.render 'superuser-list-admins',{title:'List-Administrators',accounts:results}
+
+app.get '/superuser/list-tickets/:category',(req,res)->
+  pattern = [TICKET_PREFIX,'hash',req.params.category,'*'].join ':'
+  redis.keys pattern,(err,keys)->
+    list = redis.multi()
+    for key in keys
+      list.hgetall key
+    list.exec (err,replies)->
+      if err
+        return res.json err
+      else 
+        return res.render 'superuser-list-tickets',{title:'list tickets',tickets:replies} 
 
 app.put '/superuser/del-admin',(req,res)->
   ins = await Nohm.factory 'account'

@@ -1,0 +1,25 @@
+extend layouts/main
+block pagejs
+  script(src="/mine/mine-superuser-list-tickets.js")
+block content
+  nav.navbar.navbar-default.navbar-inverse.navbar-fixed-top
+    a(type="button" class="navbar-btn btn btn-default btn-sm" href="/")
+      | back to site index page &emsp;&emsp;
+      span.glyphicon.glyphicon-chevron-left
+  br/
+  br/
+  ol
+    each ticket in tickets
+      li 
+        h2 #{ticket.title}
+        button(class="btn btn-default" data-cower-text="收起" data-toggle="collapse" data-target="#id"+ticket.ticket_id) 展开 
+        div(id="id" + ticket.ticket_id class="mine collapse")
+          ul
+            li= ticket.ticket_id
+            li= ticket.title || "标题"
+            li= ticket.ticket
+            li= ticket.category 
+            li= ticket.client_time
+            li= ticket.admin_alias
+            li= ticket.urge 
+            li= ticket.resolved 

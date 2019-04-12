@@ -10,6 +10,7 @@ sqlitedb/*.sql
 sqlitedb/*.sqlite
 sqlitedb/*.sqlite3
 node_modules/
+tickets/
 package-lock*
 lock-log*
 *.log
