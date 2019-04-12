@@ -1,0 +1,11 @@
+extend layouts/main
+block content
+  h2.code(data-code=code) [Response] #{status}
+  nav
+    ul.pager
+      li
+        a(href="/") 回到首页 
+block pagejs
+  script(src='/socket.io/socket.io.js')
+  script(src="/mine/mine-user-daka-response.js")
+  

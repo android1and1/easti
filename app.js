@@ -272,20 +272,32 @@
           category: req.query.mode // 'entry' or 'exit' mode
         });
         await ins.save();
-        return res.render('user-daka-response', {
+        // notice admin with user's success.
+        // the .js file include socket,if code=0,socket.emit 'code','0'
+        return res.render('user-daka-response-success', {
+          code: '0',
           title: 'login Result',
           status: '打卡成功'
         });
       } catch (error1) {
         error = error1;
         console.log('error', error);
+        // notice admin with user's failure.
+        // the .js file include socket,if code=-1,socket.emit 'code','-1'
         // show db errors
-        return res.json(ins.error);
+        return res.render('user-daka-response-failure', {
+          title: 'daka failure',
+          'reason': ins.error,
+          code: '-1',
+          status: '数据库错误，打卡失败。'
+        });
       }
     } else {
-      return res.render('user-daka-response', {
-        title: 'login Result',
-        status: '打卡失败'
+      return res.render('user-daka-response-failure', {
+        title: 'daka failure',
+        status: '打卡失败',
+        code: '-1',
+        reason: '超时或身份验证无效'
       });
     }
   });

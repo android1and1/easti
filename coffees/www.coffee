@@ -8,8 +8,8 @@ usage = 0 #没有打卡用户请求时，为0
 # help function ,justies if daka event during daka time.
 # admin_group's client page (route) is /admin/daka
 
-admin_group = io.of '/admin'
 # admin_group.on 'xxx'定义在客户端JS文件，admin_group.send 定义在服务端
+admin_group = io.of '/admin'
   .on 'connect',(socket)->
     # once one admin joined,should tell user channel this change.
     user_group.send 'one admin joined right now,socket number:' + socket.id
@@ -19,10 +19,15 @@ admin_group = io.of '/admin'
     socket.on 'qr fetched',->
       # 虽然在定义时并没有user_group,不影响运行时态.
       user_group.emit 'qr ready','Qrcode is ready,go and scan for daka.'
+    socket.on 'daka-result',(code)->
+      if code is '0'
+        admin_group.send 'User DaKa Success.'
+      if code is '-1'
+        admin_group.send 'User Daka Failure.'
 
 # user page(client):/user/daka
-user_group = io.of '/user'
 # user_group.send定义在服务端，user_group.on定义在客户端JS文件
+user_group = io.of '/user'
   .on 'connect',(socket)->
     # once one user joined,should tell admin channel this change.
     # client's infomation almost from socket.request.
@@ -41,6 +46,5 @@ user_group = io.of '/user'
           user_group.emit 'no admin' 
         else
           admin_group.emit 'fetch qr',{alias:alias,mode:mode,url:'/create-qrcode',timestamp:Date.now(),socketid:userid}
-
 server.listen 3003,->
   console.log 'server running at port 3003;press Ctrl-C to terminate.'
