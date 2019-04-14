@@ -18,11 +18,11 @@ admin_group = io.of '/admin'
     socket.on 'qr fetched',->
       # 虽然在定义时并没有user_group,不影响运行时态.
       user_group.emit 'qr ready','Qrcode is ready,go and scan for daka.'
-    socket.on 'message',(code)->
+    socket.on 'message',(user,code)->
       if code is 0
-        admin_group.send 'user daka success.' 
+        admin_group.send 'user - ' + user + ' daka <span class="text-success">success</span>.' 
       else if code is -1
-        admin_group.send 'user daka failure.'
+        admin_group.send 'user - ' + user + ' daka <span class="text-danger">failure</span>.'
       else
         admin_group.send 'unknown code:' + code
 

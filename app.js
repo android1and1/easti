@@ -277,7 +277,8 @@
         return res.render('user-daka-response-success', {
           code: '0',
           title: 'login Result',
-          status: '打卡成功'
+          status: '打卡成功',
+          user: req.query.alias
         });
       } catch (error1) {
         error = error1;
@@ -289,6 +290,7 @@
           title: 'daka failure',
           'reason': ins.error,
           code: '-1',
+          user: req.query.alias,
           status: '数据库错误，打卡失败。'
         });
       }
@@ -297,7 +299,8 @@
         title: 'daka failure',
         status: '打卡失败',
         code: '-1',
-        reason: '超时或身份验证无效'
+        reason: '超时或身份验证无效',
+        user: req.query.alias
       });
     }
   });

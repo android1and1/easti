@@ -13,7 +13,8 @@ $ ->
   socket = io '/admin'
  
   socket.on 'message',(msg)->
-    $msgbox.append $('<li/>',{text:msg}) 
+    # 由于属于内部调用，不需防“外部注入”
+    $msgbox.append $('<li/>',{html:msg}) 
     #$msgbox.append $('<li/>',{text:'in admin,socket id=' + socket.id})
 
   socket.on 'fetch qr',(seedobj)->

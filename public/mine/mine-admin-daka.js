@@ -16,8 +16,9 @@
     }
     socket = io('/admin');
     socket.on('message', function(msg) {
+      // 由于属于内部调用，不需防“外部注入”
       return $msgbox.append($('<li/>', {
-        text: msg
+        html: msg
       }));
     });
     

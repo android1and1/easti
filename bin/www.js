@@ -29,11 +29,11 @@
       // 虽然在定义时并没有user_group,不影响运行时态.
       return user_group.emit('qr ready', 'Qrcode is ready,go and scan for daka.');
     });
-    return socket.on('message', function(code) {
+    return socket.on('message', function(user, code) {
       if (code === 0) {
-        return admin_group.send('user daka success.');
+        return admin_group.send('user - ' + user + ' daka <span class="text-success">success</span>.');
       } else if (code === -1) {
-        return admin_group.send('user daka failure.');
+        return admin_group.send('user - ' + user + ' daka <span class="text-danger">failure</span>.');
       } else {
         return admin_group.send('unknown code:' + code);
       }

@@ -1,6 +1,6 @@
 extend layouts/main
 block content
-  h2.code(data-code=code) [Response] #{status}
+  h2.user.code(data-code=user,data-code=code) [Response] #{user} #{status}
   nav
     ul.pager
       li

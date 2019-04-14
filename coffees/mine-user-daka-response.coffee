@@ -1,5 +1,6 @@
 $ ->
-  code = $('.code').data 'code'
+  user = $('h2.user').data 'user'
+  code = $('h2.code').data 'code'
   socket = io '/admin'
   socket.on 'connect',->
-    socket.send code
+    socket.send user,code
