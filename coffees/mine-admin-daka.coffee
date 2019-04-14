@@ -14,7 +14,7 @@ $ ->
  
   socket.on 'message',(msg)->
     $msgbox.append $('<li/>',{text:msg}) 
-    $msgbox.append $('<li/>',{text:'in admin,socket id=' + socket.id})
+    #$msgbox.append $('<li/>',{text:'in admin,socket id=' + socket.id})
 
   socket.on 'fetch qr',(seedobj)->
     # display a png qrcode for users 'daka'

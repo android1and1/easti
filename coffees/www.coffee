@@ -7,7 +7,6 @@ io = IO server
 usage = 0 #没有打卡用户请求时，为0
 # help function ,justies if daka event during daka time.
 # admin_group's client page (route) is /admin/daka
-
 # admin_group.on 'xxx'定义在客户端JS文件，admin_group.send 定义在服务端
 admin_group = io.of '/admin'
   .on 'connect',(socket)->
@@ -19,11 +18,13 @@ admin_group = io.of '/admin'
     socket.on 'qr fetched',->
       # 虽然在定义时并没有user_group,不影响运行时态.
       user_group.emit 'qr ready','Qrcode is ready,go and scan for daka.'
-    socket.on 'daka-result',(code)->
-      if code is '0'
-        admin_group.send 'User DaKa Success.'
-      if code is '-1'
-        admin_group.send 'User Daka Failure.'
+    socket.on 'message',(code)->
+      if code is 0
+        admin_group.send 'user daka success.' 
+      else if code is -1
+        admin_group.send 'user daka failure.'
+      else
+        admin_group.send 'unknown code:' + code
 
 # user page(client):/user/daka
 # user_group.send定义在服务端，user_group.on定义在客户端JS文件

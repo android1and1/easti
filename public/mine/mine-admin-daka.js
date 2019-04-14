@@ -16,13 +16,12 @@
     }
     socket = io('/admin');
     socket.on('message', function(msg) {
-      $msgbox.append($('<li/>', {
+      return $msgbox.append($('<li/>', {
         text: msg
       }));
-      return $msgbox.append($('<li/>', {
-        text: 'in admin,socket id=' + socket.id
-      }));
     });
+    
+    //$msgbox.append $('<li/>',{text:'in admin,socket id=' + socket.id})
     return socket.on('fetch qr', function(seedobj) {
       var beforethings, mode, querystring, socketid;
       // display a png qrcode for users 'daka'

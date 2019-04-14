@@ -638,3 +638,7 @@ Thu Apr 11 14:01:16 CST 2019
   f1:/superuser/list-tickets
   f2:/admin/list-tickets
   for they are can see during browsering index page,need a lighty sign,a bootstrap's label - span.label.label-default 4 means super user has 4 newest(no signed) tickets. 
+
+hp505B
+Sun Apr 14 08:20:19 CST 2019
+ 　为什么在这response socket试验中屡屡失败？原因其实很多，第一，在服务器的socket代码，并没有.on 'message'事件监听，以为只要客户端send，其它属于这个组的socket就”理所当然“地听到；第二，等察觉到第一原因时，已经是第二天了，但此时又忘记了重启服务器需要同时重启socket-server服务器：bin/wwww.js,只是一遍又一遍的徒劳地重启：node app.js & ....;第三，把变量code(它代表成功/失败状态）使用data-code=code的形式，放在了ＨＴＭＬ元素中，取回时，没有想到它不是string type,而是number,不论是客户端还是服务端，都是ＮＵＭＢＥＲ，所以if code is '-1'会失败，第四，再次重申一下socket.emit 'message','here is message'等同于socekt.send 'here is message'这个知识是确实的，别再瞎猜疑了。

@@ -17,7 +17,6 @@
 
   // help function ,justies if daka event during daka time.
   // admin_group's client page (route) is /admin/daka
-
   // admin_group.on 'xxx'定义在客户端JS文件，admin_group.send 定义在服务端
   admin_group = io.of('/admin').on('connect', function(socket) {
     // once one admin joined,should tell user channel this change.
@@ -30,12 +29,13 @@
       // 虽然在定义时并没有user_group,不影响运行时态.
       return user_group.emit('qr ready', 'Qrcode is ready,go and scan for daka.');
     });
-    return socket.on('daka-result', function(code) {
-      if (code === '0') {
-        admin_group.send('User DaKa Success.');
-      }
-      if (code === '-1') {
-        return admin_group.send('User Daka Failure.');
+    return socket.on('message', function(code) {
+      if (code === 0) {
+        return admin_group.send('user daka success.');
+      } else if (code === -1) {
+        return admin_group.send('user daka failure.');
+      } else {
+        return admin_group.send('unknown code:' + code);
       }
     });
   });

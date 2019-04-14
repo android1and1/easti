@@ -3,19 +3,10 @@
   $(function() {
     var code, socket;
     code = $('.code').data('code');
-    socket = io('http://localhost:3003/admin');
+    socket = io('/admin');
     return socket.on('connect', function() {
-      return alert(socket.id);
+      return socket.send(code);
     });
   });
-
-  /*
-socket.send 'parsed response code.'
-if code is '0'
-  socket.emit 'daka-result','0'
-if code is '-1'
-  socket.emit 'daka-result','-1'
-null
-*/
 
 }).call(this);

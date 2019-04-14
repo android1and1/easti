@@ -9,8 +9,8 @@ sqlitedb/*.db
 sqlitedb/*.sql
 sqlitedb/*.sqlite
 sqlitedb/*.sqlite3
-node_modules/
 tickets/
+node_modules/
 package-lock*
 lock-log*
 *.log
