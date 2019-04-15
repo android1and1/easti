@@ -31,13 +31,9 @@
       querystring += '&&timestamp=' + seedobj.timestamp;
       querystring += '&&alias=' + seedobj.alias;
       querystring += '&&mode=' + seedobj.mode;
-      // remove alias name element,then add new one.
-      //beforethings =  $pngbox.find('h4.text-center')
-      //if beforethings
-      //  beforethings.remove()
-      beforethings = $pngbox.find('.caption h3');
+      beforethings = $pngbox.find('.caption');
       if (beforethings) {
-        beforethings.remove();
+        beforethings.html('');
       }
       $('.caption').append($('<h3/>', {
         text: '打卡人  ' + seedobj.alias,
@@ -55,6 +51,11 @@
         text: '状态 ' + mode,
         'class': 'text-center'
       }));
+      // add alternative daka button(chars way)
+      $('.caption').append($('<button/>', {
+        text: 'alternative daka way',
+        'class': 'btn btn-default btn-lg altdaka'
+      }));
       $img.attr('src', seedobj.url + querystring);
       $msgbox.append($('<li/>', {
         text: 'Query String:' + querystring
@@ -62,7 +63,15 @@
       $msgbox.append($('<li/>', {
         text: seedobj.socketid + ' dakaing'
       }));
-      return socket.emit('qr fetched', socket.id);
+      socket.emit('qr fetched', socket.id);
+      return $('#pngbox').on('click.alt', '.altdaka', function(evt) {
+        var $caption;
+        $caption = $(this).closest('.caption');
+        //  给一张表单打卡客户。
+        socket.emit('via form', seedobj);
+        $caption.append('<h2>it is alter text.</h2>');
+        return $('#pngbox').off('.alt');
+      });
     });
   });
 

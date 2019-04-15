@@ -22,6 +22,7 @@ fs.stat './configs/credentials/super-user.js',(err,stats)->
     process.exit 1
 
 credential = require './configs/credentials/super-user.js'
+hostname = require './configs/hostname.js'
 superpass = credential.password
 # ruler for daka app am:7:30 pm:18:00
 ruler = require './configs/ruler-of-daka.js'
@@ -96,7 +97,7 @@ app.get '/create-qrcode',(req,res)->
   await setAsync 'important',text
   await expireAsync 'important',60
   # templary solid ,original mode is j602 
-  fulltext = 'http://192.168.5.2:3003/user/daka-response?mode=' + req.query.mode + '&&alias=' + req.query.alias + '&&check=' + text 
+  fulltext = hostname + '/user/daka-response?mode=' + req.query.mode + '&&alias=' + req.query.alias + '&&check=' + text 
   res.type 'png'
   qr_image.image(fulltext).pipe res 
 # maniuate new func or new mind.
@@ -152,6 +153,11 @@ app.put '/user/logout',(req,res)->
     
 app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
+
+app.post '/user/daka-response',(req,res)->
+  # user choiced alternatively way to daka
+  check = req.body.check
+  res.json {'received':check} 
 
 app.get '/user/daka-response',(req,res)->
   session_alias = req.session?.auth?.alias
@@ -273,7 +279,8 @@ app.all '/admin/create-new-ticket',(req,res)->
     formid = new formidable.IncomingForm
     formid.uploadDir = path.join __dirname,'public','tickets'
     formid.keepExtensions = true
-    formid.maxFileSize = 20 * 1024 * 1024 
+    # keep small size.if handle with video,rewrite below,let it bigger.
+    formid.maxFileSize = 20 * 1024 * 1024
     formid.on 'error',(formid_err)->
       res.json formid_err
     formid.parse req,(formid_err,fields,files)->
