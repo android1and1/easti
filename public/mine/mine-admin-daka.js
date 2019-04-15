@@ -68,7 +68,7 @@
         var $caption;
         $caption = $(this).closest('.caption');
         //  给一张表单打卡客户。
-        socket.emit('via form', seedobj);
+        socket.emit('via form');
         $caption.append('<h2>it is alter text.</h2>');
         return $('#pngbox').off('.alt');
       });

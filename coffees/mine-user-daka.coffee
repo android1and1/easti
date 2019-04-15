@@ -14,6 +14,16 @@ $ ->
     $box.append $ '<li/>',{text:'[Event:qr ready]' + msg} 
   user.on 'no admin',->
     $box.append $ '<li/>',{text:'No Admin Currently,Need Active It First'}
+  user.on 'show form',->
+    $li = $('<li/>')
+    # create a form dynimacally
+    $form = $('<form/>',{'class':'form-inline','action':'/user/daka-response','method':'POST'})
+    $inputcheckwords = $('<input/>',{'placeholder':'i seen the words is','class':'form-control','name':'check'})
+    $submitbutton = $('<button/>',{text:'DaKa!','class':'btn btn-default'}) 
+    $form.append $inputcheckwords
+    $form.append $submitbutton
+    $li.append $form
+    $box.append $li
 
   ['entry','exit'].forEach (v)->
     elename = 'button#' + v

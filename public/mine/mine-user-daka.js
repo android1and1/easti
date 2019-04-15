@@ -29,6 +29,29 @@
         text: 'No Admin Currently,Need Active It First'
       }));
     });
+    user.on('show form', function() {
+      var $form, $inputcheckwords, $li, $submitbutton;
+      $li = $('<li/>');
+      // create a form dynimacally
+      $form = $('<form/>', {
+        'class': 'form-inline',
+        'action': '/user/daka-response',
+        'method': 'POST'
+      });
+      $inputcheckwords = $('<input/>', {
+        'placeholder': 'i seen the words is',
+        'class': 'form-control',
+        'name': 'check'
+      });
+      $submitbutton = $('<button/>', {
+        text: 'DaKa!',
+        'class': 'btn btn-default'
+      });
+      $form.append($inputcheckwords);
+      $form.append($submitbutton);
+      $li.append($form);
+      return $box.append($li);
+    });
     return ['entry', 'exit'].forEach(function(v) {
       var elename;
       elename = 'button#' + v;

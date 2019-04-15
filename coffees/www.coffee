@@ -25,6 +25,8 @@ admin_group = io.of '/admin'
         admin_group.send 'user - ' + user + ' daka <span class="text-danger">failure</span>.'
       else
         admin_group.send 'unknown code:' + code
+    socket.on 'via form',(seedobj)->
+      user_group.emit 'show form'
 
 # user page(client):/user/daka
 # user_group.send定义在服务端，user_group.on定义在客户端JS文件
