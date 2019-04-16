@@ -18,12 +18,24 @@ $ ->
     $li = $('<li/>')
     # create a form dynimacally
     $form = $('<form/>',{'class':'form-inline','action':'/user/daka-response','method':'POST'})
+    modeValue = ''
+    entry_attr = $('button#entry').attr 'disabled'
+    exit_attr = $('button#exit').attr 'disabled' 
+    if entry_attr
+      modeValue = 'exit' 
+    else
+      modeValue = 'entry'
+      
+    $inputmode = $('<input/>',{'class':'hidden','name':'mode','value':modeValue})
     $inputcheckwords = $('<input/>',{'placeholder':'i seen the words is','class':'form-control','name':'check'})
     $submitbutton = $('<button/>',{text:'DaKa!','class':'btn btn-default'}) 
+
     $form.append $inputcheckwords
+    $form.append $inputmode
     $form.append $submitbutton
     $li.append $form
     $box.append $li
+    $box.append $('<li/>',{text:'Debug item: value of input element is:' + modeValue})
 
   ['entry','exit'].forEach (v)->
     elename = 'button#' + v

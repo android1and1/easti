@@ -65,11 +65,22 @@
       }));
       socket.emit('qr fetched', socket.id);
       return $('#pngbox').on('click.alt', '.altdaka', function(evt) {
-        var $caption;
+        var $caption, target_url;
         $caption = $(this).closest('.caption');
         //  给一张表单打卡客户。
         socket.emit('via form');
-        $caption.append('<h2>it is alter text.</h2>');
+        // 生成验证字符串，与后台进行AJAX通讯，然后，显示出验证字符串。
+        target_url = '/create-check-words';
+        $.ajax({
+          url: target_url,
+          method: 'GET',
+          dataType: 'json'
+        }).done(function(json) {
+          return $caption.append('<h2>' + json + '</h2>');
+        }).fail(function(xhr, status, thrown) {
+          $caption.append('<h2>' + status + '</h2>');
+          return console.log(thrown);
+        });
         return $('#pngbox').off('.alt');
       });
     });

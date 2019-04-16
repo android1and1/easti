@@ -30,13 +30,26 @@
       }));
     });
     user.on('show form', function() {
-      var $form, $inputcheckwords, $li, $submitbutton;
+      var $form, $inputcheckwords, $inputmode, $li, $submitbutton, entry_attr, exit_attr, modeValue;
       $li = $('<li/>');
       // create a form dynimacally
       $form = $('<form/>', {
         'class': 'form-inline',
         'action': '/user/daka-response',
         'method': 'POST'
+      });
+      modeValue = '';
+      entry_attr = $('button#entry').attr('disabled');
+      exit_attr = $('button#exit').attr('disabled');
+      if (entry_attr) {
+        modeValue = 'exit';
+      } else {
+        modeValue = 'entry';
+      }
+      $inputmode = $('<input/>', {
+        'class': 'hidden',
+        'name': 'mode',
+        'value': modeValue
       });
       $inputcheckwords = $('<input/>', {
         'placeholder': 'i seen the words is',
@@ -48,9 +61,13 @@
         'class': 'btn btn-default'
       });
       $form.append($inputcheckwords);
+      $form.append($inputmode);
       $form.append($submitbutton);
       $li.append($form);
-      return $box.append($li);
+      $box.append($li);
+      return $box.append($('<li/>', {
+        text: 'Debug item: value of input element is:' + modeValue
+      }));
     });
     return ['entry', 'exit'].forEach(function(v) {
       var elename;

@@ -90,6 +90,24 @@ app.get '/',(req,res)->
     role:role
     alias:alias
 
+app.get '/create-check-words',(req,res)->
+  # 如果用户选择了填表单方式来打卡。
+  digits = [48..57] # 0..9
+  alpha = [97...97+26] # A..Z
+  chars = digits.concat alpha
+    .concat digits
+    .concat alpha
+  # total 72 chars,so index max is 72-1=71
+  {round,random} = Math
+  words = for _ in [1..5]  # make length=5 words
+    index = round random()*71
+    String.fromCharCode chars[index]
+  words = words.join ''
+  # 存储check words到redis数据库，并设置超时条件。
+  await setAsync 'important',words
+  await expireAsync 'important',60
+  res.json words
+  
 app.get '/create-qrcode',(req,res)->
   # the query string from user-daka js code(img.src=url+'....')
   # query string include socketid,timestamp,and alias
@@ -154,11 +172,40 @@ app.put '/user/logout',(req,res)->
 app.get '/user/login-success',(req,res)->
   res.render 'user-login-success',{title:'User Role Validation:successfully'}
 
+# user choiced alternatively way to daka
 app.post '/user/daka-response',(req,res)->
-  # user choiced alternatively way to daka
   check = req.body.check
-  res.json {'received':check} 
+  # get from redis db
+  words = await getAsync 'important'
+  session_alias = req.session?.auth?.alias
+  if words is check  
+    # save this daka-item
+    try
+      obj = new Date
+      desc = obj.toString()
+      ms = Date.parse obj 
+      ins = await Nohm.factory 'daily'
+      ins.property
+        alias: session_alias 
+        utc_ms: ms
+        whatistime: desc 
+        browser: req.headers["user-agent"] 
+        category:req.body.mode # 'entry' or 'exit' mode
+      console.log 'all properties',ins.allProperties()
+      await ins.save()
+      # notice admin with user's success.
+      # the .js file include socket,if code=0,socket.emit 'code','0'
+      return res.render 'user-daka-response-success',{code:'0',title:'login Result',status:'打卡成功',user:session_alias}
+    catch error
+      # notice admin with user's failure.
+      # js file include socket,if code=-1,socket.emit 'code','-1'
+      # show db errors
+      console.dir ins.errors
+      return res.render 'user-daka-response-failure',{title:'daka failure','reason':ins.errors,code:'-1',user:session_alias,status:'数据库错误，打卡失败。'}
+  else
+    return res.render 'user-daka-response-failure',{title:'daka failure',status:'打卡失败',code:'-1',reason:'超时或验证无效',user:session_alias}
 
+# user daka via QR code (scan software)
 app.get '/user/daka-response',(req,res)->
   session_alias = req.session?.auth?.alias
   if session_alias is undefined
@@ -192,7 +239,7 @@ app.get '/user/daka-response',(req,res)->
       # notice admin with user's failure.
       # the .js file include socket,if code=-1,socket.emit 'code','-1'
       # show db errors
-      return res.render 'user-daka-response-failure',{title:'daka failure','reason':ins.error,code:'-1',user:req.query.alias,status:'数据库错误，打卡失败。'}
+      return res.render 'user-daka-response-failure',{title:'daka failure','reason':ins.errors,code:'-1',user:req.query.alias,status:'数据库错误，打卡失败。'}
   else
     return res.render 'user-daka-response-failure',{title:'daka failure',status:'打卡失败',code:'-1',reason:'超时或身份验证无效',user:req.query.alias}
     

@@ -133,6 +133,35 @@
     });
   });
 
+  app.get('/create-check-words', async function(req, res) {
+    var _, alpha, chars, digits, index, random, ref, round, words;
+    // 如果用户选择了填表单方式来打卡。
+    digits = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+    alpha = (function() {
+      var results1 = [];
+      for (var j = 97, ref = 97 + 26; 97 <= ref ? j < ref : j > ref; 97 <= ref ? j++ : j--){ results1.push(j); }
+      return results1;
+    }).apply(this);
+    chars = digits.concat(alpha).concat(digits).concat(alpha);
+    // total 72 chars,so index max is 72-1=71
+    ({round, random} = Math);
+    words = (function() {
+      var j, results1;
+// make length=5 words
+      results1 = [];
+      for (_ = j = 1; j <= 5; _ = ++j) {
+        index = round(random() * 71);
+        results1.push(String.fromCharCode(chars[index]));
+      }
+      return results1;
+    })();
+    words = words.join('');
+    // 存储check words到redis数据库，并设置超时条件。
+    await setAsync('important', words);
+    await expireAsync('important', 60);
+    return res.json(words);
+  });
+
   app.get('/create-qrcode', async function(req, res) {
     var fulltext, text;
     // the query string from user-daka js code(img.src=url+'....')
@@ -240,15 +269,64 @@
     });
   });
 
-  app.post('/user/daka-response', function(req, res) {
-    var check;
-    // user choiced alternatively way to daka
+  // user choiced alternatively way to daka
+  app.post('/user/daka-response', async function(req, res) {
+    var check, desc, error, ins, ms, obj, ref, ref1, session_alias, words;
     check = req.body.check;
-    return res.json({
-      'received': check
-    });
+    // get from redis db
+    words = (await getAsync('important'));
+    session_alias = (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.alias : void 0 : void 0;
+    if (words === check) {
+      try {
+        
+        // save this daka-item
+        obj = new Date;
+        desc = obj.toString();
+        ms = Date.parse(obj);
+        ins = (await Nohm.factory('daily'));
+        ins.property({
+          alias: session_alias,
+          utc_ms: ms,
+          whatistime: desc,
+          browser: req.headers["user-agent"],
+          category: req.body.mode // 'entry' or 'exit' mode
+        });
+        console.log('all properties', ins.allProperties());
+        await ins.save();
+        // notice admin with user's success.
+        // the .js file include socket,if code=0,socket.emit 'code','0'
+        return res.render('user-daka-response-success', {
+          code: '0',
+          title: 'login Result',
+          status: '打卡成功',
+          user: session_alias
+        });
+      } catch (error1) {
+        error = error1;
+        // notice admin with user's failure.
+        // js file include socket,if code=-1,socket.emit 'code','-1'
+        // show db errors
+        console.dir(ins.errors);
+        return res.render('user-daka-response-failure', {
+          title: 'daka failure',
+          'reason': ins.errors,
+          code: '-1',
+          user: session_alias,
+          status: '数据库错误，打卡失败。'
+        });
+      }
+    } else {
+      return res.render('user-daka-response-failure', {
+        title: 'daka failure',
+        status: '打卡失败',
+        code: '-1',
+        reason: '超时或验证无效',
+        user: session_alias
+      });
+    }
   });
 
+  // user daka via QR code (scan software)
   app.get('/user/daka-response', async function(req, res) {
     var dbkeep, desc, error, ins, ms, obj, ref, ref1, session_alias, text;
     session_alias = (ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.alias : void 0 : void 0;
@@ -299,7 +377,7 @@
         // show db errors
         return res.render('user-daka-response-failure', {
           title: 'daka failure',
-          'reason': ins.error,
+          'reason': ins.errors,
           code: '-1',
           user: req.query.alias,
           status: '数据库错误，打卡失败。'
