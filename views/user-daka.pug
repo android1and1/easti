@@ -1,6 +1,10 @@
 extend layouts/main
 //- route:'/user/daka'
 block content
+  nav.navbar.navbar-defautl.navbar-inverse.navbar-fixed-top
+    a(href="/" type="button" class="btn btn-default") 回到首页
+  br/
+  br/
   h1(class="text-center") 打卡APP 内部使用 
   h1(id="box" class="text-center" data-alias= alias) 打卡人:#{alias} 
   p 按下相应按钮申请打卡，扫描管理机上的二维码，完成打卡。 
