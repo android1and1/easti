@@ -648,3 +648,8 @@ Mon Apr 15 10:23:04 CST 2019
   alternatively daka.
   the button now vendors.it is be agent by its mother element - .caption,so,remve event trigger is $('.caption').off 'click',but it is better user jquery's event-namespace :$('.caption').off 'click.alt',offcause,should write trigger: $('.caption').on 'click.alt','button.altdaka',(evt)->xxx
   next step,give dakaing user a form.
+
+Inch13Early2015Air
+2019年 4月17日 星期三 10时54分56秒 CST
+  make png instead 60x60png,remove debug info from app.js - route - /user/daka-response.
+  next,add links to admin daka page and user daka page.

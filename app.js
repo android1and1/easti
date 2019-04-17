@@ -291,7 +291,6 @@
           browser: req.headers["user-agent"],
           category: req.body.mode // 'entry' or 'exit' mode
         });
-        console.log('all properties', ins.allProperties());
         await ins.save();
         // notice admin with user's success.
         // the .js file include socket,if code=0,socket.emit 'code','0'
