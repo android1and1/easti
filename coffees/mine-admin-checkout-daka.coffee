@@ -24,7 +24,7 @@ $ ->
      category = $(@).data('detail-category')
      browser = $(@).data('detail-browser')
      utc_ms = $(@).data('detail-utc-ms')
-     alert [id,alias,category,browser,utc_ms].join('\n')
+     alert ['条目编号: ' + id,'用户: ' + alias,'类别: ' + category,'浏览器描述: ' + browser,'打卡时间（科学表示毫秒）: ' + utc_ms].join('\n')
 
   $('form').on 'submit',(e)->
     # ajax do query

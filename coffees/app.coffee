@@ -32,6 +32,9 @@ Account = require './modules/md-account'
 Daka = require './modules/md-daka'
 dakaModel = undefined
 accountModel = undefined
+TICKET_PREFIX = 'ticket'
+DAKA_WILDCARD = 'DaKa*daily*'
+ACCOUNT_WILDCARD='DaKa*account*'
 
 redis = (require 'redis').createClient()
 setAsync = promisify redis.set
@@ -49,9 +52,6 @@ redis.on 'connect',->
   # register the 2 models.
   dakaModel = Nohm.register Daka
   accountModel = Nohm.register Account
-
-# database:ticket,ticket is where place admin commits about site advice
-TICKET_PREFIX = 'ticket'
 
 express = require 'express'
 app = express()
@@ -73,7 +73,6 @@ app.use Session {
   resave:false
   saveUninitialized:true
   } 
- 
 app.use (req,res,next)->
   res.locals.referrer = req.session.referrer
   delete req.session.referrer  # then,delete() really harmless
@@ -553,8 +552,17 @@ app.get '/superuser/register-admin',(req,res)->
   else
     res.render 'superuser-register-admin',{defaultValue:'1234567',title:'Superuser-register-admin'}
 
-       
-  
+app.get '/superuser/delete-all-daka-items',(req,res)->
+  if req.session?.auth?.role isnt 'superuser'
+    return res.json 'wrong:must role is superuser.'
+  # delete all daka items,be cafeful.
+  multi = redis.multi()
+  redis.keys DAKA_WILDCARD,(err,keys)->
+    for key in keys
+      multi.del key
+    multi.exec (err,replies)->
+      res.json replies 
+
 app.post '/superuser/register-admin',(req,res)->
   {adminname} = req.body
   if ! filter adminname

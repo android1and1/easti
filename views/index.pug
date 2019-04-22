@@ -4,24 +4,24 @@ block content
     ul.nav.nav-pills.nav-stacked
       li.active 
         h2
-          a(data-toggle="collapse" href="#userLogin") User Login 
+          a(data-toggle="collapse" href="#userLogin") staff 入口 
         div(id="userLogin" class="collapse well")
           ol.nav.nav-pills.nav-stacked
             li
-              a(href="/user/login") Go To Login Page
+              a(href="/user/login") 登录帐号 
             li 
               a(href="#" id="userLogout") Exit User's Account
             li
-              a(href="/user/daka") User DaKa
+              a(href="/user/daka") 打卡 
       li
         h2
-          a(data-toggle="collapse" href="#adminLogin") Admin Login 
+          a(data-toggle="collapse" href="#adminLogin") Admin 入口 
         div(class="collapse well" id="adminLogin")
           ul.nav.nav-pills.nav-stacked
             li
               a(href="/admin/login" id="adminLogin") Admin Login
             li
-              a(href="#" id="adminLogout") Admin Logout
+              a(href="#" id="adminLogout") Admin 退出帐号 
             li
               a(href="/admin/register-user" id="adminRegisterUser") Admin Register User
             li
@@ -32,7 +32,7 @@ block content
               a(href="/admin/checkout-daka" id="adminCheckoutOneUser") Check Out DaKa History 
       li
         h2
-          a(data-toggle="collapse" href="#superuserLogin") Super User Login 
+          a(data-toggle="collapse" href="#superuserLogin") Super User 选项 
         div(class="collapse well" id="superuserLogin")
           ul.nav.nav-pills.nav-stacked
             li
@@ -45,17 +45,23 @@ block content
               a(href="/superuser/list-admins" id="superuserListUsers") Superuser List Admins 
             li
               a(href='/superuser/daka-complement') daka complement
+            li
+              a(href='/superuser/delete-all-daka-items') 删除所有打卡记录 
   div.right
     nav.navbar.navbar-default#onebuttonbar 
       button.btn.btn-default.btn-md#switch
         span.glyphicon.glyphicon-menu-hamburger
+    
     .jumbotron
-      h1 Navigator Of Main App
+      h1 得宜家打卡考勤系统 
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
     p right content p right content p right content p right content p right content p right content p right content p right content p right content p right content
+    .jintian
+      h2 placeholder of .jintian
+
 block footer
   div#rightmodal.hidden
   h2#tellwhichrole= "Your Currently Role Is [" + role + "]."

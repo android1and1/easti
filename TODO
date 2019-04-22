@@ -653,3 +653,30 @@ Inch13Early2015Air
 2019年 4月17日 星期三 10时54分56秒 CST
   make png instead 60x60png,remove debug info from app.js - route - /user/daka-response.
   next,add links to admin daka page and user daka page.
+
+jp-stretch-pi-2
+Thu Apr 18 10:41:06 CST 2019
+  give a route for del all daka items,keys 'DaKa:*' (keys)->
+    for key in keys
+      del key
+  howto paralley do these,after all is deleted,give a callback.i think ,the example of github of node-redis,use delAsync = promisify(redis.del).bind(redis),then we can invoke like below:
+  promises = []
+  for key in keys
+    promises.push(delAsync key) 
+  Promise.all promises
+  .then (replies)->
+    res.render 'view.pug',{data:replies}
+
+  for step by step advice,first is in tmp/step1.coffee,make an example,see what is output?
+
+jp-stretch-pi-2
+Fri Apr 19 10:24:33 CST 2019
+  want a report,admin list all-users-report,user want its report,from one month to this year.
+  super user want archieve daka-items from a db-based system,to a single file,a pdf?idea sounds bad?
+  for easy suppose,during browser history,role:admin can click 'make report' button,this button trigger codes retrieves data from template variable - 'properties object',then,transfer each item to pdf object,pdf is a library.
+  but,i want cros 
+
+jp-stretch-pi-2
+Mon Apr 22 08:44:26 CST 2019
+  about cors,'Access-Control-Allow-Origin',i found:1,the server seted,client set no sense,2,some api tagged "cors=yes,json=yes,https=yes,credient=no" is easy,else need a apikey for commerce target.
+  so,removed(restorted) app.js's module 'cors'.

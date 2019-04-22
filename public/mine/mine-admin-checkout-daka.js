@@ -32,7 +32,7 @@
       category = $(this).data('detail-category');
       browser = $(this).data('detail-browser');
       utc_ms = $(this).data('detail-utc-ms');
-      return alert([id, alias, category, browser, utc_ms].join('\n'));
+      return alert(['条目编号: ' + id, '用户: ' + alias, '类别: ' + category, '浏览器描述: ' + browser, '打卡时间（科学表示毫秒）: ' + utc_ms].join('\n'));
     });
     $('form').on('submit', function(e) {
       // ajax do query
