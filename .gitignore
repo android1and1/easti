@@ -14,7 +14,9 @@ package-lock*
 lock-log*
 *.log
 credients/
+credentials/
 *.data
 configs/
 public/uploads
 !public/uploads/sample.jpg
+*/tickets/
