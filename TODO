@@ -680,3 +680,13 @@ jp-stretch-pi-2
 Mon Apr 22 08:44:26 CST 2019
   about cors,'Access-Control-Allow-Origin',i found:1,the server seted,client set no sense,2,some api tagged "cors=yes,json=yes,https=yes,credient=no" is easy,else need a apikey for commerce target.
   so,removed(restorted) app.js's module 'cors'.
+
+jp-stretch-pi-2
+Tue Apr 23 09:08:42 CST 2019
+  pick up some route:how to fill index(page)?crawl bugger?too many things need to learn,forgive it.forget it .api-data always need apikey,means validate hostname,dns...
+  爬爬虫是解决这类问题的一个办法，有个典型的例子，有个博客作者开始是拿别人的API，后来这个叫“历史上的今天”的API停止分享了-----这是免费API的通常结果----于是自己做了一个。
+  今天争取搞个样子出来，用NODEJS。
+
+jp-stretch-pi-2
+Tue Apr 23 14:57:15 CST 2019
+  为了更好地学习爬虫相关技术，分出一个新分支：对了，爬虫英语真么说？crawler,也有挖掘机的意思。那，这个分支命名为crawler.
