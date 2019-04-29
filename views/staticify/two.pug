@@ -1,0 +1,28 @@
+extends ../layouts/main
+block pagecss
+  style.
+    div {
+      background-color:red;
+    }
+    #box3 {
+      background-color:lime;
+      transform:rotate(-15deg);
+      -webkit-transform:rotate(-15);
+    }
+    #box2 {
+      transform:rotate(15deg);
+      -webkit-transform:rotate(15deg);
+    }
+block content
+  div#normal
+    p hi normal div box
+  
+  div#normal
+    p hi normal div box
+  div#normal
+    p hi normal div box
+  div#box2
+    h1 Box2 
+  div#box3
+    h1 Box 3 
+

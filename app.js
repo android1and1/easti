@@ -966,6 +966,14 @@
     }
   });
 
+  
+  // during learn css3,svg..,use this route for convient.
+  app.use('/staticify/:viewname', function(req, res) {
+    return res.render('staticify/' + req.params.viewname, {
+      title: 'it is staticify page'
+    });
+  });
+
   app.use(function(req, res) {
     res.status(404);
     return res.render('404');

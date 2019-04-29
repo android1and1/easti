@@ -578,6 +578,10 @@ app.post '/superuser/register-admin',(req,res)->
     res.json 'Saved.'
   catch error
     res.json  ins.errors 
+
+# during learn css3,svg..,use this route for convient.
+app.use '/staticify/:viewname',(req,res)->
+  res.render 'staticify/' + req.params.viewname,{title:'it is staticify page'}
  
 app.use (req,res)->
   res.status 404
