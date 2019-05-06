@@ -5,10 +5,6 @@
 <svg width="140" height="170" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Cat</title>
   <desc>Stick Figure Of A Cat</desc>
-  <g id="youknow">
-    <rect x="0" y="0" width="55" height="55" style="fill:navy;stroke:olive;stroke-width:4" />
-  </g>
-  <use xlink:href="#youknow" x="60" y="55" />
   <circle cx="70" cy="95" r="50" style="stroke:black;fill:none" />
   <circle cx="55" cy="80" r="5" stroke="black" fill="#339933" />
   <circle cx="85" cy="80" r="5" stroke="black" fill="#339933" />
