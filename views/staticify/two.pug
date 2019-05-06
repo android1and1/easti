@@ -13,6 +13,7 @@ block pagecss
       transform:rotate(15deg);
       -webkit-transform:rotate(15deg);
     }
+    .svg {background-color:white;}
 block content
   div#normal
     p hi normal div box
@@ -25,4 +26,9 @@ block content
     h1 Box2 
   div#box3
     h1 Box 3 
-
+  div.svg
+    p you dian dong xi!
+    svg(viewBox="0 0 200 200" width="200px" height="200px" xmlns='http://www.w3.org/2000/svg' version="1.1")
+      g(id="square")
+        rect(x="10" y="10" width="20" height="20" style="fill:none;stroke:black;" )
+      use(xlink:href="#square" transform="scale(2)")
