@@ -1,0 +1,9 @@
+extends ../layouts/main
+block content
+  h2 svg lesson - Animation. 
+  svg(version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="1008px" height="1000px")
+    circle(cx="60" cy="60" r="30" style="fill:#ff9;stroke:gray;")
+      animate(id="c1" attributeName="r" attributeType="XML" begin="0" dur="4" from="30" to="0" fill="freeze") 
+    text(text-anchor="middle" x="160" y="160" style="visibility:hidden")
+      |All Gone!
+      set(attributeName="visibility" attributeType="CSS" to="visible" begin="4.5s" dur="1s" fill="freeze")
