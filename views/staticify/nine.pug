@@ -1,0 +1,8 @@
+extend ../layouts/main
+block pagejs
+  script(src="/pagejs/pagejs-nine.js")
+block content
+  h1 embed & getSVGDocument 
+  embed(id="you-guess" src="/images/embed-svg.svg" alt="you guess?")
+  footer
+    p it is end.

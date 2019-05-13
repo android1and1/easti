@@ -704,3 +704,9 @@ Tue May  7 14:28:03 CST 2019
 Inch13Early2015Air
 2019年 5月 7日 星期二 16时32分37秒 CST
   javascript can hold svg,svg for project,let interesting more.
+
+hp505B
+Mon May 13 11:19:40 CST 2019
+  problem one,jQuery(document) not work,can not retrieve outside(from <embed>) svg file's element,resolve:
+    in pagejs script.) window.onload = -> instead "$ ->"
+  problem two,jQuery can not create new svg element(example,a rect),because svg element need namespace,so,use native javascript way:"document.createElementNS('http://www.w3.org/2000/svg','rect')"
