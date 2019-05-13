@@ -17,11 +17,16 @@
     // 使用ｊＱｕｅｒｙ并加上translate效果。
     $rect = $(document.createElementNS('http://www.w3.org/2000/svg', 'rect'));
     $rect.attr({
-      transform: 'translate(0,-34) rotate(14,50,45)',
+      transform: 'translate(0,-45) rotate(-15,50,45)',
       x: 110,
       y: 200,
       width: 100,
-      height: 90,
+      height: 90
+    });
+    //fill:'yellow'
+    //stroke:'purple'
+    //'stroke-width':4
+    $rect.css({
       fill: 'yellow',
       stroke: 'purple',
       'stroke-width': 4
