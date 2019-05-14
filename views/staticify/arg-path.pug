@@ -1,0 +1,18 @@
+extends ../layouts/main
+block content
+  h1 Display SVG
+  svg(width="1000" height="1000" viewBox="0 0 55 55" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="you-know")
+    // standard ellipse
+    ellipse(style="fill:#3a9" cx="10" cy="10" rx="4" ry="7")
+    // the western hemisphere
+    path(style="fill:none;stroke:yellow;stroke-width:.7" d="M 10,17 A 4,7 0 1,1 10,3")
+    // the eastern hemisphere
+    path(style="fill:none;stroke:red;stroke-width:.7" d="M 10 3 A 4 7 0 1 1 10 17")
+
+    //- bei sai er
+    path(d="M 7 10 Q 15 7 19 17 20 29 24 11" style="fill:none;stroke:yellow;stroke-width:.33")
+    //- 二次曲线
+    path(d="M 7 17 Q 12 19 17 14 T 24 19" style="fill:none;stroke:#1a1;stroke-width:.33")
+    //- three次曲线
+    path(d="M 7 17 C 12 19 17 14 24 19" style="fill:none;stroke:#af4;stroke-width:.33")
+    path(transform="translate(0,-7)" d="M 7 17 C 11 24 17 4 24 19 S 20 40 14 33" style="fill:none;stroke:#af4;stroke-width:.33")
