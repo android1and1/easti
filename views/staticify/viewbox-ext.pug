@@ -1,0 +1,14 @@
+extends ../layouts/main
+block content
+  //- 这是一个试验，让外部CSS样式文件决定SVG各元素的表现，让object或是embed元素显示SVG（HTML，SVG混合页面，也说是本PUG文件）
+  //- in the svg file - house.svg,there are one circle and one rect,circle will filled with yellow colour,and rect stroke is dashed.there proves ext css stylesheet is work.
+  div#id1
+    h2 ext svg
+  //-
+    object(class="block-center" width="90%" data="/images/house.svg" type="image/svg+xml" title="House Library" alt="it is a svg pic.") 
+      p No SVG Support! Here's a substitute:
+      img(src="/images/house.svg",title="House Library - Subtitute.",alt="it is a svg pic.") 
+  div#id2.container
+    embed(class="center-block" width="90%" src="/images/house.svg" type="image/svg+xml" title="House Library" alt="it is a svg pic.") 
+    
+  
