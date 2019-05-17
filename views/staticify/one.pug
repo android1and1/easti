@@ -12,3 +12,10 @@ block content
       <!-- always rember that - DON NOT give ';' symbol to transform attribution ,it is failure many times! -->
       use(xlink:href="#square1" transform="scale(2)")
       use(xlink:href="#square1" transform="translate(100,100) scale(1.5,1)")
+block footer
+  div.container
+    h2 clock svg image
+    embed(class="center-block" src="/images/clock.svg" alt="make a sketch clock")
+    h2 and qr-image,says 'i love qr image'
+    object(class="center-block" width="55%" data="/images/iloveqrimage.svg")
+      p fall back here,means svg not supported.

@@ -1,0 +1,13 @@
+g {
+  stroke:black;
+}
+use {
+  fill:none;
+}
+use.house {
+  fill:red;
+}
+use.couple {
+  stroke:purple;
+  stroke-width:2px;
+}

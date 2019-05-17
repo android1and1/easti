@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="/mine/manwomanandhouse.css" type="text/css" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="200" height="280" viewBox="0 0 200 200">
+  <!-- house man woman -->
+  <title> Grouped Drawing </title>
+  <desc> Stick-figure drawings of a house and people</desc>
+  <defs>
+  <g id="house"> 
+    <desc> House with door.</desc>
+    <rect x="6" y="50" width="60" height="60" />
+    <polyline points="6 50 36 9 66 50" />
+    <polyline points="35 110 36 80 50 80 50 110" />
+  </g>
+  <g id="man" transform="translate(5,50)"> 
+    <desc> Male human </desc>
+    <circle cx="35" cy="6" r = "10" />
+    <line x1="35" y1="16" x2="35" y2="30" />
+    <polyline points="26,54,35,30,44,54" />
+    <polyline points="26,20,35,26,44,20" />
+  </g>
+  <g id="woman" transform="translate(-94,0)">
+    <desc> Female human </desc>
+    <circle cx="110" cy="56" r = "10" />
+    <polyline points="110,66 110,80 100,90 120,90 110,80" /> 
+    <line x1="104" y1="104" x2="108" y2="90" />
+    <line x1="112" y1="90" x2="116" y2="104" />
+    <polyline points="101 70,110 76,119 70" /> -->
+  </g>
+  <g id="couple">
+    <use xlink:href="#woman" />
+    <use xlink:href="#man" />
+  </g>
+  </defs>
+  <use class="house" xlink:href="#house" x="2" y="0" />
+  <use class="couple" xlink:href="#couple" x="80" y="0" />
+</svg>
