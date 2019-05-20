@@ -1,6 +1,16 @@
 extends ../layouts/main
 block content
+  button#idot(class="btn btn-default") dodo
+  button#zheng(class="btn btn-primary") Zheng Shi
   h1 svg lesson - Path
-  svg(version="1.1" xmlns="www.w3.org/2000/svg" width="550" height="1000")
-    path(stroke="black" stroke-width="2" fill="none" d="M200,100 L0,400 L500,400 L 200,100") 
+  embed(id="you-svg" width="88%" src="/images/little-buttercup.svg") 
   
+  h2 continue
+block pagejs
+  script.
+    window.addEventListener('load',function(){
+    var doc = document.getElementById('you-svg').getSVGDocument();
+    var path = doc.getElementById('yes-sir');
+    alert(path.getAttribute('stroke')); 
+    path.setAttribute('fill','yellow');
+    },false);
