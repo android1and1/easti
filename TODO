@@ -710,3 +710,12 @@ Mon May 13 11:19:40 CST 2019
   problem one,jQuery(document) not work,can not retrieve outside(from <embed>) svg file's element,resolve:
     in pagejs script.) window.onload = -> instead "$ ->"
   problem two,jQuery can not create new svg element(example,a rect),because svg element need namespace,so,use native javascript way:"document.createElementNS('http://www.w3.org/2000/svg','rect')"
+
+hp505B
+Mon May 20 10:13:33 CST 2019
+  js communicate svg element,no problem,there are 4 cases:
+  1, svg outside html document,js codes in html document.
+  2, js codes within svg file,and svg file be included from outside
+  3, svg inside html document,js codes in html dom
+  4,js inside svg file,svg file inside html document.
+  all no problem,some delicate things need pay attention.like window loading event,svg document(getSVGDocument()).

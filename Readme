@@ -360,6 +360,31 @@ in book - <web development with node and express>,writter said:
 so,way2 N route=3N
 so,if few routes,way2 will efficeail few.
 
+#######################
+  Javascript With SVG 
+#######################
+if svg is outter svg file(images/svg+xml),and javascript codes is at outside(not within svg file!),communicate way is :
+  (first) include svg :
+     <object id="wrapper" width="xxx" height="xxxx" alt="xx xx xx" data="/src/to/svg-file">
+        ``` place fallback things here. ````
+     </object>
+  object/embed/iframe can act as wrapper of svg file.
+  (then,js comming)
+  var wrapper = document.getElementById("wrapper");
+  var svgDocument = wrapper.getSVGDocument();
+  var svgPathElement = svgDocument.getElementById('i-am-path-element');
+  ```` js code manipulate svg element(s) ````
+  (import!)should invoke js codes after html dom and svg dom all loaded,so,the best way is:
+    window.addEventListener('load',function(){
+       ```` the real codes ```
+      },true);
+   if use 'getSVGDocument()' before ALL loaded,browser will say it is a forbidden operator.
+if svg is inner and js is within html (not within svg)
+   js directly access svg element,not need window loaded event trigger.,and no need getSVGDocument(). 
+if svg is inner and js code within this svg
+   not need (would be wrong) use getSVGDocument() and no need wait loadend event,and window global variable is available.(etc window.setTimeout) 
+
+################
 ################
   git push tags
 ################
