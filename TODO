@@ -729,3 +729,10 @@ cyrus-Latitude-E7470
 cyrus-Latitude-E7470
 2019年 05月 27日 星期一 08:21:19 CST
   the <svg> and <object> width-height (size) about attribute-width-or-height(first) and inner drawing element(example a rect.).
+
+jp-stretch-pi-2
+Mon May 27 08:49:17 CST 2019
+  from views/staticify/progressbar.pug.commend:
+  1, in inkscape,draw all in svg:the static(background) and dynamics.
+  2, object tag be includes into html,give viewBox attr and width percent value.
+  3,get SVG document,from here manipopulates dynic thing.
