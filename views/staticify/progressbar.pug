@@ -1,0 +1,34 @@
+extends ../layouts/main
+block pagecss
+  style.
+    object {border:2px solid purple;}
+    svg {border:2px dotted purple;}
+block content
+  object(data="/images/progress-bar-bg.svg" width="70%")
+    p fallback here.
+  object(id="svg-object" data="/images/progress-bar-bg.svg" width="50%" alt="progress bar bg" ) 
+    p fallback here.
+  p a smaller svg
+  object(id="svg-object" data="/images/progress-bar-bg.svg" width="30%" alt="progress bar bg" ) 
+    p fallback here.
+
+  div(class="container")
+    .row
+      div.col-sm-6.col-sm-offset-2.btn-group-vertical.btn-group-lg
+        button.btn.btn-default finish-L1
+        button.btn.btn-default finish-L2
+        button.btn.btn-default finish-L3
+        button.btn.btn-default finish-L4
+
+  //- svg default size:height= , width=
+  svg(id="svg-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 744 280") 
+    title anything
+    rect(id="arrow-base-1" x="0" y="0" width="50%" height="50%" style="fill:purple") 
+  p another svg element
+  svg(id="svg-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 200") 
+    title you know!
+    rect(id="arrow-base-2" x="0" y="0" width="50%" height="50%" style="fill:purple") 
+block footer
+  div.center-block
+    p All Right Reserved By D-Y-J @2019
+  // buttons

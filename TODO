@@ -719,3 +719,13 @@ Mon May 20 10:13:33 CST 2019
   3, svg inside html document,js codes in html dom
   4,js inside svg file,svg file inside html document.
   all no problem,some delicate things need pay attention.like window loading event,svg document(getSVGDocument()).
+
+cyrus-Latitude-E7470
+2019年 05月 23日 星期四 08:34:12 CST
+  figure1 rect:line[4]:circle:text  as background of progressbar.
+  figure2 rect+arrow(right) first give -x value litenering button click.
+  buttons
+
+cyrus-Latitude-E7470
+2019年 05月 27日 星期一 08:21:19 CST
+  the <svg> and <object> width-height (size) about attribute-width-or-height(first) and inner drawing element(example a rect.).
