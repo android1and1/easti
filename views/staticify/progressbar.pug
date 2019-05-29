@@ -1,33 +1,39 @@
 extends ../layouts/main
+block pagejs
+  script.
+    window.addEventListener('load',function(){
+      // say something
+      var finish_l1 = window.document.getElementById('l1');
+      var finish_l2 = window.document.getElementById('l2');
+      var finish_l3 = window.document.getElementById('l3');
+      var finish_l4 = window.document.getElementById('l4');
+      var doc = window.document.getElementById('svgbox').getSVGDocument();
+      var fucking = doc.getElementById('fucking');
+      var fucking_animate = fucking.getElementsByTagName('animate')[0];
+      finish_l1.addEventListener('click',function(e){
+        fucking_animate.setAttribute('to','-110'); 
+        console.log(fucking.getBBox()); 
+      });
+      finish_l2.addEventListener('click',function(e){
+        fucking_animate.setAttribute('to','-70'); 
+        console.log(fucking.getBBox()); 
+      });
+      
+    });
 block pagecss
   style.
-    object {border:2px solid purple;}
-    svg {border:2px dotted purple;}
+    object {border:1px dotted purple;}
 block content
-  object(data="/images/progress-bar-bg.svg" width="70%")
-    p fallback here.
-  object(id="svg-object" data="/images/progress-bar-bg.svg" width="50%" alt="progress bar bg" ) 
-    p fallback here.
-  p a smaller svg
-  object(id="svg-object" data="/images/progress-bar-bg.svg" width="30%" alt="progress bar bg" ) 
+  object(data="/images/nidong.svg" width="90%" id="svgbox")
     p fallback here.
 
   div(class="container")
     .row
       div.col-sm-6.col-sm-offset-2.btn-group-vertical.btn-group-lg
-        button.btn.btn-default finish-L1
-        button.btn.btn-default finish-L2
-        button.btn.btn-default finish-L3
-        button.btn.btn-default finish-L4
-
-  //- svg default size:height= , width=
-  svg(id="svg-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 744 280") 
-    title anything
-    rect(id="arrow-base-1" x="0" y="0" width="50%" height="50%" style="fill:purple") 
-  p another svg element
-  svg(id="svg-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 200") 
-    title you know!
-    rect(id="arrow-base-2" x="0" y="0" width="50%" height="50%" style="fill:purple") 
+        button#l1.btn.btn-default finish-L1
+        button#l2.btn.btn-default finish-L2
+        button#l3.btn.btn-default finish-L3
+        button#l4.btn.btn-default finish-L4
 block footer
   div.center-block
     p All Right Reserved By D-Y-J @2019

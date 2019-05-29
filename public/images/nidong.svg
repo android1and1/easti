@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="160mm"
+   height="25mm"
+   viewBox="0 0 160 25"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="nidong.svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6190">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop6186" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop6188" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6190"
+       id="radialGradient6192"
+       cx="93.310081"
+       cy="29.037827"
+       fx="93.310081"
+       fy="29.037827"
+       r="74.268532"
+       gradientTransform="matrix(1,0,0,0.0727769,-13.43513,8.403714)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.0114504"
+     inkscape:cx="-91.615091"
+     inkscape:cy="92"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="845"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <path
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#e2e3db;fill-opacity:1;fill-rule:nonzero;stroke:url(#radialGradient6192);stroke-width:2.46799994;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.85708964;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="m 152.69726,6.361638 c 0.4771,0 0,8.218789 0,8.218789 0,0.163725 -145.587654,0.09193 -145.587654,0.09193 -0.477104,0 -0.174427,-8.21879 -0.174427,-8.21879 0,-0.163724 145.762081,-0.09193 145.762081,-0.09193 z"
+       id="rect3758"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <g
+       id="g3756"
+       transform="matrix(0.73541668,0,0,0.73541668,-9.0268678,-12.167904)"
+       style="fill:#5d6c53">
+      <path
+         inkscape:connector-curvature="0"
+         id="rect3716"
+         d="m 19.03829,24.350653 h 39.35749 c 1.128801,0 2.037548,0.908745 2.037548,2.037547 v 9.245722 c 0,1.128802 -0.908747,2.037549 -2.037548,2.037549 H 19.03829 c -1.128802,0 -2.037549,-0.908747 -2.037549,-2.037549 V 26.3882 c 0,-1.128802 0.908747,-2.037547 2.037549,-2.037547 z"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#5d6c53;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.67918283;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.85708964;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect3716-3"
+         d="m 183.52125,24.350653 h 39.3575 c 1.1288,0 2.03754,0.908745 2.03754,2.037547 v 9.245722 c 0,1.128802 -0.90874,2.037548 -2.03754,2.037548 h -39.3575 c -1.1288,0 -2.03754,-0.908746 -2.03754,-2.037548 V 26.3882 c 0,-1.128802 0.90874,-2.037547 2.03754,-2.037547 z"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#5d6c53;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.67918283;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.85708964;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect3716-6"
+         d="m 128.69361,24.350653 h 39.3575 c 1.1288,0 2.03754,0.908745 2.03754,2.037547 v 9.245722 c 0,1.128802 -0.90874,2.037548 -2.03754,2.037548 h -39.3575 c -1.1288,0 -2.03755,-0.908746 -2.03755,-2.037548 V 26.3882 c 0,-1.128802 0.90875,-2.037547 2.03755,-2.037547 z"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#5d6c53;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.67918283;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.85708964;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect3716-5"
+         d="m 73.865949,24.350653 h 39.357491 c 1.1288,0 2.03754,0.908745 2.03754,2.037547 v 9.245722 c 0,1.128802 -0.90874,2.037548 -2.03754,2.037548 H 73.865949 c -1.128802,0 -2.037549,-0.908746 -2.037549,-2.037548 V 26.3882 c 0,-1.128802 0.908747,-2.037547 2.037549,-2.037547 z"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#5d6c53;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.67918283;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.85708964;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.66141963px;line-height:100%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.21123573px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="7.3473387"
+       y="12.229149"
+       id="text3763"><tspan
+         sodipodi:role="line"
+         id="tspan3761"
+         x="7.3473387"
+         y="12.229149"
+         style="stroke-width:0.21123573px">The 1st Level</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.66141963px;line-height:100%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.21123573px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="47.210983"
+       y="12.239504"
+       id="text3763-5"><tspan
+         sodipodi:role="line"
+         id="tspan3761-6"
+         x="47.210983"
+         y="12.239504"
+         style="stroke-width:0.21123573px">The 2nd Level</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.66141963px;line-height:100%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.21123573px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="128.52203"
+       y="12.345654"
+       id="text3763-2"><tspan
+         sodipodi:role="line"
+         id="tspan3761-9"
+         x="128.52203"
+         y="12.345654"
+         style="stroke-width:0.21123573px">The 4th Level</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.66141963px;line-height:100%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.21123573px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="87.123466"
+       y="11.814905"
+       id="text3763-1"><tspan
+         sodipodi:role="line"
+         id="tspan3761-2"
+         x="87.123466"
+         y="11.814905"
+         style="stroke-width:0.21123573px">The 3rd Level</tspan></text>
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.456;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#5d6c53;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.30000001;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.85708964;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="fucking"
+       width="151.99538"
+       height="14.9658"
+       x="-150"
+       y="1.3349955"
+       rx="1.3877792e-16" >
+      <animate attributeName="x" attributeType="XML" from="-150" to="-150" dur="4s" begin="0s" fill="remove" />
+    </rect>
+  </g>
+</svg>
