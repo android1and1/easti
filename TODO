@@ -736,3 +736,19 @@ Mon May 27 08:49:17 CST 2019
   1, in inkscape,draw all in svg:the static(background) and dynamics.
   2, object tag be includes into html,give viewBox attr and width percent value.
   3,get SVG document,from here manipopulates dynic thing.
+
+jp-stretch-pi-2
+Thu May 30 11:12:55 CST 2019
+  只想到“社会摇”，听“耳潮”(podcast)节目知道的。
+  关于那个animation的事情，现在我知道了vivus了，此库今天第一次使用,just let this library included,and done once.
+  但是，对我的启发很大，原来，给HTML看的，也是我内心真正想要的，其实是有一个概念可以代表的：线描，vivus库就是聚焦此概念的。
+  以本次想做的“进度图”为例子，我原先的“脚本”：
+  1,静态的背景，四个矩形代表四个LEVEL；
+、2,与背景图等长的进度条，开始其x=-length,露出头部于LEVEL 1的左边；
+  3,每次Click相应的按钮，进度条的x位置递增，实现覆盖。
+  实际中，每次按下第二个按钮，根本没有（动画）反应，我想是与动画引擎的render机制有关系。
+  有了vivus,“脚本”如下：
+  一，SVG图做背景，灰色，无轮廓；
+  二，按下“第一阶段”按钮，JS会动态填加一个path到代表第一阶段的矩形位置，产生线描效果；
+  三，按下“第二阶段”按钮，JS在前面的基础上，在增加“第二阶段”的线描，动画引擎从头画起；
+  如此，直到最后阶段完成。

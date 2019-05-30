@@ -1,0 +1,32 @@
+extends ../layouts/main
+block pagejs 
+  script(src="https://cdn.bootcss.com/vivus/0.4.4/vivus.min.js")
+block content
+  h2#titleh2 Vivus Example
+  button(class="btn btn-default" id="replay") Replay!
+  object(data="/images/progress-bar-bg.svg" id="pbar")
+    p fallback here.
+  svg(id="my-svg" width="500" height="400")
+    g(stroke='black' stroke-width="2.5")
+      path(fill="red" d="M 200,11 L 0,200 L 400,200 Z")
+      circle(cx="299" fill="blue" cy="144" r="45")
+      rect(fill="yellow" x="100" y="45" width="144" height="144")
+      circle(cx="90" id="outter" fill="blue" cy="144" r="70")
+      circle(id="inner" cx="90" fill="white" cy="144" r="25")
+     
+block footer
+  script.
+    window.addEventListener('load',function(){
+      var $but = $('button#replay');
+      $but.on('click',function(evt){
+        doit('my-svg');
+      });
+      function doit(svgelement,callback){
+        new Vivus(svgelement,{duration:100},callback); 
+      }
+      new Vivus('pbar',{duration:200});
+      new Vivus('my-svg',{duration:200},function(){
+          // starter  
+          $('#titleh2').append($('<span/>',{text:'done','class':'label label-default'})); 
+        });
+      },false);
