@@ -1,0 +1,18 @@
+extends ../layouts/main
+block content
+  //-object(id="you-know-already" data="/images/onetwothreefour.svg" width="95%" height="300")
+  //- p fallback of this object tag.
+  svg(id="you-know-already" width="500" height="500")
+    title it is sample of vivus animation
+    circle(data-start="0" data-duration="20" cx="100" cy="100" r="45" fill="yellow" stroke="black" stroke-width="2" )
+    circle(cx="200" cy="100" r="45" fill="red" stroke="black" stroke-width="4" data-start="120" data-duration="20")
+    path(id="smart" fill="none" stroke="purple" stroke-width="4" d="M 250,250 
+block pagejs
+  script(src="/vivus/vivus.min.js")
+  p -------
+  script.
+    var start_time = new Date;
+    var onlyVivus = new Vivus('you-know-already',{type:'scenario'},function(){
+      var end_time = new Date;
+      alert('during time:' + (end_time - start_time));
+    });

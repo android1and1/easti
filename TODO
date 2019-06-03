@@ -752,3 +752,7 @@ Thu May 30 11:12:55 CST 2019
   二，按下“第一阶段”按钮，JS会动态填加一个path到代表第一阶段的矩形位置，产生线描效果；
   三，按下“第二阶段”按钮，JS在前面的基础上，在增加“第二阶段”的线描，动画引擎从头画起；
   如此，直到最后阶段完成。
+
+cyrus-Latitude-E7470
+2019年 05月 31日 星期五 10:54:11 CST
+  try vivus:timing function,path attribute ,text to path.install via npm.

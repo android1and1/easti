@@ -9,9 +9,7 @@ block pagejs
   button(class="btn btn-default" id="sync") sync-replay
   button(class="btn btn-default" id="delayed") delayed-replay
   script.
-    var onlyVivus = new Vivus('you-know-already',{type:'sync',duration:400},function(e){
-      onlyVivus.reset().play(1);
-    });
+    var onlyVivus = new Vivus('you-know-already',{type:'sync',start:'manual'});
     var $onebyone = $('button#onebyone');
     $onebyone.on('click',function(e){
        onlyVivus.destroy();

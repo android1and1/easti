@@ -391,3 +391,15 @@ if svg is inner and js code within this svg
 git push origin --tags
 will push all local tags to remote git resposity
 
+
+##############
+ tokyo problem
+##############
+this day,change git resposity from tokyo to github.com.something need give attentions:
+1,ssh key for github.com,remove its protect passphrase if it already exits,via:"ssh-keygen -p -f <file-to-this-key>";
+2,the key need remove its protect passphrase;
+3,change .ssh/config ,give HOST SETUP
+4,change origin:
+   git remote add origin <new-git-account>
+   (then) git push -u <new-git-account>
+   both 2 commands are from github.com help.
