@@ -1,0 +1,59 @@
+extends ../layouts/main
+block pagejs 
+  script(src="/vivus/vivus.min.js")
+block pagecss
+  style.
+    svg{
+      border:1px dotted black;
+    }
+block content
+  h2#titleh2 Vivus Example
+  button(class="btn btn-default" id="level1") level1 
+  button(class="btn btn-default" id="level2") level2 
+  button(class="btn btn-default" id="level3") level3 
+  svg(id="my-svg" width="500" height="500")
+    // 'l1' => Level 1,'l2','l3'...etc.
+    g(stroke="black" stroke-width="1.5" id="you-know")
+      path(data-ignore="true" id="path3" fill="blue" d="M 100,100 h 100 v 80 h -100 L 100,100 M 205,100 h 100 v 80 h -100 L 205,100 M 310,100 h 100 v 80 h -100 L 310,100")
+      path(data-ignore="true" id="path2" fill="yellow" d="M 100,100 h 100 v 80 h -100 L 100,100 M 205,100 h 100 v 80 h -100 L 205,100")
+      path(data-ignore="true" stroke="blue" stroke-width="2.5" id="path1" fill="red" d="M 100,100 h 100 v 80 h -100 Z") 
+    
+     
+block footer
+  script.
+    window.addEventListener('load',function(){
+      var vivus =  new Vivus('my-svg',{selfDestroy:true,duration:200,start:'manual'});
+      
+      var $level1 = $('button#level1');
+      var $path1 = $('path#path1');
+      var $level2 = $('button#level2');
+      var $path2 = $('path#path2');
+      var $level3 = $('button#level3');
+      var $path3 = $('path#path3');
+
+      $level3.on('click',function(evt){
+        $path3.removeAttr('data-ignore');
+        $path2.attr('data-ignore','true');
+        $path1.attr('data-ignore','true');
+        vivus =  new Vivus('my-svg',{selfDestroy:true,duration:200,start:'manual'});
+        vivus.play(1);
+      });
+
+      $level1.on('click',function(evt){
+        $path1.removeAttr('data-ignore');
+        // else paths disabled.
+        $path2.attr('data-ignore','true');
+        $path3.attr('data-ignore','true');
+        vivus =  new Vivus('my-svg',{selfDestroy:true,duration:200,start:'manual'});
+        vivus.play(1);
+      });
+      $level2.on('click',function(evt){
+        $path2.removeAttr('data-ignore');
+        // else paths disabled.
+        $path1.attr('data-ignore','true');
+        $path3.attr('data-ignore','true');
+        vivus =  new Vivus('my-svg',{selfDestroy:true,duration:200,start:'manual'});
+        vivus.play(1);
+      });
+
+      },true);// Total End.
