@@ -561,6 +561,19 @@
     }
   });
 
+  app.get('/admin/newest-ticket', function(req, res) {
+    var ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/newest-ticket';
+      return res.redirect(303, '/admin/login');
+    } else {
+      // redis instance already exists - 'redis'
+      return res.render('admin-newest-ticket.pug');
+    }
+  });
+
+  
+  // todo
   app.post('/admin/enable-user', async function(req, res) {
     var error, id, ins, reason;
     id = req.body.id;

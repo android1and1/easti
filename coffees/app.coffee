@@ -346,6 +346,15 @@ app.all '/admin/create-new-ticket',(req,res)->
           else
             return res.json reply # successfully
 
+app.get '/admin/newest-ticket',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/newest-ticket'
+    return res.redirect 303,'/admin/login'
+  # redis instance already exists - 'redis'
+  else
+    res.render 'admin-newest-ticket.pug' 
+    # todo
+  
 app.post '/admin/enable-user',(req,res)->
   id = req.body.id
   try
