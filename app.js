@@ -567,13 +567,13 @@
       req.session.referrer = '/admin/newest-ticket';
       return res.redirect(303, '/admin/login');
     } else {
-      // redis instance already exists - 'redis'
-      return res.render('admin-newest-ticket.pug');
+      return res.render('admin-newest-ticket.pug', {
+        'title': 'list top 10 items.',
+        items: []
+      });
     }
   });
 
-  
-  // todo
   app.post('/admin/enable-user', async function(req, res) {
     var error, id, ins, reason;
     id = req.body.id;

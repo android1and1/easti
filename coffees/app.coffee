@@ -350,10 +350,8 @@ app.get '/admin/newest-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/newest-ticket'
     return res.redirect 303,'/admin/login'
-  # redis instance already exists - 'redis'
   else
-    res.render 'admin-newest-ticket.pug' 
-    # todo
+    res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',items:[]}
   
 app.post '/admin/enable-user',(req,res)->
   id = req.body.id
