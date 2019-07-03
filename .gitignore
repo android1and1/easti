@@ -18,4 +18,5 @@ credentials/
 *.data
 configs/
 public/uploads
+public/audioes
 !public/uploads/sample.jpg

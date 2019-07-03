@@ -781,3 +781,12 @@ Inch13Early2015Air
 2019年 7月 3日 星期三 10时16分34秒 CST
   ul>li or table>tr>td ? panel-group panel?
   first,i should re-learn bootstrap,v4.
+
+jp-stretch-pi-2
+Wed Jul  3 12:07:12 CST 2019
+  rebuild bootstrap and its depends.
+  "npm audit" will tell you "bootstrap^3 is out,should install new v4"
+  "npm audit fix --force" add force option will install v4.
+  "npm i --save poper.js" bootstrap v4  has a peer with popper.js(notice that,not popper!) 
+  "npm i --save font-awesome" bootstrap v4 now not includes dist/font,you cannot use "glyphicon" again,instead via "font-awesome".in html codes,use :
+    <i class="fa fa-check-ok"></i> replace <span class="glyphicon glyphicon-check-ok"></span>

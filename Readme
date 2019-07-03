@@ -403,3 +403,30 @@ this day,change git resposity from tokyo to github.com.something need give atten
    git remote add origin <new-git-account>
    (then) git push -u <new-git-account>
    both 2 commands are from github.com help.
+
+#####################
+#####################
+  v4 font:open-iconic 
+#####################
+#####################
+from bootstrap4,default glyphicons gone,a "open-iconic" font instead,
+prepare directory -- ./public/bootstrap/open-iconic
+its structor like below:
+public/bootstrap/open-iconic
+├── css
+│   └── open-iconic-bootstrap.min.css
+└── fonts
+    ├── open-iconic.eot
+    ├── open-iconic.otf
+    ├── open-iconic.svg
+    ├── open-iconic.ttf
+    └── open-iconic.woff
+
+2 directories, 6 files
+
+abey below steps:
+1 "npm i --save open-iconic" (then mkdir public/bootstrap/open-iconic)
+2 "cp ./node_modules/open-iconic/font/fonts public/bootstrap/open-iconic/  -ra"
+3 "cp ./node_modules/open-iconic/font/css/open-iconic-bootstrap.min.css public/bootstrap/open-iconic/css/"
+4 (in .html/.pug codes) <span class="oi oi-cloud-upload"></span>
+the icon will displays.

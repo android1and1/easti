@@ -1,0 +1,20 @@
+extend ../layouts/main
+block pagejs
+  script.
+    $(document).ready(function(e){
+      console.log('heard.');
+    });
+block content
+  table.table.table-bordered
+    thead
+      tr
+        td item-name
+        td if checked
+    tbody
+      tr
+        td name:1
+        td checked
+      tr
+        td name:2
+        td 
+          span.glyphicon.glyphicon-star
