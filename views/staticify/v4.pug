@@ -4,8 +4,21 @@ block pagecss
     .oi-cloud-upload {
       fill:red;
     }
+    .col {
+      border:1px solid black;
+    }
 block content
+  div.container
+    .row
+      .col-sm-2 2 units width
+      .col-sm-10 10 units width
+    .row
+      .col style is '.col'
+      .col style is '.col'
+      .col style is '.col'
+      .col style is '.col'
   div.container-fluid
+    h1 div.container-fluid  is flexible width,responsiblity content
     p a great de story,old desteuct (Germany)
     span
       span(class="oi oi-align-center")
@@ -14,6 +27,8 @@ block content
       span(class="oi oi-account-logout")
       span(class="oi oi-cloud-download")
       p it is specially
+    span.big-icon
+      img
     p a great de story,old desteuct (Germany)
     p a great de story,old desteuct (Germany)
     p a great de story,old desteuct (Germany)
