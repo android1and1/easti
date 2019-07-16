@@ -1,11 +1,37 @@
 extends ../layouts/main
 block pagecss
   style.
-    .col {
-      border:1px solid black;
-      margin-bottom:3rem;
+    .oi.oi-account-login {color:red;}
+    span.oi {
+      font-size:3rem;
     }
 block content
+  div.container
+    table.table.table-dark
+      thead
+        tr
+          th(scope="col") serious
+          th(scope="col") alias
+          th(scope="col") own name
+          th(scope="col") family name
+      tbody
+        tr
+          th(scope="row") 1
+          td small paris
+          td David	
+          td Flannagan 
+        tr
+          th(scope="row") 2 
+          td small HongKong 
+          td Qian 
+          td SanYi 
+        tr
+          th(scope="row") 3 
+          td yingying 
+          td liao 
+          td mum 
+ 
+    
   div.container
     .row
       .col-sm-2 2 units width
@@ -16,20 +42,19 @@ block content
       .col style is '.col'
       .col style is '.col'
   div.container-fluid
-    h1 div.container-fluid  is flexible width,responsiblity content
+    h1 show icons about class.oi(open-icons)
     p a great de story,old desteuct (Germany)
     span
-      span(class="oi oi-cloud-upload")
-      p it is specially
-    p (1)a great de story,old desteuct (Germany)
-    p(hidden='') (2)a great de story,old desteuct (Germany)
-    h1.display-3 Display-3
-    h1 No Display H1
-    h2.display-4 Display-4 <small class="muted"> muted text paragraph</small>
-    p.muted muted text paragrph.
-    p no muted text paragrph.
-    p (1)a great de story,old desteuct (Germany)
-    p (2)a great de story,old desteuct (Germany)
-    p#thirdone.invisible (3)a great de story,old desteuct (Germany)
-    form
-      input(type="date")
+      p oi-align-center
+      span(class="oi oi-align-center")
+      p oi-cloudy
+      span(class="oi oi-cloudy")
+      p oi-account-login
+      span(class="oi oi-account-login") 
+      p ...
+    figure.figure
+      img(class="figure-img img-fluid rounded" src="/images/png400x400.png")
+      figcaption.figure-caption a great de story,old desteuct (Germany)
+    p a great de story,old desteuct (Germany)
+    p a great de story,old desteuct (Germany)
+    p a great de story,old desteuct (Germany)
