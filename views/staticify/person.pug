@@ -1,20 +1,45 @@
 extend ../layouts/main
-block pagejs
-  script.
-    $(document).ready(function(e){
-      console.log('heard.');
-    });
 block content
-  table.table.table-bordered
-    thead
-      tr
-        td item-name
-        td if checked
-    tbody
-      tr
-        td name:1
-        td checked
-      tr
-        td name:2
-        td 
-          span.glyphicon.glyphicon-star
+  .jumbotron
+    h2.display-3 法广中文广播 Audioes
+    p "cn.rfi.fr item"
+    audio(controls="true")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2100.mp3"   type="audio/mpeg")
+      cn.rfi.fr audio - item  
+    p "cn.rfi.fr item"
+    audio(controls="true")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2300.mp3"   type="audio/mpeg")
+      cn.rfi.fr audio - item  
+    p "cn.rfi.fr item"
+    audio(controls="true" preload="auto")
+      source(src="/audioes/rfi-fr-1ere_tranche20190712.mp3" type="audio/mpeg")
+      cn.rfi.fr audio - item  
+    p "cn.rfi.fr item"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfi-fr-2eme_Tranche_11_07_2019_jour.mp3" type="audio/mpeg")
+      cn.rfi.fr audio - item  
+    p "cn.rfi.fr item"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0713-0400.mp3" type="audio/mpeg")
+      cn.rfi.fr audio - item  
+    p "cn.rfi.fr item"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0713-0600.mp3" type="audio/mpeg")
+    p "rfa mandarin 7-13 21:00"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2100.mp3" type="audio/mpeg")
+    p "rfa mandarin 7-13 23:00"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2300.mp3" type="audio/mpeg")
+    p "rfa mandarin 7-14 03:00"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0300.mp3" type="audio/mpeg")
+    p "rfa mandarin 7-14 04:00"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0400.mp3" type="audio/mpeg")
+    p "rfa mandarin 7-14 05:00"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0500.mp3" type="audio/mpeg")
+    p "rfa mandarin 7-14 06:00"
+    audio(controls="true" preload="preload")
+      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0600.mp3" type="audio/mpeg")

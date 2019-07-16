@@ -790,3 +790,10 @@ Wed Jul  3 12:07:12 CST 2019
   "npm i --save poper.js" bootstrap v4  has a peer with popper.js(notice that,not popper!) 
   "npm i --save font-awesome" bootstrap v4 now not includes dist/font,you cannot use "glyphicon" again,instead via "font-awesome".in html codes,use :
     <i class="fa fa-check-ok"></i> replace <span class="glyphicon glyphicon-check-ok"></span>
+
+jp-stretch-pi-2
+Sat Jul  6 09:39:59 CST 2019
+  font-awesome is out,currentyl svg is the way build font !and! image.
+  with svg fonts set --- open-iconic,is the svg-dom-connection-tool ---- yes,itis --- "svg-injector".
+  how it works?
+  svg-injector will look for <img> tags which has a data-src or src attribute,then,turn this(these) to svg tag(from <img src=..> to <svg class=..>),after this moment,html codes as of this line can access xlink:href="#sprite-name",no need window.onload event as i expected.so,it is simple than js lib doing.

@@ -1,11 +1,9 @@
 extends ../layouts/main
 block pagecss
   style.
-    .oi-cloud-upload {
-      fill:red;
-    }
     .col {
       border:1px solid black;
+      margin-bottom:3rem;
     }
 block content
   div.container
@@ -21,14 +19,17 @@ block content
     h1 div.container-fluid  is flexible width,responsiblity content
     p a great de story,old desteuct (Germany)
     span
-      span(class="oi oi-align-center")
-      span(class="oi oi-cloudy")
       span(class="oi oi-cloud-upload")
-      span(class="oi oi-account-logout")
-      span(class="oi oi-cloud-download")
       p it is specially
-    span.big-icon
-      img
-    p a great de story,old desteuct (Germany)
-    p a great de story,old desteuct (Germany)
-    p a great de story,old desteuct (Germany)
+    p (1)a great de story,old desteuct (Germany)
+    p(hidden='') (2)a great de story,old desteuct (Germany)
+    h1.display-3 Display-3
+    h1 No Display H1
+    h2.display-4 Display-4 <small class="muted"> muted text paragraph</small>
+    p.muted muted text paragrph.
+    p no muted text paragrph.
+    p (1)a great de story,old desteuct (Germany)
+    p (2)a great de story,old desteuct (Germany)
+    p#thirdone.invisible (3)a great de story,old desteuct (Germany)
+    form
+      input(type="date")

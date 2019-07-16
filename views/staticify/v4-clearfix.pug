@@ -1,0 +1,42 @@
+extend ../layouts/main
+block pagecss
+  style.
+    .box {
+    height:155px;
+    width:31%;
+    border:2px dotted purple;
+    }
+    .leftbox {
+      float:left;
+    }
+    .rightbox {
+    float:right;
+    clear:left;
+    }
+    .bothbox {
+      float:both;
+    }
+block content
+  button(type="button" class="close") <span>&times;</span>
+  h4.bg-success.text-muted content
+  .leftbox.box first box
+  .rightbox.box second box
+  .leftbox.box 3rd box
+  .leftbox.box 4th box
+  .d-flex.flex-row-reverse
+    .p-2 item1
+    .p-2 item2
+    .p-2 item3
+
+  .d-flex.flex-column.border
+    .p-2.border-bottom item1
+    .p-2 item2
+    .p-2 item3
+  div.container-fluid
+     .row
+       .bg-info.d-inline-flex.p-2 I'm an inline flexbox container 
+  .d-flex.justify-content-around
+    .p-2.border it is item1
+    .p-2.border it is item2
+    .p-2.border it is item3
+
