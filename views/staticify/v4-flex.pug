@@ -1,0 +1,51 @@
+extends ../layouts/main
+block pagecss
+  style.
+    .w500 {
+      margin-top:1rem;
+      width:500px;
+    }
+    .k3,.align-items-start,.align-items-end {
+      height:5rem;
+      border:2px solid purple;
+    }
+block content
+  div.container
+    div.d-xs-table-row hello,world!
+    div.d-flex.flex-row-reverse.border
+      div.p-3.border.border-secondary item1
+      div.p-3 item2
+      div.p-3 item3
+    div.d-flex.flex-column
+      div.p-2 item1
+      div.p-2.bg-warning item2
+      div.p-2 item3
+    div.d-xl-flex.flex-column-reverse
+      div.p-2 one
+      div.p-2.bg-warning two 
+      div.p-2 three
+  div.container
+    div.d-flex.align-items-start
+      div.p-2 one
+      div.p-2.bg-warning two 
+      div.p-2 three
+    div.d-flex.align-items-end
+      div.p-2 one
+      div.p-2.bg-warning two 
+      div.p-2 three
+  div.d-flex.justify-content-center.k3
+    div.border block-one
+    div.border bg-warning block-two 
+    div.border block-three
+  div.d-flex.justify-content-between.m-4
+    div.w-100.bg-success w-50
+    div.w-50.bg-dark  w-50
+    div.border block-one
+    div.border bg-warning block-two 
+    div.border block-three
+block footer
+  span.badge.badge-danger.mx-auto.w500 align-items-center
+  div(class="d-flex align-content-md-stretch flex-wrap")
+    div.border block-one
+    div.border bg-warning block-two 
+    div.border block-three
