@@ -19,5 +19,5 @@ credentials/
 configs/
 public/uploads
 public/audioes
+views/staticify/v4*
 !public/uploads/sample.jpg
-views/staticify/v4.pug

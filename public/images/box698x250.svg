@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg viewBox="0 0 698 250"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>dark gray box</title>
+  <rect x="0" y="0" width="698"  height="250" style="stroke:none;fill:#888" />
+  <text x="59" y="125" font-size="4em"> Image:698 x 250 </text>
+</svg>
