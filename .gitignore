@@ -20,3 +20,4 @@ configs/
 public/uploads
 public/audioes
 !public/uploads/sample.jpg
+views/staticify/v4.pug

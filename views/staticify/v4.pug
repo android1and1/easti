@@ -6,6 +6,19 @@ block pagecss
       font-size:3rem;
     }
 block content
+  input(name="input1" type="email" hidden="false")
+  details
+    summary summary of content
+    p here is detail
+    p here is detail
+    p here is detail
+  div.alert.alert-warning.alert-dismissible.fade.show(role="alert")
+    button.close(data-dismiss="alert") 
+      span.oi.oi-circle-x
+    h4.alert-heading
+      | title of content here
+   
+    p div.alert.alert-warning has alert-link <a href="#" alt="go out to retrieve data." class="alert-link"> go out! </a> inline link into paragraph.
   div.container
     div.d-xs-table-row hello,world!
     p.text-yellow text yellow p.text-yellow
@@ -80,4 +93,4 @@ block content
       p behind the title,real thing
       p behind the title,real thing
       button.btn.btn-secondary#idbutton 
-        span.oi.oi-remove
+        span.oi.oi-circle-x
