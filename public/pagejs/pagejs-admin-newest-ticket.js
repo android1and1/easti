@@ -2,7 +2,9 @@
 (function() {
   $(function() {
     // 2019-06-27 at 'da bu liu'(shui mu qian hua bieshuqu)
-    return alert('can heard?page-admin/newest-ticket(get)?');
+    //alert 'can heard?page-admin/newest-ticket(get)?'
+    // retry at 2019-07-27
+    return console.log('fine.');
   });
 
 }).call(this);

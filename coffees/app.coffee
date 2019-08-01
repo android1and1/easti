@@ -43,6 +43,13 @@ getAsync = promisify redis.get
   .bind redis
 expireAsync = promisify redis.expire
   .bind redis
+hgetallAsync = (key)->
+  new Promise (resolve,reject)->
+    redis.hgetall key,(err,record)->
+      if err
+        reject err
+      else
+        resolve record
 
 redis.on 'error',(err)->
   console.log 'Heard that:',err
@@ -351,7 +358,14 @@ app.get '/admin/newest-ticket',(req,res)->
     req.session.referrer = '/admin/newest-ticket'
     return res.redirect 303,'/admin/login'
   else
-    res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',items:[]}
+    redis.keys TICKET_PREFIX + ':hash:*',(err,list)->
+      # give 3 for trial target.
+      items = list[0...3]
+      records = []
+      for item in items 
+        record =  await hgetallAsync item
+        records.push JSON.stringify record
+      return res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',records:records}
   
 app.post '/admin/enable-user',(req,res)->
   id = req.body.id

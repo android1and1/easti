@@ -1,45 +1,60 @@
 extend ../layouts/main
 block content
-  .jumbotron
-    h2.display-3 法广中文广播 Audioes
-    p "cn.rfi.fr item"
-    audio(controls="true")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2100.mp3"   type="audio/mpeg")
-      cn.rfi.fr audio - item  
-    p "cn.rfi.fr item"
-    audio(controls="true")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2300.mp3"   type="audio/mpeg")
-      cn.rfi.fr audio - item  
-    p "cn.rfi.fr item"
-    audio(controls="true" preload="auto")
-      source(src="/audioes/rfi-fr-1ere_tranche20190712.mp3" type="audio/mpeg")
-      cn.rfi.fr audio - item  
-    p "cn.rfi.fr item"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfi-fr-2eme_Tranche_11_07_2019_jour.mp3" type="audio/mpeg")
-      cn.rfi.fr audio - item  
-    p "cn.rfi.fr item"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0713-0400.mp3" type="audio/mpeg")
-      cn.rfi.fr audio - item  
-    p "cn.rfi.fr item"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0713-0600.mp3" type="audio/mpeg")
-    p "rfa mandarin 7-13 21:00"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2100.mp3" type="audio/mpeg")
-    p "rfa mandarin 7-13 23:00"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0713-2300.mp3" type="audio/mpeg")
-    p "rfa mandarin 7-14 03:00"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0300.mp3" type="audio/mpeg")
-    p "rfa mandarin 7-14 04:00"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0400.mp3" type="audio/mpeg")
-    p "rfa mandarin 7-14 05:00"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0500.mp3" type="audio/mpeg")
-    p "rfa mandarin 7-14 06:00"
-    audio(controls="true" preload="preload")
-      source(src="/audioes/rfa-mandarin-MAN-2019-0714-0600.mp3" type="audio/mpeg")
+  .container
+    .card.d-block.mx-auto.mb-4
+      .card-header  法广中文广播2019-07-27
+      .card-body 
+        h4.card-title rfi 1e_tranche_27_07_2019.mp3
+        h6.mb-4.card-subtitle.text-mutted cn.rfi.fr 
+        audio(controls="true")
+          source(src="/audioes/20190729-000001-VCH046-program.mp3" type="audio/mpeg")
+    .card.d-block.mx-auto.mb-4
+      .card-header  美国之音2019-07-27 8:00AM
+      .card-body 
+        h4.card-title 20190727-000000-VCH046-program.mp3
+        h6.mb-4.card-subtitle.text-mutted voa 8AM 
+        audio(controls="true")
+          source(src="/audioes/20190729-220000-VCH046-program.mp3" type="audio/mpeg")
+    .card.d-block.mx-auto.mb-4
+      .card-header  美国之音2019-07-28 8:00AM
+      .card-body 
+        h4.card-title 20190728-000000-VCH046-program.mp3
+        h6.mb-4.card-subtitle.text-mutted voa 8AM 
+        audio(controls="true")
+          source(src="/audioes/2e_tranche_29_07_2019.mp3" type="audio/mpeg")
+    .card.d-block.mx-auto.mb-4
+      .card-header  歌曲欣赏：美丽的天使 
+      .card-body 
+        h4.card-title 歌手：陈蓉蓉 
+        h6.mb-4.card-subtitle.text-mutted 墨西歌民歌：美丽的天使 
+        audio(controls="true")
+          source(src="/audioes/chenrongrong_meilidetianshi.mp3" type="audio/mpeg")
+
+    .card.d-block.mx-auto.mb-4
+      .card-header  自由亚洲电台2019 07 26 23:00 utc 
+      .card-body 
+        h4.card-title MAN-2019-0729-2300.mp3 
+        h6.mb-4.card-subtitle.text-mutted one hour program (audio)
+        audio(controls="true")
+          source(src="/audioes/MAN-2019-0729-2300.mp3" type="audio/mpeg")
+    .card.d-block.mx-auto.mb-4
+      .card-header  自由亚洲电台2019 0727 04:00  utc
+      .card-body 
+        h4.card-title MAN-2019-0728-0400.mp3
+        h6.mb-4.card-subtitle.text-mutted one hour program (audio)
+        audio(controls="true")
+          source(src="/audioes/MAN-2019-0730-0400.mp3" type="audio/mpeg")
+    .card.d-block.mx-auto.mb-4
+      .card-header  自由亚洲电台2019 0727 05:00  utc
+      .card-body 
+        h4.card-title MAN-2019-0728-0500.mp3
+        h6.mb-4.card-subtitle.text-mutted one hour program (audio)
+        audio(controls="true")
+          source(src="/audioes/MAN-2019-0730-0300.mp3" type="audio/mpeg")
+    .card.d-block.mx-auto.mb-4
+      .card-header  自由亚洲电台2019 0727 06:00  utc
+      .card-body 
+        h4.card-title MAN-2019-0728-0600.mp3
+        h6.mb-4.card-subtitle.text-mutted one hour program (audio)
+        audio(controls="true")
+          source(src="/audioes/MAN-2019-0728-0600.mp3" type="audio/mpeg")

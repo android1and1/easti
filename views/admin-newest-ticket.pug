@@ -30,3 +30,11 @@ block content
         td okokok 
         td okokok 
         td okokok 
+block footer
+  p list records
+  if records
+    - for(var x=0;x<records.length;x++)
+      ul
+        li= records[x] 
+  else
+    p no item currently.
