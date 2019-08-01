@@ -1,0 +1,45 @@
+extend ../layouts/main
+block pagecss
+  style.
+    h1#hastexthide {
+      background-image:url('/no/images/cat.svg');
+      width:50px;
+      height:50px;
+      clear:both;
+    }
+    div.big {
+      width:999px;
+      height:500px;
+      background-color:#f00;
+      border:1px solid black;
+    }
+    div.small {
+      width:330px;
+      height:500px;
+      border:1px solid black;
+      background-color:#0f0;
+    }
+
+    div.hasFloat {
+      width:500px;
+      height:500px;
+    }
+    div.hasFloat {
+      width:500px;
+      height:500px;
+      background-color:#383;
+    }
+block content
+  div.big.clearfix
+    | background
+    div.small.float-left div.small.float-left 
+    div.small.float-right div.small.float-right
+  //div.hasFloat.float-left div.float-left
+  div.clearfix
+    div.hasFloat.float-xl-right div.float-right
+    div.hasFloat.float-lg-left div.float-left
+  div.bg-info
+    button.btn.btn-secondary.float-left button.float-left
+    button.btn.btn-secondary.float-right button.float-right
+  div.bg-info
+    h1#hastexthide.text-hide has text hide t-e-x-t

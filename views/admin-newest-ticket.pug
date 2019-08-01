@@ -2,39 +2,21 @@ extends layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-newest-ticket.js")
 block content
-  nav.navbar.navbar-default.navbar-fixed-top
-    .container
-      a(type="button" href="/" class="btn btn-default navbar-left navbar-btn") Back
-      h3.navbar-text &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Newest Ticket 
-  //
-    has variable :data,it is an array which elements all are object(ins.
-    allProperties()
-  br/
-  br/
-  table.table 
-    thead
-      tr 
-        td #
-        td 用户 
-        td 填表者 
-        td 类别
-        td whatistime
-        td Detail
-    tbody
-      tr
-        td okok ... ok ok 
-        td okokok 
-        td okok ... ok ok 
-        td okok ... ok ok 
-        td okok ... ok ok 
-        td okokok 
-        td okokok 
-        td okokok 
-block footer
-  p list records
-  if records
-    - for(var x=0;x<records.length;x++)
-      ul
-        li= records[x] 
-  else
-    p no item currently.
+  // global variable -- records
+  - for(var j=0;j<records.length;j++)
+    .card.mb-4
+      if records[j].photo
+        img(class="img-fluid card-img-top" alt="photograph" src=records[j].photo)
+      else
+        img(class="img-fluid card-img-top" alt="place holder pic" src="/images/box698x250.svg")
+      .card-body
+        h4.text-center.text-secondary.card-title= '#' + records[j].ticket_id + ':' + records[j].title
+        div.card-text
+          blockquote= records[j].ticket
+          button.float-right.btn.btn-secondary detail
+      .card-footer
+        .container-fluid
+          .row
+            small(class="col-sm mx-auto")= records[j].client_time
+            small(class="col-sm mx-auto")= 'author - ' +  records[j].admin_alias
+            small(class="col-sm mx-auto")= 'category - ' + records[j].category

@@ -33,6 +33,7 @@ Daka = require './modules/md-daka'
 dakaModel = undefined
 accountModel = undefined
 TICKET_PREFIX = 'ticket'
+TICKET_MEDIA_ROOT = path.join __dirname,'public','tickets'
 DAKA_WILDCARD = 'DaKa*daily*'
 ACCOUNT_WILDCARD='DaKa*account*'
 
@@ -329,7 +330,7 @@ app.all '/admin/create-new-ticket',(req,res)->
   else # POST
     # let npm-formidable handles
     formid = new formidable.IncomingForm
-    formid.uploadDir = path.join __dirname,'public','tickets'
+    formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
     # keep small size.if handle with video,rewrite below,let it bigger.
     formid.maxFileSize = 20 * 1024 * 1024
@@ -341,6 +342,11 @@ app.all '/admin/create-new-ticket',(req,res)->
       options = ['urge','0','resolved','false']
       for k,v of fields
         options = options.concat [k,v] 
+      # photo
+      if files.photo.size isnt 0 
+        photo_url = files.photo.path
+        photo_url = '/tickets/' + photo_url.replace /.*\/(.+)$/,"$1" 
+        options = options.concat  ['photo',photo_url]
       # store this ticket
       redis.incr (TICKET_PREFIX + ':counter'),(err,number)->
         if err isnt null # occurs error.
@@ -361,10 +367,11 @@ app.get '/admin/newest-ticket',(req,res)->
     redis.keys TICKET_PREFIX + ':hash:*',(err,list)->
       # give 3 for trial target.
       items = list[0...3]
+      items = list
       records = []
       for item in items 
         record =  await hgetallAsync item
-        records.push JSON.stringify record
+        records.push record
       return res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',records:records}
   
 app.post '/admin/enable-user',(req,res)->
