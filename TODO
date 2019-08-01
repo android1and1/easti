@@ -797,3 +797,10 @@ Sat Jul  6 09:39:59 CST 2019
   with svg fonts set --- open-iconic,is the svg-dom-connection-tool ---- yes,itis --- "svg-injector".
   how it works?
   svg-injector will look for <img> tags which has a data-src or src attribute,then,turn this(these) to svg tag(from <img src=..> to <svg class=..>),after this moment,html codes as of this line can access xlink:href="#sprite-name",no need window.onload event as i expected.so,it is simple than js lib doing.
+
+jp-stretch-pi-2
+Thu Aug  1 22:16:17 CST 2019
+  need resolve 2 problems:1,client upload audio(.mp3),server parse it and output a <audio src="this-audio.mp3"...> to view before render view - /admin/newest-ticket;2,add table 'ticket' field - "agent",means device difference others.
+  for these,view which collect table's fields in views/admin-create-new-ticket.pug
+  replace 'photo' to  'media'
+  client will judge media-type,photo,audio,vedio?? in <card>,can fix.

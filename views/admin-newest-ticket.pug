@@ -2,6 +2,13 @@ extends layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-newest-ticket.js")
 block content
+  //- 这里，需要做一个实验：让服务端对records结果排队
+  .card
+    ul.list-group.list-group-flush
+      
+      - for(var i=0;i<records.length;i++){
+          li.list-group-item= '#' + records[i].ticket_id  + '::' + records[i].title
+      - }
   // global variable -- records
   - for(var j=0;j<records.length;j++)
     .card.mb-4

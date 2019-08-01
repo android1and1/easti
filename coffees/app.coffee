@@ -342,7 +342,7 @@ app.all '/admin/create-new-ticket',(req,res)->
       options = ['urge','0','resolved','false']
       for k,v of fields
         options = options.concat [k,v] 
-      # photo
+      # photo,need change to 'media'
       if files.photo.size isnt 0 
         photo_url = files.photo.path
         photo_url = '/tickets/' + photo_url.replace /.*\/(.+)$/,"$1" 
@@ -365,13 +365,16 @@ app.get '/admin/newest-ticket',(req,res)->
     return res.redirect 303,'/admin/login'
   else
     redis.keys TICKET_PREFIX + ':hash:*',(err,list)->
-      # give 3 for trial target.
-      items = list[0...3]
+      # Example:give 3 items to client 
+      # items = list[0...3]
       items = list
       records = []
       for item in items 
         record =  await hgetallAsync item
         records.push record
+      # sorting before output to client.
+      records.sort (a,b)->
+        b.ticket_id - a.ticket_id
       return res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',records:records}
   
 app.post '/admin/enable-user',(req,res)->

@@ -49,6 +49,20 @@ if something wrong occurs,follow the oredered list:
 7,server uploadDir setup?
 8,jquery xhr constructor set "data-parse"?
 
+############################################
+  sort via node method - Array.sort 
+############################################
+Example
+  arr = [1..10]
+  arr.sort (a,b)->a-b  # will output [1,2,3,...10]
+  arr.sort (a,b)->b-a  # will output [10,9,8....1] ---- as reverse.
+Same as object array.
+  arr = []
+  arr.push {'id':10,'name':'bob'}
+  arr.push {'id':1,'name':'mary'}
+  arr.sort (a,b)->a.id - b.id  # will output [ {'id':1,'name':'mary'}, {'id':10,'name':'bob'}]
+In route - /admin/newest-ticket,i sorts redis hashes by this way.  
+
 ######################
 ######################
   Mac Air Book
