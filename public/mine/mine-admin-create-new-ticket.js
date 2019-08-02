@@ -4,22 +4,29 @@
     $('form').on('submit', function(e) {
       return $('input[name=client_time]').val(new Date);
     });
-    return $('#onephoto').on('change', function(e) {
-      var $img, fileReader;
-      $img = $('<img/>', {
-        alt: "choiced",
-        'class': 'center-block',
-        width: "50%",
-        border: "2px thin yellow"
+    return $('#onemedia').on('change', function(e) {
+      var $card, file;
+      // At hubei library 2019-08-02
+      file = e.target.files[0];
+      $card = $('<div/>', {
+        text: 'choiced 1 file,name:' + file.name
       });
-      fileReader = new FileReader;
-      fileReader.onload = function(e) {
-        $img.attr('src', e.target.result);
-        $('div.preview').html('');
-        return $('div.preview').append($img);
-      };
-      return fileReader.readAsDataURL(this.files[0]);
+      $card.append('<p> file type is:' + file.type + '</p>');
+      
+      // clear before content,and remove hidden class.
+      $('div.preview').removeClass('d-none').html('');
+      return $('div.preview').append($card);
     });
   });
+
+  /*
+$img = $('<img/>',{alt:"choiced",'class':'center-block',width:"50%",border:"2px thin yellow"})
+fileReader = new FileReader
+fileReader.onload = (e)->
+  $img.attr 'src',e.target.result
+  $('div.preview').html ''
+  $('div.preview').append $img
+fileReader.readAsDataURL @files[0]
+*/
 
 }).call(this);

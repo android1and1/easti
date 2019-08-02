@@ -2,28 +2,43 @@ extends layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-newest-ticket.js")
 block content
-  //- 这里，需要做一个实验：让服务端对records结果排队
-  .card
-    ul.list-group.list-group-flush
-      
-      - for(var i=0;i<records.length;i++){
-          li.list-group-item= '#' + records[i].ticket_id  + '::' + records[i].title
-      - }
-  // global variable -- records
-  - for(var j=0;j<records.length;j++)
-    .card.mb-4
-      if records[j].photo
-        img(class="img-fluid card-img-top" alt="photograph" src=records[j].photo)
-      else
-        img(class="img-fluid card-img-top" alt="place holder pic" src="/images/box698x250.svg")
-      .card-body
-        h4.text-center.text-secondary.card-title= '#' + records[j].ticket_id + ':' + records[j].title
-        div.card-text
-          blockquote= records[j].ticket
-          button.float-right.btn.btn-secondary detail
-      .card-footer
-        .container-fluid
-          .row
-            small(class="col-sm mx-auto")= records[j].client_time
-            small(class="col-sm mx-auto")= 'author - ' +  records[j].admin_alias
-            small(class="col-sm mx-auto")= 'category - ' + records[j].category
+  if records.length === 0
+    h2.display-3 None
+  else
+    // global variable -- records
+    - for(var j=0;j<records.length;j++)
+      .card.mb-4
+        - obj = records[j]
+        - type = obj.media_type
+        case type
+          when 'image/jpeg'
+          when 'image/png'
+            img(class="img-fluid img-thumbnail card-img-top" alt="photograph" src=obj.media)
+          when 'audio/mp3' 
+          when 'audio/mpeg' 
+          when 'audio/mpeg3'
+            .row
+              audio(class="d-flex w-75 p-2 mx-auto" controls="controls")
+                source(src= obj.media,type= type)
+          default
+            img(class="img-thumbnail img-fluid card-img-top" alt="place holder pic" src="/images/box698x250.svg")
+        .card-body
+          h4.text-center.text-secondary.card-title= '#' + records[j].ticket_id + ':' + records[j].title
+          div.card-text
+            blockquote
+              p= obj.ticket
+              footer.blockquote-footer= obj.keyname
+            .btn-group
+              button.btn.btn-light.mx-2.p-2(id="commentButton") write your comment
+              button.btn.btn-light.mx-2.p-2(id="editTextButton") edit content text 
+              button.btn.btn-danger.dropdown-toggle.mx-2.p-2(id="delButton" data-toggle="dropdown") delete
+              div.dropdown-menu
+                a.dropdown-item(href="#") Delete
+                a.dropdown-item(href="#") Delete With Its Media File
+        .card-footer
+          .container-fluid
+            .row
+              small(class="col-sm mx-auto")= records[j].client_time
+            .row
+              small.col= '撰写人 - ' +  records[j].admin_alias
+              small.col= '分类 - ' + records[j].category

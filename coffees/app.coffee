@@ -44,6 +44,14 @@ getAsync = promisify redis.get
   .bind redis
 expireAsync = promisify redis.expire
   .bind redis
+delAsync = (key)->
+  new Promise (resolve,reject)->
+    redis.del key,(err)->
+      if err
+        reject err
+      else
+        resolve()
+
 hgetallAsync = (key)->
   new Promise (resolve,reject)->
     redis.hgetall key,(err,record)->
@@ -342,11 +350,11 @@ app.all '/admin/create-new-ticket',(req,res)->
       options = ['urge','0','resolved','false']
       for k,v of fields
         options = options.concat [k,v] 
-      # photo,need change to 'media'
-      if files.photo.size isnt 0 
-        photo_url = files.photo.path
-        photo_url = '/tickets/' + photo_url.replace /.*\/(.+)$/,"$1" 
-        options = options.concat  ['photo',photo_url]
+      if files.media.size isnt 0 
+        console.log '::' + files.media.type
+        media_url = files.media.path
+        media_url = '/tickets/' + media_url.replace /.*\/(.+)$/,"$1" 
+        options = options.concat  ['media',media_url,'media_type',files.media.type]
       # store this ticket
       redis.incr (TICKET_PREFIX + ':counter'),(err,number)->
         if err isnt null # occurs error.
@@ -358,6 +366,17 @@ app.all '/admin/create-new-ticket',(req,res)->
             return res.json err
           else
             return res.json reply # successfully
+
+app.get '/admin/del-all-tickets',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/del-all-tickets'
+    return res.redirect 303,'/admin/login'
+  else
+    redis.keys TICKET_PREFIX + ':hash:*',(err,list)->
+      for item in list
+        await delAsync item
+      # at last ,report to client.
+      res.render 'admin-del-all-tickets'
 
 app.get '/admin/newest-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
@@ -371,6 +390,7 @@ app.get '/admin/newest-ticket',(req,res)->
       records = []
       for item in items 
         record =  await hgetallAsync item
+        record.keyname = item
         records.push record
       # sorting before output to client.
       records.sort (a,b)->

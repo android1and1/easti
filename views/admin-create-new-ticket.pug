@@ -7,9 +7,9 @@ block pagecss
       color:#1a2a3a;
     }
     .preview {
-      margin-top:2em;
-      padding:2em;
-      margin-bottom:2em; 
+      margin:2rem;
+      padding:2rem;
+      border:2px solid purple;
     }
 block content
   nav.navbar.navbar-inverse.navbar-default.navbar-fixed-top
@@ -39,13 +39,10 @@ block content
       label(for="ticket") Write Ticket Here:
       textarea(class="form-control" rows="15" id="ticket" name="ticket") 
     .form-group
-      input(class="hidden" type="file" name="photo" id="onephoto")
-      label(type="button" for="onephoto" class="btn btn-default btn-lg") 点击这里选择图片（可选）
-      div.preview
+      input(class="d-flex mt-4" type="file" name="media" id="onemedia")
+      div.d-none.preview
        
     .form-group
-      input.hidden(name="client_time" value="0")
-      input.hidden(name="admin_alias" value=alias)
-      button(type="submit" class="btn btn-default btn-lg")
-        | Submit Now &nbsp;&nbsp;
-        span.glyphicon.glyphicon-send
+      input.d-none(name="client_time" value="0")
+      input.d-none(name="admin_alias" value=alias)
+      button(type="submit" class="btn btn-dark btn-lg") Submit Now

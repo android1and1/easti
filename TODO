@@ -804,3 +804,15 @@ Thu Aug  1 22:16:17 CST 2019
   for these,view which collect table's fields in views/admin-create-new-ticket.pug
   replace 'photo' to  'media'
   client will judge media-type,photo,audio,vedio?? in <card>,can fix.
+Inch13Early2015Air
+2019年 8月 2日 星期五 11时24分49秒 CST
+  resolved media input -- in client page.renamed 'photo' to 'media'
+
+Inch13Early2015Air
+2019年 8月 2日 星期五 11时59分06秒 CST
+  let view -- /admin/newest-ticket display media,includes photo(image/jpeg),and audio.
+
+Inch13Early2015Air
+2019年 8月 2日 星期五 15时47分18秒 CST
+  need /admin/del/:id route
+  need /admin/delWithMedia/:id route
