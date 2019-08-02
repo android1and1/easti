@@ -592,6 +592,18 @@
     }
   });
 
+  app.delete('/admin/del-one-ticket/:id', function(req, res) {
+    var id, ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/del-all-tickets';
+      return res.redirect(303, '/admin/login');
+    } else {
+      // check if has 'with-media' flag.
+      id = req.params.id;
+      return res.send('params.id is - ' + id);
+    }
+  });
+
   app.get('/admin/del-all-tickets', function(req, res) {
     var ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {

@@ -367,6 +367,16 @@ app.all '/admin/create-new-ticket',(req,res)->
           else
             return res.json reply # successfully
 
+app.delete '/admin/del-one-ticket/:id',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/del-all-tickets'
+    return res.redirect 303,'/admin/login'
+  else
+    # check if has 'with-media' flag.
+    id = req.params.id
+    res.send 'params.id is - ' + id 
+
+  
 app.get '/admin/del-all-tickets',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/del-all-tickets'

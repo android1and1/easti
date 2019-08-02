@@ -1,0 +1,16 @@
+extends ../layouts/main
+block content
+  button#idbutton.btn.btn-light.btn-lg act-delete-query
+block pagejs
+  script.
+    $(function(){
+      $('#idbutton').on('click',function(e){
+         $.ajax({
+           url:'/admin/del-one-ticket/4',
+           type:'DELETE',
+           dataType:'text',
+         })
+         .done(function(txt){alert('done:' + txt);})
+         .fail(function(one,two,three){alert('fail:' + three);});
+      }); 
+    });
