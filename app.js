@@ -604,18 +604,10 @@
     }
   });
 
-  app.all('/admin/comment/:id', function(req, res) {
-    var id;
-    id = req.params.id;
-    if (req.method === 'POST') {
-      return res.send('post for ' + id);
-    } else if (req.method === 'GET') {
-      return res.render('admin-post-comment', {
-        title: 'post-comment-for-' + id
-      });
-    } else {
-      return res.render('nosense');
-    }
+  app.post('/admin/create-new-comment', function(req, res) {
+    return res.json({
+      status: 'good'
+    });
   });
 
   app.delete('/admin/del-one-ticket', async function(req, res) {

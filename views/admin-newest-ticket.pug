@@ -29,7 +29,25 @@ block content
               p= obj.ticket
               footer.blockquote-footer= obj.keyname
             .btn-group
-              a.btn.btn-light.mx-2.p-2.commentLink(role="button" href= "/admin/comment/" + obj.keyname) write your comment
+              div.modal(id="modal-" + obj.ticket_id)
+                div.modal-dialog.modal-dialog-centered
+                  div.modal-content
+                    .modal-header
+                      h4.modal-title  留下你的评论 
+                      button(class="btn btn-light" data-dismiss="modal")
+                        span.oi.oi-x
+                    .modal-body
+                      form(class="comment-form")
+                        .form-group
+                          label(for= "input-" + obj.ticket_id + "-title") 标题 
+                          input.form-control(id= "input-" + obj.ticket_id + "-title",name="title",type="text",placeholder="title..")
+                        .form-group
+                          label(for= "input-" + obj.ticket_id + "-comment") 说点什么 
+                          textarea.form-control(name="comment",id="input-" + obj.ticket_id + "-comment",rows="8") 
+                        .form-group
+                          button(type="submit" class="btn btn-secondary") 写好了，提交！ 
+             
+              a.btn.btn-light.mx-2.p-2(role="button" data-toggle="modal" data-target="#modal-" + obj.ticket_id) write your comment
               a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit/" + obj.keyname) Edit 
               button.btn.btn-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
               div.dropdown-menu

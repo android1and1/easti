@@ -4,7 +4,7 @@
     // 2019-06-27 于“水墨清华”别墅区设立 
     // retry at 2019-07-27
     // continue at 2019-08-03
-    return $('.deleteOne,.deleteOneWithMedia').on('click', function(evt) {
+    $('.deleteOne,.deleteOneWithMedia').on('click', function(evt) {
       var bool, id;
       id = $(this).data('keyname');
       bool = $(this).data('with-media');
@@ -21,6 +21,27 @@
       });
       evt.preventDefault();
       return evt.stopPropagation();
+    });
+    // when form.comment-form submit event be triggers, display an overlay (modal).
+    return $('form.comment-form').on('submit', function(evt) {
+      var $this;
+      $this = $(this);
+      //console.log $(@).serialize()
+      // do ajax-post
+      evt.preventDefault();
+      evt.stopPropagation();
+      return $.ajax({
+        url: '/admin/create-new-comment',
+        type: 'POST',
+        dataType: 'json',
+        data: $(this).serializeArray()
+      }).done(function(json) {
+        return alert(json.status);
+      }).fail(function(one, two, three) {
+        return alert(three);
+      }).always(function() {
+        return $this.closest('div.modal').modal('toggle');
+      });
     });
   });
 

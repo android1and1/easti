@@ -376,14 +376,8 @@ app.all '/admin/edit/:id',(req,res)->
   else
     res.render 'nosense'
 
-app.all '/admin/comment/:id',(req,res)->
-  id = req.params.id
-  if req.method is 'POST'
-    res.send 'post for ' + id 
-  else if req.method is 'GET'
-    res.render 'admin-post-comment',{title:'post-comment-for-' + id}
-  else
-    res.render 'nosense'
+app.post '/admin/create-new-comment',(req,res)->
+  res.json {status:'good'}
 
 app.delete '/admin/del-one-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'

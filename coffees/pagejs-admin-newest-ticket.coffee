@@ -18,3 +18,22 @@ $ ->
       alert three
     evt.preventDefault()
     evt.stopPropagation()
+  # when form.comment-form submit event be triggers, display an overlay (modal).
+  $('form.comment-form').on 'submit',(evt)-> 
+    $this = $ @
+    #console.log $(@).serialize()
+    # do ajax-post
+    evt.preventDefault()
+    evt.stopPropagation()
+    $.ajax {
+      url:'/admin/create-new-comment'
+      type:'POST'
+      dataType:'json'
+      data: $(@).serializeArray()
+    }
+    .done (json)->
+      alert json.status
+    .fail (one,two,three)->
+      alert three
+    .always ->
+      $this.closest('div.modal').modal('toggle') 
