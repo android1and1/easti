@@ -592,6 +592,32 @@
     }
   });
 
+  app.all('/admin/edit/:id', function(req, res) {
+    var id;
+    id = req.params.id;
+    if (req.method === 'POST') {
+      return res.send('post for ' + id);
+    } else if (req.method === 'GET') {
+      return res.send('get for ' + id);
+    } else {
+      return res.render('nosense');
+    }
+  });
+
+  app.all('/admin/comment/:id', function(req, res) {
+    var id;
+    id = req.params.id;
+    if (req.method === 'POST') {
+      return res.send('post for ' + id);
+    } else if (req.method === 'GET') {
+      return res.render('admin-post-comment', {
+        title: 'post-comment-for-' + id
+      });
+    } else {
+      return res.render('nosense');
+    }
+  });
+
   app.delete('/admin/del-one-ticket', async function(req, res) {
     var intReply, keyname, ref, ref1, with_media;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {

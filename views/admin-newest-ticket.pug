@@ -29,15 +29,15 @@ block content
               p= obj.ticket
               footer.blockquote-footer= obj.keyname
             .btn-group
-              button.btn.btn-light.mx-2.p-2(id="commentButton") write your comment
-              button.btn.btn-light.mx-2.p-2(id="editTextButton") edit content text 
-              button.btn.btn-danger.dropdown-toggle.mx-2.p-2(id="delButton" data-toggle="dropdown") delete
+              a.btn.btn-light.mx-2.p-2.commentLink(role="button" href= "/admin/comment/" + obj.keyname) write your comment
+              a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit/" + obj.keyname) Edit 
+              button.btn.btn-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
               div.dropdown-menu
-                a.dropdown-item(id='deleteOne',data-with-media='false',data-keyname= obj.keyname,href="#") Delete
+                a.dropdown-item.deleteOne(data-with-media='false',data-keyname= obj.keyname,href="#") Delete
                 - if(!obj.media)
-                  a.disabled.dropdown-item(id='deleteOneWithMedia',data-with-media='true',data-keyname= obj.keyname,href="#") Delete With Its Media File
+                  a.disabled.dropdown-item.deleteOneWithMedia(data-with-media='true',data-keyname= obj.keyname,href="#") Delete With Its Media File
                 - else
-                  a.dropdown-item(id='deleteOneWithMedia',data-with-media='true',data-keyname= obj.keyname,href="#") Delete With Its Media File
+                  a.dropdown-item.deleteOneWithMedia(data-with-media='true',data-keyname= obj.keyname,href="#") Delete With Its Media File
         .card-footer
           .container-fluid
             .row

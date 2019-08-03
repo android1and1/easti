@@ -367,6 +367,24 @@ app.all '/admin/create-new-ticket',(req,res)->
           else
             return res.json reply # successfully
 
+app.all '/admin/edit/:id',(req,res)->
+  id = req.params.id
+  if req.method is 'POST'
+    res.send 'post for ' + id
+  else if req.method is 'GET'
+    res.send 'get for ' + id 
+  else
+    res.render 'nosense'
+
+app.all '/admin/comment/:id',(req,res)->
+  id = req.params.id
+  if req.method is 'POST'
+    res.send 'post for ' + id 
+  else if req.method is 'GET'
+    res.render 'admin-post-comment',{title:'post-comment-for-' + id}
+  else
+    res.render 'nosense'
+
 app.delete '/admin/del-one-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/del-one-ticket'

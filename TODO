@@ -824,3 +824,7 @@ cyrus-Latitude-E7470
 jp-stretch-pi-2
 Sat Aug  3 13:27:28 CST 2019
   add visits field,init is 0,means 'just created,no visitor.'
+
+jp-stretch-pi-2
+Sat Aug  3 14:40:01 CST 2019
+  after comment to origianl article -- item,its visits add 1(+=1).so,need a route:'/admin/comment/:id'

@@ -4,7 +4,7 @@
     // 2019-06-27 于“水墨清华”别墅区设立 
     // retry at 2019-07-27
     // continue at 2019-08-03
-    return $('#deleteOne,#deleteOneWithMedia').on('click', function(evt) {
+    return $('.deleteOne,.deleteOneWithMedia').on('click', function(evt) {
       var bool, id;
       id = $(this).data('keyname');
       bool = $(this).data('with-media');

@@ -2,7 +2,7 @@ $ ->
   # 2019-06-27 于“水墨清华”别墅区设立 
   # retry at 2019-07-27
   # continue at 2019-08-03
-  $('#deleteOne,#deleteOneWithMedia').on 'click',(evt)->
+  $('.deleteOne,.deleteOneWithMedia').on 'click',(evt)->
     id = $(@).data('keyname') 
     bool = $(@).data('with-media')
     $.ajax {

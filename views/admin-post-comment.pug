@@ -1,0 +1,27 @@
+extends layouts/main
+block content
+  nav.navbar.navbar-light.bg-light.navbar-fixed-top
+    a(type="button" class="navbar-btn btn btn-default" role="button" href="/") 
+      span.oi.oi-chevron-left.mr-4
+      | index page
+  br/
+  br/
+  h3 Post One Comment 
+  //- give content of original article
+  if original
+    .card
+      img(class="img-card-top img-fluid" src= original.media)
+      .card-body
+        h3.card-header= original.title
+        .card-text= original.ticket
+  form(enctype="multipart/form-data" action="" method="POST" id="ticket-comment-form")
+    .form-group
+      label(for="title") title
+      input(class="form-control" type="text" id="title" name="title")
+    .form-group
+      label(for="comment") Write Your Comment: 
+      textarea(class="form-control" rows="15" id="comment" name="comment") 
+    .form-group
+      input.d-none(name="client_time" value="0")
+      input.d-none(name="admin_alias" value=alias)
+      button(type="submit" class="btn btn-dark btn-lg") Submit Now
