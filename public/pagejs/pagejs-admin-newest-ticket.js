@@ -13,7 +13,9 @@
         type: 'DELETE',
         dataType: 'text'
       }).done(function(txt) {
-        return alert('reply=' + txt);
+        // reload list page.
+        return window.location.reload(true);
+      //alert 'reply=' + txt
       }).fail(function(one, two, three) {
         return alert(three);
       });

@@ -12,9 +12,9 @@ block pagecss
       border:2px solid purple;
     }
 block content
-  nav.navbar.navbar-inverse.navbar-default.navbar-fixed-top
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light.navbar-fixed-top
     a(type="button" class="navbar-btn btn btn-default" role="button" href="/") 
-      span.glyphicon.glyphicon-chevron-left
+      span.oi.oi-chevron-left.mr-4
       | index page
   br/
   br/
@@ -24,17 +24,16 @@ block content
       label(for="title") title
       input(class="form-control" type="text" id="title" name="title")
     .form-group
-      label category of this ticket,single choice
-      .radio
-        label.radio-inline
-          input(type="radio" name="category" value="memo")
-          |memo
-        label.radio-inline 
-          input(type="radio" name="category" value="tool")
-          |tool
-        label.radio-inline 
-          input(type="radio" name="category" value="problem")
-          | problem
+      p.form-text choice this record's catogary
+      .form-check-inline.form-check.mr-4
+        input.form-check-input(id="check-memo" type="radio" name="category" value="memo")
+        label.form-check-label(for='check-memo') memo
+      .form-check.form-check-inline.mr-4
+        input(class="form-check-input" id="check-tool" type="radio" name="category" value="tool")
+        label(class="form-check-label",for="check-tool") tool
+      .form-check.form-check-inline.mr-4
+        input(class="form-check-input"  id="check-problem" type="radio" name="category" value="problem")
+        label.form-check-label(for="check-problem") problem
     .form-group
       label(for="ticket") Write Ticket Here:
       textarea(class="form-control" rows="15" id="ticket" name="ticket") 

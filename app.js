@@ -561,7 +561,7 @@
         if (formid_err) {
           return res.json(formid_err);
         }
-        options = ['urge', '0', 'resolved', 'false'];
+        options = ['visits', '0', 'urge', '0', 'resolved', 'false'];
         for (k in fields) {
           v = fields[k];
           options = options.concat([k, v]);

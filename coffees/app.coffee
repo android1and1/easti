@@ -347,7 +347,7 @@ app.all '/admin/create-new-ticket',(req,res)->
     formid.parse req,(formid_err,fields,files)->
       if formid_err
         return res.json formid_err
-      options = ['urge','0','resolved','false']
+      options = ['visits','0','urge','0','resolved','false']
       for k,v of fields
         options = options.concat [k,v] 
       if files.media.size isnt 0 

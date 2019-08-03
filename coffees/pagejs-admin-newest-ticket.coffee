@@ -11,7 +11,9 @@ $ ->
       dataType:'text'
     }
     .done (txt)->
-      alert 'reply=' + txt
+      # reload list page.
+      window.location.reload true
+      #alert 'reply=' + txt
     .fail (one,two,three)->
       alert three
     evt.preventDefault()
