@@ -33,8 +33,8 @@ block content
               button.btn.btn-light.mx-2.p-2(id="editTextButton") edit content text 
               button.btn.btn-danger.dropdown-toggle.mx-2.p-2(id="delButton" data-toggle="dropdown") delete
               div.dropdown-menu
-                a.dropdown-item(href="#") Delete
-                a.dropdown-item(href="#") Delete With Its Media File
+                a.dropdown-item(id='deleteOne',data-with-media='false',data-keyname= obj.keyname,href="#") Delete
+                a.dropdown-item(id='deleteOneWithMedia',data-with-media='true',data-keyname= obj.keyname,href="#") Delete With Its Media File
         .card-footer
           .container-fluid
             .row

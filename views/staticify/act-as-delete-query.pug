@@ -6,7 +6,7 @@ block pagejs
     $(function(){
       $('#idbutton').on('click',function(e){
          $.ajax({
-           url:'/admin/del-one-ticket/4',
+           url:'/admin/del-one-ticket?keyname=it-is-key-name&with_media=false',
            type:'DELETE',
            dataType:'text',
          })

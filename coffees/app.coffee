@@ -46,11 +46,11 @@ expireAsync = promisify redis.expire
   .bind redis
 delAsync = (key)->
   new Promise (resolve,reject)->
-    redis.del key,(err)->
+    redis.del key,(err,intReply)->
       if err
         reject err
       else
-        resolve()
+        resolve intReply 
 
 hgetallAsync = (key)->
   new Promise (resolve,reject)->
@@ -351,8 +351,8 @@ app.all '/admin/create-new-ticket',(req,res)->
       for k,v of fields
         options = options.concat [k,v] 
       if files.media.size isnt 0 
-        console.log '::' + files.media.type
         media_url = files.media.path
+        # for img or other media "src" attribute,the path is relative STATIC-ROOT.
         media_url = '/tickets/' + media_url.replace /.*\/(.+)$/,"$1" 
         options = options.concat  ['media',media_url,'media_type',files.media.type]
       # store this ticket
@@ -367,16 +367,34 @@ app.all '/admin/create-new-ticket',(req,res)->
           else
             return res.json reply # successfully
 
-app.delete '/admin/del-one-ticket/:id',(req,res)->
+app.delete '/admin/del-one-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
-    req.session.referrer = '/admin/del-all-tickets'
+    req.session.referrer = '/admin/del-one-ticket'
     return res.redirect 303,'/admin/login'
   else
     # check if has 'with-media' flag.
-    id = req.params.id
-    res.send 'params.id is - ' + id 
-
-  
+    {keyname,with_media} = req.query
+    if with_media is 'true'
+      # 'media' is media's path
+      redis.hget keyname,'media',(err,reply)->
+        # remember that : media url !== fs path
+        media = path.join __dirname,'public',reply
+        # check if media path exists yet.
+        fs.stat media,(err,stats)->
+          intReply = await delAsync keyname 
+          if err
+            # just del item from redis db,file system del failure.
+            res.send '删除条目' + intReply + '条,media file not clear,because:' +  err.message
+          else
+            fs.unlink media,(err2)->
+              if err2 is null
+                res.send '删除条目' + intReply + '条,media file clear.'
+              else
+                res.send '删除条目' + intReply + '条,media file not clear,because:' +  err2.message
+    else
+      intReply = await delAsync keyname 
+      res.send '删除条目' + intReply + '条.'
+      
 app.get '/admin/del-all-tickets',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/del-all-tickets'
@@ -400,6 +418,7 @@ app.get '/admin/newest-ticket',(req,res)->
       records = []
       for item in items 
         record =  await hgetallAsync item
+        # keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
         record.keyname = item
         records.push record
       # sorting before output to client.

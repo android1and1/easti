@@ -75,11 +75,11 @@
 
   delAsync = function(key) {
     return new Promise(function(resolve, reject) {
-      return redis.del(key, function(err) {
+      return redis.del(key, function(err, intReply) {
         if (err) {
           return reject(err);
         } else {
-          return resolve();
+          return resolve(intReply);
         }
       });
     });
@@ -567,8 +567,8 @@
           options = options.concat([k, v]);
         }
         if (files.media.size !== 0) {
-          console.log('::' + files.media.type);
           media_url = files.media.path;
+          // for img or other media "src" attribute,the path is relative STATIC-ROOT.
           media_url = '/tickets/' + media_url.replace(/.*\/(.+)$/, "$1");
           options = options.concat(['media', media_url, 'media_type', files.media.type]);
         }
@@ -592,15 +592,42 @@
     }
   });
 
-  app.delete('/admin/del-one-ticket/:id', function(req, res) {
-    var id, ref, ref1;
+  app.delete('/admin/del-one-ticket', async function(req, res) {
+    var intReply, keyname, ref, ref1, with_media;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
-      req.session.referrer = '/admin/del-all-tickets';
+      req.session.referrer = '/admin/del-one-ticket';
       return res.redirect(303, '/admin/login');
     } else {
       // check if has 'with-media' flag.
-      id = req.params.id;
-      return res.send('params.id is - ' + id);
+      ({keyname, with_media} = req.query);
+      if (with_media === 'true') {
+        // 'media' is media's path
+        return redis.hget(keyname, 'media', function(err, reply) {
+          var media;
+          // remember that : media url !== fs path
+          media = path.join(__dirname, 'public', reply);
+          // check if media path exists yet.
+          return fs.stat(media, async function(err, stats) {
+            var intReply;
+            intReply = (await delAsync(keyname));
+            if (err) {
+              // just del item from redis db,file system del failure.
+              return res.send('删除条目' + intReply + '条,media file not clear,because:' + err.message);
+            } else {
+              return fs.unlink(media, function(err2) {
+                if (err2 === null) {
+                  return res.send('删除条目' + intReply + '条,media file clear.');
+                } else {
+                  return res.send('删除条目' + intReply + '条,media file not clear,because:' + err2.message);
+                }
+              });
+            }
+          });
+        });
+      } else {
+        intReply = (await delAsync(keyname));
+        return res.send('删除条目' + intReply + '条.');
+      }
     }
   });
 
@@ -637,6 +664,7 @@
         for (j = 0, len = items.length; j < len; j++) {
           item = items[j];
           record = (await hgetallAsync(item));
+          // keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
           record.keyname = item;
           records.push(record);
         }
