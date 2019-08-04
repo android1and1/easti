@@ -605,6 +605,7 @@
   });
 
   app.post('/admin/create-new-comment', function(req, res) {
+    // create comment,and references to its ticket.
     return res.json({
       status: 'good'
     });
@@ -674,13 +675,10 @@
       return res.redirect(303, '/admin/login');
     } else {
       return redis.keys(TICKET_PREFIX + ':hash:*', async function(err, list) {
-        var item, items, j, len, record, records;
-        // Example:give 3 items to client 
-        // items = list[0...3]
-        items = list;
+        var item, j, len, record, records;
         records = [];
-        for (j = 0, len = items.length; j < len; j++) {
-          item = items[j];
+        for (j = 0, len = list.length; j < len; j++) {
+          item = list[j];
           record = (await hgetallAsync(item));
           // keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
           record.keyname = item;
@@ -690,6 +688,10 @@
         records.sort(function(a, b) {
           return b.ticket_id - a.ticket_id;
         });
+        // retrieve top 10 items.
+        if (records.length > 10) {
+          records = records.slice(0, 10);
+        }
         return res.render('admin-newest-ticket.pug', {
           'title': 'list top 10 items.',
           records: records
@@ -941,6 +943,7 @@
     pattern = [TICKET_PREFIX, 'hash', req.params.category, '*'].join(':');
     return redis.keys(pattern, function(err, keys) {
       var j, key, len, list;
+      // this is a good sample about redis-multi way.maybe multi is perfom better than hgetallAsync.
       list = redis.multi();
       for (j = 0, len = keys.length; j < len; j++) {
         key = keys[j];

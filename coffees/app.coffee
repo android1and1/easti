@@ -377,6 +377,7 @@ app.all '/admin/edit/:id',(req,res)->
     res.render 'nosense'
 
 app.post '/admin/create-new-comment',(req,res)->
+  # create comment,and references to its ticket.
   res.json {status:'good'}
 
 app.delete '/admin/del-one-ticket',(req,res)->
@@ -424,11 +425,8 @@ app.get '/admin/newest-ticket',(req,res)->
     return res.redirect 303,'/admin/login'
   else
     redis.keys TICKET_PREFIX + ':hash:*',(err,list)->
-      # Example:give 3 items to client 
-      # items = list[0...3]
-      items = list
       records = []
-      for item in items 
+      for item in list 
         record =  await hgetallAsync item
         # keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
         record.keyname = item
@@ -436,6 +434,9 @@ app.get '/admin/newest-ticket',(req,res)->
       # sorting before output to client.
       records.sort (a,b)->
         b.ticket_id - a.ticket_id
+      # retrieve top 10 items.
+      if records.length > 10
+        records = records[0...10]
       return res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',records:records}
   
 app.post '/admin/enable-user',(req,res)->
@@ -573,6 +574,7 @@ app.get '/superuser/list-admins',(req,res)->
 app.get '/superuser/list-tickets/:category',(req,res)->
   pattern = [TICKET_PREFIX,'hash',req.params.category,'*'].join ':'
   redis.keys pattern,(err,keys)->
+    # this is a good sample about redis-multi way.maybe multi is perfom better than hgetallAsync.
     list = redis.multi()
     for key in keys
       list.hgetall key

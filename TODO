@@ -828,3 +828,10 @@ Sat Aug  3 13:27:28 CST 2019
 jp-stretch-pi-2
 Sat Aug  3 14:40:01 CST 2019
   after comment to origianl article -- item,its visits add 1(+=1).so,need a route:'/admin/comment/:id'
+
+jp-stretch-pi-2
+Sun Aug  4 08:57:26 CST 2019
+  change mind about route - /admin/comment/:id ,to "/admin/create-new-comment'.
+  when list ticket,it contains foreign refers to 'ticket:hash:comment:N',when client need this(these) comment(s),server further look for via:
+  for key in [m1,m2,m3,...]
+    await redis.hgetallAsync key 
