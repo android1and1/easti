@@ -72,8 +72,8 @@ redis.on 'connect',->
 express = require 'express'
 app = express()
 app.set 'view engine','pug'
-static_root = path.join __dirname,'public'
-app.use express.static static_root 
+STATIC_ROOT = path.join __dirname,'public'
+app.use express.static STATIC_ROOT 
 # enable "req.body",like the old middware - "bodyParser"
 app.use express.urlencoded({extended:false})
 # session
@@ -324,7 +324,6 @@ app.post '/admin/register-user',(req,res)->
   catch error
     res.json  ins.errors 
 
-# db operator:DELETE
 # db operator:UPDATE(admin urging,super user resolved,use these way,a delicate case is,a ticket(always category is 'tool' want keep long time,superuser or admin can update ticket let ticket ttl longer,each click will auto-increment 10 days,for example)
 # db operator:FIND(superuser,admin are need list all tickets)
 # db operator:ADD
@@ -380,6 +379,7 @@ app.post '/admin/create-new-comment',(req,res)->
   # create comment,and references to its ticket.
   res.json {status:'good'}
 
+# db operator:DELETE
 app.delete '/admin/del-one-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/del-one-ticket'
@@ -672,6 +672,14 @@ app.post '/superuser/register-admin',(req,res)->
     res.json 'Saved.'
   catch error
     res.json  ins.errors 
+app.get '/no-staticify',(req,res)->
+  # listen radio(voa&rfa mandarin)
+  # step1 ,retrieves each file from ./voices
+  fs.readdir path.join(STATIC_ROOT,'audioes'),(err,list)->
+    if err is null
+      res.render 'no-staticify',{title:'list audioes'}
+    else
+      res.render 'no-staticify-failure',{title:'you-see-failure',error_reason:err.message}
 
 # during learn css3,svg..,use this route for convient.
 app.use '/staticify/:viewname',(req,res)->

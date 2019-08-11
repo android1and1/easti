@@ -1,0 +1,11 @@
+extend layouts/main.pug
+block content
+  h3.display-2 title is #{title} 
+  if list
+    p #{list.join(":::")}
+  else
+    p empty items
+
+block footer
+  h4 all right reserved by ..
+  h4 2007~2018
