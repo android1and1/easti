@@ -1,11 +1,31 @@
 extend layouts/main.pug
 block content
-  h3.display-2 title is #{title} 
-  if list
-    p #{list.join(":::")}
-  else
-    p empty items
+  h3.display-2 #{title} 
+  .container.w-100.m-0.p-0
+    if list
+      each item in list
+        .card.d-block.w-100.mb-4
+          // 我这里有一个疑问：混合了JS代码和HTML代码的缩进问题
+          - 
+            var radio=null;
+            var audio = item.replace(/.+\/(.+)/,"$1");
+            var audio_time = null;
+           
+            if(/VCH046/.test(audio)){
+              radio='美国之音'
+              audio_time = audio.replace(/(.+)\-VCH.+/,"$1")
+            }else{
+              radio='法广中文广播'
+              if(/1ERE/.test(audio))
+                audio_time = audio.replace(/.+?(\d+).+/,"$1")
+              else
+                audio_time = audio.replace(/.+(\d{2}_\d{2}_\d{2}).+/,"$1")
+            }
 
-block footer
-  h4 all right reserved by ..
-  h4 2007~2018
+          .card-header  #{radio}
+          .card-body 
+            h4.card-title 世界标准时间（utc time）: #{audio_time}
+            audio(class="m-0 p-0 d-block w-100",preload="auto",controls="true")
+              source(type="audio/mpeg",src= item)
+    else
+      p empty items
