@@ -835,3 +835,12 @@ Sun Aug  4 08:57:26 CST 2019
   when list ticket,it contains foreign refers to 'ticket:hash:comment:N',when client need this(these) comment(s),server further look for via:
   for key in [m1,m2,m3,...]
     await redis.hgetallAsync key 
+
+cyrus-Latitude-E7470
+2019年 08月 12日 星期一 09:50:22 CST
+  re-change mind,the 'comment' is not a standalone hash,it is an attribute of hash-ticket,example,ticket11.getAll:
+  { ...
+    comment-1:'title=XXX&&content=XXXX',
+    comment-2:'title=XXXXXXX && content= XXXXXXX'
+   ...
+  }

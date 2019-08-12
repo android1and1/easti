@@ -324,7 +324,6 @@ app.post '/admin/register-user',(req,res)->
   catch error
     res.json  ins.errors 
 
-# db operator:UPDATE(admin urging,super user resolved,use these way,a delicate case is,a ticket(always category is 'tool' want keep long time,superuser or admin can update ticket let ticket ttl longer,each click will auto-increment 10 days,for example)
 # db operator:FIND(superuser,admin are need list all tickets)
 # db operator:ADD
 app.all '/admin/create-new-ticket',(req,res)->
@@ -375,9 +374,13 @@ app.all '/admin/edit/:id',(req,res)->
   else
     res.render 'nosense'
 
+# in fact,it is 'update-ticket',the query from route /admin/ticket-detail/:id
 app.post '/admin/create-new-comment',(req,res)->
   # create comment,and references to its ticket.
-  res.json {status:'good'}
+  {title,comment} = req.body
+  # ticket-id 
+  xxx = 2 
+  res.json {'ticket_id':xxx,'replyText':title + '&&' + comment }
 
 # db operator:DELETE
 app.delete '/admin/del-one-ticket',(req,res)->

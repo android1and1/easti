@@ -25,18 +25,22 @@
     // when form.comment-form submit event be triggers, display an overlay (modal).
     return $('form.comment-form').on('submit', function(evt) {
       var $this;
-      $this = $(this);
-      //console.log $(@).serialize()
+      
       // do ajax-post
       evt.preventDefault();
       evt.stopPropagation();
+      $this = $(this);
       return $.ajax({
         url: '/admin/create-new-comment',
         type: 'POST',
         dataType: 'json',
-        data: $(this).serializeArray()
+        data: {
+          ticket_id: 2,
+          title: $this.find('[name=title]').val(),
+          comment: $this.find('[name=comment]').val()
+        }
       }).done(function(json) {
-        return alert(json.status);
+        return alert('server side say:' + json.replyText);
       }).fail(function(one, two, three) {
         return alert(three);
       }).always(function() {

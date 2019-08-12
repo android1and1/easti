@@ -530,7 +530,6 @@
   });
 
   
-  // db operator:UPDATE(admin urging,super user resolved,use these way,a delicate case is,a ticket(always category is 'tool' want keep long time,superuser or admin can update ticket let ticket ttl longer,each click will auto-increment 10 days,for example)
   // db operator:FIND(superuser,admin are need list all tickets)
   // db operator:ADD
   app.all('/admin/create-new-ticket', function(req, res) {
@@ -603,10 +602,16 @@
     }
   });
 
+  // in fact,it is 'update-ticket',the query from route /admin/ticket-detail/:id
   app.post('/admin/create-new-comment', function(req, res) {
+    var comment, title, xxx;
     // create comment,and references to its ticket.
+    ({title, comment} = req.body);
+    // ticket-id 
+    xxx = 2;
     return res.json({
-      status: 'good'
+      'ticket_id': xxx,
+      'replyText': title + '&&' + comment
     });
   });
 
