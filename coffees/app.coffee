@@ -44,6 +44,9 @@ getAsync = promisify redis.get
   .bind redis
 expireAsync = promisify redis.expire
   .bind redis
+existsAsync = promisify redis.exists
+  .bind redis
+
 delAsync = (key)->
   new Promise (resolve,reject)->
     redis.del key,(err,intReply)->
@@ -52,6 +55,14 @@ delAsync = (key)->
       else
         resolve intReply 
 
+hgetAsync = (key,index)->
+  new Promise (resolve,reject)->
+    redis.hget key,index,(err,value)->
+      if err
+        reject err
+      else
+        resolve value 
+
 hgetallAsync = (key)->
   new Promise (resolve,reject)->
     redis.hgetall key,(err,record)->
@@ -59,6 +70,13 @@ hgetallAsync = (key)->
         reject err
       else
         resolve record
+lrangeAsync = (key,start,end)->
+  new Promise (resolve,reject)->
+    redis.lrange key,start,end,(err,items)->
+      if err
+        reject err
+      else
+        resolve items 
 
 redis.on 'error',(err)->
   console.log 'Heard that:',err
@@ -358,7 +376,7 @@ app.all '/admin/create-new-ticket',(req,res)->
         if err isnt null # occurs error.
           return res.json err
         keyname = [TICKET_PREFIX,'hash',fields.category,number].join ':'
-        options = options.concat ['ticket_id',number]
+        options = options.concat ['ticket_id',number,'reference_comments','comments-for-' + number]
         redis.hmset keyname,options,(err,reply)->
           if err
             return res.json err
@@ -376,11 +394,20 @@ app.all '/admin/edit/:id',(req,res)->
 
 # in fact,it is 'update-ticket',the query from route /admin/ticket-detail/:id
 app.post '/admin/create-new-comment',(req,res)->
-  # create comment,and references to its ticket.
-  {title,comment} = req.body
-  # ticket-id 
-  xxx = 2 
-  res.json {'ticket_id':xxx,'replyText':title + '&&' + comment }
+  {keyname,title,comment,agent} = req.body
+  comment_str = 'timestamp=' + (new Date()) + '&title=' + title + '&comment=' + comment + '&agent=' + req.header('user-agent')
+  redis.hget keyname,'reference_comments',(err1,listkey)->
+    if err1 
+      return res.json {replyText:'no good,reason:' + err1.message} 
+    redis.lpush listkey,comment_str,(err2)->
+      if err2
+        return res.json {replyText:'no good,reason:' + err2.message}
+      else
+        redis.hincrby keyname,'visits',1,(err3)-> 
+          if err3
+            return res.json {replyText:'no good,reason:' + err3.message}
+          else
+            return res.json {replyText:'Good Job'} 
 
 # db operator:DELETE
 app.delete '/admin/del-one-ticket',(req,res)->
@@ -408,8 +435,15 @@ app.delete '/admin/del-one-ticket',(req,res)->
               else
                 res.send '删除条目' + intReply + '条,media file not clear,because:' +  err2.message
     else
-      intReply = await delAsync keyname 
-      res.send '删除条目' + intReply + '条.'
+      try
+        # del its referencing comments 
+        referencing_comments = await hgetAsync keyname,'reference_comments' 
+        referenceDeleted = await delAsync referencing_comments 
+        keyDeleted = await delAsync keyname 
+        res.send '删除条目' + keyDeleted + '条,删除评论' + referenceDeleted +  '条.'
+      catch error
+        res.send error.message
+     
       
 app.get '/admin/del-all-tickets',(req,res)->
   if req.session?.auth?.role isnt 'admin'
@@ -431,6 +465,14 @@ app.get '/admin/newest-ticket',(req,res)->
       records = []
       for item in list 
         record =  await hgetallAsync item
+        bool = await existsAsync record.reference_comments
+        if bool 
+          comments = await lrangeAsync record.reference_comments,0,-1
+          # give new attribute 'comments'
+          record.comments = comments
+        else
+          record.comments = [] 
+
         # keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
         record.keyname = item
         records.push record

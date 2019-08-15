@@ -24,23 +24,34 @@
     });
     // when form.comment-form submit event be triggers, display an overlay (modal).
     return $('form.comment-form').on('submit', function(evt) {
-      var $this;
+      var $this, keyname;
       
       // do ajax-post
       evt.preventDefault();
       evt.stopPropagation();
       $this = $(this);
+      keyname = $this.attr('id');
       return $.ajax({
         url: '/admin/create-new-comment',
         type: 'POST',
         dataType: 'json',
         data: {
-          ticket_id: 2,
+          keyname: keyname,
           title: $this.find('[name=title]').val(),
           comment: $this.find('[name=comment]').val()
         }
       }).done(function(json) {
-        return alert('server side say:' + json.replyText);
+        var _alert_box;
+        _alert_box = function(parent, content) {
+          var box;
+          box = $('<div/>', {
+            'class': 'alert alert-warning alert-dismissible fade show'
+          });
+          box.append($('<button class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>'));
+          box.append($('<p/>').text(content));
+          return parent.append(box);
+        };
+        return _alert_box($('#juru'), json.replyText);
       }).fail(function(one, two, three) {
         return alert(three);
       }).always(function() {

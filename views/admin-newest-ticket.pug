@@ -2,6 +2,7 @@ extends layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-newest-ticket.js")
 block content
+  div#juru
   if records.length === 0
     h2.display-3 None
   else
@@ -23,11 +24,20 @@ block content
           default
             img(class="img-thumbnail img-fluid card-img-top" alt="place holder pic" src="/images/box-default.svg")
         .card-body
-          h4.text-center.text-secondary.card-title= '#' + records[j].ticket_id + ':' + records[j].title
+          h4.text-center.text-secondary.card-title= '#' + obj.ticket_id + ':' + obj.title
+            if obj.comments.length 
+              a.badge.badge-success.ml-3(data-toggle="collapse" href="#comments-for-" + obj.ticket_id)= '有 ' + obj.comments.length  + ' 评论'
+            else
+              a.badge.badge-light.disabled.ml-3= '有 ' + obj.comments.length  + ' 评论'
           div.card-text
             blockquote
               p= obj.ticket
               footer.blockquote-footer= obj.keyname
+            div(class="collapse mb-4" id="comments-for-" + obj.ticket_id)
+              - for(var i=0;i<obj.comments.length;i++){
+                ul.list-group
+                  li.list-group-item= obj.comments[i]
+              - }
             .btn-group
               div.modal(id="modal-" + obj.ticket_id)
                 div.modal-dialog.modal-dialog-centered
@@ -37,7 +47,7 @@ block content
                       button(class="btn btn-light" data-dismiss="modal")
                         span.oi.oi-x
                     .modal-body
-                      form(class="comment-form")
+                      form(id=obj.keyname,class="comment-form")
                         .form-group
                           label(for= "input-" + obj.ticket_id + "-title") 标题 
                           input.form-control(id= "input-" + obj.ticket_id + "-title",name="title",type="text",placeholder="title..")
@@ -59,7 +69,7 @@ block content
         .card-footer
           .container-fluid
             .row
-              small(class="col-sm mx-auto")= records[j].client_time
+              small(class="col-sm mx-auto")= obj.client_time
             .row
-              small.col= '撰写人 - ' +  records[j].admin_alias
-              small.col= '分类 - ' + records[j].category
+              small.col= '撰写人 - ' +  obj.admin_alias
+              small.col= '分类 - ' + obj.category

@@ -844,3 +844,8 @@ cyrus-Latitude-E7470
     comment-2:'title=XXXXXXX && content= XXXXXXX'
    ...
   }
+
+jp-stretch-pi-2
+Wed Aug 14 16:40:24 CST 2019
+  special char must transfer to html entity,do it late.
+  view file,need change to display comments about one article(ticket).

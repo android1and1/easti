@@ -24,14 +24,20 @@ $ ->
     evt.preventDefault()
     evt.stopPropagation()
     $this = $ @
+    keyname = $this.attr('id')
     $.ajax {
       url:'/admin/create-new-comment'
       type:'POST'
       dataType:'json'
-      data: {ticket_id:2,title: $this.find('[name=title]').val(),comment: $this.find('[name=comment]').val()}
+      data: {keyname:keyname,title: $this.find('[name=title]').val(),comment: $this.find('[name=comment]').val()}
     }
     .done (json)->
-      alert 'server side say:' + json.replyText
+      _alert_box = (parent,content)->
+        box = $('<div/>',{'class':'alert alert-warning alert-dismissible fade show'})
+        box.append $('<button class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>')
+        box.append $('<p/>').text(content)
+        parent.append box
+      _alert_box $('#juru'),json.replyText
     .fail (one,two,three)->
       alert three
     .always ->
