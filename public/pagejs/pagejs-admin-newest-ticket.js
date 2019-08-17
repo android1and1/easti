@@ -15,7 +15,6 @@
       }).done(function(txt) {
         // reload list page.
         return window.location.reload(true);
-      //alert 'reply=' + txt
       }).fail(function(one, two, three) {
         return alert(three);
       });
@@ -23,7 +22,7 @@
       return evt.stopPropagation();
     });
     // when form.comment-form submit event be triggers, display an overlay (modal).
-    return $('form.comment-form').on('submit', function(evt) {
+    $('form.comment-form').on('submit', function(evt) {
       var $this, keyname;
       
       // do ajax-post
@@ -37,26 +36,26 @@
         dataType: 'json',
         data: {
           keyname: keyname,
-          title: $this.find('[name=title]').val(),
           comment: $this.find('[name=comment]').val()
         }
       }).done(function(json) {
-        var _alert_box;
-        _alert_box = function(parent, content) {
-          var box;
-          box = $('<div/>', {
-            'class': 'alert alert-warning alert-dismissible fade show'
-          });
-          box.append($('<button class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>'));
-          box.append($('<p/>').text(content));
-          return parent.append(box);
-        };
-        return _alert_box($('#juru'), json.replyText);
+        /*
+        _alert_box = (parent,content)->
+          box = $('<div/>',{'class':'alert alert-warning alert-dismissible fade show'})
+          box.append $('<button class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>')
+          box.append $('<p/>').text(content)
+          parent.append box
+        _alert_box $('#juru'),json.replyText
+        */
+        return window.location.reload(true);
       }).fail(function(one, two, three) {
-        return alert(three);
-      }).always(function() {
-        return $this.closest('div.modal').modal('toggle');
+        return alert('ajax way create comment occurs error,reason:' + three);
       });
+    });
+    // each popover(as tooltip) be actived.
+    return $('button[data-toggle=popover]').popover({
+      placement: 'bottom',
+      animation: true
     });
   });
 

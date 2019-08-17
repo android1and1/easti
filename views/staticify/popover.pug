@@ -1,0 +1,17 @@
+extend ../layouts/main
+block content
+  h2 popover.sj
+  button(class="btn btn-danger" data-toggle="popover" title="user agent info" data-content="moziila version 22.2 x11;armv71 linux ubuntu;commounize 22.140.33") click show info
+  br
+  br
+  button(type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?") Click to toggle popover
+
+  br
+  br
+  button(type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="Popover title" aria-describedby="popover683485") Click to toggle popover
+
+block pagejs
+  script.
+    $(function(){
+      $('button').popover({animation:true,placement:'bottom'});
+    });

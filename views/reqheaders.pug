@@ -1,0 +1,7 @@
+extend layouts/main
+block content
+  h4.display-2 req.headers
+  ul.list-group
+    each value,key in reqheaders
+      li.list-group-item <span class="badge badge-success"> #{key} </span><b> #{value} </b>
+    

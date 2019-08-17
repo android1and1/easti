@@ -13,7 +13,6 @@ $ ->
     .done (txt)->
       # reload list page.
       window.location.reload true
-      #alert 'reply=' + txt
     .fail (one,two,three)->
       alert three
     evt.preventDefault()
@@ -29,16 +28,19 @@ $ ->
       url:'/admin/create-new-comment'
       type:'POST'
       dataType:'json'
-      data: {keyname:keyname,title: $this.find('[name=title]').val(),comment: $this.find('[name=comment]').val()}
+      data: {keyname:keyname,comment: $this.find('[name=comment]').val()}
     }
     .done (json)->
+      ###
       _alert_box = (parent,content)->
         box = $('<div/>',{'class':'alert alert-warning alert-dismissible fade show'})
         box.append $('<button class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>')
         box.append $('<p/>').text(content)
         parent.append box
       _alert_box $('#juru'),json.replyText
+      ###
+      window.location.reload true 
     .fail (one,two,three)->
-      alert three
-    .always ->
-      $this.closest('div.modal').modal('toggle') 
+      alert 'ajax way create comment occurs error,reason:' + three
+  # each popover(as tooltip) be actived.
+  $('button[data-toggle=popover]').popover({placement:'bottom',animation:true})

@@ -394,8 +394,17 @@ app.all '/admin/edit/:id',(req,res)->
 
 # in fact,it is 'update-ticket',the query from route /admin/ticket-detail/:id
 app.post '/admin/create-new-comment',(req,res)->
-  {keyname,title,comment,agent} = req.body
-  comment_str = 'timestamp=' + (new Date()) + '&title=' + title + '&comment=' + comment + '&agent=' + req.header('user-agent')
+  {keyname,comment} = req.body
+  comment_str = [
+      '<blockquote class="blockquote text-center"><p>'
+      comment
+      '</p><footer class="blockquote-footer"> <cite>发表于：</cite>'
+      new Date()
+      '<button type="button" class="ml-2 btn btn-light" data-toggle="popover" data-placement="bottom" data-content="'
+      req.header("user-agent")
+      '" title="browser infomation"> Info </button></footer></blockquote>'
+    ].join '' 
+  
   redis.hget keyname,'reference_comments',(err1,listkey)->
     if err1 
       return res.json {replyText:'no good,reason:' + err1.message} 
