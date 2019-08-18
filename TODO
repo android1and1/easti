@@ -853,3 +853,7 @@ Wed Aug 14 16:40:24 CST 2019
 jp-stretch-pi-2
 Sat Aug 17 19:44:29 CST 2019
   route - create-new-ticket,after all,return 'ok',too simple ,too ugly.
+
+jp-stretch-pi-2
+Sun Aug 18 10:44:42 CST 2019
+  big event:rm all cached,for .gitignore works.

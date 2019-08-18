@@ -608,7 +608,12 @@
             if (err) {
               return res.json(err);
             } else {
-              return res.json(reply); // successfully
+              
+              // successfully
+              return res.render('admin-save-ticket-success.pug', {
+                reply: reply,
+                title: 'Stored Success'
+              });
             }
           });
         });

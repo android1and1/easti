@@ -380,8 +380,9 @@ app.all '/admin/create-new-ticket',(req,res)->
         redis.hmset keyname,options,(err,reply)->
           if err
             return res.json err
-          else
-            return res.json reply # successfully
+          else 
+            # successfully
+            return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
 
 app.all '/admin/edit/:id',(req,res)->
   id = req.params.id

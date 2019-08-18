@@ -1,0 +1,11 @@
+extend layouts/main
+block content
+  nav
+    ul.pagination.justify-content-center
+      li.page-item 
+        a(href="/" class="page-link") Site's First  Page
+      li.page-item 
+        a(href="/admin/create-new-ticket" class="page-link") Create New Ticket 
+      li.page-item 
+        a(href="/admin/newest-ticket" class="page-link") Back To List Of Tickets 
+  h1.display-3 [#{reply}] Stored One Ticket.
