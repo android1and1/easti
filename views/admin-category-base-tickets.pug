@@ -1,0 +1,20 @@
+extends layouts/main
+block content
+  nav.navbar.navbar-expand-md.navbar-dark.bg-dark.sticky-top
+    a(class="navbar-brand" href="#") Navbar
+    button(class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse") <span class="oi oi-menu"></span>
+    div(class="collaspe navbar-collapse" id="navbarCollapse")
+      div.navbar-nav
+        a(class="nav-item nav-link",href="/admin/newest-ticket") Newest Tickets 
+        a(class="nav-item nav-link",href="/admin/create-new-ticket") Create New Ticket 
+        a(class="nav-item nav-link",href="#")  Main Product Pricing  
+        a(class="nav-item nav-link",href="#") Pricing 2 
+        a(class="nav-item nav-link",href="#") Pricing 3 
+  if records.length
+    ul.list-group
+      each record in records
+        li.list-group-item #{'#' + record.ticket_id} 
+        li.list-group-item #{record.title}  <span class="ml-4 badge badge-success"> #{record.comments.length + ' comments'} </span> 
+        li.list-group-item= record.ticket
+  else
+    h2.display-3 No Record 

@@ -20,6 +20,8 @@ configs/
 public/uploads
 public/audioes
 staticify/
+coffees/staticify-*
+public/staticifyjs/
 views/staticify/v4.pug
 !public/uploads/sample.jpg
 !configs/rule-for-daka.js

@@ -366,6 +366,9 @@ app.all '/admin/create-new-ticket',(req,res)->
       options = ['visits','0','urge','0','resolved','false']
       for k,v of fields
         options = options.concat [k,v] 
+      #  fs.unlinkSync files.media.path
+      if files.media.size is 0 
+        fs.unlinkSync files.media.path
       if files.media.size isnt 0 
         media_url = files.media.path
         # for img or other media "src" attribute,the path is relative STATIC-ROOT.
@@ -465,6 +468,30 @@ app.get '/admin/del-all-tickets',(req,res)->
         await delAsync item
       # at last ,report to client.
       res.render 'admin-del-all-tickets'
+
+app.get '/admin/category-of-tickets/:category',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/newest-ticket'
+    return res.redirect 303,'/admin/login'
+  else
+    category = req.params.category
+    redis.keys TICKET_PREFIX + ':hash:' + category + '*',(err,list)->
+      records = []
+      for item in list 
+        record =  await hgetallAsync item
+        bool = await existsAsync record.reference_comments
+        if bool 
+          comments = await lrangeAsync record.reference_comments,0,-1
+          record.comments = comments
+        else
+          record.comments = [] 
+        record.keyname = item
+        records.push record
+      records.sort (a,b)->
+        b.ticket_id - a.ticket_id
+      if records.length > 10
+        records = records[0...10]
+      res.render 'admin-category-base-tickets',{records:records,title:'category-base-tickets'}
 
 app.get '/admin/newest-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'

@@ -590,6 +590,11 @@
           v = fields[k];
           options = options.concat([k, v]);
         }
+        
+        //  fs.unlinkSync files.media.path
+        if (files.media.size === 0) {
+          fs.unlinkSync(files.media.path);
+        }
         if (files.media.size !== 0) {
           media_url = files.media.path;
           // for img or other media "src" attribute,the path is relative STATIC-ROOT.
@@ -729,6 +734,43 @@
         }
         // at last ,report to client.
         return res.render('admin-del-all-tickets');
+      });
+    }
+  });
+
+  app.get('/admin/category-of-tickets/:category', function(req, res) {
+    var category, ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/newest-ticket';
+      return res.redirect(303, '/admin/login');
+    } else {
+      category = req.params.category;
+      return redis.keys(TICKET_PREFIX + ':hash:' + category + '*', async function(err, list) {
+        var bool, comments, item, j, len, record, records;
+        records = [];
+        for (j = 0, len = list.length; j < len; j++) {
+          item = list[j];
+          record = (await hgetallAsync(item));
+          bool = (await existsAsync(record.reference_comments));
+          if (bool) {
+            comments = (await lrangeAsync(record.reference_comments, 0, -1));
+            record.comments = comments;
+          } else {
+            record.comments = [];
+          }
+          record.keyname = item;
+          records.push(record);
+        }
+        records.sort(function(a, b) {
+          return b.ticket_id - a.ticket_id;
+        });
+        if (records.length > 10) {
+          records = records.slice(0, 10);
+        }
+        return res.render('admin-category-base-tickets', {
+          records: records,
+          title: 'category-base-tickets'
+        });
       });
     }
   });
