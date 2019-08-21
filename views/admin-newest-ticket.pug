@@ -7,7 +7,7 @@ block content
     h2.display-3 None
   else
     // global variable -- records
-    - for(var j=0;j<records.length;j++)
+    - for(var j=0;j<records.length;j++){
       .card.mb-4
         - obj = records[j]
         - type = obj.media_type
@@ -70,3 +70,4 @@ block content
             .row
               small.col= '撰写人 - ' +  obj.admin_alias
               small.col= '分类 - ' + obj.category
+    - } 
