@@ -83,6 +83,16 @@ a tip,in client'shell,run "shutdown save" can affect server to close and save ke
 
 ######################
 ######################
+  Modal For iPhone 
+######################
+######################
+if obey example of bootstrap's tutorial,iphone can not open modal.in stackover site,some advice:
+"add href="#" to <a> attribute"
+after that,my iphone works.
+
+
+######################
+######################
   redis-server
 ######################
 ######################
