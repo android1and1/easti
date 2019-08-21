@@ -2,13 +2,35 @@ extends layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-newest-ticket.js")
 block content
-  div#juru
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+    a(class="navbar-brand" href="/") FirstPage
+    button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
+      span(class="oi oi-menu")
+    div.collapse.navbar-collapse(id="supportedcontent")
+      form.form-inline(id="search_form")
+        .input-group
+          .input-group-prepend
+            span.input-group-text TicketId
+          input(type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1")
+      ul.navbar-nav.mr-auto
+        li.nav-item
+          a.nav-link(href="/admin/login") login as other id
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/memo") Memo Tickets
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/tool") Tool Tickets
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/problem") Promblem Tickets
+         
+  //- content start from here.  
   if records.length === 0
-    h2.display-3 None
+    h2.display-3.mt-8 None
   else
+    //- offset placeholder
+    h2.display-4 &nbsp;
     // global variable -- records
     - for(var j=0;j<records.length;j++){
-      .card.mb-4
+      .card.mt-4
         - obj = records[j]
         - type = obj.media_type
         case type

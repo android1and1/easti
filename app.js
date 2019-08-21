@@ -738,6 +738,12 @@
     }
   });
 
+  app.post('/admin/if-exists-this-id', function(req, res) {
+    return res.json({
+      'status': 'you are looking for:id#' + req.body.id
+    });
+  });
+
   app.get('/admin/category-of-tickets/:category', function(req, res) {
     var category, ref, ref1;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {

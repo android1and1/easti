@@ -469,6 +469,9 @@ app.get '/admin/del-all-tickets',(req,res)->
       # at last ,report to client.
       res.render 'admin-del-all-tickets'
 
+app.post '/admin/if-exists-this-id',(req,res)->
+  res.json {'status':'you are looking for:id#' + req.body.id}
+
 app.get '/admin/category-of-tickets/:category',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/newest-ticket'

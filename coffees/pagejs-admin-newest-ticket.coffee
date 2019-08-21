@@ -44,3 +44,18 @@ $ ->
       alert 'ajax way create comment occurs error,reason:' + three
   # each popover(as tooltip) be actived.
   $('button[data-toggle=popover]').popover({placement:'bottom',animation:true})
+  $('form#search_form input').on 'change',(e)->
+    input = $(this).val()
+    if input.endsWith '\n'
+      $(this).closest('form').submit()
+   
+  $('form#search_form').on 'submit',(e)->
+    $.ajax 
+      url:'/admin/if-exists-this-id'
+      dataType:'json'
+      data:{id:33}
+      type:'POST'
+    .done (json)->
+      alert json.status
+    .fail (_1,_2,m)->
+      alert m

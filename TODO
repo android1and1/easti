@@ -863,4 +863,22 @@ cyrus-Latitude-E7470
   list category tickets.
   memery:tool:problem 3 categories.
   route - /admin/category-of-tickets/:category 
+
+jp-stretch-pi-2
+Wed Aug 21 12:06:27 CST 2019
+  resolved iPhone's modal problem,just add a(hre="#" to the toggler,in this case,it is a(data-toggle="modal" data-target="xxx" href="#"....).
+  next.
+  how to figure out the real problem.
+  tied with long long 'blog' style page,long tailer,let people unhope.
+  need first retrieve 10 top items,and an additional button <button> more</button>
+  click more if nessary,then server retrieve 11,20 items.and,one button - more.
   view - ./admin-category-base-tickets  
+
+jp-stretch-pi-2
+Wed Aug 21 18:39:55 CST 2019
+  whild client click 'more' button,server :
+  if req.params.range 
+    start = req.params.range
+    end = Math.min (start + 10),retrieved.length 
+    records = retrieved[start...end]
+    res.render 'admin-category-ticket',{records:records,title:'..'}
