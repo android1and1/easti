@@ -739,8 +739,26 @@
   });
 
   app.post('/admin/if-exists-this-id', function(req, res) {
-    return res.json({
-      'status': 'you are looking for:id#' + req.body.id
+    var ticket_id;
+    ticket_id = req.body.ticket_id;
+    return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, async function(err, list) {
+      var item;
+      if (err) {
+        return res.json({
+          status: 'Error Occurs While Retrieving This Id.'
+        });
+      } else {
+        if (list.length === 0) {
+          return res.json({
+            status: 'No Found.'
+          });
+        } else {
+          item = (await hgetallAsync(list[0]));
+          return res.json({
+            status: JSON.stringify(item)
+          });
+        }
+      }
     });
   });
 

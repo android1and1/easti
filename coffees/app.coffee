@@ -470,7 +470,16 @@ app.get '/admin/del-all-tickets',(req,res)->
       res.render 'admin-del-all-tickets'
 
 app.post '/admin/if-exists-this-id',(req,res)->
-  res.json {'status':'you are looking for:id#' + req.body.id}
+  ticket_id = req.body.ticket_id
+  redis.keys TICKET_PREFIX + ':hash:*' + ticket_id,(err,list)->
+    if err
+      res.json {status:'Error Occurs While Retrieving This Id.'}
+    else
+      if list.length is 0
+        res.json {status:'No Found.'}
+      else
+        item = await hgetallAsync list[0]
+        res.json {status:JSON.stringify item} 
 
 app.get '/admin/category-of-tickets/:category',(req,res)->
   if req.session?.auth?.role isnt 'admin'

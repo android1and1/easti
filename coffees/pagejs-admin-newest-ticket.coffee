@@ -48,14 +48,3 @@ $ ->
     input = $(this).val()
     if input.endsWith '\n'
       $(this).closest('form').submit()
-   
-  $('form#search_form').on 'submit',(e)->
-    $.ajax 
-      url:'/admin/if-exists-this-id'
-      dataType:'json'
-      data:{id:33}
-      type:'POST'
-    .done (json)->
-      alert json.status
-    .fail (_1,_2,m)->
-      alert m
