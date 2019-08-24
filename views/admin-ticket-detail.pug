@@ -1,0 +1,14 @@
+extend layouts/main
+block pagejs
+  script(src="/pagejs/pagejs-admin-ticket-detail.js")
+block content
+  if record
+    h4.display-3= record.title 
+    h4.display-4= 'category:' + record.category
+    blockquote.blockquote.text-center
+      p= record.ticket
+    ul.list-group
+      each item in record.comments
+        li.list-group-item!= item
+  else
+    p no clear

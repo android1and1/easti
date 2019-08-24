@@ -7,11 +7,8 @@ block content
     button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
       span(class="oi oi-menu")
     div.collapse.navbar-collapse(id="supportedcontent")
-      form.form-inline(id="search_form")
-        .input-group
-          .input-group-prepend
-            span.input-group-text TicketId
-          input(type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1")
+      form.form-inline(action="/admin/if-exists-this-id" method="POST" id="search_form")
+        input(placeholder="input id number,then Enter.." type="text" class="form-control"  name="ticket_id")
       ul.navbar-nav.mr-auto
         li.nav-item
           a.nav-link(href="/admin/login") login as other id

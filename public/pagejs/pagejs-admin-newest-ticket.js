@@ -57,26 +57,12 @@
       placement: 'bottom',
       animation: true
     });
-    $('form#search_form input').on('change', function(e) {
+    return $('form#search_form input').on('change', function(e) {
       var input;
       input = $(this).val();
       if (input.endsWith('\n')) {
         return $(this).closest('form').submit();
       }
-    });
-    return $('form#search_form').on('submit', function(e) {
-      return $.ajax({
-        url: '/admin/if-exists-this-id',
-        dataType: 'json',
-        data: {
-          id: 33
-        },
-        type: 'POST'
-      }).done(function(json) {
-        return alert(json.status);
-      }).fail(function(_1, _2, m) {
-        return alert(m);
-      });
     });
   });
 

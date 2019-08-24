@@ -1,0 +1,2 @@
+$ ->
+  $('footer button').popover()

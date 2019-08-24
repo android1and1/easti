@@ -642,7 +642,7 @@
   app.post('/admin/create-new-comment', function(req, res) {
     var comment, comment_str, keyname;
     ({keyname, comment} = req.body);
-    comment_str = ['<blockquote class="blockquote text-center"><p>', comment, '</p><footer class="blockquote-footer"> <cite>发表于：</cite>', new Date(), '<button type="button" class="ml-2 btn btn-light" data-toggle="popover" data-placement="bottom" data-content="', req.header("user-agent"), '" title="browser infomation"> Info </button></footer></blockquote>'].join('');
+    comment_str = ['<blockquote class="blockquote text-center"><p>', comment, '</p><footer class="blockquote-footer"> <cite>发表于：</cite>', new Date(), '<button type="button" class="ml-2 btn btn-light" data-toggle="popover" data-placement="bottom" data-content="', req.header("user-agent"), '" title="browser infomation"> browser Info </button></footer></blockquote>'].join('');
     return redis.hget(keyname, 'reference_comments', function(err1, listkey) {
       if (err1) {
         return res.json({
@@ -739,8 +739,35 @@
   });
 
   app.post('/admin/if-exists-this-id', function(req, res) {
-    return res.json({
-      'status': 'you are looking for:id#' + req.body.id
+    var id;
+    id = req.body.ticket_id;
+    return redis.keys(TICKET_PREFIX + ':hash:*' + id, async function(err, list) {
+      var bool, comments, record;
+      if (err) {
+        return res.json({
+          'status': 'no good.'
+        });
+      } else {
+        if (list.length === 0) {
+          return res.json({
+            'status': 'No Found.'
+          });
+        } else {
+          record = (await hgetallAsync(list[0]));
+          // retrieves its comment-list
+          bool = (await existsAsync(record.reference_comments));
+          if (bool) {
+            comments = (await lrangeAsync(record.reference_comments, 0, -1));
+          } else {
+            comments = [];
+          }
+          record.comments = comments;
+          return res.render('admin-ticket-detail', {
+            'title': 'Detail Of The Ticket',
+            'record': record
+          });
+        }
+      }
     });
   });
 
