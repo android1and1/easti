@@ -470,23 +470,16 @@ app.get '/admin/del-all-tickets',(req,res)->
       res.render 'admin-del-all-tickets'
 
 app.post '/admin/if-exists-this-id',(req,res)->
-  id = req.body.ticket_id
-  redis.keys TICKET_PREFIX + ':hash:*' + id,(err,list)->
+  ticket_id = req.body.ticket_id
+  redis.keys TICKET_PREFIX + ':hash:*' + ticket_id,(err,list)->
     if err
-      res.json {'status':'no good.'}
+      res.json {status:'Error Occurs While Retrieving This Id.'}
     else
       if list.length is 0
-        res.json {'status':'No Found.'}
+        res.json {status:'No Found.'}
       else
-        record = await hgetallAsync list[0]
-        # retrieves its comment-list
-        bool = await existsAsync record.reference_comments
-        if bool
-          comments = await lrangeAsync record.reference_comments,0,-1
-        else
-          comments = []
-        record.comments = comments
-        res.render 'admin-ticket-detail',{'title':'Detail Of The Ticket','record':record}
+        item = await hgetallAsync list[0]
+        res.json {status:JSON.stringify item} 
 
 app.get '/admin/category-of-tickets/:category',(req,res)->
   if req.session?.auth?.role isnt 'admin'

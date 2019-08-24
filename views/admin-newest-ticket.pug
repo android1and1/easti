@@ -7,11 +7,14 @@ block content
     button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
       span(class="oi oi-menu")
     div.collapse.navbar-collapse(id="supportedcontent")
-      form.form-inline(action="/admin/if-exists-this-id" method="POST" id="search_form")
-        input(placeholder="input id number,then Enter.." type="text" class="form-control"  name="ticket_id")
+      form.form-inline(method="POST" action="/admin/if-exists-this-id" id="search_form")
+        .input-group
+          .input-group-prepend
+            span.input-group-text Input Ticket Id
+          input(type="text" name="ticket_id" class="form-control")
       ul.navbar-nav.mr-auto
         li.nav-item
-          a.nav-link(href="/admin/login") login as other id
+          a.nav-link(href="/admin/login") login as other admin user 
         li.nav-item
           a.nav-link(href="/admin/category-of-tickets/memo") Memo Tickets
         li.nav-item

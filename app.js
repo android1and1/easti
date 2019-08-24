@@ -739,32 +739,23 @@
   });
 
   app.post('/admin/if-exists-this-id', function(req, res) {
-    var id;
-    id = req.body.ticket_id;
-    return redis.keys(TICKET_PREFIX + ':hash:*' + id, async function(err, list) {
-      var bool, comments, record;
+    var ticket_id;
+    ticket_id = req.body.ticket_id;
+    return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, async function(err, list) {
+      var item;
       if (err) {
         return res.json({
-          'status': 'no good.'
+          status: 'Error Occurs While Retrieving This Id.'
         });
       } else {
         if (list.length === 0) {
           return res.json({
-            'status': 'No Found.'
+            status: 'No Found.'
           });
         } else {
-          record = (await hgetallAsync(list[0]));
-          // retrieves its comment-list
-          bool = (await existsAsync(record.reference_comments));
-          if (bool) {
-            comments = (await lrangeAsync(record.reference_comments, 0, -1));
-          } else {
-            comments = [];
-          }
-          record.comments = comments;
-          return res.render('admin-ticket-detail', {
-            'title': 'Detail Of The Ticket',
-            'record': record
+          item = (await hgetallAsync(list[0]));
+          return res.json({
+            status: JSON.stringify(item)
           });
         }
       }
