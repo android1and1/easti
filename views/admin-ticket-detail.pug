@@ -2,13 +2,17 @@ extend layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-ticket-detail.js")
 block content
-  if record
-    h4.display-3= record.title 
-    h4.display-4= 'category:' + record.category
+  if item
+    h4.display-4= '#' + item.ticket_id + ':' +  item.title 
+    h4.display-5= 'category:' + item.category
     blockquote.blockquote.text-center
-      p= record.ticket
+      p= item.ticket
+      footer.blockquote-footer written at #{item.client_time}
+    hr
+    hr
+    h4.display-5.mb-5  本条目共<span class="badge badge-success"> #{item.comments.length} </span> 条评论
     ul.list-group
-      each item in record.comments
-        li.list-group-item!= item
+      each comment in item.comments
+        li.list-group-item!= comment 
   else
     p no clear

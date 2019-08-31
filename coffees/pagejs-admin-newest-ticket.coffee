@@ -1,7 +1,6 @@
 $ ->
   # 2019-06-27 于“水墨清华”别墅区设立 
-  # retry at 2019-07-27
-  # continue at 2019-08-03
+  # retry at 2019-07-27/.../2019-08-31
   $('.deleteOne,.deleteOneWithMedia').on 'click',(evt)->
     id = $(@).data('keyname') 
     bool = $(@).data('with-media')
@@ -31,14 +30,6 @@ $ ->
       data: {keyname:keyname,comment: $this.find('[name=comment]').val()}
     }
     .done (json)->
-      ###
-      _alert_box = (parent,content)->
-        box = $('<div/>',{'class':'alert alert-warning alert-dismissible fade show'})
-        box.append $('<button class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>')
-        box.append $('<p/>').text(content)
-        parent.append box
-      _alert_box $('#juru'),json.replyText
-      ###
       window.location.reload true 
     .fail (one,two,three)->
       alert 'ajax way create comment occurs error,reason:' + three

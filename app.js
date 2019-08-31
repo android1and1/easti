@@ -738,7 +738,7 @@
     }
   });
 
-  app.post('/admin/if-exists-this-id', function(req, res) {
+  app.post('/admin/ticket-details', function(req, res) {
     var ticket_id;
     ticket_id = req.body.ticket_id;
     return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, async function(err, list) {
@@ -750,12 +750,13 @@
       } else {
         if (list.length === 0) {
           return res.json({
-            status: 'No Found.'
+            status: 'This Ticket Id No Found'
           });
         } else {
           item = (await hgetallAsync(list[0]));
-          return res.json({
-            status: JSON.stringify(item)
+          item.comments = (await lrangeAsync(item.reference_comments, 0, -1));
+          return res.render('admin-ticket-detail', {
+            item: item
           });
         }
       }

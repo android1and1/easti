@@ -2,8 +2,7 @@
 (function() {
   $(function() {
     // 2019-06-27 于“水墨清华”别墅区设立 
-    // retry at 2019-07-27
-    // continue at 2019-08-03
+    // retry at 2019-07-27/.../2019-08-31
     $('.deleteOne,.deleteOneWithMedia').on('click', function(evt) {
       var bool, id;
       id = $(this).data('keyname');
@@ -39,14 +38,6 @@
           comment: $this.find('[name=comment]').val()
         }
       }).done(function(json) {
-        /*
-        _alert_box = (parent,content)->
-          box = $('<div/>',{'class':'alert alert-warning alert-dismissible fade show'})
-          box.append $('<button class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>')
-          box.append $('<p/>').text(content)
-          parent.append box
-        _alert_box $('#juru'),json.replyText
-        */
         return window.location.reload(true);
       }).fail(function(one, two, three) {
         return alert('ajax way create comment occurs error,reason:' + three);
