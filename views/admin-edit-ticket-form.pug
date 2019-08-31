@@ -1,0 +1,61 @@
+extends layouts/main
+block pagejs
+  script(src="/pagejs/pagejs-admin-edit-ticket-form.js")
+block pagecss
+  style.
+    body {
+      color:#1a2a3a;
+    }
+    .preview {
+      margin:2rem;
+      padding:2rem;
+      border:2px solid purple;
+    }
+block content
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light.navbar-fixed-top
+    a(type="button" class="navbar-btn btn btn-default" role="button" href="/") 
+      span.oi.oi-chevron-left.mr-4
+      | index page
+  br/
+  br/
+  h3 Edit Last Version
+  form(enctype="multipart/form-data",action="/admin/edit-ticket/"+keyname,method="POST",id="admin-edit-ticket-form")
+    .form-group
+      label(for="title") title
+      input(value=item.title class="form-control" type="text" id="title" name="title")
+    .form-group
+      p.form-text choice this record's category
+      .form-check-inline.form-check.mr-4
+        if item.category==='memo'
+          input.form-check-input(id="check-memo" checked='checked' type="radio" name="category" value="memo")
+        else
+          input.form-check-input(id="check-memo" type="radio" name="category" value="memo")
+        label.form-check-label(for='check-memo') memo
+      .form-check.form-check-inline.mr-4
+        if item.category==='tool'
+          input(checked="checked" class="form-check-input" id="check-tool" type="radio" name="category" value="tool")
+        else
+          input(class="form-check-input" id="check-tool" type="radio" name="category" value="tool")
+        label(class="form-check-label",for="check-tool") tool
+      .form-check.form-check-inline.mr-4
+        if item.category==='problem'
+          input(checked='checked' class="form-check-input"  id="check-problem" type="radio" name="category" value="problem")
+        else
+          input(class="form-check-input"  id="check-problem" type="radio" name="category" value="problem")
+        label.form-check-label(for="check-problem") problem
+    .form-group
+      label(for="ticket") Write Ticket Here:
+      textarea(class="form-control" rows="15" id="ticket" name="ticket") #{item.ticket}
+    .form-group
+      label(for="onemedia") 点击这里重新选择媒体（可选的）
+      input(class="d-none" type="file" name="media" id="onemedia")
+      figure#figure.figure
+        img.figure-img.w-50.img-fluid.rounded(src=item.media alt="media photo")
+        figcation.figure-cation.ml-4 original 
+       
+    .form-group
+      input.d-none(name="update_time" value= Date.now())
+      input.d-none(name="visits" value=item.visits + 1)
+      input.d-none(name="original_uri" value=item.media)
+      input.d-none(name="admin_alias" value=alias)
+      button(type="submit" class="btn btn-dark btn-lg") Update

@@ -77,7 +77,7 @@ block content
                           button(type="submit" class="btn btn-secondary") 写好了，提交！ 
              
               a.btn.btn-light.mx-2.p-2(href="#" role="button" data-toggle="modal" data-target="#modal-" + obj.ticket_id) write your comment
-              a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit/" + obj.keyname) Edit 
+              a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit-ticket/" + obj.keyname) Edit 
               button.btn.btn-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
               div.dropdown-menu
                 a.dropdown-item.deleteOne(data-with-media='false',data-keyname= obj.keyname,href="#") Delete

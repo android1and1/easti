@@ -366,7 +366,6 @@ app.all '/admin/create-new-ticket',(req,res)->
       options = ['visits','0','urge','0','resolved','false']
       for k,v of fields
         options = options.concat [k,v] 
-      #  fs.unlinkSync files.media.path
       if files.media.size is 0 
         fs.unlinkSync files.media.path
       if files.media.size isnt 0 
@@ -387,14 +386,47 @@ app.all '/admin/create-new-ticket',(req,res)->
             # successfully
             return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
 
-app.all '/admin/edit/:id',(req,res)->
-  id = req.params.id
-  if req.method is 'POST'
-    res.send 'post for ' + id
-  else if req.method is 'GET'
-    res.send 'get for ' + id 
-  else
-    res.render 'nosense'
+app.all '/admin/edit-ticket/:keyname',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/edit-ticket/' + req.params.keyname
+    return res.redirect 303,'/admin/login'
+  keyname = req.params.keyname
+  if req.method is 'GET'
+    # because it first from a inner-click,so not worry about if key exists.
+    item = await hgetallAsync keyname
+    res.render 'admin-edit-ticket-form',{keyname:keyname,title:'admin edit ticket',item:item}
+  else if req.method is 'POST'
+    formid = new formidable.IncomingForm
+    formid.uploadDir = TICKET_MEDIA_ROOT
+    formid.keepExtensions = true
+    formid.maxFileSize = 20 * 1024 * 1024
+    formid.on 'error',(formid_err)->
+      res.json formid_err
+    formid.parse req,(formid_err,fields,files)->
+      if formid_err
+        return res.json formid_err
+      options = []
+      for k,v of fields
+        options = options.concat [k,v] 
+      if files.media.size is 0 
+        fs.unlinkSync files.media.path
+      if files.media.size isnt 0 
+        media_url = files.media.path
+        # for img or other media "src" attribute,the path is relative STATIC-ROOT.
+        media_url = '/tickets/' + media_url.replace /.*\/(.+)$/,"$1" 
+        options = options.concat  ['media',media_url,'media_type',files.media.type]
+      # update this ticket
+      redis.hmset keyname,options,(err,reply)->
+        if err
+          return res.json err
+        else 
+          console.log ' x x'.repeat 20
+          console.dir fields
+          console.log ' x x'.repeat 20
+          return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
+
+  else 
+    res.send 'No Clear.'
 
 # in fact,it is 'update-ticket',the query from route /admin/ticket-detail/:id
 app.post '/admin/create-new-comment',(req,res)->

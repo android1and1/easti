@@ -590,8 +590,6 @@
           v = fields[k];
           options = options.concat([k, v]);
         }
-        
-        //  fs.unlinkSync files.media.path
         if (files.media.size === 0) {
           fs.unlinkSync(files.media.path);
         }
@@ -626,15 +624,65 @@
     }
   });
 
-  app.all('/admin/edit/:id', function(req, res) {
-    var id;
-    id = req.params.id;
-    if (req.method === 'POST') {
-      return res.send('post for ' + id);
-    } else if (req.method === 'GET') {
-      return res.send('get for ' + id);
+  app.all('/admin/edit-ticket/:keyname', async function(req, res) {
+    var formid, item, keyname, ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/edit-ticket/' + req.params.keyname;
+      return res.redirect(303, '/admin/login');
+    }
+    keyname = req.params.keyname;
+    if (req.method === 'GET') {
+      // because it first from a inner-click,so not worry about if key exists.
+      item = (await hgetallAsync(keyname));
+      return res.render('admin-edit-ticket-form', {
+        keyname: keyname,
+        title: 'admin edit ticket',
+        item: item
+      });
+    } else if (req.method === 'POST') {
+      formid = new formidable.IncomingForm;
+      formid.uploadDir = TICKET_MEDIA_ROOT;
+      formid.keepExtensions = true;
+      formid.maxFileSize = 20 * 1024 * 1024;
+      formid.on('error', function(formid_err) {
+        return res.json(formid_err);
+      });
+      return formid.parse(req, function(formid_err, fields, files) {
+        var k, media_url, options, v;
+        if (formid_err) {
+          return res.json(formid_err);
+        }
+        options = [];
+        for (k in fields) {
+          v = fields[k];
+          options = options.concat([k, v]);
+        }
+        if (files.media.size === 0) {
+          fs.unlinkSync(files.media.path);
+        }
+        if (files.media.size !== 0) {
+          media_url = files.media.path;
+          // for img or other media "src" attribute,the path is relative STATIC-ROOT.
+          media_url = '/tickets/' + media_url.replace(/.*\/(.+)$/, "$1");
+          options = options.concat(['media', media_url, 'media_type', files.media.type]);
+        }
+        // update this ticket
+        return redis.hmset(keyname, options, function(err, reply) {
+          if (err) {
+            return res.json(err);
+          } else {
+            console.log(' x x'.repeat(20));
+            console.dir(fields);
+            console.log(' x x'.repeat(20));
+            return res.render('admin-save-ticket-success.pug', {
+              reply: reply,
+              title: 'Stored Success'
+            });
+          }
+        });
+      });
     } else {
-      return res.render('nosense');
+      return res.send('No Clear.');
     }
   });
 

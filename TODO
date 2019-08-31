@@ -882,3 +882,9 @@ Wed Aug 21 18:39:55 CST 2019
     end = Math.min (start + 10),retrieved.length 
     records = retrieved[start...end]
     res.render 'admin-category-ticket',{records:records,title:'..'}
+
+Inch13Early2015Air
+2019年 8月31日 星期六 17时51分11秒 CST
+  edit(update) route,when client changes category of one item,in redis database,key name changes too.
+  at route - /admin/edit-ticket/:keyname,
+  logics is: copy old key's attributes and its value,then del this old key,then create new key TICKET_PREFIX:hash:<new category>:idNumber.
