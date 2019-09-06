@@ -6,11 +6,6 @@ block pagecss
     body {
       color:#1a2a3a;
     }
-    .preview {
-      margin:2rem;
-      padding:2rem;
-      border:2px solid purple;
-    }
 block content
   nav.navbar.navbar-expand-lg.navbar-light.bg-light.navbar-fixed-top
     a(type="button" class="navbar-btn btn btn-default" role="button" href="/") 
@@ -50,12 +45,16 @@ block content
       label(for="onemedia") 点击这里重新选择媒体（可选的）
       input(class="d-none" type="file" name="media" id="onemedia")
       figure#figure.figure
-        img.figure-img.w-50.img-fluid.rounded(src=item.media alt="media photo")
+        if item.media 
+          img.figure-img.w-50.img-fluid.rounded(src=item.media alt="media photo")
+        else
+          img.figure-img.w-50.img-fluid.rounded(src='/images/box-default.svg' alt='no photo')
+    
         figcation.figure-cation.ml-4 original 
        
     .form-group
       input.d-none(name="update_time" value= Date.now())
-      input.d-none(name="visits" value=item.visits + 1)
+      input.d-none(name="visits" value=parseInt(item.visits) + 1)
       input.d-none(name="original_uri" value=item.media)
-      input.d-none(name="admin_alias" value=alias)
+      input.d-none(name="admin_alias" value= alias)
       button(type="submit" class="btn btn-dark btn-lg") Update

@@ -1,4 +1,4 @@
-# first of first check if 'redis-server' is running.
+# firssts of first check if 'redis-server' is running.
 {spawn} = require 'child_process'
 # this for redis promisify(client.get),the way inpirit from npm-redis.
 {promisify} = require 'util'
@@ -396,6 +396,8 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
     item = await hgetallAsync keyname
     res.render 'admin-edit-ticket-form',{keyname:keyname,title:'admin edit ticket',item:item}
   else if req.method is 'POST'
+    item = await hgetallAsync keyname
+    options = item # todo.
     formid = new formidable.IncomingForm
     formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
@@ -405,25 +407,36 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
     formid.parse req,(formid_err,fields,files)->
       if formid_err
         return res.json formid_err
-      options = []
       for k,v of fields
-        options = options.concat [k,v] 
+        if k isnt 'original_uri' 
+          options[k] = v 
       if files.media.size is 0 
-        fs.unlinkSync files.media.path
+        bool = fs.existsSync files.media.path
+        if bool
+          fs.unlinkSync files.media.path
+        else
+          console.log 'files.media.path illegel.'
       if files.media.size isnt 0 
         media_url = files.media.path
-        # for img or other media "src" attribute,the path is relative STATIC-ROOT.
+        realpath = path.join(STATIC_ROOT,'tickets',fields.original_uri.replace(/.*\/(.+)$/,"$1"))
+        if fields.original_uri
+          fs.unlinkSync(path.join(STATIC_ROOT,'tickets',fields.original_uri.replace(/.*\/(.+)$/,"$1")))
+        else
+          console.log 'old path is not exists,maybe destroy already.'
         media_url = '/tickets/' + media_url.replace /.*\/(.+)$/,"$1" 
-        options = options.concat  ['media',media_url,'media_type',files.media.type]
+        options['media'] = media_url
+        options['media_type'] = files.media.type
+      # 检查category是否变了
+      if not (new RegExp(fields.category)).test keyname
+        await delAsync keyname
+        keyname = keyname.replace /hash:(.+)(:.+)$/,'hash:' + fields.category + '$2' 
+        
       # update this ticket
       redis.hmset keyname,options,(err,reply)->
         if err
           return res.json err
         else 
-          console.log ' x x'.repeat 20
-          console.dir fields
-          console.log ' x x'.repeat 20
-          return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
+          return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Updated!'}
 
   else 
     res.send 'No Clear.'
@@ -547,6 +560,9 @@ app.get '/admin/newest-ticket',(req,res)->
       records = []
       for item in list 
         record =  await hgetallAsync item
+        console.log ' x x'.repeat 11
+        console.dir record
+        console.log ' x x'.repeat 11
         bool = await existsAsync record.reference_comments
         if bool 
           comments = await lrangeAsync record.reference_comments,0,-1
