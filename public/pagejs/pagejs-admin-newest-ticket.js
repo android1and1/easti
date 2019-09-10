@@ -3,6 +3,7 @@
   $(function() {
     // 2019-06-27 于“水墨清华”别墅区设立 
     // retry at 2019-07-27/.../2019-08-31
+    // add func -- id-details (click h4.display-4(title))
     $('.deleteOne,.deleteOneWithMedia').on('click', function(evt) {
       var bool, id;
       id = $(this).data('keyname');

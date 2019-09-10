@@ -513,7 +513,22 @@ app.get '/admin/del-all-tickets',(req,res)->
         await delAsync item
       # at last ,report to client.
       res.render 'admin-del-all-tickets'
-
+app.get '/admin/get-ticket-by-id/:id',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/del-all-tickets'
+    return res.redirect 303,'/admin/login'
+  ticket_id = req.params.id
+  redis.keys TICKET_PREFIX + ':hash:*' + ticket_id,(err,list)->
+    if err
+      res.json {status:'Error Occurs While Retrieving This Id.'}
+    else
+      if list.length is 0
+        res.json {status:'This Ticket Id No Found'}
+      else
+        item = await hgetallAsync list[0]
+        item.comments =  await lrangeAsync item.reference_comments,0,-1
+        res.render 'admin-ticket-detail',{item:item}
+   
 app.post '/admin/ticket-details',(req,res)->
   ticket_id = req.body.ticket_id
   redis.keys TICKET_PREFIX + ':hash:*' + ticket_id,(err,list)->
@@ -560,9 +575,6 @@ app.get '/admin/newest-ticket',(req,res)->
       records = []
       for item in list 
         record =  await hgetallAsync item
-        console.log ' x x'.repeat 11
-        console.dir record
-        console.log ' x x'.repeat 11
         bool = await existsAsync record.reference_comments
         if bool 
           comments = await lrangeAsync record.reference_comments,0,-1

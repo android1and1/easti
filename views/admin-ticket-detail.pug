@@ -2,12 +2,33 @@ extend layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-ticket-detail.js")
 block content
+  //- edited at 2019-09-09
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+    a(class="navbar-brand" href="/") Go-To-First-Page 
+    button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
+      span(class="oi oi-menu")
+    div.collapse.navbar-collapse(id="supportedcontent")
+      form.form-inline(method="POST" action="/admin/ticket-details/" id="search_form")
+        .input-group
+          .input-group-prepend
+            span.input-group-text Input Ticket Id
+          input(type="text" name="ticket_id" class="form-control")
+      ul.navbar-nav.mr-auto
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/memo") Memo Tickets
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/tool") Tool Tickets
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/problem") Promblem Tickets
   if item
-    h4.display-4= '#' + item.ticket_id + ':' +  item.title 
-    h4.display-5= 'category:' + item.category
-    blockquote.blockquote.text-center
-      p= item.ticket
-      footer.blockquote-footer written at #{item.client_time}
+    .card.mt-8
+      img.mt-8.card-img-top(src= item.media alt="spec photo")
+      .card-body
+        h4.card-title= '#' + item.ticket_id + ':' +  item.title 
+        p= 'category:' + item.category
+        blockquote.blockquote.text-center
+          p= item.ticket
+          footer.blockquote-footer written at #{item.client_time}
     hr
     hr
     h4.display-5.mb-5  本条目共<span class="badge badge-success"> #{item.comments.length} </span> 条评论

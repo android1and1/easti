@@ -888,3 +888,10 @@ Inch13Early2015Air
   edit(update) route,when client changes category of one item,in redis database,key name changes too.
   at route - /admin/edit-ticket/:keyname,
   logics is: copy old key's attributes and its value,then del this old key,then create new key TICKET_PREFIX:hash:<new category>:idNumber.
+
+jp-stretch-pi-2
+Mon Sep  9 16:23:13 CST 2019
+  1,edit views/admin-newest-ticket.pug ticket has some '\r\n',split this content from string to array,then '<p>' + item + '</p>'
+  2,edit views/admin-store-success.pug ,let navigator consisten.
+  3,detail page's nav menu,not nessary fixed-top,as it opposite,has some hammer,like overcover article's header.
+  4,same func-buttons in detail page,as in newest-ticket page.

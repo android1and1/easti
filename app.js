@@ -803,6 +803,35 @@
     }
   });
 
+  app.get('/admin/get-ticket-by-id/:id', function(req, res) {
+    var ref, ref1, ticket_id;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/del-all-tickets';
+      return res.redirect(303, '/admin/login');
+    }
+    ticket_id = req.params.id;
+    return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, async function(err, list) {
+      var item;
+      if (err) {
+        return res.json({
+          status: 'Error Occurs While Retrieving This Id.'
+        });
+      } else {
+        if (list.length === 0) {
+          return res.json({
+            status: 'This Ticket Id No Found'
+          });
+        } else {
+          item = (await hgetallAsync(list[0]));
+          item.comments = (await lrangeAsync(item.reference_comments, 0, -1));
+          return res.render('admin-ticket-detail', {
+            item: item
+          });
+        }
+      }
+    });
+  });
+
   app.post('/admin/ticket-details', function(req, res) {
     var ticket_id;
     ticket_id = req.body.ticket_id;
@@ -877,9 +906,6 @@
         for (j = 0, len = list.length; j < len; j++) {
           item = list[j];
           record = (await hgetallAsync(item));
-          console.log(' x x'.repeat(11));
-          console.dir(record);
-          console.log(' x x'.repeat(11));
           bool = (await existsAsync(record.reference_comments));
           if (bool) {
             comments = (await lrangeAsync(record.reference_comments, 0, -1));

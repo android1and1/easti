@@ -46,14 +46,19 @@ block content
           default
             img(class="img-thumbnail img-fluid card-img-top" alt="place holder pic" src="/images/box-default.svg")
         .card-body
+          //-h4.text-center.text-secondary.card-title= '#' + obj.ticket_id + ':' + obj.title
           h4.text-center.text-secondary.card-title= '#' + obj.ticket_id + ':' + obj.title
             if obj.comments.length 
               a.badge.badge-success.ml-3(data-toggle="collapse" href="#comments-for-" + obj.ticket_id)= '有 ' + obj.comments.length  + ' 评论'
             else
               a.badge.badge-light.disabled.ml-3= '有 ' + obj.comments.length  + ' 评论'
           div.card-text
+            - var paragraphs = obj.ticket.split('\r\n') 
             blockquote
-              p= obj.ticket
+              each paragraph in paragraphs
+                p= paragraph 
+                p
+                  a(href="/admin/get-ticket-by-id/"+obj.ticket_id,class="d-inline-flex p-2" alt="to special id details") Details
               footer.blockquote-footer= obj.keyname
             div(class="collapse mb-4" id="comments-for-" + obj.ticket_id)
               - for(var i=0;i<obj.comments.length;i++){
