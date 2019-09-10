@@ -57,8 +57,8 @@ block content
             blockquote
               each paragraph in paragraphs
                 p= paragraph 
-                p
-                  a(href="/admin/get-ticket-by-id/"+obj.ticket_id,class="d-inline-flex p-2" alt="to special id details") Details
+              p
+                a(href="/admin/get-ticket-by-id/"+obj.ticket_id,class="d-inline-flex p-2" alt="to special id details") Details
               footer.blockquote-footer= obj.keyname
             div(class="collapse mb-4" id="comments-for-" + obj.ticket_id)
               - for(var i=0;i<obj.comments.length;i++){

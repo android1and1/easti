@@ -2,7 +2,7 @@ extend layouts/main
 block pagejs
   script(src="/pagejs/pagejs-admin-ticket-detail.js")
 block content
-  //- edited at 2019-09-09
+  //- edited at 2019-09-09,2019-09-10(add functional buttons)
   nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
     a(class="navbar-brand" href="/") Go-To-First-Page 
     button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
@@ -35,5 +35,31 @@ block content
     ul.list-group
       each comment in item.comments
         li.list-group-item!= comment 
+    hr/
+    .btn-group
+      div.modal(id="modal-" + item.ticket_id)
+        div.modal-dialog.modal-dialog-centered
+          div.modal-content
+            .modal-header
+              h4.modal-title  留下你的评论 
+              button(class="btn btn-light" data-dismiss="modal")
+                span.oi.oi-x
+            .modal-body
+              form(id=item.keyname,class="comment-form")
+                .form-group
+                  label(for= "input-" + item.ticket_id + "-comment") 说点什么 
+                  textarea.form-control(name="comment",id="input-" + item.ticket_id + "-comment",rows="8") 
+                .form-group
+                  button(type="submit" class="btn btn-secondary") 写好了，提交！ 
+     
+      a.btn.btn-light.mx-2.p-2(href="#" role="button" data-toggle="modal" data-target="#modal-" + item.ticket_id) write your comment
+      a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit-ticket/" + item.keyname) Edit 
+      button.btn.btn-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
+      div.dropdown-menu
+        a.dropdown-item.deleteOne(data-with-media='false',data-keyname= item.keyname,href="#") Delete
+        - if(!item.media)
+          a.disabled.dropdown-item.deleteOneWithMedia(data-with-media='true',data-keyname= item.keyname,href="#") Delete With Its Media File
+        - else
+          a.dropdown-item.deleteOneWithMedia(data-with-media='true',data-keyname= item.keyname,href="#") Delete With Its Media File
   else
     p no clear

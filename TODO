@@ -895,3 +895,8 @@ Mon Sep  9 16:23:13 CST 2019
   2,edit views/admin-store-success.pug ,let navigator consisten.
   3,detail page's nav menu,not nessary fixed-top,as it opposite,has some hammer,like overcover article's header.
   4,same func-buttons in detail page,as in newest-ticket page.
+
+Inch13Early2015Air
+2019年 9月10日 星期二 10时37分16秒 CST
+  details too many,in fact,after for loop,there is only one.
+  (i'm only one of me.)

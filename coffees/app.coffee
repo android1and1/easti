@@ -527,6 +527,8 @@ app.get '/admin/get-ticket-by-id/:id',(req,res)->
       else
         item = await hgetallAsync list[0]
         item.comments =  await lrangeAsync item.reference_comments,0,-1
+        # add for template - 'views/admin-ticket-detail.pug'(20190910 at hanjie he dao)
+        item.keyname = list[0] 
         res.render 'admin-ticket-detail',{item:item}
    
 app.post '/admin/ticket-details',(req,res)->
