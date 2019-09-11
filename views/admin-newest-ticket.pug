@@ -53,10 +53,11 @@ block content
             else
               a.badge.badge-light.disabled.ml-3= '有 ' + obj.comments.length  + ' 评论'
           div.card-text
-            - var paragraphs = obj.ticket.split('\r\n') 
+            - var paragraph = obj.ticket.split('\r\n')[0] 
             blockquote
-              each paragraph in paragraphs
-                p= paragraph 
+              //-each paragraph in paragraphs
+              //-  p= paragraph 
+              p= paragraph 
               p
                 a(href="/admin/get-ticket-by-id/"+obj.ticket_id,class="d-inline-flex p-2" alt="to special id details") Details
               footer.blockquote-footer= obj.keyname

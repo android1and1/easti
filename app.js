@@ -705,9 +705,15 @@
 
   // in fact,it is 'update-ticket',the query from route /admin/ticket-detail/:id
   app.post('/admin/create-new-comment', function(req, res) {
-    var comment, comment_str, keyname;
+    var comment, comment_str, j, keyname, len, line, lines, paras;
     ({keyname, comment} = req.body);
-    comment_str = ['<blockquote class="blockquote text-center"><p>', comment, '</p><footer class="blockquote-footer"> <cite>发表于：</cite>', new Date(), '<button type="button" class="ml-2 btn btn-light" data-toggle="popover" data-placement="bottom" data-content="', req.header("user-agent"), '" title="browser infomation"> browser Info </button></footer></blockquote>'].join('');
+    lines = comment.replace(/\r\n/g, '\n').split('\n');
+    paras = '';
+    for (j = 0, len = lines.length; j < len; j++) {
+      line = lines[j];
+      paras += '<p>' + line + '</p>';
+    }
+    comment_str = ['<blockquote class="blockquote text-center"><p>', paras, '</p><footer class="blockquote-footer"> <cite>发表于：</cite>', new Date(), '<button type="button" class="ml-2 btn btn-light" data-toggle="popover" data-placement="bottom" data-content="', req.header("user-agent"), '" title="browser infomation"> browser Info </button></footer></blockquote>'].join('');
     return redis.hget(keyname, 'reference_comments', function(err1, listkey) {
       if (err1) {
         return res.json({

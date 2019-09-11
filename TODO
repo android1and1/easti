@@ -900,3 +900,9 @@ Inch13Early2015Air
 2019年 9月10日 星期二 10时37分16秒 CST
   details too many,in fact,after for loop,there is only one.
   (i'm only one of me.)
+
+jp-stretch-pi-2
+Wed Sep 11 11:46:24 CST 2019
+  1) comments \r\n need changed to <p></p>
+  2) in detail page,no need top solid nav again. resolved above first..
+  3) in newest-ticket page,shorten the ticket words to 100chars,then follow a button - 'details'

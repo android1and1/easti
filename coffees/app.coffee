@@ -444,9 +444,13 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
 # in fact,it is 'update-ticket',the query from route /admin/ticket-detail/:id
 app.post '/admin/create-new-comment',(req,res)->
   {keyname,comment} = req.body
+  lines = comment.replace(/\r\n/g,'\n').split('\n')
+  paras = ''
+  for line in lines 
+    paras += '<p>' + line + '</p>' 
   comment_str = [
       '<blockquote class="blockquote text-center"><p>'
-      comment
+      paras 
       '</p><footer class="blockquote-footer"> <cite>发表于：</cite>'
       new Date()
       '<button type="button" class="ml-2 btn btn-light" data-toggle="popover" data-placement="bottom" data-content="'

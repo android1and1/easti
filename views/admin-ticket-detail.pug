@@ -3,7 +3,7 @@ block pagejs
   script(src="/pagejs/pagejs-admin-ticket-detail.js")
 block content
   //- edited at 2019-09-09,2019-09-10(add functional buttons)
-  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
     a(class="navbar-brand" href="/") Go-To-First-Page 
     button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
       span(class="oi oi-menu")
@@ -26,8 +26,10 @@ block content
       .card-body
         h4.card-title= '#' + item.ticket_id + ':' +  item.title 
         p= 'category:' + item.category
-        blockquote.blockquote.text-center
-          p= item.ticket
+        blockquote.blockquote
+          - var paragraphs = item.ticket.replace(/\r\n/g,'\n').split('\n');
+          each paragraph in paragraphs
+            p= paragraph 
           footer.blockquote-footer written at #{item.client_time}
     hr
     hr
