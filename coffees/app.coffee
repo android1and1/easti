@@ -533,7 +533,12 @@ app.get '/admin/get-ticket-by-id/:id',(req,res)->
         item.comments =  await lrangeAsync item.reference_comments,0,-1
         # add for template - 'views/admin-ticket-detail.pug'(20190910 at hanjie he dao)
         item.keyname = list[0] 
-        res.render 'admin-ticket-detail',{item:item}
+        # add 1 to 'visits'
+        redis.hincrby list[0],'visits',1,(err,num)->
+          if err is null
+            res.render 'admin-ticket-detail',{item:item}
+          else
+            res.json 'Error Occurs During DB Manipulating.'
    
 app.post '/admin/ticket-details',(req,res)->
   ticket_id = req.body.ticket_id
@@ -577,28 +582,12 @@ app.get '/admin/newest-ticket',(req,res)->
     req.session.referrer = '/admin/newest-ticket'
     return res.redirect 303,'/admin/login'
   else
-    redis.keys TICKET_PREFIX + ':hash:*',(err,list)->
-      records = []
-      for item in list 
-        record =  await hgetallAsync item
-        bool = await existsAsync record.reference_comments
-        if bool 
-          comments = await lrangeAsync record.reference_comments,0,-1
-          # give new attribute 'comments'
-          record.comments = comments
-        else
-          record.comments = [] 
-
-        # keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
-        record.keyname = item
-        records.push record
-      # sorting before output to client.
-      records.sort (a,b)->
-        b.ticket_id - a.ticket_id
-      # retrieve top 10 items.
-      if records.length > 10
-        records = records[0...10]
-      return res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',records:records}
+    keypattern =  TICKET_PREFIX + ':hash:*'
+    records = await _retreves(keypattern,((a,b)->b.ticket_id - a.ticket_id))
+    # retrieve top 10 items.
+    if records.length > 10
+      records = records[0...10]
+    return res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',records:records}
   
 app.post '/admin/enable-user',(req,res)->
   id = req.body.id
@@ -991,7 +980,23 @@ complement_save = (option,fieldobj)->
     else
       response = {code:-1,reason:'unknow status.'}
   response
-
-# help function - 'ensure'
-ensure = (req,who)->
-  req.session.auth
+# help function - 'retreves',for retreves ticket by its first argument.
+_retreves = (keyname,sortby)->
+  redis.keys keyname,(err,list)->
+    records = []
+    for item in list 
+      record =  await hgetallAsync item
+      bool = await existsAsync record.reference_comments
+      if bool 
+        comments = await lrangeAsync record.reference_comments,0,-1
+        # give new attribute 'comments'
+        record.comments = comments
+      else
+        record.comments = [] 
+      # keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
+      record.keyname = item
+      records.push record
+    #sorting before output to client.
+    records.sort sortby
+    console.log 'xx  has  ' + records.length + ' items.'
+    return records

@@ -15,17 +15,20 @@ block content
           input(type="text" name="ticket_id" class="form-control")
       ul.navbar-nav.mr-auto
         li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/memo") Memo Tickets
+          a.nav-link(href="/admin/newest-ticket") top 10 
         li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/tool") Tool Tickets
+          a.nav-link(href="/admin/category-of-tickets/memo") Memo 
         li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/problem") Promblem Tickets
+          a.nav-link(href="/admin/category-of-tickets/tool") Tool
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/problem") Promblem 
   if item
     .card.mt-8
       img.mt-8.card-img-top(src= item.media alt="spec photo")
       .card-body
         h4.card-title= '#' + item.ticket_id + ':' +  item.title 
         p= 'category:' + item.category
+        p= 'visits:' + item.visits
         blockquote.blockquote
           - var paragraphs = item.ticket.replace(/\r\n/g,'\n').split('\n');
           each paragraph in paragraphs

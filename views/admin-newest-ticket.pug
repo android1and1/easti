@@ -60,7 +60,7 @@ block content
               p= paragraph 
               p
                 a(href="/admin/get-ticket-by-id/"+obj.ticket_id,class="d-inline-flex p-2" alt="to special id details") Details
-              footer.blockquote-footer= obj.keyname
+              footer.blockquote-footer= obj.keyname + ' (访问次数：' + obj.visits + ')'
             div(class="collapse mb-4" id="comments-for-" + obj.ticket_id)
               - for(var i=0;i<obj.comments.length;i++){
                 ul.list-group
