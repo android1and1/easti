@@ -559,23 +559,11 @@ app.get '/admin/category-of-tickets/:category',(req,res)->
     return res.redirect 303,'/admin/login'
   else
     category = req.params.category
-    redis.keys TICKET_PREFIX + ':hash:' + category + '*',(err,list)->
-      records = []
-      for item in list 
-        record =  await hgetallAsync item
-        bool = await existsAsync record.reference_comments
-        if bool 
-          comments = await lrangeAsync record.reference_comments,0,-1
-          record.comments = comments
-        else
-          record.comments = [] 
-        record.keyname = item
-        records.push record
-      records.sort (a,b)->
-        b.ticket_id - a.ticket_id
-      if records.length > 10
-        records = records[0...10]
-      res.render 'admin-category-base-tickets',{records:records,title:'category-base-tickets'}
+    keyname =  TICKET_PREFIX + ':hash:' + category + '*'
+    records = await _retrieves keyname,(a,b)->b.ticket_id - a.ticket_id
+    if records.length > 10
+      records = records[0...10]
+    res.render 'admin-category-base-tickets',{records:records,title:'category-base-tickets'}
 
 app.get '/admin/newest-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
@@ -583,7 +571,8 @@ app.get '/admin/newest-ticket',(req,res)->
     return res.redirect 303,'/admin/login'
   else
     keypattern =  TICKET_PREFIX + ':hash:*'
-    records = await _retreves(keypattern,((a,b)->b.ticket_id - a.ticket_id))
+    # at zhongnan hospital,fixed below await-func(inner help function - '_retrieves'
+    records = await _retrieves(keypattern,((a,b)->b.ticket_id - a.ticket_id))
     # retrieve top 10 items.
     if records.length > 10
       records = records[0...10]
@@ -981,22 +970,23 @@ complement_save = (option,fieldobj)->
       response = {code:-1,reason:'unknow status.'}
   response
 # help function - 'retreves',for retreves ticket by its first argument.
-_retreves = (keyname,sortby)->
-  redis.keys keyname,(err,list)->
-    records = []
-    for item in list 
-      record =  await hgetallAsync item
-      bool = await existsAsync record.reference_comments
-      if bool 
-        comments = await lrangeAsync record.reference_comments,0,-1
-        # give new attribute 'comments'
-        record.comments = comments
-      else
-        record.comments = [] 
-      # keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
-      record.keyname = item
-      records.push record
-    #sorting before output to client.
-    records.sort sortby
-    console.log 'xx  has  ' + records.length + ' items.'
-    return records
+_retrieves = (keyname,sortby)->
+  promise = new Promise (resolve,reject)-> 
+    redis.keys keyname,(err,list)->
+      records = []
+      for item in list 
+        record =  await hgetallAsync item
+        bool = await existsAsync record.reference_comments
+        if bool 
+          comments = await lrangeAsync record.reference_comments,0,-1
+          # give new attribute 'comments'
+          record.comments = comments
+        else
+          record.comments = [] 
+        # keyname 将用于$.ajax {url:'/admin/del-one-ticket?keyname=' + keyname....
+        record.keyname = item
+        records.push record
+      #sorting before output to client.
+      records.sort sortby
+      resolve records
+  return promise
