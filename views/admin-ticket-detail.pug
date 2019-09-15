@@ -4,7 +4,7 @@ block pagejs
 block content
   //- edited at 2019-09-09,2019-09-10(add functional buttons)
   nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-    a(class="navbar-brand" href="/") Go-To-First-Page 
+    a(class="navbar-brand" href="/admin/visits-base-tickets") 最常访问 
     button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
       span(class="oi oi-menu")
     div.collapse.navbar-collapse(id="supportedcontent")
@@ -15,7 +15,7 @@ block content
           input(type="text" name="ticket_id" class="form-control")
       ul.navbar-nav.mr-auto
         li.nav-item
-          a.nav-link(href="/admin/newest-ticket") top 10 
+          a.nav-link(href="/admin/newest-ticket")  最新(top10) 
         li.nav-item
           a.nav-link(href="/admin/category-of-tickets/memo") Memo 
         li.nav-item

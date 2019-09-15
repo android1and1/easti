@@ -536,7 +536,7 @@ app.get '/admin/get-ticket-by-id/:id',(req,res)->
         # add 1 to 'visits'
         redis.hincrby list[0],'visits',1,(err,num)->
           if err is null
-            res.render 'admin-ticket-detail',{item:item}
+            res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
           else
             res.json 'Error Occurs During DB Manipulating.'
    
@@ -549,9 +549,14 @@ app.post '/admin/ticket-details',(req,res)->
       if list.length is 0
         res.json {status:'This Ticket Id No Found'}
       else
-        item = await hgetallAsync list[0]
-        item.comments =  await lrangeAsync item.reference_comments,0,-1
-        res.render 'admin-ticket-detail',{item:item}
+        # add 1 to 'visits'
+        redis.hincrby list[0],'visits',1,(err,num)->
+          if err is null
+            item = await hgetallAsync list[0]
+            item.comments =  await lrangeAsync item.reference_comments,0,-1
+            res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
+          else
+            res.json 'Error Occurs During DB Manipulating.'
 
 app.get '/admin/category-of-tickets/:category',(req,res)->
   category = req.params.category

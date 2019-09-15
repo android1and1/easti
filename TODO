@@ -911,3 +911,9 @@ jp-stretch-pi-2
 Sun Sep 15 11:09:54 CST 2019
   1) category-base page.its views follow newest-ticket page.
   P556 app.get '/admin/category-of-tickets'
+
+cyrus-Latitude-E7470
+2019年 09月 15日 星期日 14:44:54 CST
+  after here,we will think about paging,like 'more..' button.
+  from server side ,dont need remember the 'last index',this task is due to client side.client page's trigger the 'more' button,will ajax query to server,with arguments which infer server offset =?
+  keyname all inference to hash object,redis.keys 'hash*',result is keys(a list), 

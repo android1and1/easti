@@ -836,8 +836,9 @@
           // add 1 to 'visits'
           return redis.hincrby(list[0], 'visits', 1, function(err, num) {
             if (err === null) {
-              return res.render('admin-ticket-detail', {
-                item: item
+              return res.render('admin-newest-ticket.pug', {
+                title: 'Detail Page #' + ticket_id,
+                records: [item]
               });
             } else {
               return res.json('Error Occurs During DB Manipulating.');
@@ -851,8 +852,7 @@
   app.post('/admin/ticket-details', function(req, res) {
     var ticket_id;
     ticket_id = req.body.ticket_id;
-    return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, async function(err, list) {
-      var item;
+    return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, function(err, list) {
       if (err) {
         return res.json({
           status: 'Error Occurs While Retrieving This Id.'
@@ -863,10 +863,19 @@
             status: 'This Ticket Id No Found'
           });
         } else {
-          item = (await hgetallAsync(list[0]));
-          item.comments = (await lrangeAsync(item.reference_comments, 0, -1));
-          return res.render('admin-ticket-detail', {
-            item: item
+          // add 1 to 'visits'
+          return redis.hincrby(list[0], 'visits', 1, async function(err, num) {
+            var item;
+            if (err === null) {
+              item = (await hgetallAsync(list[0]));
+              item.comments = (await lrangeAsync(item.reference_comments, 0, -1));
+              return res.render('admin-newest-ticket.pug', {
+                title: 'Detail Page #' + ticket_id,
+                records: [item]
+              });
+            } else {
+              return res.json('Error Occurs During DB Manipulating.');
+            }
           });
         }
       }
