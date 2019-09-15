@@ -875,11 +875,11 @@
 
   app.get('/admin/category-of-tickets/:category', async function(req, res) {
     var category, keyname, records, ref, ref1;
+    category = req.params.category;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
-      req.session.referrer = '/admin/newest-ticket';
+      req.session.referrer = '/admin/category-of-tickets/' + category;
       return res.redirect(303, '/admin/login');
     } else {
-      category = req.params.category;
       keyname = TICKET_PREFIX + ':hash:' + category + '*';
       records = (await _retrieves(keyname, function(a, b) {
         return b.ticket_id - a.ticket_id;
@@ -887,9 +887,29 @@
       if (records.length > 10) {
         records = records.slice(0, 10);
       }
-      return res.render('admin-category-base-tickets', {
+      return res.render('admin-newest-ticket.pug', {
         records: records,
-        title: 'category-base-tickets'
+        title: '分类列表:' + category
+      });
+    }
+  });
+
+  app.get('/admin/visits-base-tickets', async function(req, res) {
+    var keyname, records, ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/visits-base-tickets/';
+      return res.redirect(303, '/admin/login');
+    } else {
+      keyname = TICKET_PREFIX + ':hash:*';
+      records = (await _retrieves(keyname, function(a, b) {
+        return b.visits - a.visits;
+      }));
+      if (records.length > 10) {
+        records = records.slice(0, 10);
+      }
+      return res.render('admin-newest-ticket.pug', {
+        records: records,
+        title: 'top visits tickets'
       });
     }
   });

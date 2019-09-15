@@ -3,7 +3,7 @@ block pagejs
   script(src="/pagejs/pagejs-admin-newest-ticket.js")
 block content
   nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
-    a(class="navbar-brand" href="/") FirstPage
+    a(class="navbar-brand" href="/admin/visits-base-tickets") 最常访问 
     button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
       span(class="oi oi-menu")
     div.collapse.navbar-collapse(id="supportedcontent")
@@ -14,13 +14,15 @@ block content
           input(type="text" name="ticket_id" class="form-control")
       ul.navbar-nav.mr-auto
         li.nav-item
-          a.nav-link(href="/admin/login") login as other admin user 
+          a.nav-link(href="/admin/login") login-as-other-user 
         li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/memo") Memo Tickets
+          a.nav-link(href="/admin/create-new-ticket") create-new-ticket 
         li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/tool") Tool Tickets
+          a.nav-link(href="/admin/category-of-tickets/memo") Memo-Tickets
         li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/problem") Promblem Tickets
+          a.nav-link(href="/admin/category-of-tickets/tool") Tool-Tickets
+        li.nav-item
+          a.nav-link(href="/admin/category-of-tickets/problem") Promblem-Tickets
          
   //- content start from here.  
   if records.length === 0

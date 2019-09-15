@@ -906,3 +906,8 @@ Wed Sep 11 11:46:24 CST 2019
   1) comments \r\n need changed to <p></p>
   2) in detail page,no need top solid nav again. resolved above first..
   3) in newest-ticket page,shorten the ticket words to 100chars,then follow a button - 'details'
+
+jp-stretch-pi-2
+Sun Sep 15 11:09:54 CST 2019
+  1) category-base page.its views follow newest-ticket page.
+  P556 app.get '/admin/category-of-tickets'

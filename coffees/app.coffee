@@ -554,17 +554,27 @@ app.post '/admin/ticket-details',(req,res)->
         res.render 'admin-ticket-detail',{item:item}
 
 app.get '/admin/category-of-tickets/:category',(req,res)->
+  category = req.params.category
   if req.session?.auth?.role isnt 'admin'
-    req.session.referrer = '/admin/newest-ticket'
+    req.session.referrer = '/admin/category-of-tickets/' + category
     return res.redirect 303,'/admin/login'
   else
-    category = req.params.category
     keyname =  TICKET_PREFIX + ':hash:' + category + '*'
     records = await _retrieves keyname,(a,b)->b.ticket_id - a.ticket_id
     if records.length > 10
       records = records[0...10]
-    res.render 'admin-category-base-tickets',{records:records,title:'category-base-tickets'}
-
+    res.render 'admin-newest-ticket.pug',{records:records,title:'分类列表:'+category}
+app.get '/admin/visits-base-tickets',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/visits-base-tickets/'
+    return res.redirect 303,'/admin/login'
+  else
+    keyname =  TICKET_PREFIX + ':hash:*'
+    records = await _retrieves keyname,(a,b)->b.visits - a.visits
+    if records.length > 10
+      records = records[0...10]
+    res.render 'admin-newest-ticket.pug',{records:records,title:'top visits tickets'}
+  
 app.get '/admin/newest-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/newest-ticket'
