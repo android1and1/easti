@@ -868,6 +868,7 @@
             var item;
             if (err === null) {
               item = (await hgetallAsync(list[0]));
+              item.keyname = list[0];
               item.comments = (await lrangeAsync(item.reference_comments, 0, -1));
               return res.render('admin-newest-ticket.pug', {
                 title: 'Detail Page #' + ticket_id,

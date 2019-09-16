@@ -553,6 +553,7 @@ app.post '/admin/ticket-details',(req,res)->
         redis.hincrby list[0],'visits',1,(err,num)->
           if err is null
             item = await hgetallAsync list[0]
+            item.keyname = list[0]
             item.comments =  await lrangeAsync item.reference_comments,0,-1
             res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
           else
