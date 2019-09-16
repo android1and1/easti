@@ -673,8 +673,6 @@
           realpath = path.join(STATIC_ROOT, 'tickets', fields.original_uri.replace(/.*\/(.+)$/, "$1"));
           if (fields.original_uri) {
             fs.unlinkSync(path.join(STATIC_ROOT, 'tickets', fields.original_uri.replace(/.*\/(.+)$/, "$1")));
-          } else {
-            console.log('old path is not exists,maybe destroy already.');
           }
           media_url = '/tickets/' + media_url.replace(/.*\/(.+)$/, "$1");
           options['media'] = media_url;
@@ -836,9 +834,10 @@
           // add 1 to 'visits'
           return redis.hincrby(list[0], 'visits', 1, function(err, num) {
             if (err === null) {
-              return res.render('admin-newest-ticket.pug', {
-                title: 'Detail Page #' + ticket_id,
-                records: [item]
+              //res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
+              return res.render('admin-ticket-detail', {
+                title: '#' + item.ticket_id + ' Detail Page',
+                item: item
               });
             } else {
               return res.json('Error Occurs During DB Manipulating.');

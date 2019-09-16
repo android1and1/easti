@@ -421,8 +421,6 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
         realpath = path.join(STATIC_ROOT,'tickets',fields.original_uri.replace(/.*\/(.+)$/,"$1"))
         if fields.original_uri
           fs.unlinkSync(path.join(STATIC_ROOT,'tickets',fields.original_uri.replace(/.*\/(.+)$/,"$1")))
-        else
-          console.log 'old path is not exists,maybe destroy already.'
         media_url = '/tickets/' + media_url.replace /.*\/(.+)$/,"$1" 
         options['media'] = media_url
         options['media_type'] = files.media.type
@@ -536,7 +534,8 @@ app.get '/admin/get-ticket-by-id/:id',(req,res)->
         # add 1 to 'visits'
         redis.hincrby list[0],'visits',1,(err,num)->
           if err is null
-            res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
+            #res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
+            res.render 'admin-ticket-detail',{title:'#' + item.ticket_id + ' Detail Page',item:item}
           else
             res.json 'Error Occurs During DB Manipulating.'
    
