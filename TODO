@@ -551,7 +551,7 @@ Tue Apr  2 16:07:20 CST 2019
 
 hp505B
 Thu Apr  4 11:22:14 CST 2019
-  from here,go to really.need stacked ul elements.login page now not standlone,be mixed to First page.frist page content,maybe (should) be main ,hot app soul,it is daka.and at the bottom of this content block,i should give some interesting thing.like 'jie sheng',what english word it is?
+  from here,go to really.need stacked ul elements.login page now not standlone,be mixed to First page.frist page content,maybe (should) be main ,hot app soul,it is daka.and at the bottom of this content block,i should give some interesting thing.like '结绳',what english word it is?
   查过“有道”，叫“knotting".
 
 jp-stretch-pi-2
@@ -917,3 +917,21 @@ cyrus-Latitude-E7470
   after here,we will think about paging,like 'more..' button.
   from server side ,dont need remember the 'last index',this task is due to client side.client page's trigger the 'more' button,will ajax query to server,with arguments which infer server offset =?
   keyname all inference to hash object,redis.keys 'hash*',result is keys(a list), 
+
+
+
+Inch13Early2015Air
+2019年 9月15日 星期日 18时11分39秒 CST
+  paging,try1 ,let views appears a button named 'more+',click it will query to server "+10,the 20th" paging.
+
+Inch13Early2015Air
+2019年 9月16日 星期一 09时14分16秒 CST
+  分页技术牵涉到的东西有：
+  一，服务器上数据库接口的OFFSET实现；
+  二，客户端JS技术之分页导航；
+  三，缓存技术，可在服务端，如果判断总体SIZE不大的情况下，也可以在客户端；
+  四，数据库索引方案；
+  五，网页缓存哈希表。
+  如何来实 实践呢
+  听说NODEJS是单线程运行的，即是说可以在一次长连接中，共享服务器的全局变量，那么，是否能一次查询得到的列表(items)，贮存为一个数组变量，如果客户端想分次retrieve时，每次返给一个切片？
+  先把客户端的MORE做好吧。

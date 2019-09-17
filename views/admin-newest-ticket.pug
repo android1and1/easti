@@ -19,12 +19,15 @@ block content
           a.nav-link(href="/admin/login") login-as-other-user 
         li.nav-item
           a.nav-link(href="/admin/create-new-ticket") create-new-ticket 
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/memo") Memo-Tickets
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/tool") Tool-Tickets
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/problem") Promblem-Tickets
+        li.nav-item.dropdown
+          a(class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown") 分类浏览
+
+          div.dropdown-menu
+            a.dropdown-item(href="/admin/category-of-tickets/memo") Memo-Tickets
+            a.dropdown-item(href="/admin/category-of-tickets/tool") Tool-Tickets
+            a.dropdown-item(href="/admin/category-of-tickets/problem") Promblem-Tickets
+            .dropdown-divider
+            a.dropdown-item(href='/admin/full-tickets' alt='full tickets') Full Tickets
          
   //- content start from here.  
   if records.length === 0

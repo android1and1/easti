@@ -17,15 +17,29 @@ block content
       ul.navbar-nav.mr-auto
         li.nav-item
           a.nav-link(href="/admin/newest-ticket")  最新(top10) 
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/memo") Memo 
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/tool") Tool
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/problem") Promblem 
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#") 分类浏览
+          div.dropdown-menu
+            a.dropdown-item(href="/admin/category-of-tickets/memo") Memo 
+            a.dropdown-item(href="/admin/category-of-tickets/tool") Tool
+            a.dropdown-item(href="/admin/category-of-tickets/problem") Promblem 
+            .dropdown-divider
+            a.dropdown-item(href="/admin/full-tickets") Full Tickets
   if item
     .card.mt-8
-      img.mt-8.card-img-top(src= item.media alt="spec photo")
+      - type = item.media_type
+      case type
+        when 'image/jpeg'
+        when 'image/png'
+          img(class="img-fluid img-thumbnail card-img-top" alt="photograph" src=item.media)
+        when 'audio/mp3' 
+        when 'audio/mpeg' 
+        when 'audio/mpeg3'
+          .row
+            audio(class="d-flex w-75 p-2 mx-auto" controls="controls")
+              source(src= item.media,type= type)
+        default
+          img(class="img-thumbnail img-fluid card-img-top" alt="place holder pic" src="/images/box-default.svg")
       .card-body
         h4.card-title= '#' + item.ticket_id + ':' +  item.title 
         p= 'category:' + item.category

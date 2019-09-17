@@ -525,7 +525,7 @@ app.get '/admin/get-ticket-by-id/:id',(req,res)->
       res.json {status:'Error Occurs While Retrieving This Id.'}
     else
       if list.length is 0
-        res.json {status:'This Ticket Id No Found'}
+        res.render 'admin-ticket-no-found.pug',{status:'This Ticket Id No Found'}
       else
         item = await hgetallAsync list[0]
         item.comments =  await lrangeAsync item.reference_comments,0,-1
@@ -546,7 +546,7 @@ app.post '/admin/ticket-details',(req,res)->
       res.json {status:'Error Occurs While Retrieving This Id.'}
     else
       if list.length is 0
-        res.json {status:'This Ticket Id No Found'}
+        res.render 'admin-ticket-no-found.pug',{status:'This Ticket Id No Found'}
       else
         # add 1 to 'visits'
         redis.hincrby list[0],'visits',1,(err,num)->
@@ -557,6 +557,30 @@ app.post '/admin/ticket-details',(req,res)->
             res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
           else
             res.json 'Error Occurs During DB Manipulating.'
+
+app.all '/admin/full-tickets',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/full-tickets'
+    return res.redirect 303,'/admin/login'
+  if req.method is 'GET' 
+    redis.scan [0,'match','ticket:hash*','count','29'],(err,list)->
+      items = []
+      for key in list[1]
+        item = await hgetallAsync key 
+        items.push item
+      res.render 'admin-full-tickets.pug',{next:list[0],items:items,title:'Full Indexes'}
+  else if req.method is 'POST'
+    redis.scan [req.body.nextCursor,'match','ticket:hash*','count','29'],(err,list)->
+      if err
+        res.json 'in case IS POST AND SCAN OCCURS ERROR.'
+      else
+        items = []
+        for key in list[1]
+          item = await hgetallAsync key 
+          items.push item
+        res.json {items:items,next:list[0]}
+  else
+    res.json 'unknown.'
 
 app.get '/admin/category-of-tickets/:category',(req,res)->
   category = req.params.category

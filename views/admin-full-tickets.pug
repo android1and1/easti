@@ -1,0 +1,38 @@
+extends layouts/main
+block pagejs
+  script(src="/pagejs/pagejs-admin-full-tickets.js")
+block content
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+    a(class="navbar-brand" href="/admin/visits-base-tickets") 最常访问 
+    button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
+      span(class="oi oi-menu")
+    div.collapse.navbar-collapse(id="supportedcontent")
+      form.form-inline(method="POST" action="/admin/ticket-details/" id="search_form")
+        .input-group
+          .input-group-prepend
+            span.input-group-text Input Ticket Id
+          input(type="text" name="ticket_id" class="form-control")
+      ul.navbar-nav.mr-auto
+        li.nav-item
+          a.nav-link(href="/admin/newest-ticket") 最新(top10) 
+        li.nav-item
+          a.nav-link(href="/admin/login") login-as-other-user 
+        li.nav-item
+          a.nav-link(href="/admin/create-new-ticket") create-new-ticket 
+        li.nav-item.dropdown
+          a(class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown") 分类浏览
+
+          div.dropdown-menu
+            a.dropdown-item(href="/admin/category-of-tickets/memo") Memo-Tickets
+            a.dropdown-item(href="/admin/category-of-tickets/tool") Tool-Tickets
+            a.dropdown-item(href="/admin/category-of-tickets/problem") Promblem-Tickets
+            .dropdown-divider
+            a.dropdown-item(href='/admin/full-tickets' alt='full tickets') Full Tickets
+  h2.display-3= 'next cursor is:' + next 
+  each item in items 
+    ul
+      li= '#' + item.ticket_id
+      li!= 'title:<a href="/admin/get-ticket-by-id/' + item.ticket_id + '" alt="go to detail page">' +   item.title + '</a>'
+      li= 'visits:' + item.visits
+  a.cursor.btn.btn-primary(data-next=next,href='#',alt="more tickets") more+
+  div#json

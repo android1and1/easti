@@ -822,7 +822,7 @@
         });
       } else {
         if (list.length === 0) {
-          return res.json({
+          return res.render('admin-ticket-no-found.pug', {
             status: 'This Ticket Id No Found'
           });
         } else {
@@ -858,7 +858,7 @@
         });
       } else {
         if (list.length === 0) {
-          return res.json({
+          return res.render('admin-ticket-no-found.pug', {
             status: 'This Ticket Id No Found'
           });
         } else {
@@ -880,6 +880,52 @@
         }
       }
     });
+  });
+
+  app.all('/admin/full-tickets', function(req, res) {
+    var ref, ref1;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      req.session.referrer = '/admin/full-tickets';
+      return res.redirect(303, '/admin/login');
+    }
+    if (req.method === 'GET') {
+      return redis.scan([0, 'match', 'ticket:hash*', 'count', '29'], async function(err, list) {
+        var item, items, j, key, len, ref2;
+        items = [];
+        ref2 = list[1];
+        for (j = 0, len = ref2.length; j < len; j++) {
+          key = ref2[j];
+          item = (await hgetallAsync(key));
+          items.push(item);
+        }
+        return res.render('admin-full-tickets.pug', {
+          next: list[0],
+          items: items,
+          title: 'Full Indexes'
+        });
+      });
+    } else if (req.method === 'POST') {
+      return redis.scan([req.body.nextCursor, 'match', 'ticket:hash*', 'count', '29'], async function(err, list) {
+        var item, items, j, key, len, ref2;
+        if (err) {
+          return res.json('in case IS POST AND SCAN OCCURS ERROR.');
+        } else {
+          items = [];
+          ref2 = list[1];
+          for (j = 0, len = ref2.length; j < len; j++) {
+            key = ref2[j];
+            item = (await hgetallAsync(key));
+            items.push(item);
+          }
+          return res.json({
+            items: items,
+            next: list[0]
+          });
+        }
+      });
+    } else {
+      return res.json('unknown.');
+    }
   });
 
   app.get('/admin/category-of-tickets/:category', async function(req, res) {
