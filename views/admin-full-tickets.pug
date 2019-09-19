@@ -28,11 +28,14 @@ block content
             a.dropdown-item(href="/admin/category-of-tickets/problem") Promblem-Tickets
             .dropdown-divider
             a.dropdown-item(href='/admin/full-tickets' alt='full tickets') Full Tickets
-  h2.display-3= 'next cursor is:' + next 
-  each item in items 
-    ul
-      li= '#' + item.ticket_id
-      li!= 'title:<a href="/admin/get-ticket-by-id/' + item.ticket_id + '" alt="go to detail page">' +   item.title + '</a>'
-      li= 'visits:' + item.visits
-  a.cursor.btn.btn-primary(data-next=next,href='#',alt="more tickets") more+
-  div#json
+  h2.display-3 &nbsp;
+  div#wrapper
+    
+    h2.display-3= 'next cursor is:' + next 
+    each item in items 
+      ul
+        li= '#' + item.ticket_id
+        li!= 'title:<a href="/admin/get-ticket-by-id/' + item.ticket_id + '" alt="go to detail page">' +   item.title + '</a>'
+        li= 'visits:' + item.visits
+    a.cursor.btn.btn-primary(data-next=next,href='#',alt="more tickets") More+
+    div#json

@@ -809,11 +809,11 @@
 
   app.get('/admin/get-ticket-by-id/:id', function(req, res) {
     var ref, ref1, ticket_id;
+    ticket_id = req.params.id;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
-      req.session.referrer = '/admin/del-all-tickets';
+      req.session.referrer = '/admin/get-ticket-by-id/' + ticket_id;
       return res.redirect(303, '/admin/login');
     }
-    ticket_id = req.params.id;
     return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, async function(err, list) {
       var item;
       if (err) {

@@ -516,10 +516,10 @@ app.get '/admin/del-all-tickets',(req,res)->
       # at last ,report to client.
       res.render 'admin-del-all-tickets'
 app.get '/admin/get-ticket-by-id/:id',(req,res)->
-  if req.session?.auth?.role isnt 'admin'
-    req.session.referrer = '/admin/del-all-tickets'
-    return res.redirect 303,'/admin/login'
   ticket_id = req.params.id
+  if req.session?.auth?.role isnt 'admin'
+    req.session.referrer = '/admin/get-ticket-by-id/' + ticket_id
+    return res.redirect 303,'/admin/login'
   redis.keys TICKET_PREFIX + ':hash:*' + ticket_id,(err,list)->
     if err
       res.json {status:'Error Occurs While Retrieving This Id.'}

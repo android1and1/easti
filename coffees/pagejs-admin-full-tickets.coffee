@@ -3,9 +3,9 @@ $ ->
   # filename(pagejs) - public/pagejs-admin-full-tickets.js
   # template - views/admin-full-tickets.pug
   # route - '/admin/admin-full-tickets' 
-  $('.cursor').on 'click',(e)->
-    # offen,treat 'e' as '@',make many mistakes.
-    next = $(@).data('next')
+  $('#wrapper').on 'click','.cursor',(e)->
+    $this = $ @
+    next = $this.data('next')
     e.preventDefault()
     e.stopPropagation()
     $.ajax {
@@ -15,8 +15,8 @@ $ ->
         data:{'nextCursor':next}
     }   
     .done (json)->
-      #alert JSON.stringify(json)
       _display $('#json'),json
+      $this.addClass 'disabled'
     .fail (one,two,three)->
       alert three + ' reason: ' + one.message
 
@@ -31,5 +31,4 @@ $ ->
       $ul.append '<li>visits:' + d.visits + '</li>' 
       box.append $ul 
     if next isnt '0'
-      box.append '<a role="button" class="cursor btn btn-primary" data-next="'+ next + '" > More+ </button>'
-    
+      box.append '<a role="button" class="cursor btn btn-primary" data-next="'+ next + '" > More+ </a>'

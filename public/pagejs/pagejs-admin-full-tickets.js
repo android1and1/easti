@@ -6,10 +6,10 @@
     // filename(pagejs) - public/pagejs-admin-full-tickets.js
     // template - views/admin-full-tickets.pug
     // route - '/admin/admin-full-tickets' 
-    $('.cursor').on('click', function(e) {
-      var next;
-      // offen,treat 'e' as '@',make many mistakes.
-      next = $(this).data('next');
+    $('#wrapper').on('click', '.cursor', function(e) {
+      var $this, next;
+      $this = $(this);
+      next = $this.data('next');
       e.preventDefault();
       e.stopPropagation();
       return $.ajax({
@@ -20,8 +20,8 @@
           'nextCursor': next
         }
       }).done(function(json) {
-        //alert JSON.stringify(json)
-        return _display($('#json'), json);
+        _display($('#json'), json);
+        return $this.addClass('disabled');
       }).fail(function(one, two, three) {
         return alert(three + ' reason: ' + one.message);
       });
@@ -41,7 +41,7 @@
         box.append($ul);
       }
       if (next !== '0') {
-        return box.append('<a role="button" class="cursor btn btn-primary" data-next="' + next + '" > More+ </button>');
+        return box.append('<a role="button" class="cursor btn btn-primary" data-next="' + next + '" > More+ </a>');
       }
     };
   });
