@@ -554,7 +554,8 @@ app.post '/admin/ticket-details',(req,res)->
             item = await hgetallAsync list[0]
             item.keyname = list[0]
             item.comments =  await lrangeAsync item.reference_comments,0,-1
-            res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
+            #res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
+            res.redirect 302,'/admin/get-ticket-by-id/' + ticket_id
           else
             res.json 'Error Occurs During DB Manipulating.'
 
