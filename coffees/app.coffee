@@ -542,7 +542,7 @@ app.get '/admin/get-ticket-by-id/:id',(req,res)->
    
 app.post '/admin/ticket-details',(req,res)->
   ticket_id = req.body.ticket_id
-  redis.keys TICKET_PREFIX + ':hash:*' + ticket_id,(err,list)->
+  redis.keys TICKET_PREFIX + ':hash:*:' + ticket_id,(err,list)->
     if err
       res.json {status:'Error Occurs While Retrieving This Id.'}
     else

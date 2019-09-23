@@ -851,7 +851,7 @@
   app.post('/admin/ticket-details', function(req, res) {
     var ticket_id;
     ticket_id = req.body.ticket_id;
-    return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, function(err, list) {
+    return redis.keys(TICKET_PREFIX + ':hash:*:' + ticket_id, function(err, list) {
       if (err) {
         return res.json({
           status: 'Error Occurs While Retrieving This Id.'
