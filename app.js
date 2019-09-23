@@ -814,7 +814,7 @@
       req.session.referrer = '/admin/get-ticket-by-id/' + ticket_id;
       return res.redirect(303, '/admin/login');
     }
-    return redis.keys(TICKET_PREFIX + ':hash:*' + ticket_id, async function(err, list) {
+    return redis.keys(TICKET_PREFIX + ':hash:*:' + ticket_id, async function(err, list) {
       var item;
       if (err) {
         return res.json({

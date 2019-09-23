@@ -940,3 +940,10 @@ Inch13Early2015Air
 2019年 9月20日 星期五 14时39分44秒 CST
   头脑特别容易乱这个时刻，像相声里说的“合着你找我，我找他，他找你，啊！”。
   先复制一个标准的LISTING模板和处理监听事件的PAGEJS-LISTING
+
+Inch13Early2015Air
+2019年 9月23日 星期一 11时50分25秒 CST
+  found one bug.
+  in navigator's search form,after input number,server will search from redis db,response to client,but search via redis.keys function,so,'1' match xxx101,100,and 81...
+  return the first found,usually,it is not reliable.
+  let us fix this.
