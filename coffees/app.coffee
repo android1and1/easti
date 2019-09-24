@@ -38,6 +38,7 @@ DAKA_WILDCARD = 'DaKa*daily*'
 ACCOUNT_WILDCARD='DaKa*account*'
 
 redis = (require 'redis').createClient()
+
 setAsync = promisify redis.set
   .bind redis
 getAsync = promisify redis.get
@@ -80,6 +81,7 @@ lrangeAsync = (key,start,end)->
 
 redis.on 'error',(err)->
   console.log 'Heard that:',err
+
 redis.on 'connect',->
   Nohm.setClient @
   Nohm.setPrefix 'DaKa' # the main api name.
@@ -92,21 +94,33 @@ app = express()
 app.set 'view engine','pug'
 STATIC_ROOT = path.join __dirname,'public'
 app.use express.static STATIC_ROOT 
+
 # enable "req.body",like the old middware - "bodyParser"
 app.use express.urlencoded({extended:false})
+
 # session
 Session = require 'express-session'
 Store = (require 'connect-redis') Session
+
+# authenticate now
+redis_auth_pass = require './configs/redis/auth_pass.js'
+redis.auth redis_auth_pass,(err,reply)->
+  if err
+    console.error 'redis db authenticate failure.'
+    return process.exit -1 
+
+# start add all  middle-ware
 app.use Session {
-  cookie:
-    maxAge: 86400 * 1000  # one day. 
-    httpOnly:true
-    path:'/'  # 似乎太过宽泛，之后有机会会琢磨这个
-  secret: 'youkNoW.'
-  store: new Store
-  resave:false
-  saveUninitialized:true
+    cookie:
+      maxAge: 86400 * 1000  # one day. 
+      httpOnly:true
+      path:'/'  # 似乎太过宽泛，之后有机会会琢磨这个
+    secret: 'youkNoW.'
+    store: new Store {client:redis}
+    resave:false
+    saveUninitialized:true
   } 
+
 app.use (req,res,next)->
   res.locals.referrer = req.session.referrer
   delete req.session.referrer  # then,delete() really harmless

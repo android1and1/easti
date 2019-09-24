@@ -1,3 +1,4 @@
+auth_pass = require './configs/redis/auth_pass.js'
 module.exports = (grunt)->
   [
     'grunt-simple-mocha'
@@ -22,7 +23,7 @@ module.exports = (grunt)->
       killserver:
         cmd:'pgrep node | xargs kill -15'
       killredis:
-        cmd:'redis-cli shutdown nosave'
+        cmd:'redis-cli -a ' + auth_pass + ' shutdown nosave'
       runserver:
         cmd:'sleep 2 && node ./bin/www.js &'
   #grunt.registerTask 'default',['simplemocha','exec']
