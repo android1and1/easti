@@ -454,3 +454,24 @@ abey below steps:
 3 "cp ./node_modules/open-iconic/font/css/open-iconic-bootstrap.min.css public/bootstrap/open-iconic/css/"
 4 (in .html/.pug codes) <span class="oi oi-cloud-upload"></span>
 the icon will displays.
+
+############################
+ ticket schema(all fields)
+############################
+(sample)
+field:urge
+value 0
+field:"resolved" 
+value:false
+field:"title"
+value: chen op o kon gg 
+field:"category"
+value:tool
+field:"ticket"
+value: chao cuan fans minion how to record audio? 
+field:"client_time"
+value: Thu Jun 27 2019 07:58:19 GMT+0800 (CST)
+field:"admin_alias"
+value: "fool"
+field:"ticket_id"
+value: 2
