@@ -1,27 +1,5 @@
 extend layouts/main
 block content
-  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-    a(class="navbar-brand" href="/admin/visits-base-tickets") 最常访问 
-    button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#supportedcontent")
-      span(class="oi oi-menu")
-    div.collapse.navbar-collapse(id="supportedcontent")
-      form.form-inline(method="POST" action="/admin/ticket-details/" id="search_form")
-        .input-group
-          .input-group-prepend
-            span.input-group-text Input Ticket Id
-          input(type="text" name="ticket_id" class="form-control")
-      ul.navbar-nav.mr-auto
-        li.nav-item
-          a.nav-link(href="/admin/newest-ticket") 最新(TOP10) 
-        li.nav-item
-          a.nav-link(href="/admin/login") login-as-other-user 
-        li.nav-item
-          a.nav-link(href="/admin/create-new-ticket") create-new-ticket 
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/memo") Memo-Tickets
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/tool") Tool-Tickets
-        li.nav-item
-          a.nav-link(href="/admin/category-of-tickets/problem") Promblem-Tickets
-         
+  include widgets/tickets-common-navigator.pug
+  h1.display-3 &nbsp;
   h1.display-3 [#{reply}] Stored One Ticket.

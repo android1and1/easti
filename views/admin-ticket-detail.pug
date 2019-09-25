@@ -22,13 +22,13 @@ block content
           img(class="img-thumbnail img-fluid card-img-top" alt="place holder pic" src="/images/box-default.svg")
       .card-body
         h4.card-title= '#' + item.ticket_id + ':' +  item.title 
-        p= 'category:' + item.category
-        p= 'visits:' + item.visits
+        p(class="text-muted") <em>category:#{item.category}</em>
+        p(class="text-muted") <em>visits:#{item.visits}</em>
         blockquote.blockquote
           - var paragraphs = item.ticket.replace(/\r\n/g,'\n').split('\n');
           each paragraph in paragraphs
             p= paragraph 
-          footer.blockquote-footer written at #{item.client_time}
+          footer.blockquote-footer [#{item.admin_alias}] written at #{item.client_time}
     hr
     hr
     h4.display-5.mb-5  本条目共<span class="badge badge-success"> #{item.comments.length} </span> 条评论
