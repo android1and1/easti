@@ -23,7 +23,7 @@ module.exports = (grunt)->
       killserver:
         cmd:'pgrep node | xargs kill -15'
       killredis:
-        cmd:'redis-cli -a ' + auth_pass + ' shutdown nosave'
+        cmd:'redis-cli -a ' + auth_pass + ' shutdown nosave 2> /dev/null'
       runserver:
         cmd:'sleep 2 && node ./bin/www.js &'
   #grunt.registerTask 'default',['simplemocha','exec']

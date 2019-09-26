@@ -947,3 +947,7 @@ Inch13Early2015Air
   in navigator's search form,after input number,server will search from redis db,response to client,but search via redis.keys function,so,'1' match xxx101,100,and 81...
   return the first found,usually,it is not reliable.
   let us fix this.
+
+Inch13Early2015Air
+2019年 9月25日 星期三 11时20分44秒 CST
+  learn about child_process,spawn on 'data',on 'close'
