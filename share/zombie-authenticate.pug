@@ -1,0 +1,10 @@
+Zombie = require 'zombie'
+Zombie.localhost 'sample.com',3003  #这行现在才看明白,是说本地127.0.0.1(localhost)上运行服务器,端口是3003,访问者(浏览器)虚拟为sample.com
+browser = new Zombie
+browser.visit 'http://192.168.5.2:3003/admin/get-ticket-by-id/167',->
+  browser.fill '[name=alias]','fool',->
+    browser.fill '[name=password]','1234567',->
+      browser.assert.text 'form button[type=submit]','Authenticate Now' 
+      browser.pressButton 'button[type=submit]',->
+        #console.log browser.html(undefined)
+        browser.assert.text '.card-title',/#167:Zombiejs.+/
