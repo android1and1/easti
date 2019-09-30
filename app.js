@@ -1409,6 +1409,14 @@
     }
   });
 
+  app.post('/no-auth-upload', function(req, res) {
+    if (req.method === 'POST') {
+      return res.json(res.body.version);
+    } else {
+      return res.json('no good.');
+    }
+  });
+
   app.get('/no-staticify', function(req, res) {
     // listen radio(voa&rfa mandarin)
     // step1 ,retrieves each file from ./voices

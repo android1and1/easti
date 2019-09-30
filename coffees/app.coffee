@@ -866,6 +866,12 @@ app.post '/superuser/register-admin',(req,res)->
     res.json 'Saved.'
   catch error
     res.json  ins.errors 
+app.post '/no-auth-upload',(req,res)->
+  if req.method is 'POST'
+    res.json res.body.version
+  else
+    res.json 'no good.'
+
 app.get '/no-staticify',(req,res)->
   # listen radio(voa&rfa mandarin)
   # step1 ,retrieves each file from ./voices
