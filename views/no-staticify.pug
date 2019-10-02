@@ -1,4 +1,6 @@
 extend layouts/main.pug
+block pagejs
+  script(src="/pagejs/pagejs-remove-readed-audio.js")
 block content
   h3.display-2 #{title} 
   .container.w-100.m-0.p-0
@@ -25,7 +27,8 @@ block content
           .card-header  #{radio}
           .card-body 
             h4.card-title 世界标准时间（utc time）: #{audio_time}
-            audio(class="m-0 p-0 d-block w-100",preload="auto",controls="true")
+            audio(class="mb-4 p-0 d-block w-100",preload="auto",controls="true")
               source(type="audio/mpeg",src= item)
+            a(href="#" class="card-link" data-owner= item) Delete this audio
     else
       p empty items

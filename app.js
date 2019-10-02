@@ -1445,6 +1445,28 @@
     });
   });
 
+  app.delete('/remove-readed-audio', function(req, res) {
+    var bool, uri;
+    if (req.body.data) {
+      uri = path.join('public', req.body.data);
+      bool = fs.existsSync(uri);
+      if (bool) {
+        fs.unlinkSync(uri);
+        return res.json({
+          status: 'has deleted.'
+        });
+      } else {
+        return res.json({
+          status: 'no found'
+        });
+      }
+    } else {
+      return res.json({
+        status: 'not good'
+      });
+    }
+  });
+
   // during learn css3,svg..,use this route for convient.
   app.use('/staticify/:viewname', function(req, res) {
     return res.render('staticify/' + req.params.viewname, {

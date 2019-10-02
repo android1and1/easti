@@ -883,6 +883,18 @@ app.get '/no-staticify',(req,res)->
     else
       res.render 'no-staticify-failure',{title:'you-see-failure',error_reason:err.message}
 
+app.delete '/remove-readed-audio',(req,res)->
+  if req.body.data
+    uri = path.join 'public',req.body.data
+    bool = fs.existsSync uri
+    if bool
+      fs.unlinkSync uri
+      res.json {status:'has deleted.'}
+    else
+      res.json {status:'no found'}
+  else
+    res.json {status:'not good'}
+
 # during learn css3,svg..,use this route for convient.
 app.use '/staticify/:viewname',(req,res)->
   res.render 'staticify/' + req.params.viewname,{title:'it is staticify page'}
