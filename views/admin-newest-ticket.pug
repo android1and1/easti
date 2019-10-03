@@ -16,6 +16,8 @@ block content
         - type = obj.media_type
         case type
           when 'image/jpeg'
+          when 'image/gif'
+          when 'image/svg+xml'
           when 'image/png'
             img(class="img-fluid img-thumbnail card-img-top" alt="photograph" src=obj.media)
           when 'audio/mp3' 
