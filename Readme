@@ -467,6 +467,8 @@ field:"title"
 value: chen op o kon gg 
 field:"category"
 value:tool
+field:"visits"
+value:0
 field:"ticket"
 value: chao cuan fans minion how to record audio? 
 field:"client_time"
@@ -475,3 +477,8 @@ field:"admin_alias"
 value: "fool"
 field:"ticket_id"
 value: 2
+(optional)
+field:"media"
+value:"/ticket_root/url-to-media"
+field:"update-time"
+value:new Date()

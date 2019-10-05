@@ -589,10 +589,9 @@
       formid = new formidable.IncomingForm;
       formid.uploadDir = TICKET_MEDIA_ROOT;
       formid.keepExtensions = true;
-      // keep small size.if handle with video,rewrite below,let it bigger.
       formid.maxFileSize = 200 * 1024 * 1024; // update to 200M,for video
       formid.on('error', function(formid_err) {
-        return res.json(formid_err);
+        return console.error(formid_err.message);
       });
       return formid.parse(req, function(formid_err, fields, files) {
         var k, media_url, options, v;
@@ -623,7 +622,7 @@
           options = options.concat(['ticket_id', number, 'reference_comments', 'comments-for-' + number]);
           return redis.hmset(keyname, options, function(err, reply) {
             if (err) {
-              return res.json(err);
+              return res.json('occurs error,message:' + err.message);
             } else {
               
               // successfully
@@ -1415,15 +1414,10 @@
     formid = new formidable.IncomingForm;
     formid.uploadDir = TICKET_MEDIA_ROOT;
     formid.keepExtensions = true;
-    // keep small size.if handle with video,rewrite below,let it bigger.
-    formid.maxFileSize = 20 * 1024 * 1024;
-    if (req.method === 'POST') {
-      return formid.parse(req, function(err, fields, files) {
-        return res.json('choiced:' + fields.version);
-      });
-    } else {
-      return res.json('no good.');
-    }
+    formid.maxFileSize = 200 * 1024 * 1024;
+    return formid.parse(req, function(err, fields, files) {
+      return res.json(fields);
+    });
   });
 
   app.get('/no-staticify', function(req, res) {

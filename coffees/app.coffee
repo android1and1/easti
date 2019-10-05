@@ -370,10 +370,9 @@ app.all '/admin/create-new-ticket',(req,res)->
     formid = new formidable.IncomingForm
     formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
-    # keep small size.if handle with video,rewrite below,let it bigger.
     formid.maxFileSize = 200 * 1024 * 1024 # update to 200M,for video
     formid.on 'error',(formid_err)->
-      res.json formid_err
+      console.error formid_err.message
     formid.parse req,(formid_err,fields,files)->
       if formid_err
         return res.json formid_err
@@ -395,7 +394,7 @@ app.all '/admin/create-new-ticket',(req,res)->
         options = options.concat ['ticket_id',number,'reference_comments','comments-for-' + number]
         redis.hmset keyname,options,(err,reply)->
           if err
-            return res.json err
+            return res.json 'occurs error,message:' + err.message
           else 
             # successfully
             return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
@@ -871,14 +870,9 @@ app.post '/no-auth-upload',(req,res)->
   formid = new formidable.IncomingForm
   formid.uploadDir = TICKET_MEDIA_ROOT
   formid.keepExtensions = true
-  # keep small size.if handle with video,rewrite below,let it bigger.
-  formid.maxFileSize = 20 * 1024 * 1024
-  
-  if req.method is 'POST'
-    formid.parse req,(err,fields,files)->
-      res.json 'choiced:' + fields.version 
-  else
-    res.json 'no good.'
+  formid.maxFileSize = 200 * 1024 * 1024
+  formid.parse req,(err,fields,files)->
+    res.json fields 
 
 app.get '/no-staticify',(req,res)->
   # listen radio(voa&rfa mandarin)
