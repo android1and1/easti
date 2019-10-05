@@ -20,6 +20,10 @@ block content
           when 'image/svg+xml'
           when 'image/png'
             img(class="img-fluid img-thumbnail card-img-top" alt="photograph" src=obj.media)
+          when 'video/quicktime'
+          when 'video/mp4'
+            video(controls="controls" src= obj.media)
+              p Your Browser Dont Support Video Widget
           when 'audio/mp3' 
           when 'audio/mpeg' 
           when 'audio/mpeg3'

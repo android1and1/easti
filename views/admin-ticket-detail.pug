@@ -20,6 +20,10 @@ block content
           .row
             audio(class="d-flex w-75 p-2 mx-auto" controls="controls")
               source(src= item.media,type= type)
+        when 'video/mp4'
+        when 'video/quicktime'
+          video(controls="controls" src=item.media)
+            p Your Browser Dont Support Video Widget 
         default
           img(class="img-thumbnail img-fluid card-img-top" alt="place holder pic" src="/images/box-default.svg")
       .card-body
