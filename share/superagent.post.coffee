@@ -1,9 +1,12 @@
+# post one article 
+# 2019-9-30
 request = require 'superagent'
-request.post 'http://127.0.0.1:3003/admin/create-new-ticket'
-  .type 'form'
-  .send {alias:'fool',password:'1234567'}
-  .end (err)->
-    if err is null
-      request.get 'http://127.0.0.1:3003/admin/newest-ticket'
-      .end (err,res)->
-         console.log res.text
+request
+  .post 'http://127.0.0.1:3003/no-auth-upload'
+  #.type 'form' (if server side parse form via http form - "enctype=application/x-www-form-urlencoded)
+  #.type 'multipart' (if server parse form data via "multipart/form-data")
+  .send {'version':'1.4.2'} # if default(no .type) situation,form parsed via multipart/form-data
+  .then (res)->
+    console.log res.text
+  .catch (err)->
+    console.log err.message

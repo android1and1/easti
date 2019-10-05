@@ -606,9 +606,9 @@ app.get '/admin/category-of-tickets/:category',(req,res)->
   else
     keyname =  TICKET_PREFIX + ':hash:' + category + '*'
     records = await _retrieves keyname,(a,b)->b.ticket_id - a.ticket_id
-    if records.length > 10
-      records = records[0...10]
-    res.render 'admin-newest-ticket.pug',{records:records,title:'分类列表:'+category}
+    if records.length > 20
+      records = records[0...20]
+    res.render 'admin-newest-ticket.pug',{records:records,title:'分类列表:'+category + 'top 20'}
 app.get '/admin/visits-base-tickets',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/visits-base-tickets/'
@@ -616,9 +616,9 @@ app.get '/admin/visits-base-tickets',(req,res)->
   else
     keyname =  TICKET_PREFIX + ':hash:*'
     records = await _retrieves keyname,(a,b)->b.visits - a.visits
-    if records.length > 10
-      records = records[0...10]
-    res.render 'admin-newest-ticket.pug',{records:records,title:'top visits tickets'}
+    if records.length > 20
+      records = records[0...20]
+    res.render 'admin-newest-ticket.pug',{records:records,title:'top 20 visits tickets'}
   
 app.get '/admin/newest-ticket',(req,res)->
   if req.session?.auth?.role isnt 'admin'
@@ -628,10 +628,10 @@ app.get '/admin/newest-ticket',(req,res)->
     keypattern =  TICKET_PREFIX + ':hash:*'
     # at zhongnan hospital,fixed below await-func(inner help function - '_retrieves'
     records = await _retrieves(keypattern,((a,b)->b.ticket_id - a.ticket_id))
-    # retrieve top 10 items.
-    if records.length > 10
-      records = records[0...10]
-    return res.render 'admin-newest-ticket.pug',{'title':'list top 10 items.',records:records}
+    # retrieve top 20 items.
+    if records.length > 20
+      records = records[0...20]
+    return res.render 'admin-newest-ticket.pug',{'title':'list top 20 items.',records:records}
   
 app.post '/admin/enable-user',(req,res)->
   id = req.body.id
@@ -867,8 +867,16 @@ app.post '/superuser/register-admin',(req,res)->
   catch error
     res.json  ins.errors 
 app.post '/no-auth-upload',(req,res)->
+  # let npm-formidable handles
+  formid = new formidable.IncomingForm
+  formid.uploadDir = TICKET_MEDIA_ROOT
+  formid.keepExtensions = true
+  # keep small size.if handle with video,rewrite below,let it bigger.
+  formid.maxFileSize = 20 * 1024 * 1024
+  
   if req.method is 'POST'
-    res.json res.body.version
+    formid.parse req,(err,fields,files)->
+      res.json 'choiced:' + fields.version 
   else
     res.json 'no good.'
 
