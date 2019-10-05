@@ -951,12 +951,12 @@
       records = (await _retrieves(keyname, function(a, b) {
         return b.ticket_id - a.ticket_id;
       }));
-      if (records.length > 10) {
-        records = records.slice(0, 10);
+      if (records.length > 20) {
+        records = records.slice(0, 20);
       }
       return res.render('admin-newest-ticket.pug', {
         records: records,
-        title: '分类列表:' + category
+        title: '分类列表:' + category + 'top 20'
       });
     }
   });
@@ -971,12 +971,12 @@
       records = (await _retrieves(keyname, function(a, b) {
         return b.visits - a.visits;
       }));
-      if (records.length > 10) {
-        records = records.slice(0, 10);
+      if (records.length > 20) {
+        records = records.slice(0, 20);
       }
       return res.render('admin-newest-ticket.pug', {
         records: records,
-        title: 'top visits tickets'
+        title: 'top 20 visits tickets'
       });
     }
   });
@@ -992,12 +992,12 @@
       records = (await _retrieves(keypattern, (function(a, b) {
         return b.ticket_id - a.ticket_id;
       })));
-      // retrieve top 10 items.
-      if (records.length > 10) {
-        records = records.slice(0, 10);
+      // retrieve top 20 items.
+      if (records.length > 20) {
+        records = records.slice(0, 20);
       }
       return res.render('admin-newest-ticket.pug', {
-        'title': 'list top 10 items.',
+        'title': 'list top 20 items.',
         records: records
       });
     }
@@ -1410,8 +1410,17 @@
   });
 
   app.post('/no-auth-upload', function(req, res) {
+    var formid;
+    // let npm-formidable handles
+    formid = new formidable.IncomingForm;
+    formid.uploadDir = TICKET_MEDIA_ROOT;
+    formid.keepExtensions = true;
+    // keep small size.if handle with video,rewrite below,let it bigger.
+    formid.maxFileSize = 20 * 1024 * 1024;
     if (req.method === 'POST') {
-      return res.json(res.body.version);
+      return formid.parse(req, function(err, fields, files) {
+        return res.json('choiced:' + fields.version);
+      });
     } else {
       return res.json('no good.');
     }
