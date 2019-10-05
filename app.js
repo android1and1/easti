@@ -590,7 +590,7 @@
       formid.uploadDir = TICKET_MEDIA_ROOT;
       formid.keepExtensions = true;
       // keep small size.if handle with video,rewrite below,let it bigger.
-      formid.maxFileSize = 20 * 1024 * 1024;
+      formid.maxFileSize = 200 * 1024 * 1024; // update to 200M,for video
       formid.on('error', function(formid_err) {
         return res.json(formid_err);
       });

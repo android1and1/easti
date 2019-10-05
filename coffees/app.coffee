@@ -371,7 +371,7 @@ app.all '/admin/create-new-ticket',(req,res)->
     formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
     # keep small size.if handle with video,rewrite below,let it bigger.
-    formid.maxFileSize = 20 * 1024 * 1024
+    formid.maxFileSize = 200 * 1024 * 1024 # update to 200M,for video
     formid.on 'error',(formid_err)->
       res.json formid_err
     formid.parse req,(formid_err,fields,files)->
