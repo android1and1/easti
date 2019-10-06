@@ -371,8 +371,32 @@ app.all '/admin/create-new-ticket',(req,res)->
     formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
     formid.maxFileSize = 20 * 1024 * 1024 # update to 200M,for video
-    _save_one_ticket req,res,formid,redis
-    
+    formid.parse req,(formid_err,fields,files)->
+      if formid_err
+        return res.render 'admin-save-ticket-no-good.pug',{title :'No Save',reason:formid_err.message}
+      options = ['visits','0','urge','0','resolved','false']
+      for k,v of fields
+        options = options.concat [k,v] 
+      if files.media.size is 0 
+        fs.unlinkSync files.media.path
+      if files.media.size isnt 0 
+        media_url = files.media.path
+        # for img or other media "src" attribute,the path is relative STATIC-ROOT.
+        media_url = '/tickets/' + media_url.replace /.*\/(.+)$/,"$1" 
+        options = options.concat  ['media',media_url,'media_type',files.media.type]
+      # store this ticket
+      redis.incr (TICKET_PREFIX + ':counter'),(err,number)->
+        if err isnt null # occurs error.
+          return res.json 'Occurs Error While DB Operation.' + err.message
+        keyname = [TICKET_PREFIX,'hash',fields.category,number].join ':'
+        options = options.concat ['ticket_id',number,'reference_comments','comments-for-' + number]
+        redis.hmset keyname,options,(err,reply)->
+          if err
+            return res.json 'Occurs Error During Creating,Reason:' + err.message
+          else 
+            # successfully
+            return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
+
 app.all '/admin/edit-ticket/:keyname',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     req.session.referrer = '/admin/edit-ticket/' + req.params.keyname
@@ -647,7 +671,7 @@ app.post '/admin/login',(req,res)->
   {itisreferrer,alias,password} = req.body
   itisreferrer = itisreferrer or '/admin/login-success' 
   # filter alias,and password
-  isInvalid = ( !(filter alias) or !(filter password) )
+  isInvalid = ( ! filter alias or ! filter password)
   if isInvalid 
     return res.render 'admin-login-failure',{title:'Login-Failure',reason:'表单中含有非法字符.'} 
   # initial session.auth
@@ -922,8 +946,6 @@ hashise = (plain)->
 # filter is a help function
 filter = (be_dealt_with)->
   # return true is safe,return false means injectable.
-  if not be_dealt_with
-    return false
   return not /\W/.test be_dealt_with
 
 # matchDB is a help function 
