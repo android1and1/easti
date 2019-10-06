@@ -780,6 +780,18 @@
     }
   });
 
+  // superagent post 
+  app.post('/superagent-post', function(req, res) {
+    var form;
+    form = new formidable.IncomingForm;
+    return form.parse(req, function(err, fields, files) {
+      return res.json({
+        fields: fields,
+        files: files
+      });
+    });
+  });
+
   app.get('/admin/get-ticket-by-id/:id', function(req, res) {
     var ref, ref1, ticket_id;
     ticket_id = req.params.id;

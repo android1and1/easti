@@ -500,7 +500,11 @@ app.get '/admin/del-all-tickets',(req,res)->
         await delAsync item
       # at last ,report to client.
       res.render 'admin-del-all-tickets'
-
+# superagent post 
+app.post '/superagent-post',(req,res)->
+  form = new formidable.IncomingForm 
+  form.parse req,(err,fields,files)->
+    res.json {fields:fields,files:files}
 app.get '/admin/get-ticket-by-id/:id',(req,res)->
   ticket_id = req.params.id
   if req.session?.auth?.role isnt 'admin'
