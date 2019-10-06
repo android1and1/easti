@@ -370,12 +370,10 @@ app.all '/admin/create-new-ticket',(req,res)->
     formid = new formidable.IncomingForm
     formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
-    formid.maxFileSize = 200 * 1024 * 1024 # update to 200M,for video
-    formid.on 'error',(formid_err)->
-      console.error formid_err.message
+    formid.maxFileSize = 20 * 1024 * 1024 # update to 200M,for video
     formid.parse req,(formid_err,fields,files)->
       if formid_err
-        return res.json formid_err
+        return res.render 'admin-save-ticket-no-good.pug',{title :'No Save',reason:formid_err.message}
       options = ['visits','0','urge','0','resolved','false']
       for k,v of fields
         options = options.concat [k,v] 
@@ -389,12 +387,12 @@ app.all '/admin/create-new-ticket',(req,res)->
       # store this ticket
       redis.incr (TICKET_PREFIX + ':counter'),(err,number)->
         if err isnt null # occurs error.
-          return res.json err
+          return res.json 'Occurs Error While DB Operation.' + err.message
         keyname = [TICKET_PREFIX,'hash',fields.category,number].join ':'
         options = options.concat ['ticket_id',number,'reference_comments','comments-for-' + number]
         redis.hmset keyname,options,(err,reply)->
           if err
-            return res.json 'occurs error,message:' + err.message
+            return res.json 'Occurs Error During Creating,Reason:' + err.message
           else 
             # successfully
             return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
@@ -414,12 +412,10 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
     formid = new formidable.IncomingForm
     formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
-    formid.maxFileSize = 20 * 1024 * 1024
-    formid.on 'error',(formid_err)->
-      res.json formid_err
+    formid.maxFileSize = 20 * 1024 * 1024 # update maxFileSize to 200M if supports video
     formid.parse req,(formid_err,fields,files)->
       if formid_err
-        return res.json formid_err
+        return res.render 'admin-save-ticket-no-good.pug',{title:'No Savw',reason:formid_err.message}
       for k,v of fields
         if k isnt 'original_uri' 
           options[k] = v 
@@ -445,7 +441,7 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
       # update this ticket
       redis.hmset keyname,options,(err,reply)->
         if err
-          return res.json err
+          return res.render 'admin-save-ticket-no-good.pug',{title:'No Save',reason:err.message}
         else 
           return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Updated!'}
 

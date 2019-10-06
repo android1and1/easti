@@ -589,14 +589,14 @@
       formid = new formidable.IncomingForm;
       formid.uploadDir = TICKET_MEDIA_ROOT;
       formid.keepExtensions = true;
-      formid.maxFileSize = 200 * 1024 * 1024; // update to 200M,for video
-      formid.on('error', function(formid_err) {
-        return console.error(formid_err.message);
-      });
+      formid.maxFileSize = 20 * 1024 * 1024; // update to 200M,for video
       return formid.parse(req, function(formid_err, fields, files) {
         var k, media_url, options, v;
         if (formid_err) {
-          return res.json(formid_err);
+          return res.render('admin-save-ticket-no-good.pug', {
+            title: 'No Save',
+            reason: formid_err.message
+          });
         }
         options = ['visits', '0', 'urge', '0', 'resolved', 'false'];
         for (k in fields) {
@@ -616,13 +616,13 @@
         return redis.incr(TICKET_PREFIX + ':counter', function(err, number) {
           var keyname;
           if (err !== null) { // occurs error.
-            return res.json(err);
+            return res.json('Occurs Error While DB Operation.' + err.message);
           }
           keyname = [TICKET_PREFIX, 'hash', fields.category, number].join(':');
           options = options.concat(['ticket_id', number, 'reference_comments', 'comments-for-' + number]);
           return redis.hmset(keyname, options, function(err, reply) {
             if (err) {
-              return res.json('occurs error,message:' + err.message);
+              return res.json('Occurs Error During Creating,Reason:' + err.message);
             } else {
               
               // successfully
@@ -658,14 +658,14 @@
       formid = new formidable.IncomingForm;
       formid.uploadDir = TICKET_MEDIA_ROOT;
       formid.keepExtensions = true;
-      formid.maxFileSize = 20 * 1024 * 1024;
-      formid.on('error', function(formid_err) {
-        return res.json(formid_err);
-      });
+      formid.maxFileSize = 20 * 1024 * 1024; // update maxFileSize to 200M if supports video
       return formid.parse(req, async function(formid_err, fields, files) {
         var bool, k, media_url, realpath, v;
         if (formid_err) {
-          return res.json(formid_err);
+          return res.render('admin-save-ticket-no-good.pug', {
+            title: 'No Savw',
+            reason: formid_err.message
+          });
         }
         for (k in fields) {
           v = fields[k];
@@ -700,7 +700,10 @@
         // update this ticket
         return redis.hmset(keyname, options, function(err, reply) {
           if (err) {
-            return res.json(err);
+            return res.render('admin-save-ticket-no-good.pug', {
+              title: 'No Save',
+              reason: err.message
+            });
           } else {
             return res.render('admin-save-ticket-success.pug', {
               reply: reply,
