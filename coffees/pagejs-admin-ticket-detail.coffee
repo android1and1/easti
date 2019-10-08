@@ -40,3 +40,7 @@ $ ->
     input = $(this).val()
     if input.endsWith '\n'
       $(this).closest('form').submit()
+  # add contribute button,listen on it. -- 2019 10 08
+  $('button.contribute').on 'click',(e)->
+    # ajax post this detail page data and media.
+    # todo

@@ -977,3 +977,7 @@ Inch13Early2015Air
 cyrus-Latitude-E7470
 2019年 10月 08日 星期二 10:34:55 CST
   try post via superagent
+
+cyrus-Latitude-E7470
+2019年 10月 08日 星期二 21:14:27 CST
+  todo: add a button (.contribute) in view:admin-ticket-detail.pug,a listen func in pagejs-admin-ticket-detail.js,let js ajax request its id number,then server start do superagent post to another server(example,center server).

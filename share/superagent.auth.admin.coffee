@@ -29,5 +29,5 @@ agent
         if err
           console.error err.message
         else
-          console.log resp.text()
+          console.log resp.text
      
