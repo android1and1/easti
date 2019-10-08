@@ -780,18 +780,6 @@
     }
   });
 
-  // superagent post 
-  app.post('/superagent-post', function(req, res) {
-    var form;
-    form = new formidable.IncomingForm;
-    return form.parse(req, function(err, fields, files) {
-      return res.json({
-        fields: fields,
-        files: files
-      });
-    });
-  });
-
   app.get('/admin/get-ticket-by-id/:id', function(req, res) {
     var ref, ref1, ticket_id;
     ticket_id = req.params.id;
@@ -1380,16 +1368,6 @@
     }
   });
 
-  app.post('/no-auth-upload', function(req, res) { // P864
-    var formid;
-    // let npm-formidable handles
-    formid = new formidable.IncomingForm;
-    formid.uploadDir = TICKET_MEDIA_ROOT;
-    formid.keepExtensions = true;
-    formid.maxFileSize = 20 * 1024 * 1024; // update to 200M,for video
-    return _save_one_ticket(req, res, formid, redis);
-  });
-
   app.get('/no-staticify', function(req, res) {
     // listen radio(voa&rfa mandarin)
     // step1 ,retrieves each file from ./voices
@@ -1666,10 +1644,10 @@
         v = fields[k];
         options = options.concat([k, v]);
       }
-      if (files.media.size === 0) {
+      if (files.media && files.media.size === 0) {
         fs.unlinkSync(files.media.path);
       }
-      if (files.media.size !== 0) {
+      if (files.media && files.media.size !== 0) {
         media_url = files.media.path;
         // for img or other media "src" attribute,the path is relative STATIC-ROOT.
         media_url = '/tickets/' + media_url.replace(/.*\/(.+)$/, "$1");

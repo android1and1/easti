@@ -500,11 +500,7 @@ app.get '/admin/del-all-tickets',(req,res)->
         await delAsync item
       # at last ,report to client.
       res.render 'admin-del-all-tickets'
-# superagent post 
-app.post '/superagent-post',(req,res)->
-  form = new formidable.IncomingForm 
-  form.parse req,(err,fields,files)->
-    res.json {fields:fields,files:files}
+
 app.get '/admin/get-ticket-by-id/:id',(req,res)->
   ticket_id = req.params.id
   if req.session?.auth?.role isnt 'admin'
@@ -842,14 +838,6 @@ app.post '/superuser/register-admin',(req,res)->
   catch error
     res.json  ins.errors 
 
-app.post '/no-auth-upload',(req,res)-> # P864
-  # let npm-formidable handles
-  formid = new formidable.IncomingForm
-  formid.uploadDir = TICKET_MEDIA_ROOT
-  formid.keepExtensions = true
-  formid.maxFileSize = 20 * 1024 * 1024 # update to 200M,for video
-  _save_one_ticket req,res,formid,redis
-
 app.get '/no-staticify',(req,res)->
   # listen radio(voa&rfa mandarin)
   # step1 ,retrieves each file from ./voices
@@ -1031,9 +1019,9 @@ _save_one_ticket = (req,res,form,redis)->
     options = ['visits','0','urge','0','resolved','false']
     for k,v of fields
       options = options.concat [k,v] 
-    if files.media.size is 0 
+    if files.media and files.media.size is 0 
       fs.unlinkSync files.media.path
-    if files.media.size isnt 0 
+    if files.media and files.media.size isnt 0 
       media_url = files.media.path
       # for img or other media "src" attribute,the path is relative STATIC-ROOT.
       media_url = '/tickets/' + media_url.replace /.*\/(.+)$/,"$1" 
