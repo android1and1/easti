@@ -2,4 +2,5 @@ extend layouts/main
 block content
   include widgets/tickets-common-navigator.pug
   h1.display-3 &nbsp;
-  h1.display-3 [#{reply}] Stored One Ticket.
+  h1.display-3 [#{reply}] Stored One.
+  h2.display-4 Want Review? click <a href="/admin/get-ticket-by-id/#{ticket_id}" alt="review id"> Ticket ##{ticket_id} </a>

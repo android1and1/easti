@@ -595,7 +595,7 @@
   });
 
   app.all('/admin/edit-ticket/:keyname', async function(req, res) {
-    var formid, item, keyname, options, ref, ref1;
+    var formid, item, keyname, options, ref, ref1, ticket_id;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
       req.session.referrer = '/admin/edit-ticket/' + req.params.keyname;
       return res.redirect(303, '/admin/login');
@@ -612,6 +612,7 @@
     } else if (req.method === 'POST') {
       item = (await hgetallAsync(keyname));
       options = item; // todo.
+      ticket_id = item.ticket_id;
       formid = new formidable.IncomingForm;
       formid.uploadDir = TICKET_MEDIA_ROOT;
       formid.keepExtensions = true;
@@ -620,7 +621,7 @@
         var bool, k, media_url, realpath, v;
         if (formid_err) {
           return res.render('admin-save-ticket-no-good.pug', {
-            title: 'No Savw',
+            title: 'No Save',
             reason: formid_err.message
           });
         }
@@ -663,6 +664,7 @@
             });
           } else {
             return res.render('admin-save-ticket-success.pug', {
+              ticket_id: ticket_id,
               reply: reply,
               title: 'Updated!'
             });
@@ -1668,6 +1670,7 @@
             
             // successfully
             return res.render('admin-save-ticket-success.pug', {
+              ticket_id: number,
               reply: reply,
               title: 'Stored Success'
             });

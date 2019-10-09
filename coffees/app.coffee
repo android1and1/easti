@@ -385,13 +385,14 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
   else if req.method is 'POST'
     item = await hgetallAsync keyname
     options = item # todo.
+    ticket_id = item.ticket_id
     formid = new formidable.IncomingForm
     formid.uploadDir = TICKET_MEDIA_ROOT
     formid.keepExtensions = true
     formid.maxFileSize = 20 * 1024 * 1024 # update maxFileSize to 200M if supports video
     formid.parse req,(formid_err,fields,files)->
       if formid_err
-        return res.render 'admin-save-ticket-no-good.pug',{title:'No Savw',reason:formid_err.message}
+        return res.render 'admin-save-ticket-no-good.pug',{title:'No Save',reason:formid_err.message}
       for k,v of fields
         if k isnt 'original_uri' 
           options[k] = v 
@@ -419,7 +420,7 @@ app.all '/admin/edit-ticket/:keyname',(req,res)->
         if err
           return res.render 'admin-save-ticket-no-good.pug',{title:'No Save',reason:err.message}
         else 
-          return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Updated!'}
+          return res.render 'admin-save-ticket-success.pug',{ticket_id:ticket_id,reply:reply,title:'Updated!'}
 
   else 
     res.send 'No Clear.'
@@ -1037,7 +1038,7 @@ _save_one_ticket = (req,res,form,redis)->
           return res.json 'Occurs Error During Creating,Reason:' + err.message
         else 
           # successfully
-          return res.render 'admin-save-ticket-success.pug',{reply:reply,title:'Stored Success'}
+          return res.render 'admin-save-ticket-success.pug',{ticket_id:number,reply:reply,title:'Stored Success'}
 
 # help function - 'retreves',for retreves ticket by its first argument.
 _retrieves = (keyname,sortby)->
