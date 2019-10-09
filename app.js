@@ -797,18 +797,37 @@
     try {
       o = (await hgetallAsync(keyname));
       agent = request.agent();
-      agent.post(to).type('form').field('alias', 'agent').field('password', 'super agent.').end(function(err) { // solid password for this task.
+      return agent.post(to).type('form').field('alias', 'agent').field('password', 'super agent.').end(function(err) { // solid password for this task.
         if (err === null) {
           return res.json('error occurs during authenting.');
         }
-        if (o.media) {
-          return agent.post(to + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('agent_post_time', (new Date()).toISOString()).field('media', o.media).end(function(err, resp) {});
+        if (!o.media) {
+          return agent.post(to + '/admin/create-new-ticket').send({
+            'alias': 'agent',
+            'title': o.title,
+            'ticket': o.ticket,
+            'client_time': o.client_time,
+            'category': o.category,
+            'visits': o.visits,
+            'agent_post_time': (new Date()).toISOString()
+          }).end(function(err, resp) {
+            if (err) {
+              return res.json(err);
+            }
+            return res.json(resp.text); // has media attribute
+          });
+        } else {
+          return agent.post(to + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('category', o.category).field('visits', o.visits).field('agent_post_time', (new Date()).toISOString()).field('media', path.join(__dirname, 'public', o.media)).end(function(err, resp) {
+            if (err) {
+              return res.json(err);
+            }
+            return res.json(resp.text);
+          });
         }
       });
-      return res.json(o);
     } catch (error1) {
       error = error1;
-      return res.json(error);
+      return res.json('DB Operator Error.');
     }
   });
 
