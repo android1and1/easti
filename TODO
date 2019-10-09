@@ -985,3 +985,7 @@ cyrus-Latitude-E7470
 cyrus-Latitude-E7470
 2019年 10月 09日 星期三 15:39:45 CST
   write in app.js. route "(post)/admin/contribute" need be done.transfer to pi2.
+
+jp-stretch-pi-2
+Wed Oct  9 21:40:25 CST 2019
+  接下来，要增加一个modal,里面含一个表单，从中收集to(ip addr and port),选择性的提供撰写者名字。参照views/admin-newest-ticket里的提交comment的modal.

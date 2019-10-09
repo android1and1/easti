@@ -57,9 +57,33 @@ block content
                   textarea.form-control(name="comment",id="input-" + item.ticket_id + "-comment",rows="8") 
                 .form-group
                   button(type="submit" class="btn btn-secondary") 写好了，提交！ 
+      div.modal(id="fill-address-" + item.ticket_id)
+        div.modal-dialog.modal-dialog-centered
+          div.modal-content
+            .modal-header
+              h4.modal-title  投稿
+              button(class="btn btn-light" data-dismiss="modal")
+                span.oi.oi-x
+            .modal-body
+              form(id=item.keyname,class="comment-form")
+                .form-group
+                  label(for= "address-" + item.ticket_id) 向哪里投稿？ 
+                  div(class="input-group mb-3" id="address-" + item.ticket_id)
+                    div(class="input-group-prepend")
+                      span(class="input-group-text") http://
+                    input(type="text" class="form-control" name="to-address") 
+                .form-group
+                  label(for= "port-" + item.ticket_id) 端口号 
+                  div(class="input-group mb-3" id="port-" + item.ticket_id)
+                    div(class="input-group-prepend")
+                      span(class="input-group-text") * 留空则为端口80 
+                    input(type="text" class="form-control" name="to-port") 
+                .form-group
+                  button(type="button" data-dismiss="modal" class="mx-2 btn btn-secondary") 撤回 
+                  button(type="submit" class="mx-2 btn btn-light") 发出！ 
      
       a.btn.btn-light.mx-2.p-2(href="#" role="button" data-toggle="modal" data-target="#modal-" + item.ticket_id) write your comment
-      button.btn.btn-light.mx-2.p-2.contribute(href="#",data-keyname=item.keyname ) 投稿 
+      button.btn.btn-light.mx-2.p-2(href="#",data-toggle="modal" data-target="#fill-address-" + item.ticket_id ) 投稿 
       a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit-ticket/" + item.keyname) Edit 
       button.btn.btn-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
       div.dropdown-menu
