@@ -502,6 +502,40 @@ app.get '/admin/del-all-tickets',(req,res)->
       # at last ,report to client.
       res.render 'admin-del-all-tickets'
 
+# 投稿
+app.post '/admin/contribute',(req,res)->
+  if req.session?.auth?.role isnt 'admin'
+    return res.json 'auth error.'
+  {keyname,to} = req.body
+  if not keyname or not to
+    res.json 'invalidate data.'
+  # retrieve item 
+  request = require 'superagent'
+  try
+    o = await hgetallAsync keyname
+    agent = request.agent()
+    agent.post to
+      .type 'form'
+      .field 'alias','agent'
+      .field 'password','super agent.' # solid password for this task.
+      .end (err)->
+        if err is null
+          return res.json 'error occurs during authenting.'
+        if o.media
+          agent.post to + '/admin/create-new-ticket'
+            .field 'alias','agent'
+            .field 'title',o.title
+            .field 'ticket',o.ticket
+            .field 'client_time',o.client_time
+            .field 'agent_post_time',(new Date()).toISOString()
+            .field 'media',o.media
+            .end (err,resp)-> 
+
+    return res.json o 
+  catch error
+    return res.json error
+  
+
 app.get '/admin/get-ticket-by-id/:id',(req,res)->
   ticket_id = req.params.id
   if req.session?.auth?.role isnt 'admin'
@@ -521,7 +555,6 @@ app.get '/admin/get-ticket-by-id/:id',(req,res)->
         # add 1 to 'visits'
         redis.hincrby list[0],'visits',1,(err,num)->
           if err is null
-            #res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
             res.render 'admin-ticket-detail',{title:'#' + item.ticket_id + ' Detail Page',item:item}
           else
             res.json 'Error Occurs During DB Manipulating.'

@@ -42,5 +42,20 @@ $ ->
       $(this).closest('form').submit()
   # add contribute button,listen on it. -- 2019 10 08
   $('button.contribute').on 'click',(e)->
+    keyname=$(this).data('keyname')
     # ajax post this detail page data and media.
-    # todo
+    $.ajax {
+      url:'/admin/contribute'
+      dataType:'json'
+      type:'POST'
+      data:{
+          keyname:keyname
+          to:'192.168.5.2'
+      }
+    }
+    .done (jsonO)->
+      alert 'Server Reply:' + JSON.stringify jsonO
+    .fail (err)->
+      alert 'Erorr:' + err.message 
+    e.preventDefault()
+    e.stopPropagation()

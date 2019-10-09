@@ -782,6 +782,36 @@
     }
   });
 
+  // 投稿
+  app.post('/admin/contribute', async function(req, res) {
+    var agent, error, keyname, o, ref, ref1, request, to;
+    if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
+      return res.json('auth error.');
+    }
+    ({keyname, to} = req.body);
+    if (!keyname || !to) {
+      res.json('invalidate data.');
+    }
+    // retrieve item 
+    request = require('superagent');
+    try {
+      o = (await hgetallAsync(keyname));
+      agent = request.agent();
+      agent.post(to).type('form').field('alias', 'agent').field('password', 'super agent.').end(function(err) { // solid password for this task.
+        if (err === null) {
+          return res.json('error occurs during authenting.');
+        }
+        if (o.media) {
+          return agent.post(to + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('agent_post_time', (new Date()).toISOString()).field('media', o.media).end(function(err, resp) {});
+        }
+      });
+      return res.json(o);
+    } catch (error1) {
+      error = error1;
+      return res.json(error);
+    }
+  });
+
   app.get('/admin/get-ticket-by-id/:id', function(req, res) {
     var ref, ref1, ticket_id;
     ticket_id = req.params.id;
@@ -809,7 +839,6 @@
           // add 1 to 'visits'
           return redis.hincrby(list[0], 'visits', 1, function(err, num) {
             if (err === null) {
-              //res.render 'admin-newest-ticket.pug',{title:'Detail Page #' + ticket_id,records:[item]}
               return res.render('admin-ticket-detail', {
                 title: '#' + item.ticket_id + ' Detail Page',
                 item: item

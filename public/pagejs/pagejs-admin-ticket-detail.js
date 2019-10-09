@@ -49,12 +49,33 @@
       placement: 'bottom',
       animation: true
     });
-    return $('form#search_form input').on('change', function(e) {
+    $('form#search_form input').on('change', function(e) {
       var input;
       input = $(this).val();
       if (input.endsWith('\n')) {
         return $(this).closest('form').submit();
       }
+    });
+    // add contribute button,listen on it. -- 2019 10 08
+    return $('button.contribute').on('click', function(e) {
+      var keyname;
+      keyname = $(this).data('keyname');
+      // ajax post this detail page data and media.
+      $.ajax({
+        url: '/admin/contribute',
+        dataType: 'json',
+        type: 'POST',
+        data: {
+          keyname: keyname,
+          to: '192.168.5.2'
+        }
+      }).done(function(jsonO) {
+        return alert('Server Reply:' + JSON.stringify(jsonO));
+      }).fail(function(err) {
+        return alert('Erorr:' + err.message);
+      });
+      e.preventDefault();
+      return e.stopPropagation();
     });
   });
 

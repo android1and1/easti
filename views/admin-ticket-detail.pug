@@ -59,6 +59,7 @@ block content
                   button(type="submit" class="btn btn-secondary") 写好了，提交！ 
      
       a.btn.btn-light.mx-2.p-2(href="#" role="button" data-toggle="modal" data-target="#modal-" + item.ticket_id) write your comment
+      button.btn.btn-light.mx-2.p-2.contribute(href="#",data-keyname=item.keyname ) 投稿 
       a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit-ticket/" + item.keyname) Edit 
       button.btn.btn-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
       div.dropdown-menu
