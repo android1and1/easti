@@ -514,13 +514,13 @@ app.post '/admin/contribute',(req,res)->
   try
     o = await hgetallAsync keyname
     agent = request.agent()
-    agent.post to
+    agent.post to + '/admin/login'
       .type 'form'
-      .field 'alias','agent'
-      .field 'password','super agent.' # solid password for this task.
+      .send {'alias':'agent'}
+      .send {'password':'1234567'} # solid password for this task.
       .end (err)->
-        if err is null
-          return res.json 'error occurs during authenting.'
+        if err 
+          return res.json err 
         if not o.media 
           agent.post to + '/admin/create-new-ticket'
             .send {
@@ -535,10 +535,9 @@ app.post '/admin/contribute',(req,res)->
             .end (err,resp)->
               if err
                 return res.json err
-              res.json resp.text
-              
+              res.json resp.status
         else # has media attribute
-          agent.post to + '/admin/create-new-ticket'
+          agent.post  to + '/admin/create-new-ticket'
             .field 'alias','agent'
             .field 'title',o.title
             .field 'ticket',o.ticket
@@ -550,7 +549,7 @@ app.post '/admin/contribute',(req,res)->
             .end (err,resp)-> 
               if err
                 return res.json err
-              res.json resp.text
+              res.json resp.status
   catch error
     return res.json 'DB Operator Error.'
 

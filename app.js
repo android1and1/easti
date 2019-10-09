@@ -797,9 +797,13 @@
     try {
       o = (await hgetallAsync(keyname));
       agent = request.agent();
-      return agent.post(to).type('form').field('alias', 'agent').field('password', 'super agent.').end(function(err) { // solid password for this task.
-        if (err === null) {
-          return res.json('error occurs during authenting.');
+      return agent.post(to + '/admin/login').type('form').send({
+        'alias': 'agent'
+      }).send({
+        'password': '1234567' // solid password for this task.
+      }).end(function(err) {
+        if (err) {
+          return res.json(err);
         }
         if (!o.media) {
           return agent.post(to + '/admin/create-new-ticket').send({
@@ -814,14 +818,14 @@
             if (err) {
               return res.json(err);
             }
-            return res.json(resp.text); // has media attribute
+            return res.json(resp.status); // has media attribute
           });
         } else {
           return agent.post(to + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('category', o.category).field('visits', o.visits).field('agent_post_time', (new Date()).toISOString()).field('media', path.join(__dirname, 'public', o.media)).end(function(err, resp) {
             if (err) {
               return res.json(err);
             }
-            return res.json(resp.text);
+            return res.json(resp.status);
           });
         }
       });

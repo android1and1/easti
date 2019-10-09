@@ -67,7 +67,7 @@
         type: 'POST',
         data: {
           keyname: keyname,
-          to: '192.168.5.2'
+          to: 'http://192.168.5.2:3003'
         }
       }).done(function(jsonO) {
         return alert('Server Reply:' + JSON.stringify(jsonO));
