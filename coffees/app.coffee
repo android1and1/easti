@@ -510,6 +510,7 @@ app.post '/admin/contribute',(req,res)->
   to_port = '80' if to_port is '' 
   if not keyname or not to_address 
     return res.json 'invalidate data.'
+  prefix_url = 'http://' + to_address + ':' + to_port
   # retrieve item 
   request = require 'superagent'
   agent = request.agent()
@@ -517,15 +518,16 @@ app.post '/admin/contribute',(req,res)->
     o = await hgetallAsync keyname
   catch error
     return res.json 'DB Operator Error.'
-  agent.post to_address + ':' + to_port + '/admin/login'
+  agent.post prefix_url+ '/admin/login'
     .type 'form'
     .send {'alias':'agent'}
     .send {'password':'1234567'} # solid password for this task.
-    .end (err)->
+    .end (err,reply)->
       if err 
         return res.json err 
+      # TODO if not match admin:password,err is null,but something is out of your expecting.
       if not o.media 
-        agent.post to_address + ':' + to_port + '/admin/create-new-ticket'
+        agent.post prefix_url + '/admin/create-new-ticket'
           .send {
             'admin_alias':'agent'
             'title':o.title
@@ -540,7 +542,8 @@ app.post '/admin/contribute',(req,res)->
               return res.json err
             res.json resp.status
       else # has media attribute
-        agent.post  to + '/admin/create-new-ticket'
+        attachment = path.join __dirname,'public',o.media
+        agent.post  prefix_url + '/admin/create-new-ticket'
           .field 'alias','agent'
           .field 'title',o.title
           .field 'ticket',o.ticket
@@ -548,7 +551,7 @@ app.post '/admin/contribute',(req,res)->
           .field 'category',o.category
           .field 'visits',o.visits
           .field 'agent_post_time',(new Date()).toISOString()
-          .field 'media',(path.join __dirname,'public',o.media)
+          .attach 'media',attachment
           .end (err,resp)-> 
             if err
               return res.json err

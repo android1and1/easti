@@ -784,7 +784,7 @@
 
   // 投稿
   app.post('/admin/contribute', async function(req, res) {
-    var agent, error, keyname, o, ref, ref1, request, to_address, to_port;
+    var agent, error, keyname, o, prefix_url, ref, ref1, request, to_address, to_port;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
       return res.json('auth error.');
     }
@@ -795,6 +795,7 @@
     if (!keyname || !to_address) {
       return res.json('invalidate data.');
     }
+    prefix_url = 'http://' + to_address + ':' + to_port;
     // retrieve item 
     request = require('superagent');
     agent = request.agent();
@@ -804,16 +805,19 @@
       error = error1;
       return res.json('DB Operator Error.');
     }
-    return agent.post(to_address + ':' + to_port + '/admin/login').type('form').send({
+    return agent.post(prefix_url + '/admin/login').type('form').send({
       'alias': 'agent'
     }).send({
       'password': '1234567' // solid password for this task.
-    }).end(function(err) {
+    }).end(function(err, reply) {
+      var attachment;
       if (err) {
         return res.json(err);
       }
+      
+      // TODO if not match admin:password,err is null,but something is out of your expecting.
       if (!o.media) {
-        return agent.post(to_address + ':' + to_port + '/admin/create-new-ticket').send({
+        return agent.post(prefix_url + '/admin/create-new-ticket').send({
           'admin_alias': 'agent',
           'title': o.title,
           'ticket': o.ticket,
@@ -828,7 +832,8 @@
           return res.json(resp.status); // has media attribute
         });
       } else {
-        return agent.post(to + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('category', o.category).field('visits', o.visits).field('agent_post_time', (new Date()).toISOString()).field('media', path.join(__dirname, 'public', o.media)).end(function(err, resp) {
+        attachment = path.join(__dirname, 'public', o.media);
+        return agent.post(prefix_url + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('category', o.category).field('visits', o.visits).field('agent_post_time', (new Date()).toISOString()).attach('media', attachment).end(function(err, resp) {
           if (err) {
             return res.json(err);
           }

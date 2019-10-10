@@ -68,7 +68,7 @@
         dataType: 'json',
         type: 'POST',
         data: {
-          'to_address': 'http://' + $('[name="to-address"]').val(),
+          'to_address': $('[name="to-address"]').val(),
           'to_port': $('[name="to-port"]').val(),
           keyname: $this.data('keyname')
         },
@@ -76,7 +76,7 @@
       }).done(function(jsonO) {
         return alert('Server Reply:' + JSON.stringify(jsonO));
       }).fail(function(xhr, status, thrown) {
-        return alert('status=' + status);
+        return alert(JSON.stringify(thrown));
       }).always(function() {
         return $this.closet('.modal').modal('toggle');
       });

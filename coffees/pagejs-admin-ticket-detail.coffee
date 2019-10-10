@@ -51,7 +51,7 @@ $ ->
       dataType:'json'
       type:'POST'
       data:{
-        'to_address':'http://' + $('[name="to-address"]').val()
+        'to_address':$('[name="to-address"]').val()
         'to_port': $('[name="to-port"]').val()
         keyname: ($this.data 'keyname')
       }
@@ -60,6 +60,6 @@ $ ->
     .done (jsonO)->
       alert 'Server Reply:' + JSON.stringify jsonO
     .fail (xhr,status,thrown)->
-      alert 'status=' + status
+      alert JSON.stringify thrown 
     .always ->
       $this.closet('.modal').modal('toggle')
