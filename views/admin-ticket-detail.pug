@@ -57,7 +57,8 @@ block content
                   textarea.form-control(name="comment",id="input-" + item.ticket_id + "-comment",rows="8") 
                 .form-group
                   button(type="submit" class="btn btn-secondary") 写好了，提交！ 
-      div.modal(id="fill-address-" + item.ticket_id)
+      //- only one modal,so no need variable id!
+      div.modal(id="fill-address-modal")
         div.modal-dialog.modal-dialog-centered
           div.modal-content
             .modal-header
@@ -65,27 +66,27 @@ block content
               button(class="btn btn-light" data-dismiss="modal")
                 span.oi.oi-x
             .modal-body
-              form(id=item.keyname,class="comment-form")
+              form(id="contribute-form",data-keyname=item.keyname)
                 .form-group
-                  label(for= "address-" + item.ticket_id) 向哪里投稿？ 
-                  div(class="input-group mb-3" id="address-" + item.ticket_id)
+                  label(for= "input-address") 收稿服务器IP地址 
+                  div(class="input-group mb-3" id="input-address")
                     div(class="input-group-prepend")
                       span(class="input-group-text") http://
                     input(type="text" class="form-control" name="to-address") 
                 .form-group
-                  label(for= "port-" + item.ticket_id) 端口号 
-                  div(class="input-group mb-3" id="port-" + item.ticket_id)
+                  label(for= "input-port") 端口号 
+                  div(id="input-port" class="input-group mb-3")
                     div(class="input-group-prepend")
                       span(class="input-group-text") * 留空则为端口80 
                     input(type="text" class="form-control" name="to-port") 
                 .form-group
                   button(type="button" data-dismiss="modal" class="mx-2 btn btn-secondary") 撤回 
-                  button(type="submit" class="mx-2 btn btn-light") 发出！ 
+                  button(type="submit" class="mx-2 btn btn-dark") 发出！ 
      
-      a.btn.btn-light.mx-2.p-2(href="#" role="button" data-toggle="modal" data-target="#modal-" + item.ticket_id) write your comment
-      button.btn.btn-light.mx-2.p-2(href="#",data-toggle="modal" data-target="#fill-address-" + item.ticket_id ) 投稿 
-      a.btn.btn-light.mx-2.p-2.editLink(role="button" href= "/admin/edit-ticket/" + item.keyname) Edit 
-      button.btn.btn-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
+      a.btn.btn-outline-info.mx-2.p-2(href="#" role="button" data-toggle="modal" data-target="#modal-" + item.ticket_id) write your comment
+      button.btn.btn-outline-secondary.mx-2.p-2(href="#",data-toggle="modal" data-target="#fill-address-modal") 投稿 
+      a.btn.btn-outline-info.mx-2.p-2.editLink(role="button" href= "/admin/edit-ticket/" + item.keyname) Edit 
+      button.btn.btn-outline-danger.dropdown-toggle.mx-2.p-2#delButton(data-toggle="dropdown") delete
       div.dropdown-menu
         a.dropdown-item.deleteOne(data-with-media='false',data-keyname= item.keyname,href="#") Delete
         - if(!item.media)

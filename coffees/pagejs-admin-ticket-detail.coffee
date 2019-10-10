@@ -40,22 +40,26 @@ $ ->
     input = $(this).val()
     if input.endsWith '\n'
       $(this).closest('form').submit()
-  # add contribute button,listen on it. -- 2019 10 08
-  $('button.contribute').on 'click',(e)->
+  # add modal-form,listen on it
+  $('#contribute-form').on 'submit',(e)->
+    e.preventDefault()
+    e.stopPropagation()
+    $this = $ this
     keyname=$(this).data('keyname')
-    # ajax post this detail page data and media.
     $.ajax {
       url:'/admin/contribute'
       dataType:'json'
       type:'POST'
       data:{
-          keyname:keyname
-          to:'http://192.168.5.2:3003'
+        'to_address':'http://' + $('[name="to-address"]').val()
+        'to_port': $('[name="to-port"]').val()
+        keyname: ($this.data 'keyname')
       }
+      timeout:12000
     }
     .done (jsonO)->
       alert 'Server Reply:' + JSON.stringify jsonO
-    .fail (err)->
-      alert 'Erorr:' + err.message 
-    e.preventDefault()
-    e.stopPropagation()
+    .fail (xhr,status,thrown)->
+      alert 'status=' + status
+    .always ->
+      $this.closet('.modal').modal('toggle')

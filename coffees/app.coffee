@@ -506,52 +506,53 @@ app.get '/admin/del-all-tickets',(req,res)->
 app.post '/admin/contribute',(req,res)->
   if req.session?.auth?.role isnt 'admin'
     return res.json 'auth error.'
-  {keyname,to} = req.body
-  if not keyname or not to
-    res.json 'invalidate data.'
+  {keyname,to_address,to_port} = req.body
+  to_port = '80' if to_port is '' 
+  if not keyname or not to_address 
+    return res.json 'invalidate data.'
   # retrieve item 
   request = require 'superagent'
+  agent = request.agent()
   try
     o = await hgetallAsync keyname
-    agent = request.agent()
-    agent.post to + '/admin/login'
-      .type 'form'
-      .send {'alias':'agent'}
-      .send {'password':'1234567'} # solid password for this task.
-      .end (err)->
-        if err 
-          return res.json err 
-        if not o.media 
-          agent.post to + '/admin/create-new-ticket'
-            .send {
-              'alias':'agent'
-              'title':o.title
-              'ticket':o.ticket
-              'client_time':o.client_time
-              'category':o.category
-              'visits':o.visits
-              'agent_post_time':(new Date()).toISOString()
-            }
-            .end (err,resp)->
-              if err
-                return res.json err
-              res.json resp.status
-        else # has media attribute
-          agent.post  to + '/admin/create-new-ticket'
-            .field 'alias','agent'
-            .field 'title',o.title
-            .field 'ticket',o.ticket
-            .field 'client_time',o.client_time
-            .field 'category',o.category
-            .field 'visits',o.visits
-            .field 'agent_post_time',(new Date()).toISOString()
-            .field 'media',(path.join __dirname,'public',o.media)
-            .end (err,resp)-> 
-              if err
-                return res.json err
-              res.json resp.status
   catch error
     return res.json 'DB Operator Error.'
+  agent.post to_address + ':' + to_port + '/admin/login'
+    .type 'form'
+    .send {'alias':'agent'}
+    .send {'password':'1234567'} # solid password for this task.
+    .end (err)->
+      if err 
+        return res.json err 
+      if not o.media 
+        agent.post to_address + ':' + to_port + '/admin/create-new-ticket'
+          .send {
+            'admin_alias':'agent'
+            'title':o.title
+            'ticket':o.ticket
+            'client_time':o.client_time
+            'category':o.category
+            'visits':o.visits
+            'agent_post_time':(new Date()).toISOString()
+          }
+          .end (err,resp)->
+            if err
+              return res.json err
+            res.json resp.status
+      else # has media attribute
+        agent.post  to + '/admin/create-new-ticket'
+          .field 'alias','agent'
+          .field 'title',o.title
+          .field 'ticket',o.ticket
+          .field 'client_time',o.client_time
+          .field 'category',o.category
+          .field 'visits',o.visits
+          .field 'agent_post_time',(new Date()).toISOString()
+          .field 'media',(path.join __dirname,'public',o.media)
+          .end (err,resp)-> 
+            if err
+              return res.json err
+            res.json resp.status
 
 app.get '/admin/get-ticket-by-id/:id',(req,res)->
   ticket_id = req.params.id

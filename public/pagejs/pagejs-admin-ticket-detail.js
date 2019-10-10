@@ -56,26 +56,30 @@
         return $(this).closest('form').submit();
       }
     });
-    // add contribute button,listen on it. -- 2019 10 08
-    return $('button.contribute').on('click', function(e) {
-      var keyname;
+    // add modal-form,listen on it
+    return $('#contribute-form').on('submit', function(e) {
+      var $this, keyname;
+      e.preventDefault();
+      e.stopPropagation();
+      $this = $(this);
       keyname = $(this).data('keyname');
-      // ajax post this detail page data and media.
-      $.ajax({
+      return $.ajax({
         url: '/admin/contribute',
         dataType: 'json',
         type: 'POST',
         data: {
-          keyname: keyname,
-          to: 'http://192.168.5.2:3003'
-        }
+          'to_address': 'http://' + $('[name="to-address"]').val(),
+          'to_port': $('[name="to-port"]').val(),
+          keyname: $this.data('keyname')
+        },
+        timeout: 12000
       }).done(function(jsonO) {
         return alert('Server Reply:' + JSON.stringify(jsonO));
-      }).fail(function(err) {
-        return alert('Erorr:' + err.message);
+      }).fail(function(xhr, status, thrown) {
+        return alert('status=' + status);
+      }).always(function() {
+        return $this.closet('.modal').modal('toggle');
       });
-      e.preventDefault();
-      return e.stopPropagation();
     });
   });
 

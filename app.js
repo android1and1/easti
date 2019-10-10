@@ -784,55 +784,58 @@
 
   // 投稿
   app.post('/admin/contribute', async function(req, res) {
-    var agent, error, keyname, o, ref, ref1, request, to;
+    var agent, error, keyname, o, ref, ref1, request, to_address, to_port;
     if (((ref = req.session) != null ? (ref1 = ref.auth) != null ? ref1.role : void 0 : void 0) !== 'admin') {
       return res.json('auth error.');
     }
-    ({keyname, to} = req.body);
-    if (!keyname || !to) {
-      res.json('invalidate data.');
+    ({keyname, to_address, to_port} = req.body);
+    if (to_port === '') {
+      to_port = '80';
+    }
+    if (!keyname || !to_address) {
+      return res.json('invalidate data.');
     }
     // retrieve item 
     request = require('superagent');
+    agent = request.agent();
     try {
       o = (await hgetallAsync(keyname));
-      agent = request.agent();
-      return agent.post(to + '/admin/login').type('form').send({
-        'alias': 'agent'
-      }).send({
-        'password': '1234567' // solid password for this task.
-      }).end(function(err) {
-        if (err) {
-          return res.json(err);
-        }
-        if (!o.media) {
-          return agent.post(to + '/admin/create-new-ticket').send({
-            'alias': 'agent',
-            'title': o.title,
-            'ticket': o.ticket,
-            'client_time': o.client_time,
-            'category': o.category,
-            'visits': o.visits,
-            'agent_post_time': (new Date()).toISOString()
-          }).end(function(err, resp) {
-            if (err) {
-              return res.json(err);
-            }
-            return res.json(resp.status); // has media attribute
-          });
-        } else {
-          return agent.post(to + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('category', o.category).field('visits', o.visits).field('agent_post_time', (new Date()).toISOString()).field('media', path.join(__dirname, 'public', o.media)).end(function(err, resp) {
-            if (err) {
-              return res.json(err);
-            }
-            return res.json(resp.status);
-          });
-        }
-      });
     } catch (error1) {
       error = error1;
       return res.json('DB Operator Error.');
     }
+    return agent.post(to_address + ':' + to_port + '/admin/login').type('form').send({
+      'alias': 'agent'
+    }).send({
+      'password': '1234567' // solid password for this task.
+    }).end(function(err) {
+      if (err) {
+        return res.json(err);
+      }
+      if (!o.media) {
+        return agent.post(to_address + ':' + to_port + '/admin/create-new-ticket').send({
+          'admin_alias': 'agent',
+          'title': o.title,
+          'ticket': o.ticket,
+          'client_time': o.client_time,
+          'category': o.category,
+          'visits': o.visits,
+          'agent_post_time': (new Date()).toISOString()
+        }).end(function(err, resp) {
+          if (err) {
+            return res.json(err);
+          }
+          return res.json(resp.status); // has media attribute
+        });
+      } else {
+        return agent.post(to + '/admin/create-new-ticket').field('alias', 'agent').field('title', o.title).field('ticket', o.ticket).field('client_time', o.client_time).field('category', o.category).field('visits', o.visits).field('agent_post_time', (new Date()).toISOString()).field('media', path.join(__dirname, 'public', o.media)).end(function(err, resp) {
+          if (err) {
+            return res.json(err);
+          }
+          return res.json(resp.status);
+        });
+      }
+    });
   });
 
   app.get('/admin/get-ticket-by-id/:id', function(req, res) {
