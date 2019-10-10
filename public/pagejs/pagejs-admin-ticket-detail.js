@@ -74,11 +74,11 @@
         },
         timeout: 12000
       }).done(function(jsonO) {
-        return alert('Server Reply:' + JSON.stringify(jsonO));
+        return console.log('Server Response:' + jsonO.status);
       }).fail(function(xhr, status, thrown) {
-        return alert(JSON.stringify(thrown));
+        return alert('something is no good,see:' + JSON.stringify(thrown));
       }).always(function() {
-        return $this.closet('.modal').modal('toggle');
+        return $this.closest('.modal').modal('toggle');
       });
     });
   });

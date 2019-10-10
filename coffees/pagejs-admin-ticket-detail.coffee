@@ -58,8 +58,8 @@ $ ->
       timeout:12000
     }
     .done (jsonO)->
-      alert 'Server Reply:' + JSON.stringify jsonO
+      console.log 'Server Response:' + jsonO.status 
     .fail (xhr,status,thrown)->
-      alert JSON.stringify thrown 
+      alert 'something is no good,see:' + JSON.stringify thrown 
     .always ->
-      $this.closet('.modal').modal('toggle')
+      $this.closest('.modal').modal('toggle')
