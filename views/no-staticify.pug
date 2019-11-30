@@ -4,7 +4,7 @@ block pagejs
 block content
   h3.display-2 #{title} 
   .container.w-100.m-0.p-0
-    if list
+    if(list && list.length !== 0)
       each item in list
         .card.d-block.w-100.mb-4
           // 我这里有一个疑问：混合了JS代码和HTML代码的缩进问题

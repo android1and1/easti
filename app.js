@@ -1432,17 +1432,15 @@
 
   app.get('/no-staticify', function(req, res) {
     // listen radio(voa&rfa mandarin)
-    // step1 ,retrieves each file from ./voices
     return fs.readdir(path.join(STATIC_ROOT, 'audioes'), function(err, list) {
-      var audio_list, item, j, len;
+      var audio_list, item, j, len, realpath;
       if (err === null) {
         audio_list = [];
         for (j = 0, len = list.length; j < len; j++) {
           item = list[j];
-          if (item.isDiretory()) {
-            continue;
-          } else {
-            audio_list.append(path.join('/audioes', item));
+          realpath = path.join(STATIC_ROOT, 'audioes', item);
+          if ((fs.statSync(realpath)).isFile()) {
+            audio_list.push(path.join('/audioes', item));
           }
         }
         return res.render('no-staticify', {

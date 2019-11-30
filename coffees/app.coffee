@@ -895,15 +895,13 @@ app.post '/superuser/register-admin',(req,res)->
 
 app.get '/no-staticify',(req,res)->
   # listen radio(voa&rfa mandarin)
-  # step1 ,retrieves each file from ./voices
   fs.readdir path.join(STATIC_ROOT,'audioes'),(err,list)->
     if err is null
       audio_list = []
       for item in list
-        if item.isDiretory()
-          continue
-        else
-          audio_list.append path.join '/audioes',item
+        realpath = path.join STATIC_ROOT,'audioes',item
+        if (fs.statSync realpath).isFile()
+          audio_list.push path.join '/audioes',item
       res.render 'no-staticify',{title:'list audioes',list:audio_list}
     else
       res.render 'no-staticify-failure',{title:'you-see-failure',error_reason:err.message}
