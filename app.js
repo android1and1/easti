@@ -1434,17 +1434,17 @@
     // listen radio(voa&rfa mandarin)
     // step1 ,retrieves each file from ./voices
     return fs.readdir(path.join(STATIC_ROOT, 'audioes'), function(err, list) {
-      var audio_list, item;
+      var audio_list, item, j, len;
       if (err === null) {
-        audio_list = (function() {
-          var j, len, results1;
-          results1 = [];
-          for (j = 0, len = list.length; j < len; j++) {
-            item = list[j];
-            results1.push(path.join('/audioes', item));
+        audio_list = [];
+        for (j = 0, len = list.length; j < len; j++) {
+          item = list[j];
+          if (item.isDiretory()) {
+            continue;
+          } else {
+            audio_list.append(path.join('/audioes', item));
           }
-          return results1;
-        })();
+        }
         return res.render('no-staticify', {
           title: 'list audioes',
           list: audio_list

@@ -898,8 +898,12 @@ app.get '/no-staticify',(req,res)->
   # step1 ,retrieves each file from ./voices
   fs.readdir path.join(STATIC_ROOT,'audioes'),(err,list)->
     if err is null
-      audio_list = 
-        path.join '/audioes',item for item in list 
+      audio_list = []
+      for item in list
+        if item.isDiretory()
+          continue
+        else
+          audio_list.append path.join '/audioes',item
       res.render 'no-staticify',{title:'list audioes',list:audio_list}
     else
       res.render 'no-staticify-failure',{title:'you-see-failure',error_reason:err.message}
