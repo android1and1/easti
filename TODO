@@ -998,3 +998,7 @@ jp-stretch-pi-2
 jp-stretch-pi-2
 Thu Nov 28 13:51:48 CST 2019
   (续）“make-full-list"(/admin/make-full-list),照例，先检查是否具备ADMIN身份，如有，则进一步检查是否在目录(directory:./public/solid-lists/)下存在文件，而且，最新的一份文件，ctime是否在10天以上？以上所有断言都是YES的情况下，数据库REDIS开始把所有的条目检索出来，再编入一个数组。
+
+Inch13Early2015Air
+2019年11月30日 星期六 10时12分06秒 CST
+  重回纯软工作平台，下一步：从share/doublelist.coffee开发一个硬编码列表页。
