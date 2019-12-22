@@ -1,5 +1,0 @@
-Running "exec:runredis" (exec) task
-
-Running "exec:runserver" (exec) task
-
-Done.
