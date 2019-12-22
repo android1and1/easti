@@ -20,8 +20,10 @@ configs/
 public/uploads
 public/audioes
 staticify/
+share/fonts/
 coffees/staticify-*
 public/staticifyjs/
 views/staticify/v4.pug
 !public/uploads/sample.jpg
 !configs/rule-for-daka.js
+!share/fonts/readme
